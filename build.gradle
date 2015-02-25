@@ -1,0 +1,37 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+  repositories {
+    jcenter()
+  }
+  dependencies {
+    classpath 'com.android.tools.build:gradle:1.1.0'
+
+    classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
+
+    // NOTE: Do not place your application dependencies here; they belong
+    // in the individual module build.gradle files
+  }
+}
+
+allprojects {
+  repositories {
+    jcenter()
+  }
+}
+
+
+ext {
+  minSdk = 14
+  targetSdk = 21
+  buildToolsVersion = '21.1.2'
+  compileSdkVersion = 21
+
+  // Libraries
+  appcompat7Version = '21.0.+'
+  recyclerviewVersion ='21.0.+'
+  fragmentargsVersion ='2.0.1'
+  butterknifeVersion = '6.1.0'
+  icepickVersion = '2.3.6'
+
+}

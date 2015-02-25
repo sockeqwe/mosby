@@ -1,0 +1,36 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
+
+android {
+  compileSdkVersion rootProject.ext.compileSdkVersion
+  buildToolsVersion rootProject.ext.buildToolsVersion
+
+  defaultConfig {
+    applicationId "com.hannesdorfmann.mosby.sample"
+    minSdkVersion rootProject.ext.minSdk
+    targetSdkVersion rootProject.ext.targetSdk
+    versionName project.VERSION_NAME
+    versionCode Integer.parseInt(project.VERSION_CODE)
+  }
+  buildTypes {
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+    }
+  }
+}
+
+dependencies {
+  compile project(':mvp')
+  compile project(':core')
+
+
+  compile 'com.android.support:recyclerview-v7:21.0.+'
+  compile 'com.android.support:appcompat-v7:'+rootProject.ext.appcompat7Version
+
+  apt 'com.hannesdorfmann.annotatedadapter:processor:1.0.0'
+  compile 'com.hannesdorfmann.annotatedadapter:annotation:1.0.0'
+  compile 'com.hannesdorfmann.annotatedadapter:support-recyclerview:1.0.0'
+
+
+}

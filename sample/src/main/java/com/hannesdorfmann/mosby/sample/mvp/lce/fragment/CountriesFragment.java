@@ -27,7 +27,9 @@ public class CountriesFragment
 
   CountriesAdapter adapter;
 
-  @Override public void init(@Nullable View view, @Nullable Bundle savedInstance) {
+  @Override public void onViewCreated(View view, @Nullable Bundle savedInstance) {
+    super.onViewCreated(view, savedInstance);
+
     // Setup contentView == SwipeRefreshView
     contentView.setOnRefreshListener(this);
 

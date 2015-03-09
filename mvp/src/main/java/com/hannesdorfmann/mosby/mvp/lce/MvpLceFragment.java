@@ -41,6 +41,7 @@ public abstract class MvpLceFragment<CV extends View, M, V extends MvpLceView<M>
   protected TextView errorView;
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
 
     loadingView = view.findViewById(R.id.loadingView);
     contentView = (CV) view.findViewById(R.id.contentView);
@@ -69,8 +70,6 @@ public abstract class MvpLceFragment<CV extends View, M, V extends MvpLceView<M>
         onErrorViewClicked();
       }
     });
-
-    super.onViewCreated(view, savedInstanceState);
   }
 
   @Override public void showLoading(boolean pullToRefresh) {

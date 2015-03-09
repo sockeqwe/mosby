@@ -14,24 +14,30 @@ import com.hannesdorfmann.mosby.MosbyFragment;
  */
 public abstract class MvpFragment<P extends MvpPresenter> extends MosbyFragment implements MvpView {
 
+  /**
+   * The presenter for this view. Will be instantiated with {@link #createPresenter()}
+   */
   protected P presenter;
 
   /**
    * Creates a new presenter instance, if needed. Will reuse the previous presenter instance if
-   * {@link #setRetainInstance(boolean)} is set to true. This method will be called after the view
-   * has been created and before {@link #init(View, Bundle)} is called.
+   * {@link #setRetainInstance(boolean)} is set to true. This method will be called after from
+   * {@link #onViewCreated(View, Bundle)}
    */
   protected abstract P createPresenter();
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
 
     // Create the presenter if needed
     if (presenter == null) {
       presenter = createPresenter();
+
+      if (presenter == null){
+        throw new NullPointerException("Presenter is null! Do you return null in createPresenter()?");
+      }
     }
     presenter.setView(this);
-
-    super.onViewCreated(view, savedInstanceState);
   }
 
   @Override public void onDestroyView() {

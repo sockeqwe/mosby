@@ -1,7 +1,7 @@
 package com.hannesdorfmann.mosby.sample;
 
+import android.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.widget.Toast;
 import com.hannesdorfmann.mosby.MosbyActivity;
 import com.hannesdorfmann.mosby.sample.mvp.lce.fragment.CountriesFragment;
@@ -21,7 +21,7 @@ public class FragmentContainerActivity extends MosbyActivity {
         Toast.makeText(this, "Error: No fragment specified", Toast.LENGTH_SHORT).show();
         finish();
       } else {
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, f).commit();
+        getFragmentManager().beginTransaction().replace(R.id.fragmentContainer, f).commit();
       }
     }
   }

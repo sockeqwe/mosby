@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply from: '../maven-push.gradle'
 
+
 android {
   compileSdkVersion rootProject.ext.compileSdkVersion
   buildToolsVersion rootProject.ext.buildToolsVersion
@@ -22,4 +23,6 @@ android {
 dependencies {
   compile 'com.android.support:appcompat-v7:+'
   compile project(':core')
+
+  testCompile 'junit:junit:'+rootProject.ext.junitVersion
 }

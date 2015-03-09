@@ -21,5 +21,5 @@ import android.support.v4.app.Fragment;
  * @author Hannes Dorfmann
  * @since 1.0.0
  */
-public interface ViewState<D> {
+public interface ViewState {
 }

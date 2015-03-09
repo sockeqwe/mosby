@@ -3,112 +3,96 @@ package com.hannesdorfmann.mosby.mvp.viewstate.lce;
 import android.os.Bundle;
 import android.os.Parcel;
 import com.hannesdorfmann.mosby.mvp.viewstate.ParcelableViewState;
-import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 
 /**
+ * A base view state implementation for {@link LceViewState} (Loading-Content-Error) and {@link
+ * ParcelableViewState}. This class can be saved and restored in a bundle. Therefore it can be used
+ * for Activities and Fragments.
+ *
  * @author Hannes Dorfmann
+ * @since 1.0.0
  */
-public class AbsLceViewState<D> implements ParcelableViewState<D> {
+public abstract class AbsLceViewState<D> implements ParcelableViewState, LceViewState<D> {
 
   public static final String KEY_BUNDLE_VIEW_STATE =
       "com.hannesdorfmann.mosby.mvp.viewstate.ViewState.bundlekey";
 
   /**
-   * Used as {@link #currentViewState} to indicate that loading is currently displayed on screen
-   */
-  protected static final int STATE_SHOW_LOADING = 0;
-
-  /**
-   * Used as {@link #currentViewState} to indicate that the content is currently displayed on
-   * screen
-   */
-  protected static final int STATE_SHOW_CONTENT = 1;
-
-  /**
-   * Used as {@link #currentViewState} to indicate that the error is currently displayed on screen
-   */
-  protected static final int STATE_SHOW_ERROR = -1;
-
-  /**
    * The current viewstate. Used to identify if the view is/was showing loading, error, or content.
    */
   protected int currentViewState;
-
   protected boolean pullToRefresh;
-
   protected Exception exception;
   protected D loadedData;
 
-  /**
-   * Saves this ViewState to the outgoing bundle.
-   * This will typically be called in {@link android.app.Activity#onSaveInstanceState(Bundle)}
-   * or in  {@link android.app.Fragment#onSaveInstanceState(Bundle)}  with the according bundle as
-   * argument
-   */
+  @Override
   public void saveInstanceState(Bundle out) {
     out.putParcelable(KEY_BUNDLE_VIEW_STATE, this);
   }
 
-  /**
-   * This static method reads the bundle with the saved instance state and restores the ViewState
-   * from Bundles data
-   */
-  public static <D> ViewState<D> restoreInstanceState(Bundle in) {
+  @Override
+  public void restoreInstanceState(Bundle in) {
     if (in == null) {
-      return null;
+      return;
     }
 
-    return (ViewState<D>) in.getParcelable(KEY_BUNDLE_VIEW_STATE);
+    AbsLceViewState<D> tmp = (AbsLceViewState<D>) in.getParcelable(KEY_BUNDLE_VIEW_STATE);
+    this.loadedData = tmp.loadedData;
+    this.currentViewState = tmp.currentViewState;
+    this.exception = tmp.exception;
+    this.pullToRefresh = tmp.pullToRefresh;
   }
 
-  public boolean isPullToRefresh() {
+  @Override public boolean isPullToRefresh() {
     return pullToRefresh;
   }
 
-  public Exception getException() {
+  @Override public Exception getException() {
     return exception;
   }
 
-  public D getLoadedData() {
+  @Override public D getLoadedData() {
     return loadedData;
   }
 
-  public void setStateShowContent(D loadedData) {
+  @Override public void setStateShowContent(D loadedData) {
     currentViewState = STATE_SHOW_CONTENT;
     this.loadedData = loadedData;
     exception = null;
   }
 
-  public void setStateShowError(Exception e, boolean pullToRefresh) {
+  @Override public void setStateShowError(Exception e, boolean pullToRefresh) {
     currentViewState = STATE_SHOW_ERROR;
     exception = e;
     this.pullToRefresh = pullToRefresh;
-    if (!pullToRefresh){
+    if (!pullToRefresh) {
       loadedData = null;
     }
-    // else, dont clear loaded data, because of pull to refresh where previous data may be displayed while showing error
+    // else, dont clear loaded data, because of pull to refresh where previous data may
+    // be displayed while showing error
   }
 
-  public void setStateShowLoading(boolean pullToRefresh) {
+  @Override public void setStateShowLoading(boolean pullToRefresh) {
     currentViewState = STATE_SHOW_LOADING;
     this.pullToRefresh = pullToRefresh;
     exception = null;
 
-    if (!pullToRefresh){
+    if (!pullToRefresh) {
       loadedData = null;
     }
-    // else, dont clear loaded data, because of pull to refresh where previous data may be displayed while showing error
+    // else, don't clear loaded data, because of pull to refresh where previous data
+    // may be displayed while showing error
   }
 
-  public boolean wasShowingError() {
+  @Override public boolean wasShowingError() {
     return currentViewState == STATE_SHOW_ERROR;
   }
 
-  public boolean wasShowingLoading() {
+  @Override public boolean wasShowingLoading() {
     return currentViewState == STATE_SHOW_LOADING;
   }
 
-  public boolean wasShowingContent() {
+  @Override public boolean wasShowingContent() {
     return currentViewState == STATE_SHOW_CONTENT;
   }
 
@@ -126,7 +110,7 @@ public class AbsLceViewState<D> implements ParcelableViewState<D> {
     // write exception
     dest.writeSerializable(exception);
 
-    // content will be written in subclass
+    // Content will be written in the subclasses
   }
 
   protected void readFromParcel(Parcel in) {

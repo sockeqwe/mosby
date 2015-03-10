@@ -17,7 +17,7 @@ import java.util.ArrayList;
  * @since 1.0.0
  */
 public class ArrayListLceViewState<D extends ArrayList<? extends Parcelable>>
-    extends AbsLceViewState<D> {
+    extends AbsParcelableLceViewState<D> {
 
   public static final Parcelable.Creator<ArrayListLceViewState> CREATOR =
       new Parcelable.Creator<ArrayListLceViewState>() {

@@ -26,14 +26,12 @@ ext {
 
   // Libraries
   appcompat7Version = '21.0.+'
-  recyclerviewVersion ='21.0.+'
-  fragmentargsVersion ='2.0.1'
+  recyclerviewVersion = '21.0.+'
+  fragmentargsVersion = '2.0.1'
   butterknifeVersion = '6.1.0'
   icepickVersion = '2.3.6'
 
   // Test Libs
-  robolectricVersion ='2.4'
+  robolectricVersion = '2.4'
   junitVersion = '4.12'
-
-
 }

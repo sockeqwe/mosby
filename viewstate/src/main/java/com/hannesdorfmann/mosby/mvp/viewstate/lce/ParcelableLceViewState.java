@@ -14,7 +14,7 @@ import com.hannesdorfmann.mosby.mvp.viewstate.ParcelableViewState;
  *
  * @author Hannes Dorfmann
  */
-public class ParcelableLceViewState<D extends Parcelable> extends AbsLceViewState<D> {
+public class ParcelableLceViewState<D extends Parcelable> extends AbsParcelableLceViewState<D> {
 
   public static final Parcelable.Creator<ParcelableLceViewState> CREATOR =
       new Parcelable.Creator<ParcelableLceViewState>() {

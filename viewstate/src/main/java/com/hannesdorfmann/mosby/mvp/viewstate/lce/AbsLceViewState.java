@@ -1,21 +1,29 @@
+/*
+ * Copyright (c) 2015 Hannes Dorfmann.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.hannesdorfmann.mosby.mvp.viewstate.lce;
 
-import android.os.Bundle;
-import android.os.Parcel;
-import com.hannesdorfmann.mosby.mvp.viewstate.ParcelableViewState;
+import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
 
 /**
- * A base view state implementation for {@link LceViewState} (Loading-Content-Error) and {@link
- * ParcelableViewState}. This class can be saved and restored in a bundle. Therefore it can be used
- * for Activities and Fragments.
+ * A base view state implementation for {@link LceViewState} (Loading-Content-Error)
  *
  * @author Hannes Dorfmann
  * @since 1.0.0
  */
-public abstract class AbsLceViewState<D> implements ParcelableViewState, LceViewState<D> {
-
-  public static final String KEY_BUNDLE_VIEW_STATE =
-      "com.hannesdorfmann.mosby.mvp.viewstate.ViewState.bundlekey";
+public abstract class AbsLceViewState<D> implements LceViewState<D> {
 
   /**
    * The current viewstate. Used to identify if the view is/was showing loading, error, or content.
@@ -25,37 +33,11 @@ public abstract class AbsLceViewState<D> implements ParcelableViewState, LceView
   protected Exception exception;
   protected D loadedData;
 
-  @Override
-  public void saveInstanceState(Bundle out) {
-    out.putParcelable(KEY_BUNDLE_VIEW_STATE, this);
+  @Override public void setStateShowContent() {
+    currentViewState = STATE_SHOW_CONTENT;
   }
 
-  @Override
-  public void restoreInstanceState(Bundle in) {
-    if (in == null) {
-      return;
-    }
-
-    AbsLceViewState<D> tmp = (AbsLceViewState<D>) in.getParcelable(KEY_BUNDLE_VIEW_STATE);
-    this.loadedData = tmp.loadedData;
-    this.currentViewState = tmp.currentViewState;
-    this.exception = tmp.exception;
-    this.pullToRefresh = tmp.pullToRefresh;
-  }
-
-  @Override public boolean isPullToRefresh() {
-    return pullToRefresh;
-  }
-
-  @Override public Exception getException() {
-    return exception;
-  }
-
-  @Override public D getLoadedData() {
-    return loadedData;
-  }
-
-  @Override public void setStateShowContent(D loadedData) {
+  @Override public void setStateData(D loadedData) {
     currentViewState = STATE_SHOW_CONTENT;
     this.loadedData = loadedData;
     exception = null;
@@ -68,7 +50,7 @@ public abstract class AbsLceViewState<D> implements ParcelableViewState, LceView
     if (!pullToRefresh) {
       loadedData = null;
     }
-    // else, dont clear loaded data, because of pull to refresh where previous data may
+    // else, don't clear loaded data, because of pull to refresh where previous data may
     // be displayed while showing error
   }
 
@@ -84,49 +66,28 @@ public abstract class AbsLceViewState<D> implements ParcelableViewState, LceView
     // may be displayed while showing error
   }
 
-  @Override public boolean wasShowingError() {
-    return currentViewState == STATE_SHOW_ERROR;
-  }
+  @Override public void apply(MvpLceView<D> view) {
 
-  @Override public boolean wasShowingLoading() {
-    return currentViewState == STATE_SHOW_LOADING;
-  }
+    if (currentViewState == STATE_SHOW_CONTENT) {
+      view.setData(loadedData);
+      view.showContent();
+    } else if (currentViewState == STATE_SHOW_LOADING) {
 
-  @Override public boolean wasShowingContent() {
-    return currentViewState == STATE_SHOW_CONTENT;
-  }
+      boolean ptr = pullToRefresh;
+      if (pullToRefresh) {
+        view.setData(loadedData);
+        view.showContent();
+      }
+      view.showLoading(ptr);
+    } else if (currentViewState == STATE_SHOW_ERROR) {
 
-  @Override public int describeContents() {
-    return 0;
-  }
-
-  @Override public void writeToParcel(Parcel dest, int flags) {
-
-    dest.writeInt(currentViewState);
-
-    // PullToRefresh
-    writeBoolean(dest, pullToRefresh);
-
-    // write exception
-    dest.writeSerializable(exception);
-
-    // Content will be written in the subclasses
-  }
-
-  protected void readFromParcel(Parcel in) {
-    currentViewState = in.readInt();
-
-    // Pull To Refresh
-    pullToRefresh = readBoolean(in);
-
-    // content will be read in subclass
-  }
-
-  protected void writeBoolean(Parcel dest, boolean b) {
-    dest.writeByte((byte) (b ? 1 : 0));
-  }
-
-  protected boolean readBoolean(Parcel p) {
-    return p.readByte() == (byte) 1;
+      boolean ptr = pullToRefresh;
+      Exception e = exception;
+      if (pullToRefresh) {
+        view.setData(loadedData);
+        view.showContent();
+      }
+      view.showError(e, ptr);
+    }
   }
 }

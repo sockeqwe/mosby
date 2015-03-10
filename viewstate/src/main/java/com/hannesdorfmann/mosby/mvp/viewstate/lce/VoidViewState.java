@@ -13,5 +13,5 @@ import com.hannesdorfmann.mosby.mvp.viewstate.ParcelableViewState;
  * @author Hannes Dorfmann
  * @Since 1.0.0
  */
-public class VoidViewState extends AbsLceViewState<Void> {
+public class VoidViewState extends AbsParcelableLceViewState<Void> {
 }

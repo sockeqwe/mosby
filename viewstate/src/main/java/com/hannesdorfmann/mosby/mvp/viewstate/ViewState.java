@@ -1,6 +1,7 @@
 package com.hannesdorfmann.mosby.mvp.viewstate;
 
 import android.support.v4.app.Fragment;
+import com.hannesdorfmann.mosby.mvp.MvpView;
 
 /**
  * A ViewState is, like the name suggests, responsible to store the views state. In other words:
@@ -18,8 +19,11 @@ import android.support.v4.app.Fragment;
  * Therefore Activities have to use {@link ParcelableViewState}.
  * </p>
  *
+ * @param <V> The type of the View (extends {@link MvpView}
  * @author Hannes Dorfmann
  * @since 1.0.0
  */
-public interface ViewState {
+public interface ViewState<V extends MvpView> {
+
+  public void apply(V view);
 }

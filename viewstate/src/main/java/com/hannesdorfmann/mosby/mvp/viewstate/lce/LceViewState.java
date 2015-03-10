@@ -1,5 +1,6 @@
 package com.hannesdorfmann.mosby.mvp.viewstate.lce;
 
+import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 
 /**
@@ -9,7 +10,7 @@ import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
  * @author Hannes Dorfmann
  * @since 1.0.0
  */
-public interface LceViewState<D> extends ViewState {
+public interface LceViewState<D> extends ViewState<MvpLceView<D>> {
   /**
    * Used as currentViewState to indicate that loading is currently displayed on screen
    */
@@ -24,21 +25,13 @@ public interface LceViewState<D> extends ViewState {
    */
   int STATE_SHOW_ERROR = -1;
 
-  boolean isPullToRefresh();
 
-  Exception getException();
+  void setStateData(D loadedData);
 
-  D getLoadedData();
-
-  void setStateShowContent(D loadedData);
+  void setStateShowContent();
 
   void setStateShowError(Exception e, boolean pullToRefresh);
 
   void setStateShowLoading(boolean pullToRefresh);
 
-  boolean wasShowingError();
-
-  boolean wasShowingLoading();
-
-  boolean wasShowingContent();
 }

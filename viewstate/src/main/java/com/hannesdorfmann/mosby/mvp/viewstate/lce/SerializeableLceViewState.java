@@ -14,7 +14,8 @@ import java.io.Serializable;
  * @author Hannes Dorfmann
  * @since 1.0.0
  */
-public class SerializeableLceViewState<D extends Serializable> extends AbsLceViewState<D> {
+public class SerializeableLceViewState<D extends Serializable> extends
+    AbsParcelableLceViewState<D> {
 
   public static final Parcelable.Creator<SerializeableLceViewState> CREATOR =
       new Parcelable.Creator<SerializeableLceViewState>() {

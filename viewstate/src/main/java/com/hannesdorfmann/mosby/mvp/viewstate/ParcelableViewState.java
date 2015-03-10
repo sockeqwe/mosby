@@ -2,6 +2,7 @@ package com.hannesdorfmann.mosby.mvp.viewstate;
 
 import android.os.Bundle;
 import android.os.Parcelable;
+import com.hannesdorfmann.mosby.mvp.MvpView;
 
 /**
  * A ViewState that is parcelable. Activities can only use this kind of ViewState, because saving
@@ -11,7 +12,7 @@ import android.os.Parcelable;
  * @author Hannes Dorfmann
  * @since 1.0.0
  */
-public interface ParcelableViewState extends ViewState, Parcelable {
+public interface ParcelableViewState<V extends MvpView> extends ViewState<V>, Parcelable {
 
   /**
    * Saves this ViewState to the outgoing bundle.
@@ -24,6 +25,9 @@ public interface ParcelableViewState extends ViewState, Parcelable {
 
   /**
    * Restores the viewstate that has been saved before with {@link #saveInstanceState(Bundle)}
+   *
+   * @return true, if the ViewState has been restored successfully by reading the data from the
+   * bundle, otherwise false
    */
-  public void restoreInstanceState(Bundle in);
+  public boolean restoreInstanceState(Bundle in);
 }

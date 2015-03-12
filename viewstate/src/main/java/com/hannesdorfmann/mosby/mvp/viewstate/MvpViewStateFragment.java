@@ -32,19 +32,12 @@ public abstract class MvpViewStateFragment<P extends MvpPresenter> extends MvpFr
    */
   public abstract ViewState createViewState();
 
-  @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-    super.onViewCreated(view, savedInstanceState);
-
-    boolean viewStateRestored = ViewStateManager.createOrRestore(this, this, savedInstanceState);
-    if (!viewStateRestored) {
-      onEmptyViewState();
-    }
+  @Override public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
+    ViewStateManager.createOrRestore(this, this, savedInstanceState);
   }
 
-  @Override
-  public void onEmptyViewState() {
-
-  }
+  @Override public abstract void onEmptyViewState();
 
   @Override public void onSaveInstanceState(Bundle outState) {
     super.onSaveInstanceState(outState);

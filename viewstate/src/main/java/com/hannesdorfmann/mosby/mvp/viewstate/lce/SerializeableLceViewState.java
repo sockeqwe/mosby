@@ -2,6 +2,7 @@ package com.hannesdorfmann.mosby.mvp.viewstate.lce;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
 import com.hannesdorfmann.mosby.mvp.viewstate.ParcelableViewState;
 import java.io.Serializable;
 
@@ -11,11 +12,13 @@ import java.io.Serializable;
  * Can be used for Activites and Fragments.
  * </p>
  *
+ * @param <D> the data / model type
+ * @param <V> the type of the view
  * @author Hannes Dorfmann
  * @since 1.0.0
  */
-public class SerializeableLceViewState<D extends Serializable> extends
-    AbsParcelableLceViewState<D> {
+public class SerializeableLceViewState<D extends Serializable, V extends MvpLceView<D>>
+    extends AbsParcelableLceViewState<D, V> {
 
   public static final Parcelable.Creator<SerializeableLceViewState> CREATOR =
       new Parcelable.Creator<SerializeableLceViewState>() {

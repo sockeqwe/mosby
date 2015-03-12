@@ -23,7 +23,6 @@ public class MainActivity extends MosbyActivity implements AdapterView.OnItemCli
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     demos = createDemos();
-
     listView.setAdapter(new ArrayAdapter<Demo>(this, android.R.layout.simple_list_item_1, demos));
     listView.setOnItemClickListener(this);
   }
@@ -33,7 +32,10 @@ public class MainActivity extends MosbyActivity implements AdapterView.OnItemCli
         new Demo("MvpLcsActivity", new Intent(this, CountriesActivity.class)),
         new Demo("MvpLcsFragment",
             new Intent(this, FragmentContainerActivity.class).putExtra("fragment",
-                "CountriesFragment"))
+                "CountriesFragment")),
+        new Demo("RetainingViewsStateFragment",
+            new Intent(this, FragmentContainerActivity.class).putExtra("fragment",
+                "RetainingCountriesFragment"))
     };
   }
 

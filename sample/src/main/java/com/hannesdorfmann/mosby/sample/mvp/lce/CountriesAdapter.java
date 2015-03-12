@@ -20,8 +20,7 @@ public class CountriesAdapter extends SupportAnnotatedAdapter implements Countri
               id = R.id.textView,
               name = "name",
               type = TextView.class)
-      })
-  public final int VIEWTYPE_COUNTRY = 0;
+      }) public final int VIEWTYPE_COUNTRY = 0;
 
   private List<Country> countries;
 
@@ -33,12 +32,16 @@ public class CountriesAdapter extends SupportAnnotatedAdapter implements Countri
     this.countries = countries;
   }
 
+  public List<Country> getCountries() {
+    return countries;
+  }
+
   @Override public int getItemCount() {
     return countries == null ? 0 : countries.size();
   }
 
-  @Override public void bindViewHolder(CountriesAdapterHolders.VIEWTYPE_COUNTRYViewHolder vh,
-      int position) {
+  @Override
+  public void bindViewHolder(CountriesAdapterHolders.VIEWTYPE_COUNTRYViewHolder vh, int position) {
     vh.name.setText(countries.get(position).getName());
   }
 }

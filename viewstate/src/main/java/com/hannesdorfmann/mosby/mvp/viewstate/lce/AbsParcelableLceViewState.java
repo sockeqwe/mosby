@@ -10,29 +10,29 @@ import com.hannesdorfmann.mosby.mvp.viewstate.ParcelableViewState;
  * ParcelableViewState}. This class can be saved and restored in a bundle. Therefore it can be used
  * for Activities and Fragments.
  *
+ * @param <D> the data / model type
+ * @param <V> the type of the view
  * @author Hannes Dorfmann
  * @since 1.0.0
  */
-public abstract class AbsParcelableLceViewState<D> extends AbsLceViewState<D>
-    implements ParcelableViewState<MvpLceView<D>> {
+public abstract class AbsParcelableLceViewState<D, V extends MvpLceView<D>>
+    extends AbsLceViewState<D, V> implements ParcelableViewState<V> {
 
   public static final String KEY_BUNDLE_VIEW_STATE =
       "com.hannesdorfmann.mosby.mvp.viewstate.ViewState.bundlekey";
 
-
-  @Override
-  public void saveInstanceState(Bundle out) {
+  @Override public void saveInstanceState(Bundle out) {
     out.putParcelable(KEY_BUNDLE_VIEW_STATE, this);
   }
 
-  @Override
-  public boolean restoreInstanceState(Bundle in) {
+  @Override public boolean restoreInstanceState(Bundle in) {
     if (in == null) {
       return false;
     }
 
     // Workaround
-    AbsParcelableLceViewState<D> tmp = (AbsParcelableLceViewState<D>) in.getParcelable(KEY_BUNDLE_VIEW_STATE);
+    AbsParcelableLceViewState<D, V> tmp =
+        (AbsParcelableLceViewState<D, V>) in.getParcelable(KEY_BUNDLE_VIEW_STATE);
     this.loadedData = tmp.loadedData;
     this.currentViewState = tmp.currentViewState;
     this.exception = tmp.exception;
@@ -73,6 +73,4 @@ public abstract class AbsParcelableLceViewState<D> extends AbsLceViewState<D>
   protected boolean readBoolean(Parcel p) {
     return p.readByte() == (byte) 1;
   }
-
-
 }

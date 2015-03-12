@@ -3,6 +3,7 @@ package com.hannesdorfmann.mosby.mvp.viewstate.lce;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
 import com.hannesdorfmann.mosby.mvp.viewstate.ParcelableViewState;
 
 /**
@@ -12,9 +13,13 @@ import com.hannesdorfmann.mosby.mvp.viewstate.ParcelableViewState;
  * Can be used for Activites and Fragments.
  * </p>
  *
+ * @param <D> the data / model type
+ * @param <V> the type of the view
  * @author Hannes Dorfmann
+ * @since 1.0.0
  */
-public class ParcelableLceViewState<D extends Parcelable> extends AbsParcelableLceViewState<D> {
+public class ParcelableLceViewState<D extends Parcelable, V extends MvpLceView<D>>
+    extends AbsParcelableLceViewState<D, V> {
 
   public static final Parcelable.Creator<ParcelableLceViewState> CREATOR =
       new Parcelable.Creator<ParcelableLceViewState>() {
@@ -42,8 +47,7 @@ public class ParcelableLceViewState<D extends Parcelable> extends AbsParcelableL
     readFromParcel(source);
   }
 
-  @Override
-  public void writeToParcel(Parcel dest, int flags) {
+  @Override public void writeToParcel(Parcel dest, int flags) {
     super.writeToParcel(dest, flags);
 
     // content, we use a Bundle to avoid the problem of specifying a class loader.
@@ -52,8 +56,7 @@ public class ParcelableLceViewState<D extends Parcelable> extends AbsParcelableL
     dest.writeBundle(b);
   }
 
-  @Override
-  protected void readFromParcel(Parcel source) {
+  @Override protected void readFromParcel(Parcel source) {
     super.readFromParcel(source);
 
     Bundle b = source.readBundle();

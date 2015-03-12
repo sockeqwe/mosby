@@ -3,6 +3,7 @@ package com.hannesdorfmann.mosby.mvp.viewstate.lce;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
 import com.hannesdorfmann.mosby.mvp.viewstate.ParcelableViewState;
 import java.util.ArrayList;
 
@@ -13,11 +14,13 @@ import java.util.ArrayList;
  * Can be used for Activites and Fragments.
  * </p>
  *
+ * @param <D> the type of the data / model that is put in an ArrayList
+ * @param <V> the type of the view
  * @author Hannes Dorfmann
  * @since 1.0.0
  */
-public class ArrayListLceViewState<D extends ArrayList<? extends Parcelable>>
-    extends AbsParcelableLceViewState<D> {
+public class ArrayListLceViewState<D extends Parcelable, V extends MvpLceView<ArrayList<D>>>
+    extends AbsParcelableLceViewState<ArrayList<D>, V> {
 
   public static final Parcelable.Creator<ArrayListLceViewState> CREATOR =
       new Parcelable.Creator<ArrayListLceViewState>() {
@@ -40,8 +43,7 @@ public class ArrayListLceViewState<D extends ArrayList<? extends Parcelable>>
     readFromParcel(source);
   }
 
-  @Override
-  public void writeToParcel(Parcel dest, int flags) {
+  @Override public void writeToParcel(Parcel dest, int flags) {
     super.writeToParcel(dest, flags);
 
     // Content
@@ -50,14 +52,13 @@ public class ArrayListLceViewState<D extends ArrayList<? extends Parcelable>>
     dest.writeBundle(b);
   }
 
-  @Override
-  protected void readFromParcel(Parcel source) {
+  @Override protected void readFromParcel(Parcel source) {
     super.readFromParcel(source);
 
     // content
     Bundle b = source.readBundle();
     if (b != null) {
-      loadedData = (D) b.getParcelableArrayList(BUNDLE_ARRAY_LIST_WORKAROUND);
+      loadedData = (ArrayList<D>) b.getParcelableArrayList(BUNDLE_ARRAY_LIST_WORKAROUND);
     }
 
     // alternative ((Class) ((ParameterizedType) getClass()

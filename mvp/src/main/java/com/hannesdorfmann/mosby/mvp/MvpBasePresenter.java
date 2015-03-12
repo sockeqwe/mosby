@@ -39,7 +39,9 @@ public class MvpBasePresenter<V extends MvpView> implements MvpPresenter<V> {
   }
 
   @Override public void onDestroy(boolean retainInstance) {
-    viewRef.clear();
-    viewRef = null;
+    if (viewRef != null) {
+      viewRef.clear();
+      viewRef = null;
+    }
   }
 }

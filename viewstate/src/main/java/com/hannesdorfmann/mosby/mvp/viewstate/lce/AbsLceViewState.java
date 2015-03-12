@@ -20,10 +20,12 @@ import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
 /**
  * A base view state implementation for {@link LceViewState} (Loading-Content-Error)
  *
+ * @param <D> the data / model type
+ * @param <V> the type of the view
  * @author Hannes Dorfmann
  * @since 1.0.0
  */
-public abstract class AbsLceViewState<D> implements LceViewState<D> {
+public abstract class AbsLceViewState<D, V extends MvpLceView<D>> implements LceViewState<D, V> {
 
   /**
    * The current viewstate. Used to identify if the view is/was showing loading, error, or content.
@@ -33,11 +35,8 @@ public abstract class AbsLceViewState<D> implements LceViewState<D> {
   protected Exception exception;
   protected D loadedData;
 
-  @Override public void setStateShowContent() {
-    currentViewState = STATE_SHOW_CONTENT;
-  }
+  @Override public void setStateShowContent(D loadedData) {
 
-  @Override public void setStateData(D loadedData) {
     currentViewState = STATE_SHOW_CONTENT;
     this.loadedData = loadedData;
     exception = null;
@@ -66,7 +65,7 @@ public abstract class AbsLceViewState<D> implements LceViewState<D> {
     // may be displayed while showing error
   }
 
-  @Override public void apply(MvpLceView<D> view) {
+  @Override public void apply(V view) {
 
     if (currentViewState == STATE_SHOW_CONTENT) {
       view.setData(loadedData);

@@ -20,12 +20,12 @@ allprojects {
 
 ext {
   minSdk = 14
-  targetSdk = 21
-  buildToolsVersion = '21.1.2'
-  compileSdkVersion = 21
+  targetSdk = 22
+  buildToolsVersion = '22.0.0'
+  compileSdkVersion = 22
 
   // Libraries
-  appcompat7Version = '21.0.+'
+  appcompat7Version = '22.0.+'
   recyclerviewVersion = '21.0.+'
   fragmentargsVersion = '2.0.1'
   butterknifeVersion = '6.1.0'

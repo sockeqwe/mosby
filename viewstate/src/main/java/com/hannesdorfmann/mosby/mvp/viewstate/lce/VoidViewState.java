@@ -1,5 +1,6 @@
 package com.hannesdorfmann.mosby.mvp.viewstate.lce;
 
+import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
 import com.hannesdorfmann.mosby.mvp.viewstate.ParcelableViewState;
 
 /**
@@ -10,8 +11,9 @@ import com.hannesdorfmann.mosby.mvp.viewstate.ParcelableViewState;
  * Can be used for Activites and Fragments.
  * </p>
  *
+ * @param <V> The type of the view
  * @author Hannes Dorfmann
  * @Since 1.0.0
  */
-public class VoidViewState extends AbsParcelableLceViewState<Void> {
+public class VoidViewState<V extends MvpLceView<Void>> extends AbsParcelableLceViewState<Void, V> {
 }

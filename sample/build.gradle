@@ -23,6 +23,8 @@ android {
 dependencies {
   compile project(':mvp')
   compile project(':core')
+  compile project(':viewstate')
+
 
 
   compile 'com.android.support:recyclerview-v7:21.0.+'

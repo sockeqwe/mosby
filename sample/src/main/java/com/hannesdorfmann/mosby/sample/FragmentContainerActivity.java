@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.widget.Toast;
 import com.hannesdorfmann.mosby.MosbyActivity;
 import com.hannesdorfmann.mosby.sample.mvp.lce.fragment.CountriesFragment;
+import com.hannesdorfmann.mosby.sample.mvp.lce.viewstate.RetainingCountriesFragment;
 
 /**
  * @author Hannes Dorfmann
@@ -34,6 +35,10 @@ public class FragmentContainerActivity extends MosbyActivity {
 
     if ("CountriesFragment".equals(fragmentName)) {
       return new CountriesFragment();
+    }
+
+    if ("RetainingCountriesFragment".equals(fragmentName)){
+      return new RetainingCountriesFragment();
     }
 
     return null;

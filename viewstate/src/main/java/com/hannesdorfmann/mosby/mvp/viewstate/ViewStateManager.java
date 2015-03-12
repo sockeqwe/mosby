@@ -40,12 +40,21 @@ public class ViewStateManager {
   public static <V extends MvpView> boolean createOrRestore(@NonNull ViewStateable viewStateable,
       @NonNull V view, Bundle savedInstanceState) {
 
+    if (viewStateable == null) {
+      throw new NullPointerException("viewStateable can not be null");
+    }
+
+    if (view == null) {
+      throw new NullPointerException("View can not be null");
+    }
+
     // ViewState already exists (Fragment retainsInstanceState == true)
     if (viewStateable.getViewState() != null) {
       viewStateable.getViewState().apply(view);
       return true;
     }
 
+    // Create view state
     viewStateable.setViewState(viewStateable.createViewState());
     if (viewStateable.getViewState() == null) {
       throw new NullPointerException(
@@ -75,6 +84,10 @@ public class ViewStateManager {
    * onSaveInstanceState(Bundle) method</b>
    */
   public static void saveInstanceState(ViewStateable viewStateable, Bundle outState) {
+
+    if (viewStateable == null) {
+      throw new NullPointerException("viewStateable can not be null");
+    }
 
     if (viewStateable.getViewState() == null) {
       throw new NullPointerException("ViewState is null! That's not allowed");

@@ -19,7 +19,7 @@ import com.hannesdorfmann.mosby.mvp.MvpPresenter;
  * @since 1.0.0
  */
 public abstract class MvpViewStateFragment<P extends MvpPresenter> extends MvpFragment<P>
-    implements ViewStateable {
+    implements ViewStateSupport {
 
   /**
    * The viewstate will be instantiated by calling {@link #createViewState()} in {@link

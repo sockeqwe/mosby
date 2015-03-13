@@ -23,7 +23,7 @@ import com.hannesdorfmann.mosby.mvp.lce.MvpLceFragment;
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewStateManager;
-import com.hannesdorfmann.mosby.mvp.viewstate.ViewStateable;
+import com.hannesdorfmann.mosby.mvp.viewstate.ViewStateSupport;
 
 /**
  * A {@link MvpLceViewStateFragment} with {@link ViewState} support.
@@ -32,7 +32,7 @@ import com.hannesdorfmann.mosby.mvp.viewstate.ViewStateable;
  * @since 1.0.0
  */
 public abstract class MvpLceViewStateFragment<CV extends View, M, V extends MvpLceView<M>, P extends MvpPresenter<V>>
-    extends MvpLceFragment<CV, M, V, P> implements MvpLceView<M>, ViewStateable<V> {
+    extends MvpLceFragment<CV, M, V, P> implements MvpLceView<M>, ViewStateSupport<V> {
 
   /**
    * The viewstate will be instantiated by calling {@link #createViewState()} in {@link

@@ -21,7 +21,7 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
 
 /**
  * It's just a little helper / utils class that avoids to many copy & paste code clones. It allows
- * to use this class to handle {@link ViewState} by using {@link ViewStateable}
+ * to use this class to handle {@link ViewState} by using {@link ViewStateSupport}
  *
  * @author Hannes Dorfmann
  * @since 1.0.0
@@ -35,12 +35,13 @@ public class ViewStateManager {
    * @return true, if the viewstate has been restored (in other words {@link
    * ViewState#apply(MvpView)} has been invoked). Otherwise returns false, but calls
    * {@link
-   * ViewStateable#onEmptyViewState()} before returning false
+   * ViewStateSupport#onEmptyViewState()} before returning false
    */
-  public static <V extends MvpView> boolean createOrRestore(@NonNull ViewStateable viewStateable,
+  public static <V extends MvpView> boolean createOrRestore(@NonNull
+  ViewStateSupport viewStateSupport,
       @NonNull V view, Bundle savedInstanceState) {
 
-    if (viewStateable == null) {
+    if (viewStateSupport == null) {
       throw new NullPointerException("viewStateable can not be null");
     }
 
@@ -49,33 +50,33 @@ public class ViewStateManager {
     }
 
     // ViewState already exists (Fragment retainsInstanceState == true)
-    if (viewStateable.getViewState() != null) {
-      viewStateable.getViewState().apply(view);
+    if (viewStateSupport.getViewState() != null) {
+      viewStateSupport.getViewState().apply(view);
       return true;
     }
 
     // Create view state
-    viewStateable.setViewState(viewStateable.createViewState());
-    if (viewStateable.getViewState() == null) {
+    viewStateSupport.setViewState(viewStateSupport.createViewState());
+    if (viewStateSupport.getViewState() == null) {
       throw new NullPointerException(
           "ViewState is null! Do you return null in createViewState() method?");
     }
 
     // Try to restore data from bundle (savedInstanceState)
-    if (savedInstanceState != null && viewStateable.getViewState() instanceof ParcelableViewState) {
+    if (savedInstanceState != null && viewStateSupport.getViewState() instanceof ParcelableViewState) {
 
       boolean restoredFromBundle =
-          ((ParcelableViewState) viewStateable.getViewState()).restoreInstanceState(
+          ((ParcelableViewState) viewStateSupport.getViewState()).restoreInstanceState(
               savedInstanceState);
 
       if (restoredFromBundle) {
-        viewStateable.getViewState().apply(view);
+        viewStateSupport.getViewState().apply(view);
         return true;
       }
     }
 
     // ViewState not restored
-    viewStateable.onEmptyViewState();
+    viewStateSupport.onEmptyViewState();
     return false;
   }
 
@@ -83,19 +84,19 @@ public class ViewStateManager {
    * Saves {@link ParcelableViewState} in a bundle. <b>Should be calld from activities or fragments
    * onSaveInstanceState(Bundle) method</b>
    */
-  public static void saveInstanceState(ViewStateable viewStateable, Bundle outState) {
+  public static void saveInstanceState(ViewStateSupport viewStateSupport, Bundle outState) {
 
-    if (viewStateable == null) {
+    if (viewStateSupport == null) {
       throw new NullPointerException("viewStateable can not be null");
     }
 
-    if (viewStateable.getViewState() == null) {
+    if (viewStateSupport.getViewState() == null) {
       throw new NullPointerException("ViewState is null! That's not allowed");
     }
 
     // Save the viewstate
-    if (viewStateable.getViewState() instanceof ParcelableViewState) {
-      ((ParcelableViewState) viewStateable.getViewState()).saveInstanceState(outState);
+    if (viewStateSupport.getViewState() instanceof ParcelableViewState) {
+      ((ParcelableViewState) viewStateSupport.getViewState()).saveInstanceState(outState);
     }
   }
 }

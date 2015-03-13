@@ -29,7 +29,7 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
  * @author Hannes Dorfmann
  * @since 1.0.0
  */
-public interface ViewStateable<V extends MvpView> {
+public interface ViewStateSupport<V extends MvpView> {
 
   /**
    * Get the viewState

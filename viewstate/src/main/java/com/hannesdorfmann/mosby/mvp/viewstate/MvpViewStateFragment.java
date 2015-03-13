@@ -34,14 +34,33 @@ public abstract class MvpViewStateFragment<P extends MvpPresenter> extends MvpFr
 
   @Override public void onActivityCreated(@Nullable Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
-    ViewStateManager.createOrRestore(this, this, savedInstanceState);
+    createOrRestoreViewState(savedInstanceState);
+  }
+
+  /**
+   * Creates or restores the viewstate
+   *
+   * @param savedInstanceState The Bundle that may or may not contain the viewstate
+   * @return true if restored successfully, otherwise fals
+   */
+  protected boolean createOrRestoreViewState(Bundle savedInstanceState) {
+
+    return ViewStateManager.createOrRestore(this, this, savedInstanceState);
   }
 
   @Override public abstract void onEmptyViewState();
 
   @Override public void onSaveInstanceState(Bundle outState) {
     super.onSaveInstanceState(outState);
+    saveViewStateInstanceState(outState);
+  }
 
+  /**
+   * Called from {@link #onSaveInstanceState(Bundle)} to store the bundle persistent
+   *
+   * @param outState The bundle to store
+   */
+  protected void saveViewStateInstanceState(Bundle outState) {
     ViewStateManager.saveInstanceState(this, outState);
   }
 

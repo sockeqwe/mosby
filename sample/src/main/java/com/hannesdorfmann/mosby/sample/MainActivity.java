@@ -35,7 +35,10 @@ public class MainActivity extends MosbyActivity implements AdapterView.OnItemCli
                 "CountriesFragment")),
         new Demo("RetainingViewsStateFragment",
             new Intent(this, FragmentContainerActivity.class).putExtra("fragment",
-                "RetainingCountriesFragment"))
+                "RetainingCountriesFragment")),
+        new Demo("Retaining by using Parcelable ViewsStateFragment",
+            new Intent(this, FragmentContainerActivity.class).putExtra("fragment",
+                "NotRetainingCountriesFragment"))
     };
   }
 

@@ -22,9 +22,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import butterknife.InjectView;
+import com.hannesdorfmann.mosby.mvp.viewstate.lce.CastedArrayListLceViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.MvpLceViewStateFragment;
-import com.hannesdorfmann.mosby.mvp.viewstate.lce.RetainingFragmentLceViewState;
 import com.hannesdorfmann.mosby.sample.R;
 import com.hannesdorfmann.mosby.sample.mvp.lce.CountriesAdapter;
 import com.hannesdorfmann.mosby.sample.mvp.lce.CountriesErrorMessage;
@@ -36,7 +36,7 @@ import java.util.List;
 /**
  * @author Hannes Dorfmann
  */
-public class RetainingCountriesFragment extends
+public class NotRetainingCountriesFragment extends
     MvpLceViewStateFragment<SwipeRefreshLayout, List<Country>, CountriesView, CountriesPresenter>
     implements CountriesView, SwipeRefreshLayout.OnRefreshListener {
 
@@ -45,7 +45,7 @@ public class RetainingCountriesFragment extends
   CountriesAdapter adapter;
 
   @Override public LceViewState<List<Country>, CountriesView> createViewState() {
-    return new RetainingFragmentLceViewState<List<Country>, CountriesView>(this);
+    return new CastedArrayListLceViewState<Country, CountriesView>();
   }
 
   @Override public void onEmptyViewState() {

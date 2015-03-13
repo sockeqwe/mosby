@@ -20,6 +20,9 @@ android {
   }
 }
 
+def annotatedAdapter = '1.0.0'
+def parcelablePlease ='1.0.1'
+
 dependencies {
   compile project(':mvp')
   compile project(':core')
@@ -30,9 +33,12 @@ dependencies {
   compile 'com.android.support:recyclerview-v7:21.0.+'
   compile 'com.android.support:appcompat-v7:'+rootProject.ext.appcompat7Version
 
-  apt 'com.hannesdorfmann.annotatedadapter:processor:1.0.0'
-  compile 'com.hannesdorfmann.annotatedadapter:annotation:1.0.0'
-  compile 'com.hannesdorfmann.annotatedadapter:support-recyclerview:1.0.0'
+  apt 'com.hannesdorfmann.annotatedadapter:processor:'+annotatedAdapter
+  compile 'com.hannesdorfmann.annotatedadapter:annotation:'+annotatedAdapter
+  compile 'com.hannesdorfmann.annotatedadapter:support-recyclerview:'+annotatedAdapter
+
+  compile 'com.hannesdorfmann.parcelableplease:annotation:'+parcelablePlease
+  apt 'com.hannesdorfmann.parcelableplease:processor:'+parcelablePlease
 
 
 }

@@ -1,5 +1,6 @@
 package com.hannesdorfmann.mosby.mvp.viewstate.lce;
 
+import android.support.v4.app.Fragment;
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
 
 /**
@@ -21,4 +22,18 @@ import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
 public class RetainingFragmentLceViewState<D, V extends MvpLceView<D>>
     extends AbsLceViewState<D, V> {
 
+  /**
+   * Creates a new instance. Since most of developers forget to call {@link
+   * Fragment#setRetainInstance(boolean)} you have to pass the fragment and
+   * setRetaineInstanceState(true) will be called for that fragment
+   *
+   * @param f The fragment for this view state. Can be null if you really don't want to
+   * setRetainInstanceState(true) automatically, but you should really have a good reason for doing
+   * so
+   */
+  public RetainingFragmentLceViewState(Fragment f) {
+    if (f != null) {
+      f.setRetainInstance(true);
+    }
+  }
 }

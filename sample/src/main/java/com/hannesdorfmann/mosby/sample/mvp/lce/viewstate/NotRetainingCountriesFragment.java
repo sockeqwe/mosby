@@ -48,10 +48,6 @@ public class NotRetainingCountriesFragment extends
     return new CastedArrayListLceViewState<Country, CountriesView>();
   }
 
-  @Override public void onEmptyViewState() {
-    loadData(false);
-  }
-
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstance) {
     super.onViewCreated(view, savedInstance);
 
@@ -64,7 +60,7 @@ public class NotRetainingCountriesFragment extends
     recyclerView.setAdapter(adapter);
   }
 
-  private void loadData(boolean pullToRefresh) {
+  @Override public void loadData(boolean pullToRefresh) {
     presenter.loadCountries(pullToRefresh);
   }
 

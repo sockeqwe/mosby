@@ -12,7 +12,7 @@ import com.hannesdorfmann.mosby.mvp.MvpPresenter;
  * <p>
  * You can change the behaviour of what to do if the viewstate is empty (usually if the fragment
  * creates the viewState for the very first time and therefore has no state / data to restore) by
- * overriding {@link #onEmptyViewState()}
+ * overriding {@link #onNewViewStateInstance()}
  * </p>
  *
  * @author Hannes Dorfmann
@@ -26,6 +26,8 @@ public abstract class MvpViewStateFragment<P extends MvpPresenter> extends MvpFr
    * #onViewCreated(View, Bundle)}. Don't instantiate it by hand.
    */
   protected ViewState viewState;
+
+  private boolean restoringViewState = false;
 
   /**
    * Create the view state object of this class
@@ -48,8 +50,6 @@ public abstract class MvpViewStateFragment<P extends MvpPresenter> extends MvpFr
     return ViewStateManager.createOrRestore(this, this, savedInstanceState);
   }
 
-  @Override public abstract void onEmptyViewState();
-
   @Override public void onSaveInstanceState(Bundle outState) {
     super.onSaveInstanceState(outState);
     saveViewStateInstanceState(outState);
@@ -70,5 +70,17 @@ public abstract class MvpViewStateFragment<P extends MvpPresenter> extends MvpFr
 
   @Override public void setViewState(ViewState viewState) {
     this.viewState = viewState;
+  }
+
+  @Override public void setRestoringViewState(boolean restoringViewState) {
+    this.restoringViewState = restoringViewState;
+  }
+
+  @Override public boolean isRestoringViewState() {
+    return restoringViewState;
+  }
+
+  @Override public void onViewStateInstanceRestored(boolean instanceStateRetained) {
+    // not needed. You could override this is subclasses if needed
   }
 }

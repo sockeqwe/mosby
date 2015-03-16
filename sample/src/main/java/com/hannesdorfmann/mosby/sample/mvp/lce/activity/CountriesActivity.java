@@ -37,7 +37,7 @@ public class CountriesActivity
     loadData(false);
   }
 
-  private void loadData(boolean pullToRefresh) {
+  public void loadData(boolean pullToRefresh) {
     presenter.loadCountries(pullToRefresh);
   }
 

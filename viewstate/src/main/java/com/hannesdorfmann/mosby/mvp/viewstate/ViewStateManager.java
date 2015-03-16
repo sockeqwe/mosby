@@ -33,16 +33,15 @@ public class ViewStateManager {
    * be subclass of {@link ParcelableViewState}) by reading the bundle
    *
    * @return true, if the viewstate has been restored (in other words {@link
-   * ViewState#apply(MvpView)} has been invoked). Otherwise returns false, but calls
-   * {@link
-   * ViewStateSupport#onEmptyViewState()} before returning false
+   * ViewState#apply(MvpView, boolean)} has been invoked) (calls {@link
+   * ViewStateSupport#onViewStateInstanceRestored(boolean) after having restored the viewstate}.
+   * Otherwise returns false and calls {@link ViewStateSupport#onNewViewStateInstance()}
    */
-  public static <V extends MvpView> boolean createOrRestore(@NonNull
-  ViewStateSupport viewStateSupport,
-      @NonNull V view, Bundle savedInstanceState) {
+  public static <V extends MvpView> boolean createOrRestore(
+      @NonNull ViewStateSupport viewStateSupport, @NonNull V view, Bundle savedInstanceState) {
 
     if (viewStateSupport == null) {
-      throw new NullPointerException("viewStateable can not be null");
+      throw new NullPointerException("ViewStateSupport can not be null");
     }
 
     if (view == null) {
@@ -51,7 +50,10 @@ public class ViewStateManager {
 
     // ViewState already exists (Fragment retainsInstanceState == true)
     if (viewStateSupport.getViewState() != null) {
-      viewStateSupport.getViewState().apply(view);
+      viewStateSupport.setRestoringViewState(true);
+      viewStateSupport.getViewState().apply(view, true);
+      viewStateSupport.setRestoringViewState(false);
+      viewStateSupport.onViewStateInstanceRestored(true);
       return true;
     }
 
@@ -63,20 +65,24 @@ public class ViewStateManager {
     }
 
     // Try to restore data from bundle (savedInstanceState)
-    if (savedInstanceState != null && viewStateSupport.getViewState() instanceof ParcelableViewState) {
+    if (savedInstanceState != null
+        && viewStateSupport.getViewState() instanceof ParcelableViewState) {
 
       boolean restoredFromBundle =
           ((ParcelableViewState) viewStateSupport.getViewState()).restoreInstanceState(
               savedInstanceState);
 
       if (restoredFromBundle) {
-        viewStateSupport.getViewState().apply(view);
+        viewStateSupport.setRestoringViewState(true);
+        viewStateSupport.getViewState().apply(view, false);
+        viewStateSupport.setRestoringViewState(false);
+        viewStateSupport.onViewStateInstanceRestored(false);
         return true;
       }
     }
 
     // ViewState not restored
-    viewStateSupport.onEmptyViewState();
+    viewStateSupport.onNewViewStateInstance();
     return false;
   }
 
@@ -87,7 +93,7 @@ public class ViewStateManager {
   public static void saveInstanceState(ViewStateSupport viewStateSupport, Bundle outState) {
 
     if (viewStateSupport == null) {
-      throw new NullPointerException("viewStateable can not be null");
+      throw new NullPointerException("ViewStateSupport can not be null");
     }
 
     if (viewStateSupport.getViewState() == null) {

@@ -65,7 +65,7 @@ public abstract class AbsLceViewState<D, V extends MvpLceView<D>> implements Lce
     // may be displayed while showing error
   }
 
-  @Override public void apply(V view) {
+  @Override public void apply(V view, boolean retained) {
 
     if (currentViewState == STATE_SHOW_CONTENT) {
       view.setData(loadedData);
@@ -77,7 +77,12 @@ public abstract class AbsLceViewState<D, V extends MvpLceView<D>> implements Lce
         view.setData(loadedData);
         view.showContent();
       }
-      view.showLoading(ptr);
+
+      if (retained) {
+        view.showLoading(ptr);
+      } else {
+        view.loadData(ptr);
+      }
     } else if (currentViewState == STATE_SHOW_ERROR) {
 
       boolean ptr = pullToRefresh;

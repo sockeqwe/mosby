@@ -41,6 +41,11 @@ public abstract class MvpLceViewStateFragment<CV extends View, M, V extends MvpL
   protected LceViewState<M, V> viewState;
 
   /**
+   * A flag that indicates if the viewstate tires to restore the view right now.
+   */
+  private boolean restoringViewState = false;
+
+  /**
    * Create the view state object of this class
    */
   public abstract LceViewState<M, V> createViewState();
@@ -60,8 +65,6 @@ public abstract class MvpLceViewStateFragment<CV extends View, M, V extends MvpL
 
     return ViewStateManager.createOrRestore(this, this, savedInstanceState);
   }
-
-  @Override public abstract void onEmptyViewState();
 
   @Override public void onSaveInstanceState(Bundle outState) {
     super.onSaveInstanceState(outState);
@@ -98,6 +101,30 @@ public abstract class MvpLceViewStateFragment<CV extends View, M, V extends MvpL
   @Override public void showLoading(boolean pullToRefresh) {
     super.showLoading(pullToRefresh);
     viewState.setStateShowLoading(pullToRefresh);
+  }
+
+  @Override public void setRestoringViewState(boolean restoringViewState) {
+    this.restoringViewState = restoringViewState;
+  }
+
+  @Override public boolean isRestoringViewState() {
+    return restoringViewState;
+  }
+
+  @Override public void onViewStateInstanceRestored(boolean instanceStateRetained) {
+    // Not needed in general. override it in subclass if you need this callback
+  }
+
+  @Override public void onNewViewStateInstance() {
+    loadData(false);
+  }
+
+  @Override protected void showLightError(String msg) {
+    if (isRestoringViewState()) {
+      return; // Do not display toast again while restoring viewstate
+    }
+
+    super.showLightError(msg);
   }
 
   /**

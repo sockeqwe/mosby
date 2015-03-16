@@ -48,9 +48,6 @@ public class RetainingCountriesFragment extends
     return new RetainingFragmentLceViewState<List<Country>, CountriesView>(this);
   }
 
-  @Override public void onEmptyViewState() {
-    loadData(false);
-  }
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstance) {
     super.onViewCreated(view, savedInstance);
@@ -64,7 +61,8 @@ public class RetainingCountriesFragment extends
     recyclerView.setAdapter(adapter);
   }
 
-  private void loadData(boolean pullToRefresh) {
+  @Override
+  public void loadData(boolean pullToRefresh) {
     presenter.loadCountries(pullToRefresh);
   }
 

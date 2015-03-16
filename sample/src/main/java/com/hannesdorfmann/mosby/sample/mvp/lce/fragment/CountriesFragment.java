@@ -40,7 +40,8 @@ public class CountriesFragment
     loadData(false);
   }
 
-  private void loadData(boolean pullToRefresh) {
+  @Override
+  public void loadData(boolean pullToRefresh) {
     presenter.loadCountries(pullToRefresh);
   }
 

@@ -15,6 +15,7 @@
 
 package com.hannesdorfmann.mosby.mvp.viewstate;
 
+import android.support.v4.app.Fragment;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 
 /**
@@ -47,9 +48,36 @@ public interface ViewStateSupport<V extends MvpView> {
   ViewState<V> createViewState();
 
   /**
-   * Specify here what to do if the viewstate is empty (the activity / fragment
-   * creates the viewState for the very first time and therefore has no state / data to restore) by
-   * overriding {@link #onEmptyViewState()}
+   * This method will be called by {@link ViewStateManager} to inform that restoring the view state
+   * is in progress.
+   *
+   * @param retstoringViewState true, if restoring viewstate is in progress, otherwise false
    */
-  void onEmptyViewState();
+  public void setRestoringViewState(boolean retstoringViewState);
+
+  /**
+   * @return true if the viewstate is restoring right now (not finished yet). Otherwise false.
+   */
+  public boolean isRestoringViewState();
+
+  /**
+   * Called if the {@link ViewState} instance has been restored successfully.
+   * <p>
+   * In this method you have to restore the viewstate by reading the view state properties and
+   * setup
+   * the view to be on the same state as before.
+   * </p>
+   *
+   * @param instanceStateRetained true, if the viewstate has been retained by using{@link
+   * Fragment#setRetainInstance(boolean)}, otherwise false (always false for activities).
+   */
+  public void onViewStateInstanceRestored(boolean instanceStateRetained);
+
+  /**
+   * Called if a new {@link ViewState} has been created because no viewstate from a previous
+   * Activity or Fragment instance could be restored.
+   * <p><b>Typically this is called on the first time the <i>Activity</i> or <i>Fragment</i> starts
+   * and therefore no view state instance previously exists</b></p>
+   */
+  public void onNewViewStateInstance();
 }

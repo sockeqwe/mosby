@@ -25,5 +25,13 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
  */
 public interface ViewState<V extends MvpView> {
 
-  public void apply(V view);
+  /**
+   * Called to apply this viewstate on a given view.
+   *
+   * @param view The {@link MvpView}
+   * @param retained true, if the components like the viewstate and the presenter have been
+   * retained
+   * because the {@link Fragment#setRetainInstance(boolean)} has been set to true
+   */
+  public void apply(V view, boolean retained);
 }

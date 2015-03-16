@@ -28,7 +28,7 @@ public class ViewStateTest {
   @Test
   public void testApplyingViewState() {
 
-    AbsLceViewState<Object> viewState = new AbsLceViewState<Object>() {
+    AbsLceViewState<Object, MvpLceView<Object>> viewState = new AbsLceViewState<Object, MvpLceView<Object>>() {
     };
 
     // Loading without pull To Refresh
@@ -51,12 +51,40 @@ public class ViewStateTest {
 
         Assert.fail("setData() called but shouldn't");
       }
-    });
+
+      @Override public void loadData(boolean pullToRefresh) {
+        Assert.fail("loadData() called but shouldn't");
+      }
+    }, true);
+
+    viewState.setStateShowLoading(false);
+    viewState.apply(new MvpLceView<Object>() {
+      @Override public void showLoading(boolean pullToRefresh) {
+        Assert.assertFalse(pullToRefresh);
+      }
+
+      @Override public void showContent() {
+        Assert.fail("showContent() called but shouldn't");
+      }
+
+      @Override public void showError(Exception e, boolean pullToRefresh) {
+
+        Assert.fail("showError() called but shouldn't");
+      }
+
+      @Override public void setData(Object data) {
+
+        Assert.fail("setData() called but shouldn't");
+      }
+
+      @Override public void loadData(boolean pullToRefresh) {
+        Assert.assertTrue(true);
+      }
+    }, false);
 
     // Content
     final Object content = new Object();
-    viewState.setStateData(content);
-    viewState.setStateShowContent();
+    viewState.setStateShowContent(content);
     viewState.apply(new MvpLceView<Object>() {
       @Override public void showLoading(boolean pullToRefresh) {
         Assert.fail("showLoading() called but shouldn't");
@@ -73,11 +101,14 @@ public class ViewStateTest {
       @Override public void setData(Object data) {
         Assert.assertTrue(content == data);
       }
-    });
+
+      @Override public void loadData(boolean pullToRefresh) {
+        Assert.fail("loadData() called but shouldn't");
+      }
+    }, false);
 
     // Loading pull To Refresh (data from previous test)
-    viewState.setStateData(content);
-    viewState.setStateShowContent();
+    viewState.setStateShowContent(content);
     viewState.setStateShowLoading(true);
     viewState.apply(new MvpLceView<Object>() {
       private boolean showContentCalled = false;
@@ -99,7 +130,11 @@ public class ViewStateTest {
       @Override public void setData(Object data) {
         Assert.assertTrue(content == data);
       }
-    });
+
+      @Override public void loadData(boolean pullToRefresh) {
+        Assert.assertTrue(true);
+      }
+    }, false);
 
     // Error NOT pull to refresh
     final Exception exception = new Exception();
@@ -121,11 +156,14 @@ public class ViewStateTest {
       @Override public void setData(Object data) {
         Assert.fail("setData() called but shouldn't");
       }
-    });
+
+      @Override public void loadData(boolean pullToRefresh) {
+        Assert.fail("loadData() called but shouldn't");
+      }
+    }, false);
 
     // Error pull to refresh
-    viewState.setStateData(content);
-    viewState.setStateShowContent();
+    viewState.setStateShowContent(content);
     viewState.setStateShowError(exception, true);
     viewState.apply(new MvpLceView<Object>() {
       private boolean showErrorCalled = false;
@@ -147,6 +185,10 @@ public class ViewStateTest {
       @Override public void setData(Object data) {
         Assert.assertTrue(data == content);
       }
-    });
+
+      @Override public void loadData(boolean pullToRefresh) {
+        Assert.fail("loadData() called but shouldn't");
+      }
+    }, false);
   }
 }

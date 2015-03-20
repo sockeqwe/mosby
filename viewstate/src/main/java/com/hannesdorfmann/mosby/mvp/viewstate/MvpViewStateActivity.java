@@ -1,16 +1,14 @@
 package com.hannesdorfmann.mosby.mvp.viewstate;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.view.View;
-import com.hannesdorfmann.mosby.mvp.MvpFragment;
+import com.hannesdorfmann.mosby.mvp.MvpActivity;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 
 /**
- * This is a enhancement of {@link com.hannesdorfmann.mosby.mvp.MvpFragment} that introduces the
- * support of {@link com.hannesdorfmann.mosby.mvp.viewstate.ViewState}.
+ * This is a enhancement of {@link com.hannesdorfmann.mosby.mvp.MvpActivity} that introduces the
+ * support of {@link com.hannesdorfmann.mosby.mvp.viewstate.ParcelableViewState}.
  * <p>
- * You can change the behaviour of what to do if the viewstate is empty (usually if the fragment
+ * You can change the behaviour of what to do if the viewstate is empty (usually if the activity
  * creates the viewState for the very first time and therefore has no state / data to restore) by
  * overriding {@link #onNewViewStateInstance()}
  * </p>
@@ -18,24 +16,14 @@ import com.hannesdorfmann.mosby.mvp.MvpPresenter;
  * @author Hannes Dorfmann
  * @since 1.0.0
  */
-public abstract class MvpViewStateFragment<P extends MvpPresenter> extends MvpFragment<P>
+public abstract class MvpViewStateActivity<P extends MvpPresenter> extends MvpActivity<P>
     implements ViewStateSupport {
 
-  /**
-   * The viewstate will be instantiated by calling {@link #createViewState()} in {@link
-   * #onViewCreated(View, Bundle)}. Don't instantiate it by hand.
-   */
-  protected ViewState viewState;
+  protected ParcelableViewState viewState;
+  protected boolean restoringViewState = false;
 
-  private boolean restoringViewState = false;
-
-  /**
-   * Create the view state object of this class
-   */
-  public abstract ViewState createViewState();
-
-  @Override public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-    super.onActivityCreated(savedInstanceState);
+  @Override protected void onPostCreate(Bundle savedInstanceState) {
+    super.onPostCreate(savedInstanceState);
     createOrRestoreViewState(savedInstanceState);
   }
 
@@ -46,6 +34,7 @@ public abstract class MvpViewStateFragment<P extends MvpPresenter> extends MvpFr
    * @return true if restored successfully, otherwise fals
    */
   protected boolean createOrRestoreViewState(Bundle savedInstanceState) {
+
     return ViewStateManager.createOrRestore(this, this, savedInstanceState);
   }
 
@@ -63,12 +52,17 @@ public abstract class MvpViewStateFragment<P extends MvpPresenter> extends MvpFr
     ViewStateManager.saveInstanceState(this, outState);
   }
 
-  @Override public ViewState getViewState() {
+  @Override public ParcelableViewState getViewState() {
     return viewState;
   }
 
   @Override public void setViewState(ViewState viewState) {
-    this.viewState = viewState;
+    if (!(viewState instanceof ParcelableViewState)) {
+      throw new IllegalArgumentException(
+          "Only " + ParcelableViewState.class.getSimpleName() + " are allowed");
+    }
+
+    this.viewState = (ParcelableViewState) viewState;
   }
 
   @Override public void setRestoringViewState(boolean restoringViewState) {
@@ -82,4 +76,6 @@ public abstract class MvpViewStateFragment<P extends MvpPresenter> extends MvpFr
   @Override public void onViewStateInstanceRestored(boolean instanceStateRetained) {
     // not needed. You could override this is subclasses if needed
   }
+
+  public abstract ParcelableViewState createViewState();
 }

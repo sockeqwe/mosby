@@ -1,41 +1,26 @@
-package com.hannesdorfmann.mosby.mvp.viewstate;
+package com.hannesdorfmann.mosby.mvp.viewstate.lce;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.View;
-import com.hannesdorfmann.mosby.mvp.MvpFragment;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
+import com.hannesdorfmann.mosby.mvp.lce.MvpLceActivity;
+import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
+import com.hannesdorfmann.mosby.mvp.viewstate.ParcelableViewState;
+import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
+import com.hannesdorfmann.mosby.mvp.viewstate.ViewStateManager;
+import com.hannesdorfmann.mosby.mvp.viewstate.ViewStateSupport;
 
 /**
- * This is a enhancement of {@link com.hannesdorfmann.mosby.mvp.MvpFragment} that introduces the
- * support of {@link com.hannesdorfmann.mosby.mvp.viewstate.ViewState}.
- * <p>
- * You can change the behaviour of what to do if the viewstate is empty (usually if the fragment
- * creates the viewState for the very first time and therefore has no state / data to restore) by
- * overriding {@link #onNewViewStateInstance()}
- * </p>
- *
  * @author Hannes Dorfmann
- * @since 1.0.0
  */
-public abstract class MvpViewStateFragment<P extends MvpPresenter> extends MvpFragment<P>
-    implements ViewStateSupport {
+public abstract class MvpLceViewStateActivity<CV extends View, M, V extends MvpLceView<M>, P extends MvpPresenter<V>>
+    extends MvpLceActivity<CV, M, V, P> implements MvpLceView<M>, ViewStateSupport<V> {
 
-  /**
-   * The viewstate will be instantiated by calling {@link #createViewState()} in {@link
-   * #onViewCreated(View, Bundle)}. Don't instantiate it by hand.
-   */
-  protected ViewState viewState;
+  protected ParcelableViewState viewState;
+  protected boolean restoringViewState = false;
 
-  private boolean restoringViewState = false;
-
-  /**
-   * Create the view state object of this class
-   */
-  public abstract ViewState createViewState();
-
-  @Override public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-    super.onActivityCreated(savedInstanceState);
+  @Override protected void onPostCreate(Bundle savedInstanceState) {
+    super.onPostCreate(savedInstanceState);
     createOrRestoreViewState(savedInstanceState);
   }
 
@@ -46,6 +31,7 @@ public abstract class MvpViewStateFragment<P extends MvpPresenter> extends MvpFr
    * @return true if restored successfully, otherwise fals
    */
   protected boolean createOrRestoreViewState(Bundle savedInstanceState) {
+
     return ViewStateManager.createOrRestore(this, this, savedInstanceState);
   }
 
@@ -63,12 +49,17 @@ public abstract class MvpViewStateFragment<P extends MvpPresenter> extends MvpFr
     ViewStateManager.saveInstanceState(this, outState);
   }
 
-  @Override public ViewState getViewState() {
+  @Override public ParcelableViewState getViewState() {
     return viewState;
   }
 
   @Override public void setViewState(ViewState viewState) {
-    this.viewState = viewState;
+    if (!(viewState instanceof ParcelableViewState)) {
+      throw new IllegalArgumentException(
+          "Only " + ParcelableViewState.class.getSimpleName() + " are allowed");
+    }
+
+    this.viewState = (ParcelableViewState) viewState;
   }
 
   @Override public void setRestoringViewState(boolean restoringViewState) {
@@ -79,7 +70,13 @@ public abstract class MvpViewStateFragment<P extends MvpPresenter> extends MvpFr
     return restoringViewState;
   }
 
+  @Override public void onNewViewStateInstance() {
+    loadData(false);
+  }
+
   @Override public void onViewStateInstanceRestored(boolean instanceStateRetained) {
     // not needed. You could override this is subclasses if needed
   }
+
+  public abstract ParcelableViewState createViewState();
 }

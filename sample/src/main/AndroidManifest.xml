@@ -29,6 +29,9 @@
       <activity android:name=".mvp.lce.viewstate.CountriesViewStateActivity"
         android:label="LceViewStateActivity"
         />
+
+      <activity android:name=".mvp.customviewstate.MyCustomActivity"
+        android:label="Custom ViewState Activity" />
     </application>
 
 </manifest>

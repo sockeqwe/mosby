@@ -5,7 +5,7 @@ import android.view.View;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceActivity;
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
-import com.hannesdorfmann.mosby.mvp.viewstate.ParcelableViewState;
+import com.hannesdorfmann.mosby.mvp.viewstate.RestoreableViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewStateManager;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewStateSupport;
@@ -52,14 +52,14 @@ public abstract class MvpLceViewStateActivity<CV extends View, M, V extends MvpL
     ViewStateManager.saveInstanceState(this, outState);
   }
 
-  @Override public ParcelableViewState getViewState() {
+  @Override public RestoreableViewState getViewState() {
     return viewState;
   }
 
   @Override public void setViewState(ViewState viewState) {
     if (!(viewState instanceof ParcelableLceViewState)) {
       throw new IllegalArgumentException(
-          "Only " + ParcelableViewState.class.getSimpleName() + " are allowed");
+          "Only " + RestoreableViewState.class.getSimpleName() + " are allowed");
     }
 
     this.viewState = (ParcelableLceViewState<M, V>) viewState;

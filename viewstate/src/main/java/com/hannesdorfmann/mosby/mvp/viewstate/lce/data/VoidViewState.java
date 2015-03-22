@@ -1,14 +1,14 @@
 package com.hannesdorfmann.mosby.mvp.viewstate.lce.data;
 
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
-import com.hannesdorfmann.mosby.mvp.viewstate.ParcelableViewState;
+import com.hannesdorfmann.mosby.mvp.viewstate.RestoreableViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.AbsParcelableLceViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
 
 /**
  * If you really have good reasons you could have <i>Void</i> as content type in a LCE
  * (Loading-Content-Error) View. This is the corresponding {@link LceViewState} and{@link
- * ParcelableViewState}
+ * RestoreableViewState}
  * <p>
  * Can be used for Activites and Fragments.
  * </p>

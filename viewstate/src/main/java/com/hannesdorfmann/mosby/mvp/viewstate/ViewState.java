@@ -16,7 +16,7 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
  * <p>
  * While fragments can restore every data object if you use {@link Fragment#setRetainInstance(boolean)}
  * = true Activities can't do that.
- * Therefore Activities have to use {@link ParcelableViewState}.
+ * Therefore Activities have to use {@link RestoreableViewState}.
  * </p>
  *
  * @param <V> The type of the View (extends {@link MvpView}

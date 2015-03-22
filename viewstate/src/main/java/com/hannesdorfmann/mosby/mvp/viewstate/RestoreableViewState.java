@@ -1,7 +1,6 @@
 package com.hannesdorfmann.mosby.mvp.viewstate;
 
 import android.os.Bundle;
-import android.os.Parcelable;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 
 /**
@@ -12,7 +11,7 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
  * @author Hannes Dorfmann
  * @since 1.0.0
  */
-public interface ParcelableViewState<V extends MvpView> extends ViewState<V>, Parcelable {
+public interface RestoreableViewState<V extends MvpView> extends ViewState<V> {
 
   /**
    * Saves this ViewState to the outgoing bundle.

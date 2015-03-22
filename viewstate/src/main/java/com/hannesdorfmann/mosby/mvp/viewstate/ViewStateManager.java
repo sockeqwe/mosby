@@ -30,7 +30,7 @@ public class ViewStateManager {
 
   /**
    * Like the name already suggests. Creates a new viewstate or tries to restore the old one (must
-   * be subclass of {@link ParcelableViewState}) by reading the bundle
+   * be subclass of {@link RestoreableViewState}) by reading the bundle
    *
    * @return true, if the viewstate has been restored (in other words {@link
    * ViewState#apply(MvpView, boolean)} has been invoked) (calls {@link
@@ -66,10 +66,10 @@ public class ViewStateManager {
 
     // Try to restore data from bundle (savedInstanceState)
     if (savedInstanceState != null
-        && viewStateSupport.getViewState() instanceof ParcelableViewState) {
+        && viewStateSupport.getViewState() instanceof RestoreableViewState) {
 
       boolean restoredFromBundle =
-          ((ParcelableViewState) viewStateSupport.getViewState()).restoreInstanceState(
+          ((RestoreableViewState) viewStateSupport.getViewState()).restoreInstanceState(
               savedInstanceState);
 
       if (restoredFromBundle) {
@@ -87,7 +87,7 @@ public class ViewStateManager {
   }
 
   /**
-   * Saves {@link ParcelableViewState} in a bundle. <b>Should be calld from activities or fragments
+   * Saves {@link RestoreableViewState} in a bundle. <b>Should be calld from activities or fragments
    * onSaveInstanceState(Bundle) method</b>
    */
   public static void saveInstanceState(ViewStateSupport viewStateSupport, Bundle outState) {
@@ -101,8 +101,8 @@ public class ViewStateManager {
     }
 
     // Save the viewstate
-    if (viewStateSupport.getViewState() instanceof ParcelableViewState) {
-      ((ParcelableViewState) viewStateSupport.getViewState()).saveInstanceState(outState);
+    if (viewStateSupport.getViewState() instanceof RestoreableViewState) {
+      ((RestoreableViewState) viewStateSupport.getViewState()).saveInstanceState(outState);
     }
   }
 }

@@ -4,12 +4,12 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
-import com.hannesdorfmann.mosby.mvp.viewstate.ParcelableViewState;
+import com.hannesdorfmann.mosby.mvp.viewstate.RestoreableViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.AbsParcelableLceViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
 
 /**
- * A {@link LceViewState} and {@link ParcelableViewState} that uses Parcelable as content data.
+ * A {@link LceViewState} and {@link RestoreableViewState} that uses Parcelable as content data.
  *
  * <p>
  * Can be used for Activites and Fragments.

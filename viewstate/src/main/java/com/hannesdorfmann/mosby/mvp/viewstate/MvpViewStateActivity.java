@@ -6,7 +6,7 @@ import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 
 /**
  * This is a enhancement of {@link com.hannesdorfmann.mosby.mvp.MvpActivity} that introduces the
- * support of {@link com.hannesdorfmann.mosby.mvp.viewstate.ParcelableViewState}.
+ * support of {@link RestoreableViewState}.
  * <p>
  * You can change the behaviour of what to do if the viewstate is empty (usually if the activity
  * creates the viewState for the very first time and therefore has no state / data to restore) by
@@ -19,7 +19,7 @@ import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 public abstract class MvpViewStateActivity<P extends MvpPresenter> extends MvpActivity<P>
     implements ViewStateSupport {
 
-  protected ParcelableViewState viewState;
+  protected RestoreableViewState viewState;
   protected boolean restoringViewState = false;
 
   @Override protected void onPostCreate(Bundle savedInstanceState) {
@@ -52,17 +52,17 @@ public abstract class MvpViewStateActivity<P extends MvpPresenter> extends MvpAc
     ViewStateManager.saveInstanceState(this, outState);
   }
 
-  @Override public ParcelableViewState getViewState() {
+  @Override public RestoreableViewState getViewState() {
     return viewState;
   }
 
   @Override public void setViewState(ViewState viewState) {
-    if (!(viewState instanceof ParcelableViewState)) {
+    if (!(viewState instanceof RestoreableViewState)) {
       throw new IllegalArgumentException(
-          "Only " + ParcelableViewState.class.getSimpleName() + " are allowed");
+          "Only " + RestoreableViewState.class.getSimpleName() + " are allowed");
     }
 
-    this.viewState = (ParcelableViewState) viewState;
+    this.viewState = (RestoreableViewState) viewState;
   }
 
   @Override public void setRestoringViewState(boolean restoringViewState) {
@@ -77,5 +77,8 @@ public abstract class MvpViewStateActivity<P extends MvpPresenter> extends MvpAc
     // not needed. You could override this is subclasses if needed
   }
 
-  public abstract ParcelableViewState createViewState();
+  /**
+   * Creates the ViewState instance
+   */
+  public abstract RestoreableViewState createViewState();
 }

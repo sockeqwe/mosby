@@ -11,12 +11,15 @@ import com.hannesdorfmann.mosby.mvp.viewstate.ViewStateManager;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewStateSupport;
 
 /**
+ * A {@link MvpLceActivity} with {@link ViewState} support.
+ *
  * @author Hannes Dorfmann
+ * @since 1.0.0
  */
 public abstract class MvpLceViewStateActivity<CV extends View, M, V extends MvpLceView<M>, P extends MvpPresenter<V>>
     extends MvpLceActivity<CV, M, V, P> implements MvpLceView<M>, ViewStateSupport<V> {
 
-  protected ParcelableViewState viewState;
+  protected ParcelableLceViewState<M, V> viewState;
   protected boolean restoringViewState = false;
 
   @Override protected void onPostCreate(Bundle savedInstanceState) {
@@ -54,12 +57,12 @@ public abstract class MvpLceViewStateActivity<CV extends View, M, V extends MvpL
   }
 
   @Override public void setViewState(ViewState viewState) {
-    if (!(viewState instanceof ParcelableViewState)) {
+    if (!(viewState instanceof ParcelableLceViewState)) {
       throw new IllegalArgumentException(
           "Only " + ParcelableViewState.class.getSimpleName() + " are allowed");
     }
 
-    this.viewState = (ParcelableViewState) viewState;
+    this.viewState = (ParcelableLceViewState<M, V>) viewState;
   }
 
   @Override public void setRestoringViewState(boolean restoringViewState) {
@@ -78,5 +81,43 @@ public abstract class MvpLceViewStateActivity<CV extends View, M, V extends MvpL
     // not needed. You could override this is subclasses if needed
   }
 
-  public abstract ParcelableViewState createViewState();
+  @Override public void showContent() {
+    super.showContent();
+    viewState.setStateShowContent(getData());
+  }
+
+  @Override public void showError(Exception e, boolean pullToRefresh) {
+    super.showError(e, pullToRefresh);
+    viewState.setStateShowError(e, pullToRefresh);
+  }
+
+  @Override public void showLoading(boolean pullToRefresh) {
+    super.showLoading(pullToRefresh);
+    viewState.setStateShowLoading(pullToRefresh);
+  }
+
+  @Override protected void showLightError(String msg) {
+    if (isRestoringViewState()) {
+      return; // Do not display toast again while restoring viewstate
+    }
+
+    super.showLightError(msg);
+  }
+
+  /**
+   * Creates the viewstate
+   * @return
+   */
+  public abstract ParcelableLceViewState<M, V> createViewState();
+
+  /**
+   * Get the data that has been set before in {@link #setData(Object)}
+   * <p>
+   * <b>It's necessary to return the same data as set before to ensure that {@link ViewState} works
+   * correctly</b>
+   * </p>
+   *
+   * @return The data
+   */
+  public abstract M getData();
 }

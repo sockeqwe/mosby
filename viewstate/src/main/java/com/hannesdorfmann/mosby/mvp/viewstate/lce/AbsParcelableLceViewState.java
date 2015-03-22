@@ -16,7 +16,7 @@ import com.hannesdorfmann.mosby.mvp.viewstate.ParcelableViewState;
  * @since 1.0.0
  */
 public abstract class AbsParcelableLceViewState<D, V extends MvpLceView<D>>
-    extends AbsLceViewState<D, V> implements ParcelableViewState<V> {
+    extends AbsLceViewState<D, V> implements ParcelableLceViewState<D, V> {
 
   public static final String KEY_BUNDLE_VIEW_STATE =
       "com.hannesdorfmann.mosby.mvp.viewstate.ViewState.bundlekey";

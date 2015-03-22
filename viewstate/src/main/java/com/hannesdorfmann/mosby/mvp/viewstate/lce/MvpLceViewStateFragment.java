@@ -26,7 +26,7 @@ import com.hannesdorfmann.mosby.mvp.viewstate.ViewStateManager;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewStateSupport;
 
 /**
- * A {@link MvpLceViewStateFragment} with {@link ViewState} support.
+ * A {@link MvpLceFragment} with {@link ViewState} support.
  *
  * @author Hannes Dorfmann
  * @since 1.0.0

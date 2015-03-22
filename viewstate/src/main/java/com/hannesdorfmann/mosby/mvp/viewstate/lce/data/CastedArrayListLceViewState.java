@@ -1,10 +1,12 @@
-package com.hannesdorfmann.mosby.mvp.viewstate.lce;
+package com.hannesdorfmann.mosby.mvp.viewstate.lce.data;
 
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
 import com.hannesdorfmann.mosby.mvp.viewstate.ParcelableViewState;
+import com.hannesdorfmann.mosby.mvp.viewstate.lce.AbsParcelableLceViewState;
+import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
 import java.util.ArrayList;
 import java.util.List;
 

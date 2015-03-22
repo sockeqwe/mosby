@@ -22,7 +22,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import butterknife.InjectView;
-import com.hannesdorfmann.mosby.mvp.viewstate.lce.CastedArrayListLceViewState;
+import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.CastedArrayListLceViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.MvpLceViewStateFragment;
 import com.hannesdorfmann.mosby.sample.R;

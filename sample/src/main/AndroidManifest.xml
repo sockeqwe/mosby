@@ -25,6 +25,10 @@
             android:name=".mvp.lce.activity.CountriesActivity"
             android:label="@string/title_activity_lce" >
         </activity>
+
+      <activity android:name=".mvp.lce.viewstate.CountriesViewStateActivity"
+        android:label="LceViewStateActivity"
+        />
     </application>
 
 </manifest>

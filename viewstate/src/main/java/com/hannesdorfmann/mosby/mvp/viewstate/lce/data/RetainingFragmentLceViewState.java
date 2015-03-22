@@ -1,7 +1,9 @@
-package com.hannesdorfmann.mosby.mvp.viewstate.lce;
+package com.hannesdorfmann.mosby.mvp.viewstate.lce.data;
 
 import android.support.v4.app.Fragment;
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
+import com.hannesdorfmann.mosby.mvp.viewstate.lce.AbsLceViewState;
+import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
 
 /**
  * This kind of {@link LceViewState} can be used with <b></b>Fragments that have set

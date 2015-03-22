@@ -11,6 +11,7 @@ import android.widget.ListView;
 import butterknife.InjectView;
 import com.hannesdorfmann.mosby.MosbyActivity;
 import com.hannesdorfmann.mosby.sample.mvp.lce.activity.CountriesActivity;
+import com.hannesdorfmann.mosby.sample.mvp.lce.viewstate.CountriesViewStateActivity;
 
 public class MainActivity extends MosbyActivity implements AdapterView.OnItemClickListener {
 
@@ -38,8 +39,11 @@ public class MainActivity extends MosbyActivity implements AdapterView.OnItemCli
                 "RetainingCountriesFragment")),
         new Demo("Retaining by using Parcelable ViewsStateFragment",
             new Intent(this, FragmentContainerActivity.class).putExtra("fragment",
-                "NotRetainingCountriesFragment"))
+                "NotRetainingCountriesFragment")),
+        new Demo("LCE Activity + ViewsState",
+            new Intent(this, CountriesViewStateActivity.class))
     };
+
   }
 
   @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

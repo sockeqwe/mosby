@@ -1,6 +1,7 @@
-package com.hannesdorfmann.mosby.sample.mvp.lce;
+package com.hannesdorfmann.mosby.sample.mvp;
 
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
+import com.hannesdorfmann.mosby.sample.mvp.model.Country;
 import java.util.List;
 
 /**

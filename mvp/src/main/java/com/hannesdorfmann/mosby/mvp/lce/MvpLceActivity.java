@@ -101,9 +101,9 @@ public abstract class MvpLceActivity<CV extends View, M, V extends MvpLceView<M>
 
   /**
    * Get the error message for a certain Exception that will be shown on {@link
-   * #showError(Exception, boolean)}
+   * #showError(Throwable, boolean)}
    */
-  protected abstract String getErrorMessage(Exception e, boolean pullToRefresh);
+  protected abstract String getErrorMessage(Throwable e, boolean pullToRefresh);
 
   /**
    * The default behaviour is to display a toast message as light error (i.e. pull-to-refresh
@@ -115,7 +115,7 @@ public abstract class MvpLceActivity<CV extends View, M, V extends MvpLceView<M>
   }
 
   @Override
-  public void showError(Exception e, boolean pullToRefresh) {
+  public void showError(Throwable e, boolean pullToRefresh) {
 
     String errorMsg = getErrorMessage(e, pullToRefresh);
 

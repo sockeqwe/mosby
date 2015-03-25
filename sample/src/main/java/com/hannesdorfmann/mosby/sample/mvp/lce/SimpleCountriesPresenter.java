@@ -2,18 +2,24 @@ package com.hannesdorfmann.mosby.sample.mvp.lce;
 
 import android.util.Log;
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
+import com.hannesdorfmann.mosby.sample.mvp.CountriesPresenter;
+import com.hannesdorfmann.mosby.sample.mvp.CountriesView;
+import com.hannesdorfmann.mosby.sample.mvp.model.CountriesAsyncLoader;
+import com.hannesdorfmann.mosby.sample.mvp.model.Country;
 import java.util.List;
 
 /**
  * @author Hannes Dorfmann
  */
-public class CountriesPresenter extends MvpBasePresenter<CountriesView> {
+public class SimpleCountriesPresenter extends MvpBasePresenter<CountriesView> implements
+    CountriesPresenter {
 
   private static final String TAG = "CountriesPresenter";
 
   private int failingCounter = 0;
-  private CountriesLoader countriesLoader;
+  private CountriesAsyncLoader countriesLoader;
 
+  @Override
   public void loadCountries(final boolean pullToRefresh) {
 
     Log.d(TAG, "loadCountries(" + pullToRefresh + ")");
@@ -26,8 +32,8 @@ public class CountriesPresenter extends MvpBasePresenter<CountriesView> {
       countriesLoader.cancel(true);
     }
 
-    countriesLoader = new CountriesLoader(++failingCounter % 2 != 0,
-        new CountriesLoader.CountriesLoaderListener() {
+    countriesLoader = new CountriesAsyncLoader(++failingCounter % 2 != 0,
+        new CountriesAsyncLoader.CountriesLoaderListener() {
 
           @Override public void onSuccess(List<Country> countries) {
 

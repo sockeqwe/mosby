@@ -1,4 +1,4 @@
-package com.hannesdorfmann.mosby.mvp;
+package com.hannesdorfmann.mosby.mvp.rx;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

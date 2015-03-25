@@ -93,7 +93,7 @@ public abstract class MvpLceViewStateFragment<CV extends View, M, V extends MvpL
     viewState.setStateShowContent(getData());
   }
 
-  @Override public void showError(Exception e, boolean pullToRefresh) {
+  @Override public void showError(Throwable e, boolean pullToRefresh) {
     super.showError(e, pullToRefresh);
     viewState.setStateShowError(e, pullToRefresh);
   }

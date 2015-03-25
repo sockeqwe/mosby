@@ -32,7 +32,7 @@ public abstract class AbsLceViewState<D, V extends MvpLceView<D>> implements Lce
    */
   protected int currentViewState;
   protected boolean pullToRefresh;
-  protected Exception exception;
+  protected Throwable exception;
   protected D loadedData;
 
   @Override public void setStateShowContent(D loadedData) {
@@ -42,7 +42,7 @@ public abstract class AbsLceViewState<D, V extends MvpLceView<D>> implements Lce
     exception = null;
   }
 
-  @Override public void setStateShowError(Exception e, boolean pullToRefresh) {
+  @Override public void setStateShowError(Throwable e, boolean pullToRefresh) {
     currentViewState = STATE_SHOW_ERROR;
     exception = e;
     this.pullToRefresh = pullToRefresh;
@@ -86,7 +86,7 @@ public abstract class AbsLceViewState<D, V extends MvpLceView<D>> implements Lce
     } else if (currentViewState == STATE_SHOW_ERROR) {
 
       boolean ptr = pullToRefresh;
-      Exception e = exception;
+      Throwable e = exception;
       if (pullToRefresh) {
         view.setData(loadedData);
         view.showContent();

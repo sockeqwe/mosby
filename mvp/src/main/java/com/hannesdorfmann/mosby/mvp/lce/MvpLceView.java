@@ -49,11 +49,11 @@ public interface MvpLceView<M> extends MvpView {
    * Show the error view.
    * <b>The error view must be a TextView with the id = R.id.errorView</b>
    *
-   * @param e The Exception that has caused this error
+   * @param e The Throwable that has caused this error
    * @param pullToRefresh true, if the exception was thrown during pull-to-refresh, otherwise
    * false.
    */
-  public void showError(Exception e, boolean pullToRefresh);
+  public void showError(Throwable e, boolean pullToRefresh);
 
   /**
    * The data that should be displayed with {@link #showContent()}
@@ -63,7 +63,8 @@ public interface MvpLceView<M> extends MvpView {
   /**
    * Load the data. Typically invokes the presenter method to load the desired data.
    * <p>
-   * <b>Should not be called from presenter</b> to prevent infinity loops. The method is declared in
+   * <b>Should not be called from presenter</b> to prevent infinity loops. The method is declared
+   * in
    * the views interface to add support for view state easily.
    * </p>
    *

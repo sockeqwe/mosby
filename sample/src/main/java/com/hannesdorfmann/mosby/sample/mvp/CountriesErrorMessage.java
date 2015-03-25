@@ -1,4 +1,4 @@
-package com.hannesdorfmann.mosby.sample.mvp.lce;
+package com.hannesdorfmann.mosby.sample.mvp;
 
 import android.content.Context;
 import com.hannesdorfmann.mosby.sample.R;
@@ -8,7 +8,7 @@ import com.hannesdorfmann.mosby.sample.R;
  */
 public class CountriesErrorMessage {
 
-  public static String get(Exception e, boolean pullToRefresh, Context c) {
+  public static String get(Throwable e, boolean pullToRefresh, Context c) {
     // TODO distinguish type of exception and retrun different strings
     if (pullToRefresh) {
       return c.getString(R.string.error_countries);

@@ -27,6 +27,7 @@ dependencies {
   compile project(':mvp')
   compile project(':core')
   compile project(':viewstate')
+  compile project(':rx')
 
 
 

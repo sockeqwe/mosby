@@ -26,11 +26,12 @@ import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.CastedArrayListLceViewSta
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.MvpLceViewStateFragment;
 import com.hannesdorfmann.mosby.sample.R;
-import com.hannesdorfmann.mosby.sample.mvp.lce.CountriesAdapter;
-import com.hannesdorfmann.mosby.sample.mvp.lce.CountriesErrorMessage;
-import com.hannesdorfmann.mosby.sample.mvp.lce.CountriesPresenter;
-import com.hannesdorfmann.mosby.sample.mvp.lce.CountriesView;
-import com.hannesdorfmann.mosby.sample.mvp.lce.Country;
+import com.hannesdorfmann.mosby.sample.mvp.CountriesAdapter;
+import com.hannesdorfmann.mosby.sample.mvp.CountriesErrorMessage;
+import com.hannesdorfmann.mosby.sample.mvp.CountriesPresenter;
+import com.hannesdorfmann.mosby.sample.mvp.lce.SimpleCountriesPresenter;
+import com.hannesdorfmann.mosby.sample.mvp.CountriesView;
+import com.hannesdorfmann.mosby.sample.mvp.model.Country;
 import java.util.List;
 
 /**
@@ -64,7 +65,7 @@ public class NotRetainingCountriesFragment extends
     presenter.loadCountries(pullToRefresh);
   }
 
-  @Override protected String getErrorMessage(Exception e, boolean pullToRefresh) {
+  @Override protected String getErrorMessage(Throwable e, boolean pullToRefresh) {
     return CountriesErrorMessage.get(e, pullToRefresh, getActivity());
   }
 
@@ -73,7 +74,7 @@ public class NotRetainingCountriesFragment extends
   }
 
   @Override protected CountriesPresenter createPresenter() {
-    return new CountriesPresenter();
+    return new SimpleCountriesPresenter();
   }
 
   @Override protected Integer getLayoutRes() {
@@ -94,7 +95,7 @@ public class NotRetainingCountriesFragment extends
     contentView.setRefreshing(false);
   }
 
-  @Override public void showError(Exception e, boolean pullToRefresh) {
+  @Override public void showError(Throwable e, boolean pullToRefresh) {
     super.showError(e, pullToRefresh);
     contentView.setRefreshing(false);
   }

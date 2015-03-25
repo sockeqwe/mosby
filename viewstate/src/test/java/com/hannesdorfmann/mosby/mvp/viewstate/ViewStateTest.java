@@ -42,7 +42,7 @@ public class ViewStateTest {
         Assert.fail("showContent() called but shouldn't");
       }
 
-      @Override public void showError(Exception e, boolean pullToRefresh) {
+      @Override public void showError(Throwable e, boolean pullToRefresh) {
 
         Assert.fail("showError() called but shouldn't");
       }
@@ -67,7 +67,7 @@ public class ViewStateTest {
         Assert.fail("showContent() called but shouldn't");
       }
 
-      @Override public void showError(Exception e, boolean pullToRefresh) {
+      @Override public void showError(Throwable e, boolean pullToRefresh) {
 
         Assert.fail("showError() called but shouldn't");
       }
@@ -94,7 +94,7 @@ public class ViewStateTest {
         Assert.assertTrue(true);
       }
 
-      @Override public void showError(Exception e, boolean pullToRefresh) {
+      @Override public void showError(Throwable e, boolean pullToRefresh) {
         Assert.fail("showError() called but shouldn't");
       }
 
@@ -123,7 +123,7 @@ public class ViewStateTest {
         showContentCalled = true;
       }
 
-      @Override public void showError(Exception e, boolean pullToRefresh) {
+      @Override public void showError(Throwable e, boolean pullToRefresh) {
         Assert.fail("showError() called but shouldn't");
       }
 
@@ -148,7 +148,7 @@ public class ViewStateTest {
         Assert.fail("showContent() called but shouldn't");
       }
 
-      @Override public void showError(Exception e, boolean pullToRefresh) {
+      @Override public void showError(Throwable e, boolean pullToRefresh) {
         Assert.assertTrue(e == exception);
         Assert.assertFalse(pullToRefresh);
       }
@@ -176,7 +176,7 @@ public class ViewStateTest {
         Assert.assertFalse(showErrorCalled);
       }
 
-      @Override public void showError(Exception e, boolean pullToRefresh) {
+      @Override public void showError(Throwable e, boolean pullToRefresh) {
         Assert.assertTrue(e == exception);
         Assert.assertTrue(pullToRefresh);
         showErrorCalled = true;

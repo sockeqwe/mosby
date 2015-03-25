@@ -1,4 +1,4 @@
-package com.hannesdorfmann.mosby.sample.mvp.lce;
+package com.hannesdorfmann.mosby.sample.mvp.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -35,13 +35,13 @@ import com.hannesdorfmann.parcelableplease.annotation.ParcelablePlease;
   }
 
   @Override public void writeToParcel(Parcel dest, int flags) {
-    CountryParcelablePlease.writeToParcel(this, dest, flags);
+    //CountryParcelablePlease.writeToParcel(this, dest, flags);
   }
 
   public static final Creator<Country> CREATOR = new Creator<Country>() {
     public Country createFromParcel(Parcel source) {
       Country target = new Country();
-      CountryParcelablePlease.readFromParcel(target, source);
+     // CountryParcelablePlease.readFromParcel(target, source);
       return target;
     }
 

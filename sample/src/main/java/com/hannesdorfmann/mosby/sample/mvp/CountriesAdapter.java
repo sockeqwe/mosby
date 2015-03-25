@@ -1,4 +1,4 @@
-package com.hannesdorfmann.mosby.sample.mvp.lce;
+package com.hannesdorfmann.mosby.sample.mvp;
 
 import android.content.Context;
 import android.widget.TextView;
@@ -6,6 +6,7 @@ import com.hannesdorfmann.annotatedadapter.annotation.Field;
 import com.hannesdorfmann.annotatedadapter.annotation.ViewType;
 import com.hannesdorfmann.annotatedadapter.support.recyclerview.SupportAnnotatedAdapter;
 import com.hannesdorfmann.mosby.sample.R;
+import com.hannesdorfmann.mosby.sample.mvp.model.Country;
 import java.util.List;
 
 /**

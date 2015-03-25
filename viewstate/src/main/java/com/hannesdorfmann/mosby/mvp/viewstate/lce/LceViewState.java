@@ -40,7 +40,7 @@ public interface LceViewState<D, V extends MvpLceView<D>> extends ViewState<V> {
    * @param e The reason why the errorview is displayed on screen
    * @param pullToRefresh Was is a pull to refresh operation that has failed?
    */
-  void setStateShowError(Exception e, boolean pullToRefresh);
+  void setStateShowError(Throwable e, boolean pullToRefresh);
 
   /**
    * Set the state to show loading

@@ -14,25 +14,29 @@
  * limitations under the License.
  */
 
-package com.hannesdorfmann.mosby.retrofit;
+package com.hannesdorfmann.mosby.retrofit.exception;
 
 /**
- * A simple exception that is thrown if an unexpected http status code has returned in server
- * response
+ * Used to wrap network errors (like no active internet connection)
+ * into a Exception so that the view can generate the desired error message
  *
  * @author Hannes Dorfmann
  * @since 1.0.0
  */
-public class UnexpectedStatusCodeException extends Exception {
+public class NetworkException extends Exception {
 
-  private int statusCode;
-
-  public UnexpectedStatusCodeException(int statusCode) {
-    super("An unexcpected http status code in http response: " + statusCode);
-    this.statusCode = statusCode;
+  public NetworkException() {
   }
 
-  public int getStatusCode() {
-    return statusCode;
+  public NetworkException(String detailMessage) {
+    super(detailMessage);
+  }
+
+  public NetworkException(String detailMessage, Throwable throwable) {
+    super(detailMessage, throwable);
+  }
+
+  public NetworkException(Throwable throwable) {
+    super(throwable);
   }
 }

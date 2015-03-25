@@ -18,6 +18,8 @@ package com.hannesdorfmann.mosby.retrofit;
 
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
+import com.hannesdorfmann.mosby.retrofit.exception.NetworkException;
+import com.hannesdorfmann.mosby.retrofit.exception.UnexpectedStatusCodeException;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -61,6 +63,8 @@ public class LceRetrofitPresenter<V extends MvpLceView<M>, M> extends MvpBasePre
         Throwable t;
         if (error.getKind() == RetrofitError.Kind.HTTP && error.getResponse() != null) {
           t = new UnexpectedStatusCodeException(error.getResponse().getStatus());
+        } else if (error.getKind() == RetrofitError.Kind.NETWORK) {
+          t = new NetworkException(error.getCause());
         } else {
           t = error.getCause();
         }

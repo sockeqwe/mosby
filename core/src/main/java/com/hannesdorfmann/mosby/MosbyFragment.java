@@ -33,7 +33,8 @@ import icepick.Icepick;
  * override {@link #getLayoutRes()} and return your desired layout resource, which will be
  * inflated.
  * <p>
- * Future initialization can be done in {@link #onViewCreated(View, Bundle)} method <b>(don't forget
+ * Future initialization can be done in {@link #onViewCreated(View, Bundle)} method <b>(don't
+ * forget
  * to
  * call super.onViewCreated())</b>, which is called after
  * the view has been created, Butterknife has "injected" views, FragmentArgs has been set and
@@ -43,14 +44,19 @@ import icepick.Icepick;
  * Bundle)}
  * </p>
  *
+ * <p>
+ * If you want to use dependency injection libraries like dagger you can override {@link
+ * #injectDependencies()} and implement dependency injection right there
+ * </p>
+ *
  * @author Hannes Dorfmann
  * @since 1.0.0
  */
 public abstract class MosbyFragment extends Fragment {
 
-  @Override
-  public void onCreate(Bundle savedInstanceState) {
+  @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    injectDependencies();
     FragmentArgs.inject(this);
     Icepick.restoreInstanceState(this, savedInstanceState);
   }
@@ -60,8 +66,7 @@ public abstract class MosbyFragment extends Fragment {
     Icepick.saveInstanceState(this, outState);
   }
 
-  @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container,
+  @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
 
     Integer layoutRes = getLayoutRes();
@@ -76,6 +81,15 @@ public abstract class MosbyFragment extends Fragment {
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     ButterKnife.inject(this, view);
+  }
+
+  /**
+   * This method will be called from {@link #onCreate(Bundle)} and this is the right place to
+   * inject
+   * dependencies (i.e. by using dagger)
+   */
+  protected void injectDependencies() {
+
   }
 
   /**

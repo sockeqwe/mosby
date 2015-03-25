@@ -22,7 +22,13 @@ import butterknife.ButterKnife;
 import icepick.Icepick;
 
 /**
- * A simple activity that uses Butterknife and IcePick
+ * A simple activity that uses Butterknife and IcePick.
+ *
+ * <p>
+ * If you want to use dependency injection libraries like dagger you can override {@link
+ * #injectDependencies()} and implement dependency injection right there
+ * </p>
+ *
  * @author Hannes Dorfmann
  * @since 1.0.0
  */
@@ -30,6 +36,7 @@ public class MosbyActivity extends ActionBarActivity {
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    injectDependencies();
     Icepick.restoreInstanceState(this, savedInstanceState);
   }
 
@@ -41,5 +48,14 @@ public class MosbyActivity extends ActionBarActivity {
   @Override public void onSupportContentChanged() {
     super.onSupportContentChanged();
     ButterKnife.inject(this);
+  }
+
+  /**
+   * This method will be called from {@link #onCreate(Bundle)} and this is the right place to
+   * inject
+   * dependencies (i.e. by using dagger)
+   */
+  protected void injectDependencies() {
+
   }
 }

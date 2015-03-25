@@ -14,18 +14,25 @@
  * limitations under the License.
  */
 
-package com.hannesdorfmann.mosby.mvp.viewstate;
-
-import android.os.Parcelable;
-import com.hannesdorfmann.mosby.mvp.MvpView;
+package com.hannesdorfmann.mosby.retrofit;
 
 /**
- * A {@link RestoreableViewState} that is implements {@link Parcelable} interface so that it can be
- * put directly in a bundle (as parcelable)
+ * A simple exception that is thrown if an unexpected http status code has returned in server
+ * response
  *
  * @author Hannes Dorfmann
  * @since 1.0.0
  */
-public interface RestoreableParcelableViewState<V extends MvpView>
-    extends RestoreableViewState<V>, Parcelable {
+public class UnexpectedStatusCodeException extends Exception {
+
+  private int statusCode;
+
+  public UnexpectedStatusCodeException(int statusCode) {
+    super("An unexcpected http status code in http response: " + statusCode);
+    this.statusCode = statusCode;
+  }
+
+  public int getStatusCode() {
+    return statusCode;
+  }
 }

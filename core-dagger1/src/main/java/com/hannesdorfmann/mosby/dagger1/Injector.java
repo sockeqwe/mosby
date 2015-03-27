@@ -14,16 +14,21 @@
  * limitations under the License.
  */
 
-package com.hannesdorfmann.mosby.testing;
+package com.hannesdorfmann.mosby.dagger1;
 
-import android.app.Application;
-import android.test.ApplicationTestCase;
+import dagger.ObjectGraph;
 
 /**
- * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>
+ * Injector will be passed around in the application to get access to the {@link
+ * dagger.ObjectGraph}
+ *
+ * @author Hannes Dorfmann
+ * @since 1.0.0
  */
-public class ApplicationTest extends ApplicationTestCase<Application> {
-  public ApplicationTest() {
-    super(Application.class);
-  }
+public interface Injector {
+
+  /**
+   * Get the object graph
+   */
+  public ObjectGraph getObjectGraph();
 }

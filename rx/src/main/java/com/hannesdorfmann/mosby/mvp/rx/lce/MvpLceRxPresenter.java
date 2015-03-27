@@ -19,16 +19,16 @@ package com.hannesdorfmann.mosby.mvp.rx.lce;
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
 import com.hannesdorfmann.mosby.mvp.rx.MvpBaseRxPresenter;
 import com.hannesdorfmann.mosby.mvp.rx.lce.scheduler.AndroidSchedulerTransformer;
-import com.hannesdorfmann.mosby.mvp.rx.lce.scheduler.SchedulerTransformer;
 import rx.Observable;
 
 /**
  * A presenter for RxJava, that assumes that only one Observable is subscribed by this presenter.
- * The idea is, that you make your (chain of) Observable in {@link #getObservable()}. To execute
- * and
- * subscribe the presenter for this observable you call {@link #subscribe(boolean)}, which will
- * also
- * call {@link #applyScheduler(Observable)} to apply the {@link SchedulerTransformer}
+ * The idea is, that you make your (chain of) Observable and pass it to {@link
+ * #subscribe(Observable, boolean)}. The presenter subscribes himself as Subscriber to the
+ * observable
+ * (which executes the observable). Before subscribing the presenter calls
+ * {@link #applyScheduler(Observable)} to apply the <code>subscribeOn()</code> and
+ * <code>observeOn()</code>
  *
  * @author Hannes Dorfmann
  * @since 1.0.0
@@ -36,20 +36,29 @@ import rx.Observable;
 public abstract class MvpLceRxPresenter<V extends MvpLceView<M>, M>
     extends MvpBaseRxPresenter<V, M> {
 
+  // TODO find a better way for pull to refresh
   private boolean pullToRefresh = false;
 
-  public void subscribe(boolean pullToRefresh) {
+  /**
+   * Subscribes the presenter himself as subscriber on the observable
+   *
+   * @param observable The observable to subscribe
+   * @param pullToRefresh Pull to refresh?
+   */
+  public void subscribe(Observable<M> observable, boolean pullToRefresh) {
     this.pullToRefresh = pullToRefresh;
-    Observable<M> observable = getObservable();
     observable = applyScheduler(observable);
     observable.subscribe(this);
   }
 
+  /**
+   * Called in {@link #subscribe(Observable, boolean)} to set  <code>subscribeOn()</code> and
+   * <code>observeOn()</code>. As default it uses {@link AndroidSchedulerTransformer}. Override this
+   * method if you want to provide your own scheduling implementation.
+   */
   protected Observable<M> applyScheduler(Observable<M> observable) {
     return observable.compose(new AndroidSchedulerTransformer<M>());
   }
-
-  protected abstract Observable<M> getObservable();
 
   @Override public void onCompleted() {
     if (isViewAttached()) {

@@ -1,1 +1,1 @@
-include ':sample', ':core', ':dagger1', ':viewstate', ':mvp', ':rx', ':retrofit', ':testing'
+include ':sample', ':core', ':core-dagger1', ':viewstate', ':mvp', ':rx', ':retrofit', ':testing', ':mvp-dagger1'

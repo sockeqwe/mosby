@@ -83,6 +83,11 @@ public abstract class MosbyFragment extends Fragment {
     ButterKnife.inject(this, view);
   }
 
+  @Override public void onDestroy() {
+    super.onDestroy();
+    ButterKnife.reset(this);
+  }
+
   /**
    * This method will be called from {@link #onCreate(Bundle)} and this is the right place to
    * inject

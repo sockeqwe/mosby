@@ -39,7 +39,7 @@ public abstract class MvpBaseRxPresenter<V extends MvpView, M> extends Subscribe
 
   private WeakReference<V> viewRef;
 
-  @Override public void setView(V view) {
+  @Override public void attachView(V view) {
     viewRef = new WeakReference<V>(view);
   }
 
@@ -60,7 +60,7 @@ public abstract class MvpBaseRxPresenter<V extends MvpView, M> extends Subscribe
     return viewRef != null && viewRef.get() != null;
   }
 
-  @Override public void onDestroy(boolean retainInstance) {
+  @Override public void detachView(boolean retainInstance) {
     if (viewRef != null) {
       viewRef.clear();
       viewRef = null;

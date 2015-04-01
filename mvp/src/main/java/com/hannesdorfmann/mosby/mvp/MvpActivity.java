@@ -33,12 +33,12 @@ public abstract class MvpActivity<P extends MvpPresenter> extends MosbyActivity 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     presenter = createPresenter();
-    presenter.setView(this);
+    presenter.attachView(this);
   }
 
   @Override protected void onDestroy() {
     super.onDestroy();
-    presenter.onDestroy(false);
+    presenter.detachView(false);
   }
 
   /**

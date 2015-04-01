@@ -53,11 +53,11 @@ public abstract class MvpFragment<P extends MvpPresenter> extends MosbyFragment 
         throw new NullPointerException("Presenter is null! Do you return null in createPresenter()?");
       }
     }
-    presenter.setView(this);
+    presenter.attachView(this);
   }
 
   @Override public void onDestroyView() {
     super.onDestroyView();
-    presenter.onDestroy(getRetainInstance());
+    presenter.detachView(getRetainInstance());
   }
 }

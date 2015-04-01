@@ -33,7 +33,7 @@ public class MvpBasePresenter<V extends MvpView> implements MvpPresenter<V> {
 
   private WeakReference<V> viewRef;
 
-  @Override public void setView(V view) {
+  @Override public void attachView(V view) {
     viewRef = new WeakReference<V>(view);
   }
 
@@ -54,7 +54,7 @@ public class MvpBasePresenter<V extends MvpView> implements MvpPresenter<V> {
     return viewRef != null && viewRef.get() != null;
   }
 
-  @Override public void onDestroy(boolean retainInstance) {
+  @Override public void detachView(boolean retainInstance) {
     if (viewRef != null) {
       viewRef.clear();
       viewRef = null;

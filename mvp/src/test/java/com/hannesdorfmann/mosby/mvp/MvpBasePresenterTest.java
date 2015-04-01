@@ -12,18 +12,18 @@ public class MvpBasePresenterTest {} /*extends MvpBasePresenter<MvpView> {
 
     noViewAttached();
 
-    setView(view);
+    attachView(view);
 
     Assert.assertTrue(isViewAttached());
     Assert.assertNotNull(getView());
     Assert.assertEquals(getView(), view);
 
-    onDestroy(true);
+    detachView(true);
     noViewAttached();
 
 
-    setView(view);
-    onDestroy(false);
+    attachView(view);
+    detachView(false);
     noViewAttached();
 
 

@@ -73,7 +73,7 @@ public abstract class MvpLcePresenterTest<M, V extends MvpLceView<M>, P extends 
     //
     beforeTestNotFailing();
     V view = createViewMock();
-    presenter.setView(view);
+    presenter.attachView(view);
     loadData(presenter, false);
     verify(view, never()).showError(any(Exception.class), anyBoolean());
     verify(view, times(1)).showLoading(false);
@@ -86,7 +86,7 @@ public abstract class MvpLcePresenterTest<M, V extends MvpLceView<M>, P extends 
       // Load successfully, pull to refresh
       //
       view = createViewMock();
-      presenter.setView(view);
+      presenter.attachView(view);
       loadData(presenter, true);
       verify(view, never()).showError(any(Exception.class), anyBoolean());
       verify(view, times(1)).showLoading(true);
@@ -101,7 +101,7 @@ public abstract class MvpLcePresenterTest<M, V extends MvpLceView<M>, P extends 
     beforeTestFailing();
     view = createViewMock();
     presenter = freshPresenter();
-    presenter.setView(view);
+    presenter.attachView(view);
     loadData(presenter, false);
     verify(view, times(1)).showLoading(false);
     verify(view, times(1)).showError(any(Exception.class), Matchers.eq(false));
@@ -111,7 +111,7 @@ public abstract class MvpLcePresenterTest<M, V extends MvpLceView<M>, P extends 
 
     if (pullToRefreshSupported) {
       view = createViewMock();
-      presenter.setView(view);
+      presenter.attachView(view);
       loadData(presenter, true);
       verify(view, times(1)).showLoading(true);
       verify(view, times(1)).showError(any(Exception.class), Matchers.eq(true));

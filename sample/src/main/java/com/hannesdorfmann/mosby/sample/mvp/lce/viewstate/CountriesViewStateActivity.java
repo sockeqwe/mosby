@@ -69,10 +69,6 @@ public class CountriesViewStateActivity extends
     return CountriesErrorMessage.get(e, pullToRefresh, this);
   }
 
-  @Override protected void onErrorViewClicked() {
-    loadData(false);
-  }
-
   @Override protected CountriesPresenter createPresenter() {
     return new SimpleCountriesPresenter();
   }

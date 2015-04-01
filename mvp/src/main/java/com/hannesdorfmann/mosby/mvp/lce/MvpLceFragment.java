@@ -137,7 +137,9 @@ public abstract class MvpLceFragment<CV extends View, M, V extends MvpLceView<M>
    * Called if the error view has been clicked. To disable clicking on the errorView use
    * <code>errorView.setClickable(false)</code>
    */
-  protected abstract void onErrorViewClicked();
+  protected void onErrorViewClicked(){
+    loadData(false);
+  }
 
   @Override
   public void showError(Throwable e, boolean pullToRefresh) {

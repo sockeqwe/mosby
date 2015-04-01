@@ -70,9 +70,6 @@ public class NotRetainingCountriesFragment extends
     return CountriesErrorMessage.get(e, pullToRefresh, getActivity());
   }
 
-  @Override protected void onErrorViewClicked() {
-    loadData(false);
-  }
 
   @Override protected CountriesPresenter createPresenter() {
     return new SimpleCountriesPresenter();

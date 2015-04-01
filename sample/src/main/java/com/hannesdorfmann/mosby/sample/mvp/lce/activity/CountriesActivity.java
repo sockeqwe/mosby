@@ -39,8 +39,7 @@ public class CountriesActivity
 
   CountriesAdapter adapter;
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
+  @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.countries_list);
 
@@ -56,10 +55,6 @@ public class CountriesActivity
 
   public void loadData(boolean pullToRefresh) {
     presenter.loadCountries(pullToRefresh);
-  }
-
-  @Override protected void onErrorViewClicked() {
-    loadData(false);
   }
 
   @Override protected String getErrorMessage(Throwable e, boolean pullToRefresh) {

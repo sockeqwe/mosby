@@ -1,3 +1,18 @@
+/*
+ * Copyright 2015 Hannes Dorfmann.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 
@@ -6,7 +21,7 @@ android {
   buildToolsVersion rootProject.ext.buildToolsVersion
 
   defaultConfig {
-    applicationId "com.hannesdorfmann.mosby.sample"
+    applicationId "com.hannesdorfmann.mosby.sample.dagger1"
     minSdkVersion rootProject.ext.minSdk
     targetSdkVersion rootProject.ext.targetSdk
     versionName project.VERSION_NAME
@@ -24,10 +39,8 @@ def annotatedAdapter = '1.0.0'
 def parcelablePlease ='1.0.1'
 
 dependencies {
-  compile project(':mvp')
-  compile project(':core')
-  compile project(':viewstate')
-  compile project(':rx')
+  compile project(':viewstate-dagger1')
+  compile project(':retrofit')
 
 
 
@@ -41,5 +54,12 @@ dependencies {
   compile 'com.hannesdorfmann.parcelableplease:annotation:'+parcelablePlease
   apt 'com.hannesdorfmann.parcelableplease:processor:'+parcelablePlease
 
+
+  compile 'com.squareup.dagger:dagger:1.2.2'
+  apt 'com.squareup.dagger:dagger-compiler:1.2.2'
+
+  compile 'com.squareup.okhttp:okhttp:2.3.0'
+  compile 'com.squareup.picasso:picasso:2.5.2'
+  compile 'com.makeramen:roundedimageview:2.0.1'
 
 }

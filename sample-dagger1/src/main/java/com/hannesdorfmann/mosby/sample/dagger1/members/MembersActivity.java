@@ -24,10 +24,11 @@ import butterknife.InjectView;
 import com.hannesdorfmann.mosby.dagger1.viewstate.lce.Dagger1MvpLceViewStateActivity;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.ParcelableLceViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.CastedArrayListLceViewState;
-import com.hannesdorfmann.mosby.retrofit.exception.NetworkException;
 import com.hannesdorfmann.mosby.sample.dagger1.R;
+import com.hannesdorfmann.mosby.sample.dagger1.model.ErrorMessageDeterminer;
 import com.hannesdorfmann.mosby.sample.dagger1.model.User;
 import java.util.List;
+import javax.inject.Inject;
 
 /**
  * @author Hannes Dorfmann
@@ -37,7 +38,7 @@ public class MembersActivity extends
     implements MembersView, SwipeRefreshLayout.OnRefreshListener {
 
   @InjectView(R.id.recyclerView) RecyclerView recyclerView;
-
+  @Inject ErrorMessageDeterminer errorMessageDeterminer;
   MembersAdapter adapter;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
@@ -55,18 +56,16 @@ public class MembersActivity extends
     return new CastedArrayListLceViewState<>();
   }
 
+  @Override protected void injectDependencies() {
+    getObjectGraph().inject(this);
+  }
+
   @Override public List<User> getData() {
     return adapter.getMembers();
   }
 
   @Override protected String getErrorMessage(Throwable e, boolean pullToRefresh) {
-
-    e.printStackTrace();
-
-    if (e instanceof NetworkException) {
-      return "Error! Are you connected to the internet?";
-    }
-    return "An error has occurred";
+    return errorMessageDeterminer.getErrorMessage(e, pullToRefresh);
   }
 
   @Override protected MembersPresenter createPresenter() {

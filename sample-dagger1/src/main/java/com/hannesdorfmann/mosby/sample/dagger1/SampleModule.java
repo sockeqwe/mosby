@@ -17,8 +17,10 @@
 package com.hannesdorfmann.mosby.sample.dagger1;
 
 import android.content.Context;
+import com.hannesdorfmann.mosby.sample.dagger1.members.MembersActivity;
 import com.hannesdorfmann.mosby.sample.dagger1.members.MembersAdapter;
 import com.hannesdorfmann.mosby.sample.dagger1.members.MembersPresenter;
+import com.hannesdorfmann.mosby.sample.dagger1.model.ErrorMessageDeterminer;
 import com.hannesdorfmann.mosby.sample.dagger1.model.GithubApi;
 import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.OkHttpClient;
@@ -34,9 +36,8 @@ import retrofit.client.OkClient;
  */
 @Module(
     injects = {
-        MembersPresenter.class, MembersAdapter.class
+        MembersActivity.class, MembersPresenter.class, MembersAdapter.class
     }) public class SampleModule {
-
 
   private Context applicationContext;
 
@@ -52,6 +53,10 @@ import retrofit.client.OkClient;
     return Picasso.with(applicationContext);
   }
 
+  @Provides @Singleton ErrorMessageDeterminer providesErrorMessageDeterminer() {
+    return new ErrorMessageDeterminer();
+  }
+
   @Provides @Singleton public GithubApi providesGithubApi() {
 
     OkHttpClient client = new OkHttpClient();
@@ -63,5 +68,4 @@ import retrofit.client.OkClient;
 
     return restAdapter.create(GithubApi.class);
   }
-
 }

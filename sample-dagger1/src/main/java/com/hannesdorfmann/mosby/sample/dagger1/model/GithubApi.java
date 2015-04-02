@@ -19,6 +19,7 @@ package com.hannesdorfmann.mosby.sample.dagger1.model;
 import java.util.List;
 import retrofit.Callback;
 import retrofit.http.GET;
+import retrofit.http.Headers;
 import retrofit.http.Path;
 
 /**
@@ -27,5 +28,6 @@ import retrofit.http.Path;
 public interface GithubApi {
 
   @GET("/orgs/{orgname}/members")
+  @Headers("Cache-Control: no-cache")
   public void getMembers(@Path("orgname") String organistaionName, Callback<List<User>> callback);
 }

@@ -38,7 +38,7 @@ public class LceRetrofitPresenter<V extends MvpLceView<M>, M> extends MvpBasePre
    * An out of the box {@link Callback} implementation for Retrofit requests that are associated
    * with this presenter. It automatically calls {@link MvpLceView#setData(Object)}, {@link
    * MvpLceView#showContent()} or {@link MvpLceView#showError(Throwable, boolean)} if the view is
-   * still attached to the presenter
+   * still attached to the presenter. It also calls {@link MvpLceView#showLoading(boolean)} for you!
    *
    * @author Hannes Dorfmann
    * @since 1.0.0
@@ -49,6 +49,9 @@ public class LceRetrofitPresenter<V extends MvpLceView<M>, M> extends MvpBasePre
 
     public LceCallback(boolean pullToRefresh) {
       this.pullToRefresh = pullToRefresh;
+      if (isViewAttached()) {
+        getView().showLoading(pullToRefresh);
+      }
     }
 
     @Override public void success(M m, Response response) {

@@ -47,6 +47,8 @@ public class MembersActivity extends
     adapter = getObjectGraph().get(MembersAdapter.class);
     recyclerView.setAdapter(adapter);
     recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+    contentView.setOnRefreshListener(this);
   }
 
   @Override public ParcelableLceViewState<List<User>, MembersView> createViewState() {
@@ -58,6 +60,9 @@ public class MembersActivity extends
   }
 
   @Override protected String getErrorMessage(Throwable e, boolean pullToRefresh) {
+
+    e.printStackTrace();
+
     if (e instanceof NetworkException) {
       return "Error! Are you connected to the internet?";
     }
@@ -69,8 +74,8 @@ public class MembersActivity extends
   }
 
   @Override public void setData(List<User> data) {
-    //adapter.setMembers(data);
-    //adapter.notifyDataSetChanged();
+    adapter.setMembers(data);
+    adapter.notifyDataSetChanged();
   }
 
   @Override public void loadData(boolean pullToRefresh) {
@@ -79,5 +84,27 @@ public class MembersActivity extends
 
   @Override public void onRefresh() {
     loadData(true);
+  }
+
+  @Override public void showError(Throwable e, boolean pullToRefresh) {
+    super.showError(e, pullToRefresh);
+    contentView.setRefreshing(false);
+  }
+
+  @Override public void showContent() {
+    super.showContent();
+    contentView.setRefreshing(false);
+  }
+
+  @Override public void showLoading(boolean pullToRefresh) {
+    super.showLoading(pullToRefresh);
+    if (pullToRefresh && !contentView.isRefreshing()) {
+      // Workaround for measure bug: https://code.google.com/p/android/issues/detail?id=77712
+      contentView.post(new Runnable() {
+        @Override public void run() {
+          contentView.setRefreshing(true);
+        }
+      });
+    }
   }
 }

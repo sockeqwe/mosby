@@ -60,7 +60,7 @@ public class MembersAdapter
 
     roundedTransformation = new RoundedTransformationBuilder()
         .borderColor(Color.BLACK)
-        .borderWidthDp(3)
+        .borderWidthDp(1)
         .oval(false).build();
 
   }

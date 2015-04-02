@@ -56,7 +56,6 @@ public abstract class MosbyFragment extends Fragment {
 
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    injectDependencies();
     FragmentArgs.inject(this);
     Icepick.restoreInstanceState(this, savedInstanceState);
   }
@@ -69,9 +68,12 @@ public abstract class MosbyFragment extends Fragment {
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
 
-    Integer layoutRes = getLayoutRes();
-    if (layoutRes == null) {
-      return null;
+    int layoutRes = getLayoutRes();
+    if (layoutRes == 0) {
+      throw new IllegalArgumentException(
+          "getLayoutRes() returned 0, which is not allowed. "
+              + "If you don't want to use getLayoutRes() but implement your own view for this "
+              + "fragment manually, then you have to override onCreateView();");
     } else {
       View v = inflater.inflate(getLayoutRes(), container, false);
       return v;
@@ -80,6 +82,7 @@ public abstract class MosbyFragment extends Fragment {
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
+    injectDependencies();
     ButterKnife.inject(this, view);
   }
 
@@ -89,7 +92,7 @@ public abstract class MosbyFragment extends Fragment {
   }
 
   /**
-   * This method will be called from {@link #onCreate(Bundle)} and this is the right place to
+   * This method will be called from {@link #onViewCreated(View, Bundle)} and this is the right place to
    * inject
    * dependencies (i.e. by using dagger)
    */
@@ -102,7 +105,7 @@ public abstract class MosbyFragment extends Fragment {
    *
    * @return the layout resource or null, if you don't want to have an UI
    */
-  protected Integer getLayoutRes() {
-    return null;
+  protected int getLayoutRes() {
+    return 0;
   }
 }

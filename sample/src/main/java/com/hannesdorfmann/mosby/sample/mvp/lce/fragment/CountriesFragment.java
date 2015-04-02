@@ -71,7 +71,7 @@ public class CountriesFragment
     return new SimpleCountriesPresenter();
   }
 
-  @Override protected Integer getLayoutRes() {
+  @Override protected int getLayoutRes() {
     return R.layout.countries_list;
   }
 

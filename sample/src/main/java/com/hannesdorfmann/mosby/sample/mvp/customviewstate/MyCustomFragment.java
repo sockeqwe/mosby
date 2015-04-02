@@ -32,7 +32,7 @@ public class MyCustomFragment extends MvpViewStateFragment<MyCustomPresenter>
     @InjectView(R.id.textViewA) View aView;
     @InjectView(R.id.textViewB) View bView;
 
-    @Override protected Integer getLayoutRes() {
+    @Override protected int getLayoutRes() {
         return R.layout.my_custom_view;
     }
 

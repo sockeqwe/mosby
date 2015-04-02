@@ -14,17 +14,28 @@
  * limitations under the License.
  */
 
-package com.hannesdorfmann.mosby.sample.mvp.rx;
-
-import com.hannesdorfmann.mosby.sample.mvp.CountriesPresenter;
-import com.hannesdorfmann.mosby.sample.mvp.lce.viewstate.RetainingCountriesFragment;
+package com.hannesdorfmann.mosby.sample.dagger2.model;
 
 /**
+ * Represents a github user
+ *
  * @author Hannes Dorfmann
  */
-public class RxCountriesFragment extends RetainingCountriesFragment {
+public class User {
 
-  @Override protected CountriesPresenter createPresenter() {
-    return new RxCountriesPresenter();
+  long id;
+  String login;
+  String avatar_url;
+
+  public long getId() {
+    return id;
+  }
+
+  public String getLogin() {
+    return login;
+  }
+
+  public String getAvatarUrl() {
+    return avatar_url;
   }
 }

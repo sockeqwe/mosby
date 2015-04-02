@@ -47,13 +47,17 @@ public abstract class MvpLceRxPresenter<V extends MvpLceView<M>, M>
    */
   public void subscribe(Observable<M> observable, boolean pullToRefresh) {
     this.pullToRefresh = pullToRefresh;
+    if (isViewAttached()) {
+      getView().showLoading(pullToRefresh);
+    }
     observable = applyScheduler(observable);
     observable.subscribe(this);
   }
 
   /**
    * Called in {@link #subscribe(Observable, boolean)} to set  <code>subscribeOn()</code> and
-   * <code>observeOn()</code>. As default it uses {@link AndroidSchedulerTransformer}. Override this
+   * <code>observeOn()</code>. As default it uses {@link AndroidSchedulerTransformer}. Override
+   * this
    * method if you want to provide your own scheduling implementation.
    */
   protected Observable<M> applyScheduler(Observable<M> observable) {

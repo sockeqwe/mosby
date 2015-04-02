@@ -21,12 +21,13 @@ android {
   buildToolsVersion rootProject.ext.buildToolsVersion
 
   defaultConfig {
-    applicationId "com.hannesdorfmann.mosby.sample.dagger1"
+    applicationId "com.hannesdorfmann.mosby.sample.dagger2"
     minSdkVersion rootProject.ext.minSdk
     targetSdkVersion rootProject.ext.targetSdk
     versionName project.VERSION_NAME
     versionCode Integer.parseInt(project.VERSION_CODE)
   }
+
   buildTypes {
     release {
       minifyEnabled false
@@ -34,37 +35,29 @@ android {
     }
   }
 
-
   lintOptions {
     abortOnError false
   }
 }
 
 def annotatedAdapter = '1.0.0'
-def parcelablePlease ='1.0.1'
 
 dependencies {
-  compile project(':viewstate-dagger1')
-  compile project(':retrofit')
-
-
+  compile project(':viewstate')
+  compile project(':rx')
 
   compile 'com.android.support:recyclerview-v7:22.0.+'
-  compile 'com.android.support:appcompat-v7:'+rootProject.ext.appcompat7Version
+  compile 'com.android.support:appcompat-v7:' + rootProject.ext.appcompat7Version
 
-  apt 'com.hannesdorfmann.annotatedadapter:processor:'+annotatedAdapter
-  compile 'com.hannesdorfmann.annotatedadapter:annotation:'+annotatedAdapter
-  compile 'com.hannesdorfmann.annotatedadapter:support-recyclerview:'+annotatedAdapter
+  apt 'com.hannesdorfmann.annotatedadapter:processor:' + annotatedAdapter
+  compile 'com.hannesdorfmann.annotatedadapter:annotation:' + annotatedAdapter
+  compile 'com.hannesdorfmann.annotatedadapter:support-recyclerview:' + annotatedAdapter
 
-  compile 'com.hannesdorfmann.parcelableplease:annotation:'+parcelablePlease
-  apt 'com.hannesdorfmann.parcelableplease:processor:'+parcelablePlease
-
-
-  compile 'com.squareup.dagger:dagger:1.2.2'
-  apt 'com.squareup.dagger:dagger-compiler:1.2.2'
+  compile 'com.google.dagger:dagger:2.0-SNAPSHOT'
+  apt 'com.google.dagger:dagger-compiler:2.0-SNAPSHOT'
+  compile 'javax.annotation:javax.annotation-api:1.2'
 
   compile 'com.squareup.okhttp:okhttp:2.3.0'
   compile 'com.squareup.picasso:picasso:2.5.2'
-  compile 'com.makeramen:roundedimageview:2.0.1'
-
+  compile 'com.squareup.retrofit:retrofit:1.9.0'
 }

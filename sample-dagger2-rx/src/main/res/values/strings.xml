@@ -1,0 +1,7 @@
+<resources>
+  <string name="app_name">sample-dagger2-rx</string>
+  <string name="title_activity_main">MainActivity</string>
+
+  <string name="hello_world">Hello world!</string>
+  <string name="action_settings">Settings</string>
+</resources>

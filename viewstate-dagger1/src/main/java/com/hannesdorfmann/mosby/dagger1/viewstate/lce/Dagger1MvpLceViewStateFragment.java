@@ -47,7 +47,4 @@ public abstract class Dagger1MvpLceViewStateFragment<CV extends View, M, V exten
     return ((Injector) getActivity()).getObjectGraph();
   }
 
-  @Override protected void injectDependencies() {
-    getObjectGraph().inject(this);
-  }
 }

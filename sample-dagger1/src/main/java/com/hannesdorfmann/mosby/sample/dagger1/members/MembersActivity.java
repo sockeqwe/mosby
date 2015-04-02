@@ -18,6 +18,9 @@ package com.hannesdorfmann.mosby.sample.dagger1.members;
 
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import butterknife.InjectView;
 import com.hannesdorfmann.mosby.dagger1.viewstate.lce.Dagger1MvpLceViewStateActivity;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.ParcelableLceViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.CastedArrayListLceViewState;
@@ -31,11 +34,19 @@ import java.util.List;
  */
 public class MembersActivity extends
     Dagger1MvpLceViewStateActivity<SwipeRefreshLayout, List<User>, MembersView, MembersPresenter>
-    implements MembersView {
+    implements MembersView, SwipeRefreshLayout.OnRefreshListener {
+
+  @InjectView(R.id.recyclerView) RecyclerView recyclerView;
+
+  MembersAdapter adapter;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_members);
+
+    adapter = getObjectGraph().get(MembersAdapter.class);
+    recyclerView.setAdapter(adapter);
+    recyclerView.setLayoutManager(new LinearLayoutManager(this));
   }
 
   @Override public ParcelableLceViewState<List<User>, MembersView> createViewState() {
@@ -43,7 +54,7 @@ public class MembersActivity extends
   }
 
   @Override public List<User> getData() {
-    return null;
+    return adapter.getMembers();
   }
 
   @Override protected String getErrorMessage(Throwable e, boolean pullToRefresh) {
@@ -58,10 +69,15 @@ public class MembersActivity extends
   }
 
   @Override public void setData(List<User> data) {
-
+    //adapter.setMembers(data);
+    //adapter.notifyDataSetChanged();
   }
 
   @Override public void loadData(boolean pullToRefresh) {
     presenter.loadSquareMembers(pullToRefresh);
+  }
+
+  @Override public void onRefresh() {
+    loadData(true);
   }
 }

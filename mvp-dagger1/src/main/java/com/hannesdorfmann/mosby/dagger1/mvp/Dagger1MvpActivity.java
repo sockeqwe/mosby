@@ -17,7 +17,6 @@
 package com.hannesdorfmann.mosby.dagger1.mvp;
 
 import android.app.Application;
-import android.os.Bundle;
 import com.hannesdorfmann.mosby.dagger1.Injector;
 import com.hannesdorfmann.mosby.mvp.MvpActivity;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
@@ -58,11 +57,4 @@ public abstract class Dagger1MvpActivity<P extends MvpPresenter> extends MvpActi
     return appInjector.getObjectGraph();
   }
 
-  /**
-   * Called from {@link #onCreate(Bundle)}. As default it calls {@link #getObjectGraph()} and
-   * injects to this activity
-   */
-  @Override protected void injectDependencies() {
-    getObjectGraph().inject(this);
-  }
 }

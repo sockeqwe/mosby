@@ -17,6 +17,8 @@
 package com.hannesdorfmann.mosby.sample.dagger1;
 
 import android.content.Context;
+import com.hannesdorfmann.mosby.sample.dagger1.members.MembersAdapter;
+import com.hannesdorfmann.mosby.sample.dagger1.members.MembersPresenter;
 import com.hannesdorfmann.mosby.sample.dagger1.model.GithubApi;
 import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.OkHttpClient;
@@ -30,29 +32,36 @@ import retrofit.client.OkClient;
 /**
  * @author Hannes Dorfmann
  */
-@Module public class SampleModule {
+@Module(
+    injects = {
+        MembersPresenter.class, MembersAdapter.class
+    }) public class SampleModule {
 
-  private RestAdapter restAdapter;
+
   private Context applicationContext;
 
   public SampleModule(Context context) {
-
     this.applicationContext = context;
+  }
 
-    OkHttpClient client = new OkHttpClient();
-    client.setCache(new Cache(context.getCacheDir(), 10 * 1024 * 1024));
+  @Provides @Singleton public Context provideContext() {
+    return applicationContext;
+  }
 
-    restAdapter = new RestAdapter.Builder().setClient(new OkClient(client))
-        .setEndpoint("https://api.github.com")
-        .build();
+  @Provides @Singleton Picasso providesPicasso() {
+    return Picasso.with(applicationContext);
   }
 
   @Provides @Singleton public GithubApi providesGithubApi() {
-    return restAdapter.create(GithubApi.class);
-  }
 
-  @Provides @Singleton Picasso providesPicasso(){
-    return Picasso.with(applicationContext);
+    OkHttpClient client = new OkHttpClient();
+    client.setCache(new Cache(applicationContext.getCacheDir(), 10 * 1024 * 1024));
+
+    RestAdapter restAdapter = new RestAdapter.Builder().setClient(new OkClient(client))
+        .setEndpoint("https://api.github.com")
+        .build();
+
+    return restAdapter.create(GithubApi.class);
   }
 
 }

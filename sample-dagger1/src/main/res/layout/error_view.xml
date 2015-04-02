@@ -9,7 +9,6 @@
       android:layout_height="wrap_content"
       android:padding="16dp"
       android:layout_gravity="center"
-      android:drawableTop="@drawable/ic_cloud_off"
       android:drawablePadding="16dp"
       android:textSize="20sp"
       android:textColor="#656565"

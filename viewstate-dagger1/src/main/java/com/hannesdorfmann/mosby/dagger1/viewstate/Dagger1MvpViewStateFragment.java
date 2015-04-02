@@ -48,7 +48,4 @@ public abstract class Dagger1MvpViewStateFragment<P extends MvpPresenter>
     return ((Injector) getActivity()).getObjectGraph();
   }
 
-  @Override protected void injectDependencies() {
-    getObjectGraph().inject(this);
-  }
 }

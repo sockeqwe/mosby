@@ -17,19 +17,25 @@
 package com.hannesdorfmann.mosby.sample.dagger1.members;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.hannesdorfmann.annotatedadapter.annotation.Field;
 import com.hannesdorfmann.annotatedadapter.annotation.ViewType;
 import com.hannesdorfmann.annotatedadapter.support.recyclerview.SupportAnnotatedAdapter;
 import com.hannesdorfmann.mosby.sample.dagger1.R;
+import com.hannesdorfmann.mosby.sample.dagger1.model.User;
+import com.makeramen.roundedimageview.RoundedTransformationBuilder;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
+import java.util.List;
 import javax.inject.Inject;
 
 /**
  * @author Hannes Dorfmann
  */
-public class MembersAdapter extends SupportAnnotatedAdapter {
+public class MembersAdapter
+    extends SupportAnnotatedAdapter implements MembersAdapterBinder {
 
   @ViewType(
       layout = R.layout.list_member,
@@ -42,13 +48,41 @@ public class MembersAdapter extends SupportAnnotatedAdapter {
   public final int member = 0;
 
 
+  private List<User> members;
   private Picasso picasso;
+  private Transformation roundedTransformation;
 
   @Inject
   public MembersAdapter(Context context, Picasso picasso) {
     super(context);
+
+    this.picasso = picasso;
+
+    roundedTransformation = new RoundedTransformationBuilder()
+        .borderColor(Color.BLACK)
+        .borderWidthDp(3)
+        .oval(false).build();
+
   }
 
+  @Override public int getItemCount() {
+    return members == null ? 0 : members.size();
+  }
 
+  public List<User> getMembers() {
+    return members;
+  }
 
+  public void setMembers(List<User> members) {
+    this.members = members;
+  }
+
+  @Override public void bindViewHolder(MembersAdapterHolders.MemberViewHolder vh, int position) {
+    User member = members.get(position);
+
+    vh.username.setText(member.getLogin());
+
+    picasso.load(member.getAvatarUrl()).fit().transform(roundedTransformation).into(vh.avatar);
+  }
 }
+

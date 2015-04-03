@@ -1,8 +1,10 @@
 package com.hannesdorfmann.mosby.retrofit.mock;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import retrofit.Callback;
 import retrofit.RetrofitError;
+import retrofit.client.Header;
 import retrofit.client.Response;
 
 /**
@@ -13,7 +15,9 @@ public class MockTestApi implements TestApi {
   public enum FailReason {
     UNKNOWN,
     NETWORK,
-    STATUS_CODE
+    STATUS_CODE;
+
+    public static int httpcode =403;
   }
 
   private FailReason reason;
@@ -32,7 +36,7 @@ public class MockTestApi implements TestApi {
           break;
         case STATUS_CODE:
           error = RetrofitError.httpError("mock url",
-              new Response("mock url", 403, "Forbidden", null, null), null, null);
+              new Response("mock url", FailReason.httpcode, "Forbidden", new ArrayList<Header>(), null), null, null);
           break;
 
         case UNKNOWN:

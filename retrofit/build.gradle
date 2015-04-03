@@ -22,4 +22,6 @@ android {
 dependencies {
   compile project(':mvp')
   compile 'com.squareup.retrofit:retrofit:1.9.0'
+
+  testCompile project(':testing')
 }

@@ -44,16 +44,16 @@ public class MainActivity extends MosbyActivity implements AdapterView.OnItemCli
 
   private Demo[] createDemos() {
     return new Demo[] {
-        new Demo("MvpLcsActivity", new Intent(this, CountriesActivity.class)),
-        new Demo("MvpLcsFragment",
+        new Demo("MvpLceActivity", new Intent(this, CountriesActivity.class)),
+        new Demo("MvpLceFragment",
             new Intent(this, FragmentContainerActivity.class).putExtra("fragment",
-                "CountriesFragment")), new Demo("RetainingViewsStateFragment",
+                "CountriesFragment")), new Demo("RetainingViewsState LceFragment",
         new Intent(this, FragmentContainerActivity.class).putExtra("fragment",
             "RetainingCountriesFragment")),
-        new Demo("Retaining by using Parcelable ViewsStateFragment",
+        new Demo("Retaining by using Parcelable ViewsState LceFragment",
             new Intent(this, FragmentContainerActivity.class).putExtra("fragment",
                 "NotRetainingCountriesFragment")),
-        new Demo("LCE Activity + ViewsState", new Intent(this, CountriesViewStateActivity.class)),
+        new Demo("ViewsState LceActivity", new Intent(this, CountriesViewStateActivity.class)),
         new Demo("Custom ViewsState Fragment",
             new Intent(this, FragmentContainerActivity.class).putExtra("fragment",
                 "CustomViewStateFragment")),

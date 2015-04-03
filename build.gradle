@@ -17,6 +17,10 @@ allprojects {
     maven{
       url 'https://oss.sonatype.org/content/repositories/snapshots/'
     }
+
+    maven {
+      url 'https://clojars.org/repo/'
+    }
   }
 }
 
@@ -28,11 +32,11 @@ ext {
   compileSdkVersion = 22
 
   // Libraries
-  appcompat7Version = '22.0.+'
-  recyclerviewVersion = '21.0.+'
+  appcompat7Version = '22.0.0'
+  recyclerviewVersion = '22.0.0'
   fragmentargsVersion = '2.0.1'
   butterknifeVersion = '6.1.0'
-  icepickVersion = '2.3.6'
+  icepickVersion = '3.0.2'
 
   // Test Libs
   robolectricVersion = '2.4'

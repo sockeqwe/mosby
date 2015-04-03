@@ -1,9 +1,12 @@
 package com.hannesdorfmann.mosby.mvp;
 
+import junit.framework.Assert;
+import org.junit.Test;
+
 /**
  * @author Hannes Dorfmann
  */
-public class MvpBasePresenterTest {} /*extends MvpBasePresenter<MvpView> {
+public class MvpBasePresenterTest extends MvpBasePresenter<MvpView> {
 
   @Test
   public void testOnDestroy(){
@@ -26,7 +29,6 @@ public class MvpBasePresenterTest {} /*extends MvpBasePresenter<MvpView> {
     detachView(false);
     noViewAttached();
 
-
   }
 
 
@@ -34,4 +36,3 @@ public class MvpBasePresenterTest {} /*extends MvpBasePresenter<MvpView> {
     Assert.assertFalse(isViewAttached());
   }
 }
-*/

@@ -23,10 +23,10 @@ import org.junit.Test;
 /**
  * @author Hannes Dorfmann
  */
-public class ViewStateTest {
+public class LceViewStateTest {
 
   @Test
-  public void testApplyingViewState() {
+  public void testLceViewState() {
 
     AbsLceViewState<Object, MvpLceView<Object>> viewState = new AbsLceViewState<Object, MvpLceView<Object>>() {
     };

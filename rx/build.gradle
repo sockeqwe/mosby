@@ -22,4 +22,6 @@ dependencies {
   compile 'io.reactivex:rxjava:1.0.7'
   compile 'io.reactivex:rxandroid:0.24.0'
   compile project(':mvp')
+
+  testCompile project(':testing')
 }

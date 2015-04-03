@@ -64,7 +64,7 @@ public abstract class MvpLcePresenterTest<M, V extends MvpLceView<M>, P extends 
    * @param pullToRefreshSupported Does this presenter supports pull to refresh. If true, pull to
    * refresh will also be tested
    */
-  protected void startMvpTests(boolean pullToRefreshSupported) {
+  protected void startLceTests(boolean pullToRefreshSupported) {
 
     P presenter = freshPresenter();
 

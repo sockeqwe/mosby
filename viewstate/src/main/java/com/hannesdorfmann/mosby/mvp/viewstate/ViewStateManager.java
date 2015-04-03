@@ -88,7 +88,8 @@ public class ViewStateManager {
   }
 
   /**
-   * Saves {@link RestoreableViewState} in a bundle. <b>Should be calld from activities or fragments
+   * Saves {@link RestoreableViewState} in a bundle. <b>Should be calld from activities or
+   * fragments
    * onSaveInstanceState(Bundle) method</b>
    */
   public static void saveInstanceState(ViewStateSupport viewStateSupport, Bundle outState) {
@@ -97,13 +98,14 @@ public class ViewStateManager {
       throw new NullPointerException("ViewStateSupport can not be null");
     }
 
-    if (viewStateSupport.getViewState() == null) {
+    ViewState viewState = viewStateSupport.getViewState();
+    if (viewState == null) {
       throw new NullPointerException("ViewState is null! That's not allowed");
     }
 
     // Save the viewstate
-    if (viewStateSupport.getViewState() instanceof RestoreableViewState) {
-      ((RestoreableViewState) viewStateSupport.getViewState()).saveInstanceState(outState);
+    if (viewState instanceof RestoreableViewState) {
+      ((RestoreableViewState) viewState).saveInstanceState(outState);
     }
   }
 }

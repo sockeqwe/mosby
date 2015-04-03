@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'org.robolectric'
 apply from: '../maven-push.gradle'
 
 android {
@@ -22,5 +23,7 @@ android {
 dependencies {
   compile project(':mvp')
 
+  testCompile 'org.robolectric:robolectric:2.4'
   testCompile 'junit:junit:' + rootProject.ext.junitVersion
+  testCompile 'org.mockito:mockito-core:1.9.5'
 }

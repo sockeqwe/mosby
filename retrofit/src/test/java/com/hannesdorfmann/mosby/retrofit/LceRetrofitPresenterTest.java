@@ -103,7 +103,6 @@ public class LceRetrofitPresenterTest extends MvpLcePresenterTest<Object, TestVi
       }
 
       @Override public void loadData(boolean pullToRefresh) {
-
       }
     };
 

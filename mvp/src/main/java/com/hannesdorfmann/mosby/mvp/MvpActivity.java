@@ -33,6 +33,9 @@ public abstract class MvpActivity<P extends MvpPresenter> extends MosbyActivity 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     presenter = createPresenter();
+    if (presenter == null){
+      throw new NullPointerException("Presenter is null! Do you return null in createPresenter()?");
+    }
     presenter.attachView(this);
   }
 

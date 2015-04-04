@@ -18,11 +18,14 @@ package com.hannesdorfmann.mosby.sample.mvp.customviewstate;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import com.hannesdorfmann.mosby.mvp.viewstate.MvpViewStateActivity;
 import com.hannesdorfmann.mosby.mvp.viewstate.RestoreableViewState;
 import com.hannesdorfmann.mosby.sample.R;
+import com.hannesdorfmann.mosby.sample.mvp.model.custom.A;
+import com.hannesdorfmann.mosby.sample.mvp.model.custom.B;
 
 /**
  * @author Hannes Dorfmann
@@ -30,8 +33,8 @@ import com.hannesdorfmann.mosby.sample.R;
 public class MyCustomActivity extends MvpViewStateActivity<MyCustomPresenter>
     implements MyCustomView {
 
-  @InjectView(R.id.textViewA) View aView;
-  @InjectView(R.id.textViewB) View bView;
+  @InjectView(R.id.textViewA) TextView aView;
+  @InjectView(R.id.textViewB) TextView bView;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -50,23 +53,29 @@ public class MyCustomActivity extends MvpViewStateActivity<MyCustomPresenter>
     return new MyCustomPresenter();
   }
 
-  @Override public void showA() {
-    ((MyCustomViewState) viewState).setShowingA(true);
+  @Override public void showA(A a) {
+    MyCustomViewState vs = ((MyCustomViewState) viewState);
+    vs.setShowingA(true);
+    vs.setData(a);
+    aView.setText(a.getName());
     aView.setVisibility(View.VISIBLE);
     bView.setVisibility(View.GONE);
   }
 
-  @Override public void showB() {
-    ((MyCustomViewState) viewState).setShowingA(false);
+  @Override public void showB(B b) {
+    MyCustomViewState vs = ((MyCustomViewState) viewState);
+    vs.setShowingA(false);
+    vs.setData(b);
+    bView.setText(b.getFoo());
     aView.setVisibility(View.GONE);
     bView.setVisibility(View.VISIBLE);
   }
 
-  @OnClick(R.id.showA) public void onShowAClicked() {
+  @OnClick(R.id.loadA) public void onLoadAClicked() {
     presenter.doA();
   }
 
-  @OnClick(R.id.showB) public void onShowBClicked() {
+  @OnClick(R.id.loadB) public void onLoadBClicked() {
     presenter.doB();
   }
 }

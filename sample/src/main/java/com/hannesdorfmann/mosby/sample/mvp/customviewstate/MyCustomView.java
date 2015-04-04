@@ -17,6 +17,8 @@
 package com.hannesdorfmann.mosby.sample.mvp.customviewstate;
 
 import com.hannesdorfmann.mosby.mvp.MvpView;
+import com.hannesdorfmann.mosby.sample.mvp.model.custom.A;
+import com.hannesdorfmann.mosby.sample.mvp.model.custom.B;
 
 /**
  * @author Hannes Dorfmann
@@ -24,7 +26,7 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
 public interface MyCustomView extends MvpView {
 
 
-  public void showA();
+  public void showA(A a);
 
-  public void showB();
+  public void showB(B b);
 }

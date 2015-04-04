@@ -17,21 +17,31 @@
 package com.hannesdorfmann.mosby.sample.mvp.customviewstate;
 
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
+import com.hannesdorfmann.mosby.sample.mvp.model.custom.A;
+import com.hannesdorfmann.mosby.sample.mvp.model.custom.B;
+import java.util.Random;
 
 /**
  * @author Hannes Dorfmann
  */
 public class MyCustomPresenter extends MvpBasePresenter<MyCustomView> {
 
+  Random random = new Random();
   public void doA() {
+
+    A a = new A("My name is A "+random.nextInt(10));
+
     if (isViewAttached()) {
-      getView().showA();
+      getView().showA(a);
     }
   }
 
   public void doB() {
+
+    B b = new B("I am B "+random.nextInt(10));
+
     if (isViewAttached()) {
-      getView().showB();
+      getView().showB(b);
     }
   }
 }

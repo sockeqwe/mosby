@@ -17,19 +17,25 @@
 package com.hannesdorfmann.mosby.sample.mvp.customviewstate;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import com.hannesdorfmann.mosby.mvp.viewstate.RestoreableViewState;
+import com.hannesdorfmann.mosby.sample.mvp.model.custom.A;
+import com.hannesdorfmann.mosby.sample.mvp.model.custom.B;
 
 /**
  * @author Hannes Dorfmann
  */
 public class MyCustomViewState implements RestoreableViewState<MyCustomView> {
 
-  private final String BUNDLE_KEY = "MyCustomViewState";
+  private final String KEY_STATE = "MyCustomViewState-flag";
+  private final String KEY_DATA = "MyCustomViewState-data";
 
   public boolean showingA = true; // if false, then show B
+  public Parcelable data;
 
   @Override public void saveInstanceState(Bundle out) {
-    out.putBoolean(BUNDLE_KEY, showingA);
+    out.putBoolean(KEY_STATE, showingA);
+    out.putParcelable(KEY_DATA, data);
   }
 
   @Override public boolean restoreInstanceState(Bundle in) {
@@ -37,16 +43,17 @@ public class MyCustomViewState implements RestoreableViewState<MyCustomView> {
       return false;
     }
 
-    showingA = in.getBoolean(BUNDLE_KEY, true);
+    showingA = in.getBoolean(KEY_STATE, true);
+    data = in.getParcelable(KEY_DATA);
     return true;
   }
 
   @Override public void apply(MyCustomView view, boolean retained) {
 
     if (showingA) {
-      view.showA();
+      view.showA((A) data);
     } else {
-      view.showB();
+      view.showB((B) data);
     }
   }
 
@@ -55,5 +62,9 @@ public class MyCustomViewState implements RestoreableViewState<MyCustomView> {
    */
   public void setShowingA(boolean a) {
     this.showingA = a;
+  }
+
+  public void setData(Parcelable data){
+    this.data = data;
   }
 }

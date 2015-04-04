@@ -10,7 +10,7 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:background="#FFBB00"
-      android:text="Showing A"
+      android:text="Do A"
       android:textSize="20sp"
       android:gravity="center"
       />
@@ -21,7 +21,7 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:background="#AF09FF"
-      android:text="Showing B"
+      android:text="Do B"
       android:textSize="20sp"
       android:gravity="center"
       android:textColor="@android:color/white"
@@ -37,7 +37,7 @@
       android:layout_gravity="bottom"
       >
     <Button
-        android:id="@+id/showA"
+        android:id="@+id/loadA"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -46,7 +46,7 @@
         />
 
     <Button
-        android:id="@+id/showB"
+        android:id="@+id/loadB"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"

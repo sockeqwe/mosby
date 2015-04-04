@@ -60,5 +60,5 @@ dependencies {
 ```
 
 # Sample APK
-You can donwload the sample apk from (here)[https://db.tt/ycrCwt1L].
-The Dagger1 sample apk can be downloaded (here)[https://db.tt/3fVqVdAz] and Dagger2 sample apk can be downloaded (here)[https://db.tt/z85y4fSY]
+You can donwload the sample apk from [here](https://db.tt/ycrCwt1L).
+The Dagger1 sample apk can be downloaded [here](https://db.tt/3fVqVdAz)and Dagger2 sample apk can be downloaded [here](https://db.tt/z85y4fSY)

@@ -75,7 +75,7 @@ public abstract class MosbyFragment extends Fragment {
               + "If you don't want to use getLayoutRes() but implement your own view for this "
               + "fragment manually, then you have to override onCreateView();");
     } else {
-      View v = inflater.inflate(getLayoutRes(), container, false);
+      View v = inflater.inflate(layoutRes, container, false);
       return v;
     }
   }

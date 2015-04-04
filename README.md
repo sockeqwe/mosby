@@ -27,7 +27,9 @@ dependencies {
 where you have to replace x.x.x with the latest version.
 
 
-This library uses annotation processing libraries. Therefore you also have to include the following dependencies and you need to apply Hugo Visser's awesome [android-apt](https://bitbucket.org/hvisser/android-apt) gradle plugin to run annotation processing.
+This library uses annotation processing libraries.
+You need to apply Hugo Visser's awesome [android-apt](https://bitbucket.org/hvisser/android-apt) gradle plugin to run annotation processing
+and you have to include the following dependencies:
 
 ```groovy
 buildscript {

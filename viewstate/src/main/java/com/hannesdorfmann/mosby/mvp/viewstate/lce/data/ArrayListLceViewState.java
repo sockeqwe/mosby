@@ -37,8 +37,8 @@ import java.util.ArrayList;
  * @author Hannes Dorfmann
  * @since 1.0.0
  */
-public class ArrayListLceViewState<D extends Parcelable, V extends MvpLceView<ArrayList<D>>>
-    extends AbsParcelableLceViewState<ArrayList<D>, V> {
+public class ArrayListLceViewState<D extends ArrayList<? extends Parcelable>, V extends MvpLceView<D>>
+    extends AbsParcelableLceViewState<D, V> {
 
   public static final Parcelable.Creator<ArrayListLceViewState> CREATOR =
       new Parcelable.Creator<ArrayListLceViewState>() {
@@ -76,7 +76,7 @@ public class ArrayListLceViewState<D extends Parcelable, V extends MvpLceView<Ar
     // content
     Bundle b = source.readBundle();
     if (b != null) {
-      loadedData = (ArrayList<D>) b.getParcelableArrayList(BUNDLE_ARRAY_LIST_WORKAROUND);
+      loadedData = (D) b.getParcelableArrayList(BUNDLE_ARRAY_LIST_WORKAROUND);
     }
 
     // alternative ((Class) ((ParameterizedType) getClass()

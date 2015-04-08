@@ -38,8 +38,8 @@ import java.util.List;
  * @author Hannes Dorfmann
  * @since 1.0.0
  */
-public class CastedArrayListLceViewState<D extends Parcelable, V extends MvpLceView<List<D>>>
-    extends AbsParcelableLceViewState<List<D>, V> {
+public class CastedArrayListLceViewState<D extends List<? extends Parcelable>, V extends MvpLceView<D>>
+    extends AbsParcelableLceViewState<D, V> {
 
   public static final Creator<CastedArrayListLceViewState> CREATOR =
       new Creator<CastedArrayListLceViewState>() {
@@ -76,7 +76,7 @@ public class CastedArrayListLceViewState<D extends Parcelable, V extends MvpLceV
 
     // Content
     Bundle b = new Bundle();
-    b.putParcelableArrayList(BUNDLE_ARRAY_LIST_WORKAROUND, (ArrayList<D>) loadedData);
+    b.putParcelableArrayList(BUNDLE_ARRAY_LIST_WORKAROUND, (ArrayList<Parcelable>) loadedData);
     dest.writeBundle(b);
   }
 
@@ -86,7 +86,7 @@ public class CastedArrayListLceViewState<D extends Parcelable, V extends MvpLceV
     // content
     Bundle b = source.readBundle();
     if (b != null) {
-      loadedData = (ArrayList<D>) b.getParcelableArrayList(BUNDLE_ARRAY_LIST_WORKAROUND);
+      loadedData = (D) b.getParcelableArrayList(BUNDLE_ARRAY_LIST_WORKAROUND);
     }
 
     // alternative ((Class) ((ParameterizedType) getClass()

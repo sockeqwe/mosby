@@ -63,6 +63,10 @@ public class RetainingCountriesFragment extends
     recyclerView.setAdapter(adapter);
   }
 
+  @Override public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
+  }
+
   @Override
   public void loadData(boolean pullToRefresh) {
     presenter.loadCountries(pullToRefresh);

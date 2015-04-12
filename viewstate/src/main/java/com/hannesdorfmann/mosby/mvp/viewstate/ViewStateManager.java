@@ -17,17 +17,37 @@
 package com.hannesdorfmann.mosby.mvp.viewstate;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 
 /**
- * It's just a little helper / utils class that avoids to many copy & paste code clones. It allows
- * to use this class to handle {@link ViewState} by using {@link ViewStateSupport}
+ * This class
+ * is used to save, restore and apply a {@link ViewState} by using {@link ViewStateSupport}. It's
+ * just a little helper / utils class that avoids to many copy & paste code clones.
+ * However, you have to hook in the corresponding methods correctly in your Fragment, Activity or
+ * android.widget.View
  *
  * @author Hannes Dorfmann
  * @since 1.0.0
  */
-public class ViewStateManager {
+public class ViewStateManager<V extends MvpView> {
+
+  private V view;
+  private ViewStateSupport viewStateSupport;
+  private boolean retainingInstanceState = false;
+  private boolean applyViewState = false;
+
+  public ViewStateManager(ViewStateSupport viewStateSupport, V view) {
+    this.viewStateSupport = viewStateSupport;
+    this.view = view;
+
+    if (viewStateSupport == null) {
+      throw new NullPointerException("ViewStateSupport can not be null");
+    }
+
+    if (view == null) {
+      throw new NullPointerException("View can not be null");
+    }
+  }
 
   /**
    * Like the name already suggests. Creates a new viewstate or tries to restore the old one (must
@@ -38,23 +58,12 @@ public class ViewStateManager {
    * ViewStateSupport#onViewStateInstanceRestored(boolean) after having restored the viewstate}.
    * Otherwise returns false and calls {@link ViewStateSupport#onNewViewStateInstance()}
    */
-  public static <V extends MvpView> boolean createOrRestore(
-      @NonNull ViewStateSupport viewStateSupport, @NonNull V view, Bundle savedInstanceState) {
-
-    if (viewStateSupport == null) {
-      throw new NullPointerException("ViewStateSupport can not be null");
-    }
-
-    if (view == null) {
-      throw new NullPointerException("View can not be null");
-    }
+  public <V extends MvpView> boolean createOrRestoreViewState(Bundle savedInstanceState) {
 
     // ViewState already exists (Fragment retainsInstanceState == true)
     if (viewStateSupport.getViewState() != null) {
-      viewStateSupport.setRestoringViewState(true);
-      viewStateSupport.getViewState().apply(view, true);
-      viewStateSupport.setRestoringViewState(false);
-      viewStateSupport.onViewStateInstanceRestored(true);
+      retainingInstanceState = true;
+      applyViewState = true;
       return true;
     }
 
@@ -74,15 +83,32 @@ public class ViewStateManager {
               savedInstanceState);
 
       if (restoredFromBundle) {
-        viewStateSupport.setRestoringViewState(true);
-        viewStateSupport.getViewState().apply(view, false);
-        viewStateSupport.setRestoringViewState(false);
-        viewStateSupport.onViewStateInstanceRestored(false);
+        retainingInstanceState = false;
+        applyViewState = true;
         return true;
       }
     }
 
-    // ViewState not restored
+    // ViewState not restored, activity / fragment starting first time
+    applyViewState = false;
+    return false;
+  }
+
+  /**
+   * applies the views state to the view.
+   *
+   * @return true if viewstate has been applied, otherwise false (i.e. activity / fragment is
+   * starting for the first time)
+   */
+  public boolean applyViewState() {
+    if (applyViewState) {
+      viewStateSupport.setRestoringViewState(true);
+      viewStateSupport.getViewState().apply(view, retainingInstanceState);
+      viewStateSupport.setRestoringViewState(false);
+      viewStateSupport.onViewStateInstanceRestored(retainingInstanceState);
+      return true;
+    }
+
     viewStateSupport.onNewViewStateInstance();
     return false;
   }
@@ -92,7 +118,7 @@ public class ViewStateManager {
    * fragments
    * onSaveInstanceState(Bundle) method</b>
    */
-  public static void saveInstanceState(ViewStateSupport viewStateSupport, Bundle outState) {
+  public void saveViewState(Bundle outState, boolean retainingInstanceState) {
 
     if (viewStateSupport == null) {
       throw new NullPointerException("ViewStateSupport can not be null");
@@ -104,8 +130,13 @@ public class ViewStateManager {
     }
 
     // Save the viewstate
-    if (viewState instanceof RestoreableViewState) {
+    if (viewState != null && viewState instanceof RestoreableViewState) {
       ((RestoreableViewState) viewState).saveInstanceState(outState);
+    }
+
+    if (retainingInstanceState) {
+      // For next time we call applyViewState() we have to set this flag to true
+      applyViewState = true;
     }
   }
 }

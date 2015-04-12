@@ -30,16 +30,16 @@ public class ViewStateManagerTest {
   }
 
   @Test(expected = NullPointerException.class) public void viewStateSupportIsNull() {
-    ViewStateManager.createOrRestore(null, mock(MvpView.class), null);
+    new ViewStateManager(null, mock(MvpView.class));
   }
 
   @Test(expected = NullPointerException.class) public void viewIsNull() {
-    ViewStateManager.createOrRestore(mock(ViewStateSupport.class), null, null);
+    ViewStateManager vs = new ViewStateManager(mock(ViewStateSupport.class), null);
   }
 
   @Test(expected = NullPointerException.class) public void failBecauseViewStateNull() {
     ParcelableDummyView view = mock(ParcelableDummyView.class);
-    ViewStateManager.createOrRestore(view, view, new Bundle());
+    new ViewStateManager(view, view).createOrRestoreViewState(new Bundle());
   }
 
   @Test public void testCreateNew() {
@@ -58,12 +58,17 @@ public class ViewStateManagerTest {
       }
     });
 
+    ViewStateManager manager = null;
     // Make call
-   boolean restored = ViewStateManager.createOrRestore(view, view, null);
+    manager = new ViewStateManager(view, view);
+
+    boolean restored = manager.createOrRestoreViewState(null);
+    boolean applied = manager.applyViewState();
 
     // Check if new
     verify(view, times(1)).onNewViewStateInstance();
     Assert.assertFalse(restored);
+    Assert.assertFalse(applied);
   }
 
   @Test public void testRestoreAlreadyPresent() {
@@ -81,14 +86,17 @@ public class ViewStateManagerTest {
     when(view.getViewState()).thenReturn(viewState);
 
     // Make call
-    boolean restored = ViewStateManager.createOrRestore(view, view, null);
+    ViewStateManager manager = new ViewStateManager(view, view);
+    boolean restored = manager.createOrRestoreViewState(null);
+    boolean applied = manager.applyViewState();
 
     // Check if new
     verify(view, times(1)).onViewStateInstanceRestored(true);
     verify(view, times(1)).showContent();
     verify(view, times(1)).setData(data);
-    
+
     Assert.assertTrue(restored);
+    Assert.assertTrue(applied);
   }
 
   @Test public void testSaveAndRestoreFromBundle() {
@@ -112,15 +120,18 @@ public class ViewStateManagerTest {
     viewState.setStateShowContent(data);
 
     Bundle bundle = new Bundle();
-    ViewStateManager.saveInstanceState(view, bundle);
+    ViewStateManager manager = new ViewStateManager(view, view);
+    manager.saveViewState(bundle, false);
 
     // Make call
-    boolean restored = ViewStateManager.createOrRestore(view, view, bundle);
+    boolean restored = manager.createOrRestoreViewState(bundle);
+    boolean applied = manager.applyViewState();
 
     // Check if new
     verify(view, times(1)).onViewStateInstanceRestored(false);
     verify(view, times(1)).showContent();
     verify(view, times(1)).setData(data);
     Assert.assertTrue(restored);
+    Assert.assertTrue(applied);
   }
 }

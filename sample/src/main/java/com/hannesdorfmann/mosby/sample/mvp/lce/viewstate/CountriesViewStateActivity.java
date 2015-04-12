@@ -58,7 +58,7 @@ public class CountriesViewStateActivity extends
   }
 
   @Override public ParcelableLceViewState<List<Country>, CountriesView> createViewState() {
-    return new CastedArrayListLceViewState<Country, CountriesView>();
+    return new CastedArrayListLceViewState<>();
   }
 
   @Override public void loadData(boolean pullToRefresh) {

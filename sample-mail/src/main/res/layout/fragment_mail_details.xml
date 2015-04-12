@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+  <LinearLayout
+      android:id="@+id/header"
+      android:orientation="horizontal"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:paddingLeft="@dimen/mail_item_padding_left_right"
+      android:paddingRight="@dimen/mail_item_padding_left_right"
+      android:paddingTop="8dp"
+      android:paddingBottom="8dp"
+      android:background="@color/light_grey"
+      >
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/senderPic"
+        android:layout_width="@dimen/mail_sender_pic_width_height"
+        android:layout_height="@dimen/mail_sender_pic_width_height"
+        android:layout_gravity="center_vertical"
+        android:scaleType="centerCrop"
+        app:riv_oval="true"
+        tools:src="@drawable/ted"
+        android:layout_marginRight="@dimen/mail_item_padding_left_right"
+        />
+
+    <TextView
+        android:id="@+id/subject"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textSize="18sp"
+        android:textColor="@color/primary_text"
+        android:layout_gravity="center_vertical"
+        tools:text="Subject Subject Subject"
+        />
+
+
+  </LinearLayout>
+
+
+  <com.github.clans.fab.FloatingActionButton
+      xmlns:fab="http://schemas.android.com/apk/res-auto"
+      android:id="@+id/replay"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="16dp"
+      android:layout_below="@+id/header"
+      android:layout_alignParentRight="true"
+      android:layout_marginTop="-25dp"
+      fab:fab_colorNormal="@color/accent"
+      fab:fab_colorPressed="@color/accent"
+      />
+
+
+  <ScrollView
+      android:id="@+id/contentView"
+      android:layout_below="@+id/header"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="@dimen/mail_item_padding_left_right"
+        android:paddingRight="@dimen/mail_item_padding_left_right"
+        >
+
+
+      <com.hannesdorfmann.mosby.sample.mail.ui.event.view.StarView
+          android:id="@+id/starButton"
+          android:layout_width="24dp"
+          android:layout_height="24dp"
+          android:layout_alignParentLeft="true"
+          android:layout_alignParentTop="true"
+          android:layout_marginLeft="24dp"
+          android:src="@drawable/ic_star"
+          tools:background="@color/accent"
+          />
+
+      <TextView
+          android:id="@+id/date"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignParentLeft="true"
+          android:layout_alignParentTop="true"
+          android:textSize="14sp"
+          android:layout_marginLeft="72dp"
+          android:textColor="@color/secondary_text"
+          tools:text="22. April 2015 10:30 AM"
+          />
+
+      <TextView
+          android:id="@+id/message"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_below="@+id/starButton"
+          android:layout_marginTop="24dp"
+          android:paddingLeft="@dimen/mail_item_padding_left_right"
+          android:paddingRight="@dimen/mail_item_padding_left_right"
+          android:textSize="16sp"
+          android:textColor="@color/secondary_text"
+          tools:text="Sender Name - "
+          />
+
+    </RelativeLayout>
+
+
+  </ScrollView>
+
+
+  <include layout="@layout/view_loading"/>
+  <include layout="@layout/view_error"/>
+  <include layout="@layout/view_authentication_required"/>
+
+
+</RelativeLayout>

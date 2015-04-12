@@ -18,7 +18,6 @@ import retrofit.client.OkClient;
  * @author Hannes Dorfmann
  */
 @Module(
-    library = true
 )
 public class SampleModule {
 

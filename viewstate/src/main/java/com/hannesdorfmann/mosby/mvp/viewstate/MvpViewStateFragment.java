@@ -37,12 +37,17 @@ import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 public abstract class MvpViewStateFragment<P extends MvpPresenter> extends MvpFragment<P>
     implements ViewStateSupport {
 
+  protected ViewStateManager<?> viewStateManager = new ViewStateManager<>(this, this);
+
   /**
    * The viewstate will be instantiated by calling {@link #createViewState()} in {@link
    * #onViewCreated(View, Bundle)}. Don't instantiate it by hand.
    */
   protected ViewState viewState;
 
+  /**
+   * A simple flag that indicates if the restoring ViewState  is in progress right now.
+   */
   private boolean restoringViewState = false;
 
   /**
@@ -50,19 +55,39 @@ public abstract class MvpViewStateFragment<P extends MvpPresenter> extends MvpFr
    */
   public abstract ViewState createViewState();
 
-  @Override public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-    super.onActivityCreated(savedInstanceState);
+  @Override public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    // Will be called at first time fragment
+    // get's instantiated for both retaining and not retaining fragments
     createOrRestoreViewState(savedInstanceState);
   }
 
+  @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
+  }
+
   /**
-   * Creates or restores the viewstate
+   * Creates or restores the viewstate instance. It doesn't apply the viewstate to this view. that
+   * will be done in {@link #applyViewState()}
    *
    * @param savedInstanceState The Bundle that may or may not contain the viewstate
    * @return true if restored successfully, otherwise fals
    */
   protected boolean createOrRestoreViewState(Bundle savedInstanceState) {
-    return ViewStateManager.createOrRestore(this, this, savedInstanceState);
+    return viewStateManager.createOrRestoreViewState(savedInstanceState);
+  }
+
+  @Override public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
+    applyViewState();
+  }
+
+  /**
+   * Applys the view state. That means, that the view state instance calls the methods of the view
+   * to get back to the view state before screen orientation change happened.
+   */
+  protected boolean applyViewState() {
+    return viewStateManager.applyViewState();
   }
 
   @Override public void onSaveInstanceState(Bundle outState) {
@@ -76,7 +101,7 @@ public abstract class MvpViewStateFragment<P extends MvpPresenter> extends MvpFr
    * @param outState The bundle to store
    */
   protected void saveViewStateInstanceState(Bundle outState) {
-    ViewStateManager.saveInstanceState(this, outState);
+    viewStateManager.saveViewState(outState, getRetainInstance());
   }
 
   @Override public ViewState getViewState() {

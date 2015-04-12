@@ -46,14 +46,22 @@ public abstract class AbsParcelableLceViewState<D, V extends MvpLceView<D>>
       return false;
     }
 
-    // Workaround
+    // Workaround to solve class loader problem
     AbsParcelableLceViewState<D, V> tmp =
         (AbsParcelableLceViewState<D, V>) in.getParcelable(KEY_BUNDLE_VIEW_STATE);
-    this.loadedData = tmp.loadedData;
-    this.currentViewState = tmp.currentViewState;
-    this.exception = tmp.exception;
-    this.pullToRefresh = tmp.pullToRefresh;
+    if (tmp == null){
+      return false;
+    }
+    copyRestoredViewStateInstanceIntoNew(tmp);
+
     return true;
+  }
+
+  protected void copyRestoredViewStateInstanceIntoNew(AbsParcelableLceViewState<D, V> old){
+    this.loadedData = old.loadedData;
+    this.currentViewState = old.currentViewState;
+    this.exception = old.exception;
+    this.pullToRefresh = old.pullToRefresh;
   }
 
   @Override public int describeContents() {

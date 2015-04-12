@@ -47,7 +47,7 @@ public class NotRetainingCountriesFragment extends
   CountriesAdapter adapter;
 
   @Override public LceViewState<List<Country>, CountriesView> createViewState() {
-    return new CastedArrayListLceViewState<Country, CountriesView>();
+    return new CastedArrayListLceViewState<>();
   }
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstance) {

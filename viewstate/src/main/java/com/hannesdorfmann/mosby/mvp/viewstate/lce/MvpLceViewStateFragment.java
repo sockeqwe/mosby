@@ -35,6 +35,8 @@ import com.hannesdorfmann.mosby.mvp.viewstate.ViewStateSupport;
 public abstract class MvpLceViewStateFragment<CV extends View, M, V extends MvpLceView<M>, P extends MvpPresenter<V>>
     extends MvpLceFragment<CV, M, V, P> implements MvpLceView<M>, ViewStateSupport<V> {
 
+  protected ViewStateManager<?> viewStateManager = new ViewStateManager<>(this, this);
+
   /**
    * The viewstate will be instantiated by calling {@link #createViewState()} in {@link
    * #onViewCreated(View, Bundle)}. Don't instantiate it by hand.
@@ -51,20 +53,33 @@ public abstract class MvpLceViewStateFragment<CV extends View, M, V extends MvpL
    */
   public abstract LceViewState<M, V> createViewState();
 
-  @Override public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-    super.onActivityCreated(savedInstanceState);
+  @Override public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
     createOrRestoreViewState(savedInstanceState);
   }
 
   /**
-   * Creates or restores the viewstate
+   * Creates or restores the viewstate instance. It doesn't apply the viewstate to this view. that
+   * will be done in {@link #applyViewState()}
    *
    * @param savedInstanceState The Bundle that may or may not contain the viewstate
    * @return true if restored successfully, otherwise fals
    */
   protected boolean createOrRestoreViewState(Bundle savedInstanceState) {
+    return viewStateManager.createOrRestoreViewState(savedInstanceState);
+  }
 
-    return ViewStateManager.createOrRestore(this, this, savedInstanceState);
+  @Override public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
+    applyViewState();
+  }
+
+  /**
+   * Applys the view state. That means, that the view state instance calls the methods of the view
+   * to get back to the view state before screen orientation change happened.
+   */
+  protected boolean applyViewState() {
+    return viewStateManager.applyViewState();
   }
 
   @Override public void onSaveInstanceState(Bundle outState) {
@@ -78,7 +93,7 @@ public abstract class MvpLceViewStateFragment<CV extends View, M, V extends MvpL
    * @param outState The bundle to store
    */
   protected void saveViewStateInstanceState(Bundle outState) {
-    ViewStateManager.saveInstanceState(this, outState);
+    viewStateManager.saveViewState(outState, getRetainInstance());
   }
 
   @Override public ViewState getViewState() {

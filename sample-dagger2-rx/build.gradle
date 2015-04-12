@@ -53,8 +53,8 @@ dependencies {
   compile 'com.hannesdorfmann.annotatedadapter:annotation:' + annotatedAdapter
   compile 'com.hannesdorfmann.annotatedadapter:support-recyclerview:' + annotatedAdapter
 
-  compile 'com.google.dagger:dagger:2.0-SNAPSHOT'
-  apt 'com.google.dagger:dagger-compiler:2.0-SNAPSHOT'
+  compile 'com.google.dagger:dagger:2.0'
+  apt 'com.google.dagger:dagger-compiler:2.0'
   compile 'javax.annotation:javax.annotation-api:1.2'
 
   compile 'com.squareup.okhttp:okhttp:2.3.0'
@@ -65,7 +65,7 @@ dependencies {
   // testing
   testCompile project(':testing')
   testCompile 'com.squareup.retrofit:retrofit-mock:1.9.0'
-  testCompile 'com.google.dagger:dagger:2.0-SNAPSHOT'
-  testCompile 'com.google.dagger:dagger-compiler:2.0-SNAPSHOT'
+  testCompile 'com.google.dagger:dagger:2.0'
+  testCompile 'com.google.dagger:dagger-compiler:2.0'
   testCompile 'javax.annotation:javax.annotation-api:1.2'
 }

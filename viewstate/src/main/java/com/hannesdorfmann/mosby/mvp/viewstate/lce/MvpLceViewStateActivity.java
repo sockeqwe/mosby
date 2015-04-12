@@ -35,8 +35,11 @@ import com.hannesdorfmann.mosby.mvp.viewstate.ViewStateSupport;
 public abstract class MvpLceViewStateActivity<CV extends View, M, V extends MvpLceView<M>, P extends MvpPresenter<V>>
     extends MvpLceActivity<CV, M, V, P> implements MvpLceView<M>, ViewStateSupport<V> {
 
+
+  protected ViewStateManager<?> viewStateManager = new ViewStateManager<>(this, this);
   protected ParcelableLceViewState<M, V> viewState;
   protected boolean restoringViewState = false;
+
 
   @Override protected void onPostCreate(Bundle savedInstanceState) {
     super.onPostCreate(savedInstanceState);
@@ -50,8 +53,15 @@ public abstract class MvpLceViewStateActivity<CV extends View, M, V extends MvpL
    * @return true if restored successfully, otherwise fals
    */
   protected boolean createOrRestoreViewState(Bundle savedInstanceState) {
+    return viewStateManager.createOrRestoreViewState(savedInstanceState);
+  }
 
-    return ViewStateManager.createOrRestore(this, this, savedInstanceState);
+  /**
+   * Applies the view state. Checks internally if this is necessary and return true, if applied or
+   * false if not applied (i.e. first time activity / fragment runs)
+   */
+  protected boolean applyViewState() {
+    return viewStateManager.applyViewState();
   }
 
   @Override public void onSaveInstanceState(Bundle outState) {
@@ -65,7 +75,7 @@ public abstract class MvpLceViewStateActivity<CV extends View, M, V extends MvpL
    * @param outState The bundle to store
    */
   protected void saveViewStateInstanceState(Bundle outState) {
-    ViewStateManager.saveInstanceState(this, outState);
+    viewStateManager.saveViewState(outState, false);
   }
 
   @Override public RestoreableViewState getViewState() {

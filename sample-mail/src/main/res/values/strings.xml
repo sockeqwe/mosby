@@ -1,0 +1,17 @@
+<resources>
+  <string name="app_name">Mosby Mail</string>
+
+  <string name="hello_world">Hello world!</string>
+  <string name="action_settings">Settings</string>
+  <string name="title_activity_login">LoginActivity</string>
+
+  <string name ="drawer_open">Open menu</string>
+  <string name ="drawer_close">Close menu</string>
+
+  <string name="empty_emails">No mails!</string>
+
+
+  <string name="error_staring_mail">Error starring mail from %s</string>
+  <string name="error_unstaring_mail">Error unstarring mail from %s</string>
+
+</resources>

@@ -31,7 +31,7 @@ public class ReposFragment
 
   @Override protected void injectDependencies() {
     reposComponent =
-        Dagger_ReposComponent.builder().sampleModule(new SampleModule(getActivity())).build();
+        DaggerReposComponent.builder().sampleModule(new SampleModule(getActivity())).build();
     reposComponent.inject(this);
   }
 

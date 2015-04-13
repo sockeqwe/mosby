@@ -18,7 +18,8 @@
         android:id="@+id/rightPane"
         android:visibility="gone"
         android:layout_width="0dp" android:layout_height="match_parent"
-        android:layout_weight="6">
+        android:layout_weight="6"
+        android:background="@drawable/vertical_shadow_separator">
       
     </FrameLayout>
 

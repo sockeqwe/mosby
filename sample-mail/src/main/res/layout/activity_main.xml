@@ -16,6 +16,7 @@
         android:layout_height="@dimen/abc_action_bar_default_height_material"
         android:background="?attr/colorPrimary"
         android:elevation="4dp"
+        android:colorControlNormal="@color/white"
         />
     <!-- The main content view -->
     <include layout="@layout/main_split_pane" />

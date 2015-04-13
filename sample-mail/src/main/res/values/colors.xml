@@ -31,6 +31,7 @@
   <color name="red">#F44336</color>
 
   <color name="white">#FFFFFF</color>
+  <color name="toolbar_drawer_color">@color/white</color>
 
   <color name="light_grey">#DEDEDE</color>
   <color name="star_deactivated">#D6D6D6</color>

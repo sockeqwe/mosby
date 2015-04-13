@@ -10,6 +10,8 @@
     <item name="android:textColorPrimary">@android:color/white</item>
     <item name="android:textColor">@color/primary_text</item>
 
+    <item name="drawerArrowStyle">@style/ToolbarDrawerToggle</item>
+
 
     <!-- ProgressBar -->
     <item name="cpbStyle">@style/CircularThemeProgressBar</item>
@@ -18,6 +20,11 @@
 
   <style name="LoginTheme" parent="AppTheme">
     <item name="android:windowBackground">@color/primary</item>
+  </style>
+
+
+  <style name="ToolbarDrawerToggle" parent="Widget.AppCompat.DrawerArrowToggle">
+    <item name="color">@color/toolbar_drawer_color</item>
   </style>
 
 

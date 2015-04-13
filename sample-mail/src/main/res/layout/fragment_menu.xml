@@ -56,7 +56,7 @@
       tools:text="Ted Mosby"
       />
 
-  <com.makeramen.roundedimageview.RoundedImageView
+  <de.hdodenhof.circleimageview.CircleImageView
       xmlns:app="http://schemas.android.com/apk/res-auto"
       android:id="@+id/profilePic"
       android:layout_width="72dp"
@@ -65,9 +65,8 @@
       android:layout_marginLeft="@dimen/menu_padding_left_right"
       android:scaleType="centerCrop"
       android:layout_marginTop="8dp"
-      app:riv_oval="true"
-      app:riv_border_width="1dip"
-      app:riv_border_color="#EBEBEB"
+      app:border_width="1dip"
+      app:border_color="#EBEBEB"
       tools:src="@drawable/ted"
       />
 

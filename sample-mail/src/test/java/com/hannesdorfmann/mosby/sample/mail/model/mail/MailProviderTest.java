@@ -19,18 +19,19 @@ package com.hannesdorfmann.mosby.sample.mail.model.mail;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import junit.framework.Assert;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 import rx.Subscriber;
+import rx.functions.Action1;
 
 /**
  * @author Hannes Dorfmann
  */
 public class MailProviderTest {
 
-  private static MailProvider mailProvider;
+  private MailProvider mailProvider;
 
-  @BeforeClass public static void init() {
+  @Before public void init() {
     mailProvider = new MailProvider(new TestAccountManager(), new TestMailGenerator());
     mailProvider.DELAY = 0;
     mailProvider.authExceptionEach = 0;
@@ -105,5 +106,121 @@ public class MailProviderTest {
     });
 
     Assert.assertTrue(errorThrown.get());
+  }
+
+  @Test public void starMail(){
+    final AtomicBoolean starredMail = new AtomicBoolean(false);
+    final int id = 1;
+    mailProvider.starMail(id, true).subscribe(new Subscriber<Mail>() {
+      @Override public void onCompleted() {
+
+      }
+
+      @Override public void onError(Throwable e) {
+        e.printStackTrace();
+        Assert.fail("Error while starring mail with id = " + id);
+      }
+
+      @Override public void onNext(Mail mail) {
+        Assert.assertEquals(id, mail.getId());
+        Assert.assertTrue(mail.isStarred());
+        starredMail.set(true);
+      }
+    });
+
+    Assert.assertTrue(starredMail.get());
+
+
+    final AtomicBoolean errorThrown = new AtomicBoolean(false);
+    mailProvider.starMail(-1, true).subscribe(new Subscriber<Mail>() {
+      @Override public void onCompleted() {
+
+      }
+
+      @Override public void onError(Throwable e) {
+        Assert.assertTrue(e instanceof NotFoundException);
+        errorThrown.set(true);
+      }
+
+      @Override public void onNext(Mail mail) {
+        Assert.fail("A mail with id = "
+            + id
+            + " has been starred, but a mail with this id should not exist");
+      }
+    });
+
+    Assert.assertTrue(errorThrown.get());
+
+    //
+    // Unstar
+    //
+    final AtomicBoolean unStaredMail = new AtomicBoolean(false);
+    mailProvider.starMail(id, false).subscribe(new Subscriber<Mail>() {
+      @Override public void onCompleted() {
+
+      }
+
+      @Override public void onError(Throwable e) {
+        e.printStackTrace();
+        Assert.fail("Error while unstaring mail with id = " + id);
+      }
+
+      @Override public void onNext(Mail mail) {
+        Assert.assertEquals(id, mail.getId());
+        Assert.assertFalse(mail.isStarred());
+        unStaredMail.set(true);
+      }
+    });
+
+    Assert.assertTrue(unStaredMail.get());
+
+
+    final AtomicBoolean unstarErrorThrown = new AtomicBoolean(false);
+    mailProvider.getMail(-1).subscribe(new Subscriber<Mail>() {
+      @Override public void onCompleted() {
+
+      }
+
+      @Override public void onError(Throwable e) {
+        Assert.assertTrue(e instanceof NotFoundException);
+        unstarErrorThrown.set(true);
+      }
+
+      @Override public void onNext(Mail mail) {
+        Assert.fail("A mail with id = "
+            + id
+            + " has been unstarred, but a mail with this id should not exist");
+      }
+    });
+
+    Assert.assertTrue(unstarErrorThrown.get());
+  }
+
+
+  @Test
+  public void changeLabel(){
+    mailProvider.getMail(1).subscribe(new Action1<Mail>() {
+      @Override public void call(Mail mail) {
+
+        final AtomicBoolean changed = new AtomicBoolean(false);
+        final String newLabel = "foo";
+        mailProvider.setLabel(mail.getId(), newLabel).subscribe(new Subscriber<Mail>() {
+          @Override public void onCompleted() {
+          }
+
+          @Override public void onError(Throwable e) {
+            e.printStackTrace();
+            Assert.fail("Error while changing label");
+          }
+
+          @Override public void onNext(Mail mail) {
+            Assert.assertEquals(mail.getLabel(), newLabel);
+            changed.set(true);
+          }
+        });
+
+        Assert.assertTrue(changed.get());
+      }
+    });
   }
 }

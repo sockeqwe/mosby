@@ -99,4 +99,12 @@ public class MailsFragment
   @Override public void showUnstaringFailed(Mail mail) {
     showStarErrorToast(R.string.error_unstaring_mail, mail);
   }
+
+  @Override public void changeLabel(int mailId, String label) {
+    // TODO implement
+  }
+
+  @Override public void showChangeLabelFailed(Mail mail, Throwable t) {
+    // TODO implement
+  }
 }

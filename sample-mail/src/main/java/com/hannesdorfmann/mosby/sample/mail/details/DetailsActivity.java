@@ -25,6 +25,7 @@ public class DetailsActivity extends MosbyActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_mail_details);
 
+    // Activity Transitions
     if (isMinApi21()) {
       postponeEnterTransition();
     }
@@ -45,8 +46,8 @@ public class DetailsActivity extends MosbyActivity {
       Person sender = mail.getSender();
 
       DetailsFragment fragment =
-          new DetailsFragmentBuilder(mail.getDate().getTime(), mail.getId(), sender.getEmail(), sender.getName(),
-              sender.getImageRes(), mail.isStarred(), mail.getSubject()).build();
+          new DetailsFragmentBuilder(mail.getDate().getTime(), mail.getId(), sender.getEmail(),
+              sender.getName(), sender.getImageRes(), mail.isStarred(), mail.getSubject()).build();
 
       getSupportFragmentManager().beginTransaction()
           .replace(R.id.fragmentContainer, fragment)
@@ -54,8 +55,7 @@ public class DetailsActivity extends MosbyActivity {
     }
   }
 
-  @TargetApi(21)
-  private Drawable getBackArrowDrawable() {
+  @TargetApi(21) private Drawable getBackArrowDrawable() {
 
     if (isMinApi21()) {
       return getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha, getTheme());

@@ -20,6 +20,7 @@ import com.hannesdorfmann.mosby.sample.mail.R;
 import com.hannesdorfmann.mosby.sample.mail.model.account.AccountManager;
 import com.hannesdorfmann.mosby.sample.mail.model.account.NotAuthenticatedException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import rx.Observable;
 import rx.functions.Action2;
@@ -153,6 +154,16 @@ public class MailProvider {
     });
   }
 
+
+  public Observable<Mail> setLabel(int mailId, final String label){
+    return getMail(mailId).map(new Func1<Mail, Mail>() {
+      @Override public Mail call(Mail mail) {
+        mail.label(label);
+        return mail;
+      }
+    });
+  }
+
   /**
    * Filters the list of mails by the given criteria
    */
@@ -175,6 +186,11 @@ public class MailProvider {
     }, new Action2<List<Mail>, Mail>() {
       @Override public void call(List<Mail> mails, Mail mail) {
         mails.add(mail);
+      }
+    }).map(new Func1<List<Mail>, List<Mail>>() {
+      @Override public List<Mail> call(List<Mail> mails) {
+        Collections.sort(mails, MailComparator.INSTANCE);
+        return mails;
       }
     });
   }

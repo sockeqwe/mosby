@@ -53,6 +53,10 @@ public class CountriesActivity
     loadData(false);
   }
 
+  @Override protected void onPostCreate(Bundle savedInstanceState) {
+    super.onPostCreate(savedInstanceState);
+  }
+
   public void loadData(boolean pullToRefresh) {
     presenter.loadCountries(pullToRefresh);
   }

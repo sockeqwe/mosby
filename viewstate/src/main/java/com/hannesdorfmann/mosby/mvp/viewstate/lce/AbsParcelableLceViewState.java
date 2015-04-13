@@ -23,8 +23,14 @@ import com.hannesdorfmann.mosby.mvp.viewstate.RestoreableViewState;
 
 /**
  * Extends {@link AbsLceViewState} by implementing {@link
- * RestoreableViewState}. This class can be saved and restored in a bundle. Therefore it can be used
+ * RestoreableViewState}. This class can be saved and restored in a bundle. Therefore it can be
+ * used
  * for Activities and Fragments.
+ *
+ * <p>Please note, that {@link #restoreInstanceState(Bundle)}</p> will create a new copy of this
+ * view state and return that one instead of the current object instance. That's fine and makes
+ * working custom view states much easier. This note is just to inform you that the view state
+ * refrence attached to the view may change during restroing view state.
  *
  * @param <D> the data / model type
  * @param <V> the type of the view
@@ -41,27 +47,14 @@ public abstract class AbsParcelableLceViewState<D, V extends MvpLceView<D>>
     out.putParcelable(KEY_BUNDLE_VIEW_STATE, this);
   }
 
-  @Override public boolean restoreInstanceState(Bundle in) {
+  @Override public AbsParcelableLceViewState<D, V> restoreInstanceState(Bundle in) {
     if (in == null) {
-      return false;
+      return null;
     }
 
-    // Workaround to solve class loader problem
-    AbsParcelableLceViewState<D, V> tmp =
-        (AbsParcelableLceViewState<D, V>) in.getParcelable(KEY_BUNDLE_VIEW_STATE);
-    if (tmp == null){
-      return false;
-    }
-    copyRestoredViewStateInstanceIntoNew(tmp);
-
-    return true;
-  }
-
-  protected void copyRestoredViewStateInstanceIntoNew(AbsParcelableLceViewState<D, V> old){
-    this.loadedData = old.loadedData;
-    this.currentViewState = old.currentViewState;
-    this.exception = old.exception;
-    this.pullToRefresh = old.pullToRefresh;
+    // Workaround to solve class loader problem.
+    // But it returns a copy of the view state and not this viewstate. However, that's ok!
+    return (AbsParcelableLceViewState<D, V>) in.getParcelable(KEY_BUNDLE_VIEW_STATE);
   }
 
   @Override public int describeContents() {

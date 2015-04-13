@@ -17,7 +17,6 @@
 package com.hannesdorfmann.mosby.sample.mail.menu;
 
 import android.os.Parcel;
-import com.hannesdorfmann.mosby.mvp.viewstate.lce.AbsParcelableLceViewState;
 import com.hannesdorfmann.mosby.sample.mail.base.view.viewstate.AuthCastedArrayListViewState;
 import com.hannesdorfmann.mosby.sample.mail.model.account.Account;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Label;
@@ -38,12 +37,6 @@ public class MenuViewState extends AuthCastedArrayListViewState<List<Label>, Men
   @Override protected void readFromParcel(Parcel source) {
     super.readFromParcel(source);
     account = source.readParcelable(Account.class.getClassLoader());
-  }
-
-  @Override protected void copyRestoredViewStateInstanceIntoNew(
-      AbsParcelableLceViewState<List<Label>, MenuView> old) {
-    super.copyRestoredViewStateInstanceIntoNew(old);
-    this.account = ((MenuViewState) old).account;
   }
 
   @Override public void apply(MenuView view, boolean retained) {

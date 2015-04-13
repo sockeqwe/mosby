@@ -8,22 +8,21 @@
       android:id="@+id/scrollView"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:layout_marginTop="@dimen/mail_details_scrollview_margin_top_for_toolbar"
       xmlns:tools="http://schemas.android.com/tools"
       android:fillViewport="true"
       >
 
     <RelativeLayout
+        android:id="@+id/scrollContainer"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/mail_item_padding_left_right"
         android:paddingRight="@dimen/mail_item_padding_left_right"
-        android:paddingTop="@dimen/mail_details_scrollview_padding_top_for_toolbar"
         android:paddingBottom="@dimen/mail_item_padding_left_right"
         >
 
-      <com.makeramen.roundedimageview.RoundedImageView
+      <de.hdodenhof.circleimageview.CircleImageView
           xmlns:app="http://schemas.android.com/apk/res-auto"
           android:id="@+id/senderPic"
           android:layout_width="@dimen/mail_sender_pic_width_height"
@@ -33,9 +32,7 @@
           android:layout_alignParentTop="true"
           android:layout_alignParentLeft="true"
           android:scaleType="centerCrop"
-          app:riv_oval="true"
           android:transitionName="@string/shared_mail_sender_pic"
-          android:background="@color/accent"
           tools:src="@drawable/ted"
           />
 
@@ -105,7 +102,7 @@
           tools:text="22. Apr."
           />
 
-      <com.hannesdorfmann.mosby.sample.mail.ui.event.view.StarView
+      <com.hannesdorfmann.mosby.sample.mail.ui.view.StarView
           android:id="@+id/starButton"
           android:layout_width="24dp"
           android:layout_height="24dp"

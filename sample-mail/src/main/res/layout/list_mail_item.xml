@@ -26,14 +26,13 @@
     android:paddingBottom="@dimen/mail_item_padding_top_bottom"
     >
 
-    <com.makeramen.roundedimageview.RoundedImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/senderPic"
         android:layout_width="@dimen/mail_sender_pic_width_height"
         android:layout_height="@dimen/mail_sender_pic_width_height"
         android:layout_alignParentTop="true"
         android:scaleType="centerCrop"
-        app:riv_oval="true"
         tools:src="@drawable/ted"
         android:layout_marginRight="@dimen/mail_item_padding_left_right"
         />
@@ -53,7 +52,7 @@
         tools:text="25. Apr."
         />
     
-    <com.hannesdorfmann.mosby.sample.mail.ui.event.view.StarView
+    <com.hannesdorfmann.mosby.sample.mail.ui.view.StarView
         android:id="@+id/starButton"
         android:layout_width="26dp"
         android:layout_height="26dp"

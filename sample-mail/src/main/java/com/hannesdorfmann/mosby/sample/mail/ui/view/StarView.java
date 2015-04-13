@@ -1,4 +1,4 @@
-package com.hannesdorfmann.mosby.sample.mail.ui.event.view;
+package com.hannesdorfmann.mosby.sample.mail.ui.view;
 
 import android.annotation.TargetApi;
 import android.content.Context;

@@ -27,7 +27,7 @@ import com.hannesdorfmann.annotatedadapter.annotation.ViewType;
 import com.hannesdorfmann.mosby.sample.mail.R;
 import com.hannesdorfmann.mosby.sample.mail.base.view.ListAdapter;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
-import com.hannesdorfmann.mosby.sample.mail.ui.event.view.StarView;
+import com.hannesdorfmann.mosby.sample.mail.ui.view.StarView;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.List;

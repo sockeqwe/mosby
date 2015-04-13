@@ -16,7 +16,7 @@
 
 package com.hannesdorfmann.mosby.sample.mail.mails;
 
-import com.hannesdorfmann.mosby.sample.mail.base.presenter.RxAuthStarPresenter;
+import com.hannesdorfmann.mosby.sample.mail.base.presenter.RxMailPresenter;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Label;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.MailProvider;
@@ -27,7 +27,7 @@ import javax.inject.Inject;
 /**
  * @author Hannes Dorfmann
  */
-public class MailsPresenter extends RxAuthStarPresenter<MailsView, List<Mail>> {
+public class MailsPresenter extends RxMailPresenter<MailsView, List<Mail>> {
 
   @Inject public MailsPresenter(MailProvider mailProvider, EventBus eventBus) {
     super(mailProvider, eventBus);

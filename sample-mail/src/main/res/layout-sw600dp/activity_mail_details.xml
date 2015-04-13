@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     >
 
 
   <android.support.v7.widget.Toolbar
       android:id="@+id/toolbar"
       android:layout_width="match_parent"
-      android:layout_height="@dimen/abc_action_bar_default_height_material"
+      android:layout_height="120dp"
       android:background="?attr/colorPrimary"
-      android:elevation="4dp"
       >
   </android.support.v7.widget.Toolbar>
 
@@ -20,8 +18,8 @@
       xmlns:android="http://schemas.android.com/apk/res/android"
       android:id="@+id/fragmentContainer"
       android:layout_width="match_parent"
-      android:layout_height="0dp"
-      android:layout_weight="1"
+      android:layout_height="match_parent"
+      android:layout_marginTop="40dp"
       />
 
-</LinearLayout>
+</RelativeLayout>

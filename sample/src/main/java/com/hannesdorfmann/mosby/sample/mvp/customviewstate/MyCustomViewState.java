@@ -38,14 +38,14 @@ public class MyCustomViewState implements RestoreableViewState<MyCustomView> {
     out.putParcelable(KEY_DATA, data);
   }
 
-  @Override public boolean restoreInstanceState(Bundle in) {
+  @Override public RestoreableViewState restoreInstanceState(Bundle in) {
     if (in == null) {
-      return false;
+      return null;
     }
 
     showingA = in.getBoolean(KEY_STATE, true);
     data = in.getParcelable(KEY_DATA);
-    return true;
+    return this;
   }
 
   @Override public void apply(MyCustomView view, boolean retained) {

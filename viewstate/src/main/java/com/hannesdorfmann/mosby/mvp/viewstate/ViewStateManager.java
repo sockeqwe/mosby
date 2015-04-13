@@ -78,11 +78,14 @@ public class ViewStateManager<V extends MvpView> {
     if (savedInstanceState != null
         && viewStateSupport.getViewState() instanceof RestoreableViewState) {
 
-      boolean restoredFromBundle =
+      ViewState restoredViewState =
           ((RestoreableViewState) viewStateSupport.getViewState()).restoreInstanceState(
               savedInstanceState);
 
+      boolean restoredFromBundle = restoredViewState != null;
+
       if (restoredFromBundle) {
+        viewStateSupport.setViewState(restoredViewState);
         retainingInstanceState = false;
         applyViewState = true;
         return true;

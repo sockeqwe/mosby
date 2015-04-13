@@ -10,6 +10,7 @@
 
   <string name="empty_emails">No mails!</string>
 
+  <string name="error_wait_mail_loaded">Please wait until the mail is loaded and retry afterwards</string>
 
   <string name="error_staring_mail">Error starring mail from %s</string>
   <string name="error_unstaring_mail">Error unstarring mail from %s</string>

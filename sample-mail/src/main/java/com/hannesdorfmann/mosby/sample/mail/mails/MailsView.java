@@ -16,14 +16,14 @@
 
 package com.hannesdorfmann.mosby.sample.mail.mails;
 
-import com.hannesdorfmann.mosby.sample.mail.base.view.AuthStarView;
+import com.hannesdorfmann.mosby.sample.mail.base.view.AuthMailView;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
 import java.util.List;
 
 /**
  * @author Hannes Dorfmann
  */
-public interface MailsView extends AuthStarView<List<Mail>> {
+public interface MailsView extends AuthMailView<List<Mail>> {
 
 
 }

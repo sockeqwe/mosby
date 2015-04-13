@@ -44,6 +44,7 @@ public abstract class MvpLceViewStateActivity<CV extends View, M, V extends MvpL
   @Override protected void onPostCreate(Bundle savedInstanceState) {
     super.onPostCreate(savedInstanceState);
     createOrRestoreViewState(savedInstanceState);
+    applyViewState();
   }
 
   /**

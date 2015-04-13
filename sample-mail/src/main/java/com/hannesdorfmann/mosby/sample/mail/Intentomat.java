@@ -20,7 +20,7 @@ public class Intentomat {
     return context.getResources().getBoolean(R.bool.tablet);
   }
 
-  public static void showMailDetails(Context context, Mail mail, Bundle transitionBundle) {
+  public static void showMailDetails(Context context, Mail mail, Bundle activityTransitionBundle) {
 
     Intent i = null;
     if (isTablet(context)) {
@@ -32,7 +32,7 @@ public class Intentomat {
       i.putExtra(DetailsActivity.KEY_MAIL, mail);
     }
 
-    context.startActivity(i);
+    context.startActivity(i, activityTransitionBundle);
   }
 
   public static void showMailsOfLabel(Context context, Label label) {

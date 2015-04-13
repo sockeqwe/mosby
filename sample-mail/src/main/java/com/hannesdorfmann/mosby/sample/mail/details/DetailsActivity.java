@@ -1,5 +1,6 @@
 package com.hannesdorfmann.mosby.sample.mail.details;
 
+import android.annotation.TargetApi;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,9 +21,13 @@ public class DetailsActivity extends MosbyActivity {
 
   @InjectView(R.id.toolbar) Toolbar toolbar;
 
-  @Override protected void onCreate(Bundle savedInstanceState) {
+  @TargetApi(21) @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_mail_details);
+
+    if (isMinApi21()) {
+      postponeEnterTransition();
+    }
 
     toolbar.setNavigationIcon(getBackArrowDrawable());
     toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -40,8 +45,8 @@ public class DetailsActivity extends MosbyActivity {
       Person sender = mail.getSender();
 
       DetailsFragment fragment =
-          new DetailsFragmentBuilder(mail.getId(), sender.getEmail(), sender.getName(),
-              sender.getImageRes(), mail.isStarred()).build();
+          new DetailsFragmentBuilder(mail.getDate().getTime(), mail.getId(), sender.getEmail(), sender.getName(),
+              sender.getImageRes(), mail.isStarred(), mail.getSubject()).build();
 
       getSupportFragmentManager().beginTransaction()
           .replace(R.id.fragmentContainer, fragment)
@@ -49,12 +54,17 @@ public class DetailsActivity extends MosbyActivity {
     }
   }
 
+  @TargetApi(21)
   private Drawable getBackArrowDrawable() {
 
-    if (Build.VERSION.SDK_INT >= 21) {
+    if (isMinApi21()) {
       return getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha, getTheme());
     } else {
       return getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
     }
+  }
+
+  private boolean isMinApi21() {
+    return Build.VERSION.SDK_INT >= 21;
   }
 }

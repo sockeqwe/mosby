@@ -1,8 +1,11 @@
 package com.hannesdorfmann.mosby.sample.mail.details;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.InjectView;
@@ -17,6 +20,7 @@ import com.melnykov.fab.FloatingActionButton;
 import com.melnykov.fab.ObservableScrollView;
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * @author Hannes Dorfmann
@@ -25,9 +29,11 @@ public class DetailsFragment extends AuthFragment<TextView, Mail, DetailsView, D
     implements DetailsView {
 
   @Arg int mailId;
+  @Arg String subject;
   @Arg int senderProfilePic;
   @Arg String senderName;
   @Arg String senderEmail;
+  @Arg long date;
   @Arg boolean starred;
 
   @InjectView(R.id.senderPic) ImageView senderImageView;
@@ -40,6 +46,11 @@ public class DetailsFragment extends AuthFragment<TextView, Mail, DetailsView, D
   @InjectView(R.id.label) View labelView;
   @InjectView(R.id.scrollView) ObservableScrollView scrollView;
 
+
+
+  Format format = new SimpleDateFormat("d. MMM");
+
+  // The loaded data
   private Mail mail;
 
   @Override public AuthViewState<Mail, DetailsView> createViewState() {
@@ -50,14 +61,29 @@ public class DetailsFragment extends AuthFragment<TextView, Mail, DetailsView, D
     return R.layout.fragment_mail_details;
   }
 
-  @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+  @TargetApi(21)
+  @Override public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     replayView.attachToScrollView(scrollView);
 
+
+    subjectView.setText(subject);
     senderImageView.setImageResource(senderProfilePic);
     senderNameView.setText(senderName);
     senderMailView.setText(senderEmail);
     starView.setStarred(starred);
+    dateView.setText(format.format(new Date(date)));
+
+    // Shared element animation
+    if (Build.VERSION.SDK_INT >= 21) {
+      view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+        @Override public boolean onPreDraw() {
+          view.getViewTreeObserver().removeOnPreDrawListener(this);
+          getActivity().startPostponedEnterTransition();
+          return true;
+        }
+      });
+    }
   }
 
   @Override public Mail getData() {
@@ -70,8 +96,6 @@ public class DetailsFragment extends AuthFragment<TextView, Mail, DetailsView, D
 
   @Override public void setData(Mail data) {
     this.mail = data;
-
-    Format format = new SimpleDateFormat("d. MMM");
 
     senderImageView.setImageResource(data.getSender().getImageRes());
     senderNameView.setText(data.getSender().getName());

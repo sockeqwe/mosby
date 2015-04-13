@@ -14,4 +14,12 @@
   <string name="error_staring_mail">Error starring mail from %s</string>
   <string name="error_unstaring_mail">Error unstarring mail from %s</string>
 
+
+  <!-- Shared elements -->
+  <string name="shared_mail_sender_pic">sharedMailSenderPic</string>
+  <string name="shared_mail_subject">sharedMailSubject</string>
+  <string name="shared_mail_date">sharedMailDatePic</string>
+  <string name="shared_mail_star">sharedMailStar</string>
+  <string name="shared_mail_toolbar">sharedMailToolbar</string>
+
 </resources>

@@ -34,6 +34,8 @@
           android:layout_alignParentLeft="true"
           android:scaleType="centerCrop"
           app:riv_oval="true"
+          android:transitionName="@string/shared_mail_sender_pic"
+          android:background="@color/accent"
           tools:src="@drawable/ted"
           />
 
@@ -47,6 +49,7 @@
           android:layout_toLeftOf="@+id/date"
           android:textSize="18sp"
           android:textColor="@color/primary_text"
+          android:transitionName="@string/shared_mail_subject"
           tools:text="Subject Subject Subject"
           />
 
@@ -98,6 +101,7 @@
           android:layout_marginLeft="@dimen/mail_item_padding_left_right"
           android:textSize="14sp"
           android:textColor="@color/secondary_text"
+          android:transitionName="@string/shared_mail_date"
           tools:text="22. Apr."
           />
 
@@ -110,6 +114,7 @@
           android:layout_below="@+id/date"
           android:layout_alignBottom="@+id/label"
           android:src="@drawable/ic_star"
+          android:transitionName="@string/shared_mail_star"
           tools:background="@color/accent"
           />
 

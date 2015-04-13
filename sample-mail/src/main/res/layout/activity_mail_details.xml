@@ -12,6 +12,7 @@
       android:layout_height="@dimen/abc_action_bar_default_height_material"
       android:background="?attr/colorPrimary"
       android:elevation="4dp"
+      android:transitionName="@string/shared_mail_toolbar"
       >
   </android.support.v7.widget.Toolbar>
 

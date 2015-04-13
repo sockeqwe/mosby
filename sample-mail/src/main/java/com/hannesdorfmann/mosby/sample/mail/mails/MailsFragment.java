@@ -1,5 +1,8 @@
 package com.hannesdorfmann.mosby.sample.mail.mails;
 
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
+import android.view.View;
 import android.widget.Toast;
 import com.hannesdorfmann.fragmentargs.annotation.Arg;
 import com.hannesdorfmann.mosby.sample.mail.Intentomat;
@@ -24,7 +27,6 @@ public class MailsFragment
   @Arg Label label;
   @Inject EventBus eventBus;
 
-
   MailsComponent mailsComponent;
 
   @Override protected int getLayoutRes() {
@@ -43,8 +45,18 @@ public class MailsFragment
     presenter.load(b, label);
   }
 
-  @Override public void onMailClicked(Mail mail) {
-    Intentomat.showMailDetails(getActivity(), mail, null );
+  @Override public void onMailClicked(MailsAdapterHolders.MailViewHolder vh, Mail mail) {
+
+    ActivityOptionsCompat options =
+        ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(),
+            Pair.create((View) vh.senderPic, getString(R.string.shared_mail_sender_pic)),
+            Pair.create((View) vh.subject, getString(R.string.shared_mail_subject)),
+            Pair.create((View) vh.date, getString(R.string.shared_mail_date)),
+            Pair.create((View) vh.star, getString(R.string.shared_mail_star)),
+            Pair.create(getActivity().findViewById(R.id.toolbar),
+                getString(R.string.shared_mail_toolbar)));
+
+    Intentomat.showMailDetails(getActivity(), mail, options.toBundle());
   }
 
   @Override public void onMailStarClicked(Mail mail) {

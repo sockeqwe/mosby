@@ -38,7 +38,7 @@ import java.util.List;
 public class MailsAdapter extends ListAdapter<List<Mail>> implements MailsAdapterBinder {
 
   public interface MailClickedListener {
-    public void onMailClicked(Mail mail);
+    public void onMailClicked(MailsAdapterHolders.MailViewHolder vh, Mail mail);
   }
 
   public interface MailStarListner {
@@ -66,7 +66,7 @@ public class MailsAdapter extends ListAdapter<List<Mail>> implements MailsAdapte
     this.starListner = starListener;
   }
 
-  @Override public void bindViewHolder(MailsAdapterHolders.MailViewHolder vh, int position) {
+  @Override public void bindViewHolder(final MailsAdapterHolders.MailViewHolder vh, int position) {
     final Mail mail = items.get(position);
 
     vh.senderPic.setImageResource(mail.getSender().getImageRes());
@@ -89,7 +89,7 @@ public class MailsAdapter extends ListAdapter<List<Mail>> implements MailsAdapte
 
     vh.itemView.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
-        clickListener.onMailClicked(mail);
+        clickListener.onMailClicked(vh, mail);
       }
     });
     vh.star.setOnClickListener(new View.OnClickListener() {

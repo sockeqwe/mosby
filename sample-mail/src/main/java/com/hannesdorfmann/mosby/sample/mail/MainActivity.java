@@ -137,8 +137,8 @@ public class MainActivity extends MosbyActivity {
     rightPane.setVisibility(View.VISIBLE);
     Person sender = mail.getSender();
     DetailsFragment fragment =
-        new DetailsFragmentBuilder(mail.getId(), sender.getEmail(), sender.getName(),
-            sender.getImageRes(), mail.isStarred()).build();
+        new DetailsFragmentBuilder(mail.getDate().getTime(), mail.getId(), sender.getEmail(), sender.getName(),
+            sender.getImageRes(), mail.isStarred(), mail.getSubject()).build();
 
     getSupportFragmentManager().beginTransaction()
         .replace(R.id.rightPane, fragment, FRAGMENT_TAG_DETAILS)

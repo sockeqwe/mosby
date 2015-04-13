@@ -34,13 +34,16 @@ import com.hannesdorfmann.parcelableplease.annotation.ParcelablePlease;
    */
   int imageRes;
 
-  public Person(int id, String name, int imageRes) {
+  String email;
+
+  public Person(int id, String name, String email, int imageRes) {
     this.id = id;
     this.name = name;
     this.imageRes = imageRes;
+    this.email = email;
   }
 
-  private Person(){
+  private Person() {
 
   }
 
@@ -54,6 +57,10 @@ import com.hannesdorfmann.parcelableplease.annotation.ParcelablePlease;
 
   public int getImageRes() {
     return imageRes;
+  }
+
+  public String getEmail() {
+    return email;
   }
 
   @Override public int describeContents() {

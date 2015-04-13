@@ -1,18 +1,13 @@
 package com.hannesdorfmann.mosby.sample.mail.mails;
 
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
-import butterknife.InjectView;
 import com.hannesdorfmann.fragmentargs.annotation.Arg;
+import com.hannesdorfmann.mosby.sample.mail.Intentomat;
 import com.hannesdorfmann.mosby.sample.mail.R;
 import com.hannesdorfmann.mosby.sample.mail.base.view.AuthRefreshRecyclerFragment;
 import com.hannesdorfmann.mosby.sample.mail.base.view.ListAdapter;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Label;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
-import com.hannesdorfmann.mosby.sample.mail.ui.event.ShowMailDetailsEvent;
-import com.hannesdorfmann.mosby.sample.mail.ui.event.view.StarView;
 import de.greenrobot.event.EventBus;
 import java.util.List;
 import javax.inject.Inject;
@@ -49,7 +44,7 @@ public class MailsFragment
   }
 
   @Override public void onMailClicked(Mail mail) {
-    eventBus.post(new ShowMailDetailsEvent(mail));
+    Intentomat.showMailDetails(getActivity(), mail, null );
   }
 
   @Override public void onMailStarClicked(Mail mail) {

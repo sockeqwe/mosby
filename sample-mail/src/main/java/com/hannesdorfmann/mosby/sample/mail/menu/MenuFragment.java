@@ -20,13 +20,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.InjectView;
+import com.hannesdorfmann.mosby.sample.mail.Intentomat;
 import com.hannesdorfmann.mosby.sample.mail.R;
 import com.hannesdorfmann.mosby.sample.mail.base.view.AuthRefreshRecyclerFragment;
 import com.hannesdorfmann.mosby.sample.mail.base.view.ListAdapter;
 import com.hannesdorfmann.mosby.sample.mail.base.view.viewstate.AuthViewState;
 import com.hannesdorfmann.mosby.sample.mail.model.account.Account;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Label;
-import com.hannesdorfmann.mosby.sample.mail.ui.event.ShowMailsOfLabelEvent;
 import de.greenrobot.event.EventBus;
 import java.util.List;
 import javax.inject.Inject;
@@ -41,11 +41,9 @@ public class MenuFragment extends AuthRefreshRecyclerFragment<List<Label>, MenuV
   @InjectView(R.id.name) TextView name;
   @InjectView(R.id.profilePic) ImageView profilePic;
 
-
   @Inject EventBus eventBus;
 
   private MenuComponent menuComponent;
-
 
   @Override protected int getLayoutRes() {
     return R.layout.fragment_menu;
@@ -82,7 +80,7 @@ public class MenuFragment extends AuthRefreshRecyclerFragment<List<Label>, MenuV
   }
 
   @Override protected MenuPresenter createPresenter() {
-      return menuComponent.presenter();
+    return menuComponent.presenter();
   }
 
   @Override public void loadData(boolean pullToRefresh) {
@@ -95,6 +93,6 @@ public class MenuFragment extends AuthRefreshRecyclerFragment<List<Label>, MenuV
   }
 
   @Override public void onLabelClicked(Label label) {
-    eventBus.post(new ShowMailsOfLabelEvent(label));
+    Intentomat.showMailsOfLabel(getActivity(), label);
   }
 }

@@ -33,8 +33,9 @@ public class RandomMailGenerator implements MailGenerator {
   public Random random = new Random();
 
   private String[] hiTed = new String[] {
-      "Hi Ted! ", "Yo Ted! ", "Hi Bro! ", "Hey Bro!", "Dude! ", "Dear Ted! ", "Ted Ted Teddy Bear! ",
-      "Yo Teddy Bear!", "What's up? ", "Hey, what's going on?", "Hello Ted. "
+      "Hi Ted! ", "Yo Ted! ", "Hi Bro! ", "Hey Bro!", "Dude! ", "Dear Ted! ",
+      "Ted Ted Teddy Bear! ", "Yo Teddy Bear!", "What's up? ", "Hey, what's going on?",
+      "Hello Ted. "
   };
 
   private String[] subjects = new String[] {
@@ -177,14 +178,14 @@ public class RandomMailGenerator implements MailGenerator {
       "This is gonna be a long jinx. Like Yom Kippur services long. The only difference is Yom Kippur's a fast and this one's gonna be a slow."
   };
 
-  @Override
-  public List<Mail> generateMails() {
+  @Override public List<Mail> generateMails() {
 
-    Person ted = new Person(1, "Ted Mosby", R.drawable.ted);
-    Person marshall = new Person(2, "Marshall Eriksen", R.drawable.marshall);
-    Person robin = new Person(3, "Robin Scherbatsky", R.drawable.robin);
-    Person lily = new Person(4, "Lily Aldrin", R.drawable.lily);
-    Person barney = new Person(5, "Barney Stinson", R.drawable.barney);
+    Person ted = new Person(1, "Ted Mosby", "ted@mosby.com", R.drawable.ted);
+    Person marshall =
+        new Person(2, "Marshall Eriksen", "marshall@eriksen.com", R.drawable.marshall);
+    Person robin = new Person(3, "Robin Scherbatsky", "robing@metronews1.com", R.drawable.robin);
+    Person lily = new Person(4, "Lily Aldrin", "lily@aldrin.com", R.drawable.lily);
+    Person barney = new Person(5, "Barney Stinson", "barney@legendary.me", R.drawable.barney);
 
     int id = 0;
     int mailSize = 50;
@@ -192,8 +193,6 @@ public class RandomMailGenerator implements MailGenerator {
 
     long day = 24 * 60 * 60 * 1000;
     long timestamp = System.currentTimeMillis();
-
-
 
     for (int i = 0; i < mailSize; i++, timestamp -= day) {
 

@@ -1,6 +1,7 @@
 <resources>
 
   <!-- Base application theme. -->
+
   <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
     <!-- Customize your theme here. -->
     <item name="colorPrimary">@color/primary</item>
@@ -15,7 +16,7 @@
   </style>
 
 
-  <style name="NoActionbarTheme" parent="AppTheme">
+  <style name="LoginTheme" parent="AppTheme">
     <item name="android:windowBackground">@color/primary</item>
   </style>
 

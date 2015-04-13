@@ -1,125 +1,159 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+    >
 
-
-  <LinearLayout
-      android:id="@+id/header"
-      android:orientation="horizontal"
+  <com.melnykov.fab.ObservableScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+      android:id="@+id/scrollView"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:paddingLeft="@dimen/mail_item_padding_left_right"
-      android:paddingRight="@dimen/mail_item_padding_left_right"
-      android:paddingTop="8dp"
-      android:paddingBottom="8dp"
-      android:background="@color/light_grey"
+      android:layout_height="match_parent"
+      android:layout_marginTop="@dimen/mail_details_scrollview_margin_top_for_toolbar"
+      xmlns:tools="http://schemas.android.com/tools"
+      android:fillViewport="true"
       >
 
-    <com.makeramen.roundedimageview.RoundedImageView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/senderPic"
-        android:layout_width="@dimen/mail_sender_pic_width_height"
-        android:layout_height="@dimen/mail_sender_pic_width_height"
-        android:layout_gravity="center_vertical"
-        android:scaleType="centerCrop"
-        app:riv_oval="true"
-        tools:src="@drawable/ted"
-        android:layout_marginRight="@dimen/mail_item_padding_left_right"
-        />
-
-    <TextView
-        android:id="@+id/subject"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:textSize="18sp"
-        android:textColor="@color/primary_text"
-        android:layout_gravity="center_vertical"
-        tools:text="Subject Subject Subject"
-        />
-
-
-  </LinearLayout>
-
-
-  <com.github.clans.fab.FloatingActionButton
-      xmlns:fab="http://schemas.android.com/apk/res-auto"
-      android:id="@+id/replay"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginLeft="16dp"
-      android:layout_below="@+id/header"
-      android:layout_alignParentRight="true"
-      android:layout_marginTop="-25dp"
-      fab:fab_colorNormal="@color/accent"
-      fab:fab_colorPressed="@color/accent"
-      />
-
-
-  <ScrollView
-      android:id="@+id/contentView"
-      android:layout_below="@+id/header"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent">
-
-
     <RelativeLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="@dimen/mail_item_padding_left_right"
+        android:paddingLeft="@dimen/mail_item_padding_left_right"
         android:paddingRight="@dimen/mail_item_padding_left_right"
+        android:paddingTop="@dimen/mail_details_scrollview_padding_top_for_toolbar"
+        android:paddingBottom="@dimen/mail_item_padding_left_right"
         >
 
-
-      <com.hannesdorfmann.mosby.sample.mail.ui.event.view.StarView
-          android:id="@+id/starButton"
-          android:layout_width="24dp"
-          android:layout_height="24dp"
-          android:layout_alignParentLeft="true"
+      <com.makeramen.roundedimageview.RoundedImageView
+          xmlns:app="http://schemas.android.com/apk/res-auto"
+          android:id="@+id/senderPic"
+          android:layout_width="@dimen/mail_sender_pic_width_height"
+          android:layout_height="@dimen/mail_sender_pic_width_height"
+          android:layout_marginRight="@dimen/mail_item_padding_left_right"
+          android:layout_marginTop="@dimen/mail_item_padding_left_right"
           android:layout_alignParentTop="true"
-          android:layout_marginLeft="24dp"
-          android:src="@drawable/ic_star"
-          tools:background="@color/accent"
+          android:layout_alignParentLeft="true"
+          android:scaleType="centerCrop"
+          app:riv_oval="true"
+          tools:src="@drawable/ted"
           />
+
+      <TextView
+          android:id="@+id/subject"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_alignParentTop="true"
+          android:layout_marginTop="@dimen/mail_item_padding_left_right"
+          android:layout_toRightOf="@+id/senderPic"
+          android:layout_toLeftOf="@+id/date"
+          android:textSize="18sp"
+          android:textColor="@color/primary_text"
+          tools:text="Subject Subject Subject"
+          />
+
+      <TextView
+          android:id="@+id/senderName"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@+id/subject"
+          android:layout_toRightOf="@id/senderPic"
+          android:layout_toLeftOf="@+id/label"
+          android:textSize="16sp"
+          android:layout_marginTop="4dp"
+          android:layout_marginBottom="2dp"
+          android:textColor="@color/secondary_text"
+          tools:text="Ted Mosby"
+          />
+
+
+      <View
+          android:id="@+id/label"
+          android:layout_width="20dp"
+          android:layout_height="20dp"
+          android:layout_toLeftOf="@+id/date"
+          android:layout_below="@+id/subject"
+          android:layout_alignBottom="@+id/senderName"
+          android:background="@color/accent"
+          />
+
+        <TextView
+            android:id="@+id/senderMail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/date"
+            android:layout_toRightOf="@+id/senderPic"
+            android:layout_below="@+id/senderName"
+            android:textSize="14sp"
+            android:textColor="@color/secondary_text"
+            tools:text="ted@mosby.com"
+            />
+
 
       <TextView
           android:id="@+id/date"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_alignParentLeft="true"
+          android:layout_alignParentRight="true"
           android:layout_alignParentTop="true"
+          android:layout_marginTop="@dimen/mail_item_padding_left_right"
+          android:layout_marginLeft="@dimen/mail_item_padding_left_right"
           android:textSize="14sp"
-          android:layout_marginLeft="72dp"
           android:textColor="@color/secondary_text"
-          tools:text="22. April 2015 10:30 AM"
+          tools:text="22. Apr."
+          />
+
+      <com.hannesdorfmann.mosby.sample.mail.ui.event.view.StarView
+          android:id="@+id/starButton"
+          android:layout_width="24dp"
+          android:layout_height="24dp"
+          android:layout_alignParentRight="true"
+          android:layout_marginRight="8dp"
+          android:layout_below="@+id/date"
+          android:layout_alignBottom="@+id/label"
+          android:src="@drawable/ic_star"
+          tools:background="@color/accent"
+          />
+
+
+      <View
+          android:id="@+id/separatorLine"
+          android:layout_width="match_parent"
+          android:layout_height="1dp"
+          android:background="@color/divider"
+          android:layout_below="@+id/senderMail"
+          android:layout_marginTop="8dp"
+          android:layout_marginBottom="@dimen/menu_padding_left_right"
           />
 
       <TextView
-          android:id="@+id/message"
+          android:id="@+id/contentView"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_below="@+id/starButton"
-          android:layout_marginTop="24dp"
-          android:paddingLeft="@dimen/mail_item_padding_left_right"
-          android:paddingRight="@dimen/mail_item_padding_left_right"
+          android:layout_below="@+id/separatorLine"
           android:textSize="16sp"
           android:textColor="@color/secondary_text"
           tools:text="Sender Name - "
           />
 
+      <include layout="@layout/view_loading"/>
+      <include layout="@layout/view_error"/>
+      <include layout="@layout/view_authentication_required"/>
+
+
     </RelativeLayout>
+  </com.melnykov.fab.ObservableScrollView>
 
-
-  </ScrollView>
-
-
-  <include layout="@layout/view_loading"/>
-  <include layout="@layout/view_error"/>
-  <include layout="@layout/view_authentication_required"/>
-
+  <com.melnykov.fab.FloatingActionButton
+      xmlns:fab="http://schemas.android.com/apk/res-auto"
+      android:id="@+id/replay"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginRight="16dp"
+      android:layout_marginBottom="16dp"
+      android:layout_alignParentRight="true"
+      android:layout_alignParentBottom="true"
+      android:src="@drawable/ic_reply"
+      fab:fab_colorNormal="@color/accent"
+      fab:fab_colorPressed="@color/accent"
+      />
 
 </RelativeLayout>

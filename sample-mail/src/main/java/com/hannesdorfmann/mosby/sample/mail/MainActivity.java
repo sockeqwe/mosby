@@ -1,32 +1,58 @@
 package com.hannesdorfmann.mosby.sample.mail;
 
+import android.animation.LayoutTransition;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
 import butterknife.InjectView;
 import butterknife.Optional;
 import com.hannesdorfmann.mosby.MosbyActivity;
+import com.hannesdorfmann.mosby.sample.mail.details.DetailsFragment;
 import com.hannesdorfmann.mosby.sample.mail.details.DetailsFragmentBuilder;
+import com.hannesdorfmann.mosby.sample.mail.mails.MailsFragment;
 import com.hannesdorfmann.mosby.sample.mail.mails.MailsFragmentBuilder;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Label;
+import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.MailProvider;
-import com.hannesdorfmann.mosby.sample.mail.ui.event.ShowMailDetailsEvent;
-import com.hannesdorfmann.mosby.sample.mail.ui.event.ShowMailsOfLabelEvent;
-import de.greenrobot.event.EventBus;
-import javax.inject.Inject;
+import com.hannesdorfmann.mosby.sample.mail.model.mail.Person;
+import icepick.Icicle;
 
 public class MainActivity extends MosbyActivity {
 
-  @Inject EventBus eventBus;
+  public static final String KEY_SHOW_ACTION =
+      "com.hannesdorfmann.mosby.sample.mail.MainActivity.SHOW_ACTION";
+
+  public static final String KEY_SHOW_ACTION_MAIL_DETAILS =
+      "com.hannesdorfmann.mosby.sample.mail.MainActivity.SHOW_ACTION_MAIL_DETAILS";
+  public static final String KEY_DATA_MAIL_DETAILS =
+      "com.hannesdorfmann.mosby.sample.mail.MainActivity.MAIL";
+
+  public static final String KEY_SHOW_ACTION_MAILS_OF_LABEL =
+      "com.hannesdorfmann.mosby.sample.mail.MainActivity.SHOW_ACTION_MAILS_OF_LABEL";
+  public static final String KEY_DATA_MAILS_OF_LABEL =
+      "com.hannesdorfmann.mosby.sample.mail.MainActivity.LABEL";
+
+  public static final String FRAGMENT_TAG_DETAILS = "detailsFragmentTag";
+  public static final String FRAGMENT_TAG_LABEL = "labelFragmentTag";
+
+  Fragment detailsFragment;
+  MailsFragment labelFragment;
+
+  @Icicle String toolbarTitle;
 
   @InjectView(R.id.drawerLayout) DrawerLayout drawerLayout;
   @InjectView(R.id.toolbar) Toolbar toolbar;
   @InjectView(R.id.leftPane) ViewGroup leftPane;
   @Optional @InjectView(R.id.rightPane) ViewGroup rightPane;
+  // contains leftPane + rightPane
+  @Optional @InjectView(R.id.paneContainer) ViewGroup paneContainer;
 
   ActionBarDrawerToggle drawerToggle;
 
@@ -34,27 +60,49 @@ public class MainActivity extends MosbyActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-    // UI
-    setSupportActionBar(toolbar);
+    // Toolbar
     drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_open,
         R.string.drawer_close);
     drawerLayout.setDrawerListener(drawerToggle);
+    if (toolbarTitle != null) {
+      toolbar.setTitle(toolbarTitle);
+    }
 
-    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    getSupportActionBar().setHomeButtonEnabled(true);
+    // Check for previous fragments
+    detailsFragment = findDetailsFragment();
+    labelFragment =
+        (MailsFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG_LABEL);
 
-    // Listeners
-    eventBus.register(this);
+    if (detailsFragment != null) {
+      // details fragment available, so make it visible
+      rightPane.setVisibility(View.VISIBLE);
+    }
 
-    // start with
-    if (savedInstanceState == null) {
-      showMails(MailProvider.INBOX_LABEL);
+    if (paneContainer != null) {
+      // Enable animation
+      LayoutTransition transition = new LayoutTransition();
+      transition.enableTransitionType(LayoutTransition.CHANGING);
+      paneContainer.setLayoutTransition(transition);
+    }
+
+    if (labelFragment == null) {
+      // First app start, so start with this
+      showMails(MailProvider.INBOX_LABEL, true);
     }
   }
 
-  @Override protected void onDestroy() {
-    super.onDestroy();
-    eventBus.unregister(this);
+  @Override protected void onNewIntent(Intent intent) {
+    super.onNewIntent(intent);
+    setIntent(intent);
+    String showAction = intent.getStringExtra(KEY_SHOW_ACTION);
+
+    if (KEY_SHOW_ACTION_MAIL_DETAILS.equals(showAction)) {
+      Mail mail = intent.getParcelableExtra(KEY_DATA_MAIL_DETAILS);
+      showMail(mail);
+    } else if (KEY_SHOW_ACTION_MAILS_OF_LABEL.equals(showAction)) {
+      Label label = intent.getParcelableExtra(KEY_DATA_MAILS_OF_LABEL);
+      showMails(label, true);
+    }
   }
 
   @Override protected void onPostCreate(Bundle savedInstanceState) {
@@ -68,34 +116,55 @@ public class MainActivity extends MosbyActivity {
     drawerToggle.onConfigurationChanged(newConfig);
   }
 
-  @Override protected void injectDependencies() {
-    DaggerMainActivityComponent.create().inject(this);
-  }
-
-  public void onEventMainThread(ShowMailsOfLabelEvent event) {
+  private void showMails(Label label, boolean removeDetailsFragment) {
+    toolbarTitle = label.getName();
+    toolbar.setTitle(toolbarTitle);
     if (drawerLayout.isDrawerOpen(Gravity.START)) {
       drawerLayout.closeDrawer(Gravity.START);
     }
-    showMails(event.getLabel());
-  }
-
-  private void showMails(Label label) {
-    getSupportActionBar().setTitle(label.getName());
 
     getSupportFragmentManager().beginTransaction()
-        .replace(R.id.leftPane, new MailsFragmentBuilder(label).build())
+        .replace(R.id.leftPane, new MailsFragmentBuilder(label).build(), FRAGMENT_TAG_LABEL)
+        .commit();
+
+    if (removeDetailsFragment) {
+      removeDetailsFragment();
+    }
+  }
+
+  private void showMail(Mail mail) {
+
+    rightPane.setVisibility(View.VISIBLE);
+    Person sender = mail.getSender();
+    DetailsFragment fragment =
+        new DetailsFragmentBuilder(mail.getId(), sender.getEmail(), sender.getName(),
+            sender.getImageRes(), mail.isStarred()).build();
+
+    getSupportFragmentManager().beginTransaction()
+        .replace(R.id.rightPane, fragment, FRAGMENT_TAG_DETAILS)
         .commit();
   }
 
-  public void onEventMainThread(ShowMailDetailsEvent event) {
-    if (rightPane != null) {
-      // TODO implement
-    } else {
-      getSupportFragmentManager().beginTransaction()
-          .replace(R.id.leftPane, new DetailsFragmentBuilder(event.getMail().getId()).build())
-          .addToBackStack(null)
-          .commit();
-      // TODO animation
+  private Fragment findDetailsFragment() {
+    return getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG_DETAILS);
+  }
+
+  private boolean removeDetailsFragment() {
+    Fragment detailsFragment = findDetailsFragment();
+    if (detailsFragment != null) {
+      rightPane.setVisibility(View.GONE);
+      getSupportFragmentManager().beginTransaction().remove(detailsFragment).commit();
+      return true;
+    }
+
+    return false;
+  }
+
+  @Override public void onBackPressed() {
+
+    // TODO make it easier to read readable
+    if (!removeDetailsFragment()) {
+      super.onBackPressed();
     }
   }
 }

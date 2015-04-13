@@ -9,19 +9,24 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".login.LoginActivity"
             android:label="@string/title_activity_login"
-            android:theme="@style/NoActionbarTheme"
+            android:theme="@style/LoginTheme"
             android:windowSoftInputMode="adjustResize">
         </activity>
+
+        <activity android:name=".details.DetailsActivity"
+            android:label=""/>
     </application>
 
 </manifest>

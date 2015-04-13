@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+  <dimen name="mail_details_scrollview_margin_top_for_toolbar">0dp</dimen>
+  <dimen name="mail_details_scrollview_padding_top_for_toolbar">@dimen/abc_action_bar_default_height_material</dimen>
+</resources>

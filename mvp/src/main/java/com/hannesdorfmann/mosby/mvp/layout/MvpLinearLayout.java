@@ -18,7 +18,7 @@ package com.hannesdorfmann.mosby.mvp.layout;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import butterknife.ButterKnife;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
@@ -29,7 +29,7 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
  * @author Hannes Dorfmann
  * @since 1.1
  */
-public abstract class MvpLinearLayout<P extends MvpPresenter> extends FrameLayout
+public abstract class MvpLinearLayout<P extends MvpPresenter> extends LinearLayout
     implements MvpView {
 
   protected P presenter;

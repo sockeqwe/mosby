@@ -10,15 +10,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.InjectView;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
-import com.hannesdorfmann.mosby.mvp.viewstate.layout.MvpViewStateFrameLayout;
+import com.hannesdorfmann.mosby.mvp.viewstate.layout.MvpViewStateLinearLayout;
 import com.hannesdorfmann.mosby.sample.mail.R;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Label;
+import com.hannesdorfmann.mosby.sample.mail.utils.DimensUtils;
 import java.util.List;
 
 /**
  * @author Hannes Dorfmann
  */
-public class LabelLayout extends MvpViewStateFrameLayout<LabelPresenter> implements LabelView {
+public class LabelLayout extends MvpViewStateLinearLayout<LabelPresenter> implements LabelView {
 
   @InjectView(R.id.labelTextView) TextView labelView;
   @InjectView(R.id.labelLoadingView) View loadingView;
@@ -57,7 +58,7 @@ public class LabelLayout extends MvpViewStateFrameLayout<LabelPresenter> impleme
     popUpWindow = new ListPopupWindow(getContext());
     popUpWindow.setAnchorView(this);
     popUpWindow.setAdapter(adapter);
-
+    popUpWindow.setWidth(DimensUtils.dpToPx(getContext(), 140));
     popUpWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
       @Override public void onDismiss() {
         showLabel();
@@ -71,7 +72,16 @@ public class LabelLayout extends MvpViewStateFrameLayout<LabelPresenter> impleme
     });
   }
 
-  public void setLabel(String label){
+  @Override protected void onDetachedFromWindow() {
+    super.onDetachedFromWindow();
+    popUpWindow.setOnDismissListener(null);
+
+    if (popUpWindow.isShowing()) {
+      popUpWindow.dismiss();
+    }
+  }
+
+  public void setLabel(String label) {
     labelView.setText(label);
   }
 

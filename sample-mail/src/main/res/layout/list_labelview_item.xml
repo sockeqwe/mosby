@@ -39,7 +39,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:maxLines="1"
-        android:layout_marginLeft="32dp"
+        android:layout_marginLeft="16dp"
         android:gravity="left|center_vertical"
         android:textColor="@color/secondary_text"
         android:textSize="16sp"

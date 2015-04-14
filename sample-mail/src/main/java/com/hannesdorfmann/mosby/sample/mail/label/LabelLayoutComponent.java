@@ -7,6 +7,7 @@ import javax.inject.Singleton;
 /**
  * @author Hannes Dorfmann
  */
+
 @Singleton
 @Component(
     modules = MailModule.class

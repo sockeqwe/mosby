@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class LabelAdapter extends SimpleAdapter<List<Label>> {
 
-  private static class ViewHolder {
+  static class ViewHolder {
 
     @InjectView(R.id.name) TextView text;
     @InjectView(R.id.icon) ImageView icon;

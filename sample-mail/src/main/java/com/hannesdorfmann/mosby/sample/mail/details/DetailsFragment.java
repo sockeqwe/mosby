@@ -121,6 +121,11 @@ public class DetailsFragment extends AuthFragment<TextView, Mail, DetailsView, D
     starView.setStarred(data.isStarred());
     dateView.setText(format.format(data.getDate()));
     labelView.setLabel(data.getLabel());
+    labelView.setVisibility(View.VISIBLE);
+    if (!isRestoringViewState()) {
+      labelView.setAlpha(0f);
+      labelView.animate().alpha(1f).setDuration(150).start();
+    }
   }
 
   @Override public void loadData(boolean pullToRefresh) {

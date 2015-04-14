@@ -15,7 +15,8 @@ public class LabelPresenter extends MvpLceRxPresenter<LabelView, List<Label>> {
   private EventBus eventBus;
   private MailProvider mailProvider;
 
-  @Inject public LabelPresenter(EventBus eventBus, MailProvider mailProvider) {
+  @Inject
+  public LabelPresenter(EventBus eventBus, MailProvider mailProvider) {
     this.eventBus = eventBus;
     this.mailProvider = mailProvider;
   }

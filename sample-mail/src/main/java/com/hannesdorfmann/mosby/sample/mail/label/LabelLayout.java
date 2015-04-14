@@ -98,7 +98,11 @@ public class LabelLayout extends MvpViewStateLinearLayout<LabelPresenter> implem
   @Override public void showContent() {
     loadingView.setVisibility(View.GONE);
     this.setClickable(true);
-    popUpWindow.show();
+    post(new Runnable() {
+      @Override public void run() { // Need for rotation changes
+        popUpWindow.show();
+      }
+    });
     getViewState().setStateShowContent(adapter.getItems());
   }
 

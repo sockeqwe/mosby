@@ -9,6 +9,7 @@
     <item name="android:textColorPrimary">@android:color/white</item>
     <item name="android:textColor">@color/primary_text</item>
 
+
     <item name="drawerArrowStyle">@style/ToolbarDrawerToggle</item>
 
     <!-- ProgressBar -->

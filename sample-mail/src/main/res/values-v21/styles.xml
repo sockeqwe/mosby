@@ -3,6 +3,8 @@
 
   <style name="AppTheme" parent="BaseAppTheme">
 
+    <item name="android:colorControlHighlight">@color/primary_light</item>
+
     <item name="android:windowContentTransitions">true</item>
     <item name="android:windowEnterTransition">@android:transition/explode</item>
     <item name="android:windowExitTransition">@android:transition/explode</item>

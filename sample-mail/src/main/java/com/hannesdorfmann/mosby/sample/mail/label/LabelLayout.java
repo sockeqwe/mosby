@@ -2,9 +2,11 @@ package com.hannesdorfmann.mosby.sample.mail.label;
 
 import android.animation.LayoutTransition;
 import android.content.Context;
+import android.os.Parcelable;
 import android.support.v7.widget.ListPopupWindow;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,7 +15,10 @@ import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.layout.MvpViewStateLinearLayout;
 import com.hannesdorfmann.mosby.sample.mail.R;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Label;
+import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
 import com.hannesdorfmann.mosby.sample.mail.utils.DimensUtils;
+import icepick.Icepick;
+import icepick.Icicle;
 import java.util.List;
 
 /**
@@ -23,6 +28,8 @@ public class LabelLayout extends MvpViewStateLinearLayout<LabelPresenter> implem
 
   @InjectView(R.id.labelTextView) TextView labelView;
   @InjectView(R.id.labelLoadingView) View loadingView;
+  @Icicle Mail mail;
+
   ListPopupWindow popUpWindow;
   LabelAdapter adapter;
 
@@ -64,6 +71,15 @@ public class LabelLayout extends MvpViewStateLinearLayout<LabelPresenter> implem
         showLabel();
       }
     });
+    popUpWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+      @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Label label = (Label) adapter.getItem(position);
+        if (!label.getName().equals(mail.getLabel())) {
+          presenter.setLabel(mail, label.getName());
+          popUpWindow.dismiss();
+        }
+      }
+    });
 
     setOnClickListener(new OnClickListener() {
       @Override public void onClick(View v) {
@@ -81,8 +97,9 @@ public class LabelLayout extends MvpViewStateLinearLayout<LabelPresenter> implem
     }
   }
 
-  public void setLabel(String label) {
-    labelView.setText(label);
+  public void setMail(Mail mail) {
+    this.mail = mail;
+    labelView.setText(mail.getLabel());
   }
 
   @Override protected LabelPresenter createPresenter() {
@@ -142,5 +159,24 @@ public class LabelLayout extends MvpViewStateLinearLayout<LabelPresenter> implem
 
   @Override public void onNewViewStateInstance() {
     showLabel();
+  }
+
+  @Override public Parcelable onSaveInstanceState() {
+    return Icepick.saveInstanceState(this, super.onSaveInstanceState());
+  }
+
+  @Override public void onRestoreInstanceState(Parcelable state) {
+    super.onRestoreInstanceState(Icepick.restoreInstanceState(this, state));
+  }
+
+  @Override public void changeLabel(Mail m, String label) {
+    if (m.getId() == this.mail.getId()) {
+      mail.label(label);
+      labelView.setText(label);
+    }
+  }
+
+  @Override public void showChangeLabelFailed(Mail mail, Throwable t) {
+    Toast.makeText(getContext(), R.string.error_label_change_failed, Toast.LENGTH_SHORT).show();
   }
 }

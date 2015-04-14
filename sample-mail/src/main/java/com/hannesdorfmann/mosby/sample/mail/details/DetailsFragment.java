@@ -120,7 +120,7 @@ public class DetailsFragment extends AuthFragment<TextView, Mail, DetailsView, D
     contentView.setText(data.getText() + data.getText() + data.getText() + data.getText());
     starView.setStarred(data.isStarred());
     dateView.setText(format.format(data.getDate()));
-    labelView.setLabel(data.getLabel());
+    labelView.setMail(data);
     labelView.setVisibility(View.VISIBLE);
     if (!isRestoringViewState()) {
       labelView.setAlpha(0f);
@@ -171,13 +171,9 @@ public class DetailsFragment extends AuthFragment<TextView, Mail, DetailsView, D
     showStarErrorToast(R.string.error_unstaring_mail, mail);
   }
 
-  @Override public void changeLabel(int mailId, String label) {
-    if (mailId == this.mailId) {
-      labelView.setLabel(label);
-    }
+  @Override public void changeLabel(Mail mail, String label) {
+    // In a real world app shouldn't be any empty methods.
+    // I'm just to lazy
   }
 
-  @Override public void showChangeLabelFailed(Mail mail, Throwable t) {
-    Toast.makeText(getActivity(), R.string.error_label_change_failed, Toast.LENGTH_SHORT).show();
-  }
 }

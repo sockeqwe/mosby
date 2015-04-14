@@ -126,6 +126,7 @@ public class MailProvider {
     });
   }
 
+
   /**
    * Get a list of mails with the given label
    */
@@ -154,8 +155,7 @@ public class MailProvider {
     });
   }
 
-
-  public Observable<Mail> setLabel(int mailId, final String label){
+  public Observable<Mail> setLabel(int mailId, final String label) {
     return getMail(mailId).map(new Func1<Mail, Mail>() {
       @Override public Mail call(Mail mail) {
         mail.label(label);

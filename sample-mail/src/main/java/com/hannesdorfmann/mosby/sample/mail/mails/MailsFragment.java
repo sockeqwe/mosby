@@ -20,8 +20,6 @@ public class MailsFragment
     extends AuthRefreshRecyclerFragment<List<Mail>, MailsView, MailsPresenter>
     implements MailsView, MailsAdapter.MailClickedListener, MailsAdapter.MailStarListner {
 
-  // TODO highlight selected element
-
   @Arg Label label;
 
   MailsComponent mailsComponent;
@@ -97,11 +95,17 @@ public class MailsFragment
     showStarErrorToast(R.string.error_unstaring_mail, mail);
   }
 
-  @Override public void changeLabel(int mailId, String label) {
-    // TODO implement
-  }
+  @Override public void changeLabel(Mail mail, String labelName) {
 
-  @Override public void showChangeLabelFailed(Mail mail, Throwable t) {
-    // TODO implement
+    MailsAdapter.MailInAdapterResult result = ((MailsAdapter) adapter).findMail(mail);
+    if (result.isFound() && !labelName.equals(this.label.getName())) {
+      // Found in adapter, but label has changed --> remove it
+      adapter.getItems().remove(result.getIndex());
+      adapter.notifyItemRemoved(result.getIndex());
+    } else if (!result.isFound() && labelName.equals(this.label.getName())) {
+      // Not found, but should be added
+      adapter.getItems().add(result.getIndex(), mail);
+      adapter.notifyItemInserted(result.getIndex());
+    }
   }
 }

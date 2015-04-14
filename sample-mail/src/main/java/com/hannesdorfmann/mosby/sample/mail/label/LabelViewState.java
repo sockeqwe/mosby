@@ -11,6 +11,7 @@ public class LabelViewState extends CastedArrayListLceViewState<List<Label>, Lab
 
   private final int STATE_SHOWING_LABEL = 3;
 
+
   public void setStateShowingLabel(){
     currentViewState = STATE_SHOWING_LABEL;
   }

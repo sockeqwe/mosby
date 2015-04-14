@@ -31,8 +31,6 @@ public interface AuthMailView<M> extends AuthView<M> {
 
   public void showUnstaringFailed(Mail mail);
 
-  public void changeLabel(int mailId, String label);
-
-  public void showChangeLabelFailed(Mail mail, Throwable t);
+  public void changeLabel(Mail mail, String label);
 
 }

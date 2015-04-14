@@ -183,7 +183,7 @@ public class RandomMailGenerator implements MailGenerator {
     Person ted = new Person(1, "Ted Mosby", "ted@mosby.com", R.drawable.ted);
     Person marshall =
         new Person(2, "Marshall Eriksen", "marshall@eriksen.com", R.drawable.marshall);
-    Person robin = new Person(3, "Robin Scherbatsky", "robing@metronews1.com", R.drawable.robin);
+    Person robin = new Person(3, "Robin Scherbatsky", "robin@metronews1.com", R.drawable.robin);
     Person lily = new Person(4, "Lily Aldrin", "lily@aldrin.com", R.drawable.lily);
     Person barney = new Person(5, "Barney Stinson", "barney@legendary.me", R.drawable.barney);
 

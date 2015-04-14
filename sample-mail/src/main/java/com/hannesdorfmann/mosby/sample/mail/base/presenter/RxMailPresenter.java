@@ -76,36 +76,6 @@ public class RxMailPresenter<V extends AuthMailView<M>, M> extends RxAuthPresent
     // We want to ensure that this operation finishes
   }
 
-  public void changeMailLabel(final Mail mail, String label) {
-
-    // optimistic propagation
-    final String originalLabel = mail.getLabel();
-    eventBus.post(new MailLabelChangedEvent(mail, label));
-
-    mailProvider.setLabel(mail.getId(), label)
-        .compose(new AndroidSchedulerTransformer<Mail>())
-        .subscribe(new Subscriber<Mail>() {
-          @Override public void onCompleted() {
-          }
-
-          @Override public void onError(Throwable e) {
-
-            // Oops, something went wrong, "undo"
-            eventBus.post(new MailLabelChangedEvent(mail, originalLabel));
-
-            if (isViewAttached()) {
-              getView().showChangeLabelFailed(mail, e);
-            }
-          }
-
-          @Override public void onNext(Mail mail) {
-          }
-        });
-
-    // Note: that we don't cancel this operation in detachView().
-    // We want to ensure that this operation finishes
-  }
-
   public void onEventMainThread(MailStaredEvent event) {
     if (isViewAttached()) {
       getView().markMailAsStared(event.getMailId());
@@ -120,7 +90,7 @@ public class RxMailPresenter<V extends AuthMailView<M>, M> extends RxAuthPresent
 
   public void onEventMainThread(MailLabelChangedEvent event) {
     if (isViewAttached()) {
-      getView().changeLabel(event.getMail().getId(), event.getLabel());
+      getView().changeLabel(event.getMail(), event.getLabel());
     }
   }
 }

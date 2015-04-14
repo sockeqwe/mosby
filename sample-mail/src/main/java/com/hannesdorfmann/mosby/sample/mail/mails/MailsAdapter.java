@@ -27,9 +27,11 @@ import com.hannesdorfmann.annotatedadapter.annotation.ViewType;
 import com.hannesdorfmann.mosby.sample.mail.R;
 import com.hannesdorfmann.mosby.sample.mail.base.view.ListAdapter;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
+import com.hannesdorfmann.mosby.sample.mail.model.mail.MailComparator;
 import com.hannesdorfmann.mosby.sample.mail.ui.view.StarView;
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -114,5 +116,60 @@ public class MailsAdapter extends ListAdapter<List<Mail>> implements MailsAdapte
     }
 
     return null;
+  }
+
+  /**
+   * Searches for an equal mail (compares mail id) in the adapter.
+   *
+   * @return A {@link MailInAdapterResult} containing the information if the adapter contains that
+   * mail and at which index position. If the adapter doesn't contain this mail, then the result
+   * will contain the index position where the mail would be.
+   */
+  public MailInAdapterResult findMail(Mail mail) {
+    int indexPosition = Collections.binarySearch(items, mail, MailComparator.INSTANCE);
+    boolean containsMail = false;
+    Mail found = null;
+    if (indexPosition < 0) {
+      indexPosition = ~indexPosition;
+    } else {
+      found = items.get(indexPosition);
+      if (found.getId() == mail.getId()) {
+        containsMail = true;
+      } else {
+        containsMail = false;
+        found = null;
+      }
+    }
+
+    return new MailInAdapterResult(containsMail, found, indexPosition);
+  }
+
+  /**
+   * Holds the information if the adapter contains a certain mail and at which index position. If
+   * the adapter doesn't contain this mail, then the result will
+   * contain the index position where the mail would be.
+   */
+  public static class MailInAdapterResult {
+    boolean found;
+    Mail adapterMail;
+    int index;
+
+    public MailInAdapterResult(boolean found, Mail adapterMail, int index) {
+      this.found = found;
+      this.adapterMail = adapterMail;
+      this.index = index;
+    }
+
+    public boolean isFound() {
+      return found;
+    }
+
+    public Mail getAdapterMail() {
+      return adapterMail;
+    }
+
+    public int getIndex() {
+      return index;
+    }
   }
 }

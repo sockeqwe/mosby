@@ -65,10 +65,11 @@
           />
 
 
-      <View
+      <com.hannesdorfmann.mosby.sample.mail.label.LabelLayout
           android:id="@+id/label"
-          android:layout_width="20dp"
-          android:layout_height="20dp"
+          android:layout_width="wrap_content"
+          android:layout_height="30dp"
+          android:padding="4dp"
           android:layout_toLeftOf="@+id/date"
           android:layout_below="@+id/subject"
           android:layout_alignBottom="@+id/senderName"

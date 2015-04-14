@@ -16,6 +16,7 @@ import com.hannesdorfmann.mosby.sample.mail.R;
 import com.hannesdorfmann.mosby.sample.mail.base.view.AuthFragment;
 import com.hannesdorfmann.mosby.sample.mail.base.view.viewstate.AuthParcelableDataViewState;
 import com.hannesdorfmann.mosby.sample.mail.base.view.viewstate.AuthViewState;
+import com.hannesdorfmann.mosby.sample.mail.label.LabelLayout;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
 import com.hannesdorfmann.mosby.sample.mail.ui.transition.ExplodeFadeTransition;
 import com.hannesdorfmann.mosby.sample.mail.ui.transition.TextSizeTransition;
@@ -40,6 +41,7 @@ public class DetailsFragment extends AuthFragment<TextView, Mail, DetailsView, D
   @Arg long date;
   @Arg boolean starred;
 
+
   @InjectView(R.id.senderPic) ImageView senderImageView;
   @InjectView(R.id.subject) TextView subjectView;
   @InjectView(R.id.date) TextView dateView;
@@ -48,7 +50,7 @@ public class DetailsFragment extends AuthFragment<TextView, Mail, DetailsView, D
   @InjectView(R.id.senderName) TextView senderNameView;
   @InjectView(R.id.senderMail) TextView senderMailView;
   @InjectView(R.id.separatorLine) View separatorLine;
-  @InjectView(R.id.label) View labelView;
+  @InjectView(R.id.label) LabelLayout labelView;
   @InjectView(R.id.scrollView) ObservableScrollView scrollView;
 
   Format format = new SimpleDateFormat("d. MMM");
@@ -118,6 +120,7 @@ public class DetailsFragment extends AuthFragment<TextView, Mail, DetailsView, D
     contentView.setText(data.getText() + data.getText() + data.getText() + data.getText());
     starView.setStarred(data.isStarred());
     dateView.setText(format.format(data.getDate()));
+    labelView.setLabel(data.getLabel());
   }
 
   @Override public void loadData(boolean pullToRefresh) {
@@ -164,10 +167,12 @@ public class DetailsFragment extends AuthFragment<TextView, Mail, DetailsView, D
   }
 
   @Override public void changeLabel(int mailId, String label) {
-    // TODO implement
+    if (mailId == this.mailId) {
+      labelView.setLabel(label);
+    }
   }
 
   @Override public void showChangeLabelFailed(Mail mail, Throwable t) {
-    // TODO implement
+    Toast.makeText(getActivity(), R.string.error_label_change_failed, Toast.LENGTH_SHORT).show();
   }
 }

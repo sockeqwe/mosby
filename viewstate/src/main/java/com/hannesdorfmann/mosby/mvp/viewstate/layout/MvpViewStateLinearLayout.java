@@ -20,38 +20,38 @@ import android.content.Context;
 import android.os.Parcelable;
 import android.util.AttributeSet;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
-import com.hannesdorfmann.mosby.mvp.layout.MvpFrameLayout;
+import com.hannesdorfmann.mosby.mvp.layout.MvpLinearLayout;
 import com.hannesdorfmann.mosby.mvp.viewstate.RestoreableParcelableViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewStateSupport;
 
 /**
- * A {@link MvpFrameLayout} with ViewState support.
+ * A {@link MvpLinearLayout} with viewstate support
  *
  * @author Hannes Dorfmann
  * @since 1.1
  */
-public abstract class MvpViewStateFrameLayout<P extends MvpPresenter> extends MvpFrameLayout<P>
+public abstract class MvpViewStateLinearLayout<P extends MvpPresenter> extends MvpLinearLayout<P>
     implements ViewStateSupport {
 
   private LayoutViewStateManager viewStateManager = new LayoutViewStateManager(this, this);
   private boolean restoringViewState = false;
   protected RestoreableParcelableViewState viewState;
 
-  public MvpViewStateFrameLayout(Context context) {
+  public MvpViewStateLinearLayout(Context context) {
     super(context);
   }
 
-  public MvpViewStateFrameLayout(Context context, AttributeSet attrs) {
+  public MvpViewStateLinearLayout(Context context, AttributeSet attrs) {
     super(context, attrs);
   }
 
-  public MvpViewStateFrameLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+  public MvpViewStateLinearLayout(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
   }
 
   @TargetApi(21)
-  public MvpViewStateFrameLayout(Context context, AttributeSet attrs, int defStyleAttr,
+  public MvpViewStateLinearLayout(Context context, AttributeSet attrs, int defStyleAttr,
       int defStyleRes) {
     super(context, attrs, defStyleAttr, defStyleRes);
   }

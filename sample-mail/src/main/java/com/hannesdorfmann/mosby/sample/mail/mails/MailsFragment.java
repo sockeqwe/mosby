@@ -11,9 +11,7 @@ import com.hannesdorfmann.mosby.sample.mail.base.view.AuthRefreshRecyclerFragmen
 import com.hannesdorfmann.mosby.sample.mail.base.view.ListAdapter;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Label;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
-import de.greenrobot.event.EventBus;
 import java.util.List;
-import javax.inject.Inject;
 
 /**
  * @author Hannes Dorfmann
@@ -25,7 +23,6 @@ public class MailsFragment
   // TODO highlight selected element
 
   @Arg Label label;
-  @Inject EventBus eventBus;
 
   MailsComponent mailsComponent;
 

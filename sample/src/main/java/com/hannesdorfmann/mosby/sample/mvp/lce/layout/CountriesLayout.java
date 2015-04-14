@@ -2,12 +2,10 @@ package com.hannesdorfmann.mosby.sample.mvp.lce.layout;
 
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.os.Parcelable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -145,21 +143,4 @@ public class CountriesLayout extends MvpViewStateFrameLayout<CountriesPresenter>
     loadData(false);
   }
 
-  @Override protected Parcelable onSaveInstanceState() {
-    Log.e("Test", "saveInstanceState");
-    return super.onSaveInstanceState();
-  }
-
-  @Override protected void onRestoreInstanceState(Parcelable state) {
-    super.onRestoreInstanceState(state);
-    Log.e("Test", "restore");
-  }
-
-  @Override protected void onDetachedFromWindow() {
-    super.onDetachedFromWindow();
-  }
-
-  @Override protected void onAttachedToWindow() {
-    super.onAttachedToWindow();
-  }
 }

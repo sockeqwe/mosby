@@ -26,6 +26,7 @@ import butterknife.InjectView;
 import com.hannesdorfmann.mosby.MosbyActivity;
 import com.hannesdorfmann.mosby.sample.mvp.customviewstate.MyCustomActivity;
 import com.hannesdorfmann.mosby.sample.mvp.lce.activity.CountriesActivity;
+import com.hannesdorfmann.mosby.sample.mvp.lce.layout.CountriesLayoutActivity;
 import com.hannesdorfmann.mosby.sample.mvp.lce.viewstate.CountriesViewStateActivity;
 
 public class MainActivity extends MosbyActivity implements AdapterView.OnItemClickListener {
@@ -54,6 +55,9 @@ public class MainActivity extends MosbyActivity implements AdapterView.OnItemCli
             new Intent(this, FragmentContainerActivity.class).putExtra("fragment",
                 "NotRetainingCountriesFragment")),
         new Demo("ViewsState LceActivity", new Intent(this, CountriesViewStateActivity.class)),
+
+        new Demo("MVP FrameLayout", new Intent(this, CountriesLayoutActivity.class)),
+
         new Demo("Custom ViewsState Fragment",
             new Intent(this, FragmentContainerActivity.class).putExtra("fragment",
                 "CustomViewStateFragment")),

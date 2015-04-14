@@ -32,6 +32,9 @@
 
       <activity android:name=".mvp.customviewstate.MyCustomActivity"
         android:label="Custom ViewState Activity" />
+
+      <activity android:name=".mvp.lce.layout.CountriesLayoutActivity"
+        android:label="MVP Framelayout" />
     </application>
 
 </manifest>

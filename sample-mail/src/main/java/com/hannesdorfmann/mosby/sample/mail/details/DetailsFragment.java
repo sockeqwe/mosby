@@ -6,6 +6,7 @@ import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.transition.TransitionInflater;
 import android.transition.TransitionSet;
 import android.view.View;
@@ -106,7 +107,6 @@ public class DetailsFragment extends AuthFragment<TextView, Mail, DetailsView, D
         .setEnterTransition(
             new ExplodeFadeTransition(senderNameView, senderMailView, separatorLine));
 
-    
     TransitionSet textSizeSet = new TransitionSet();
     textSizeSet.addTransition(
         TransitionInflater.from(getActivity()).inflateTransition(android.R.transition.move));
@@ -210,7 +210,12 @@ public class DetailsFragment extends AuthFragment<TextView, Mail, DetailsView, D
   }
 
   @OnClick(R.id.replay) public void onReplayClicked() {
+
+    ActivityOptionsCompat options =
+        ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), replayView,
+            getString(R.string.shared_write_action));
+
     Intentomat.showWriteMail(getActivity(), mail, (int) replayView.getX(), (int) replayView.getY(),
-        replayView.getWidth());
+        replayView.getWidth(), options.toBundle());
   }
 }

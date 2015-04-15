@@ -24,5 +24,6 @@
   <string name="shared_mail_date">sharedMailDatePic</string>
   <string name="shared_mail_star">sharedMailStar</string>
   <string name="shared_mail_toolbar">sharedMailToolbar</string>
+  <string name="shared_write_action">shareWrtieAction</string>
 
 </resources>

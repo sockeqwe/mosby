@@ -29,7 +29,9 @@
             android:label=""/>
 
         <activity android:name=".write.WriteActivity"
-            android:label=""/>
+            android:theme="@style/WriteTheme"
+            android:label=""
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>

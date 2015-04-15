@@ -45,17 +45,14 @@ public class Intentomat {
   }
 
 
-  public static void showWriteMail(Context context, Mail replayTo, int x, int y, int radius) {
+  public static void showWriteMail(Context context, Mail replayTo, int x, int y, int radius, Bundle activityTransitionBundle) {
 
     Intent i = new Intent(context, WriteActivity.class);
-    i.putExtra(WriteActivity.KEY_REVEAL_START_X, x);
-    i.putExtra(WriteActivity.KEY_REVEAL_START_Y, y);
-    i.putExtra(WriteActivity.KEY_REVEAL_START_RADIUS, radius);
 
     if (replayTo != null) {
       i.putExtra(WriteActivity.KEY_REPLAY_MAIL, replayTo);
     }
 
-    context.startActivity(i);
+    context.startActivity(i, activityTransitionBundle);
   }
 }

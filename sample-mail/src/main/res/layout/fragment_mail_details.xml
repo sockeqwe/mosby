@@ -81,17 +81,17 @@
           android:orientation="horizontal"
           />
 
-        <TextView
-            android:id="@+id/senderMail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/label"
-            android:layout_toRightOf="@+id/senderPic"
-            android:layout_below="@+id/senderName"
-            android:textSize="14sp"
-            android:textColor="@color/secondary_text"
-            tools:text="ted@mosby.com"
-            />
+      <TextView
+          android:id="@+id/senderMail"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_toLeftOf="@+id/label"
+          android:layout_toRightOf="@+id/senderPic"
+          android:layout_below="@+id/senderName"
+          android:textSize="14sp"
+          android:textColor="@color/secondary_text"
+          tools:text="ted@mosby.com"
+          />
 
 
       <TextView
@@ -161,10 +161,10 @@
       android:layout_alignParentBottom="true"
       android:src="@drawable/ic_reply"
       android:visibility="gone"
+      android:transitionName="@string/shared_write_action"
       fab:fab_colorNormal="@color/accent"
       fab:fab_colorPressed="@color/accent_dark"
       fab:fab_colorRipple="@color/accent"
-
       />
 
 </RelativeLayout>

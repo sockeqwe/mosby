@@ -17,6 +17,9 @@
   </style>
 
   <style name="AppTheme" parent="BaseAppTheme">
+  </style>
+
+  <style name="WriteTheme" parent="AppTheme" >
 
   </style>
 

@@ -27,6 +27,9 @@
 
         <activity android:name=".details.DetailsActivity"
             android:label=""/>
+
+        <activity android:name=".write.WriteActivity"
+            android:label=""/>
     </application>
 
 </manifest>

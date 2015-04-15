@@ -44,7 +44,7 @@
           android:layout_marginTop="@dimen/mail_item_padding_left_right"
           android:layout_toRightOf="@+id/senderPic"
           android:layout_toLeftOf="@+id/date"
-          android:textSize="18sp"
+          android:textSize="@dimen/details_subject_text_size"
           android:textColor="@color/primary_text"
           android:transitionName="@string/shared_mail_subject"
           tools:text="Subject Subject Subject"
@@ -160,8 +160,11 @@
       android:layout_alignParentRight="true"
       android:layout_alignParentBottom="true"
       android:src="@drawable/ic_reply"
+      android:visibility="gone"
       fab:fab_colorNormal="@color/accent"
-      fab:fab_colorPressed="@color/accent"
+      fab:fab_colorPressed="@color/accent_dark"
+      fab:fab_colorRipple="@color/accent"
+
       />
 
 </RelativeLayout>

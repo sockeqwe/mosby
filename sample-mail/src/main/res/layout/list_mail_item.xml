@@ -69,7 +69,7 @@
         android:id="@+id/subject"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
+        android:textSize="@dimen/list_mail_item_subject_text_size"
         android:textColor="@color/primary_text"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/senderPic"
@@ -78,6 +78,7 @@
         android:layout_marginBottom="2dp"
         android:ellipsize="end"
         tools:text="Subject Subject Subject"
+        android:transitionName="@string/shared_mail_subject"
         />
 
 

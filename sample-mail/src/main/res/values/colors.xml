@@ -28,6 +28,7 @@
   <color name="divider">#B6B6B6</color>
 
   <color name="accent_dark">#FFA000</color>
+  <color name="accent_ripple">#F7F7F7</color>
 
   <color name="red">#F44336</color>
 

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import com.hannesdorfmann.mosby.sample.mail.details.DetailsActivity;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Label;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
+import com.hannesdorfmann.mosby.sample.mail.write.WriteActivity;
 
 /**
  * A simple helper class that helps to create and launch Intents. It checks if we our device is a
@@ -39,6 +40,21 @@ public class Intentomat {
     Intent i = new Intent(context, MainActivity.class);
     i.putExtra(MainActivity.KEY_SHOW_ACTION, MainActivity.KEY_SHOW_ACTION_MAILS_OF_LABEL);
     i.putExtra(MainActivity.KEY_DATA_MAILS_OF_LABEL, label);
+
+    context.startActivity(i);
+  }
+
+
+  public static void showWriteMail(Context context, Mail replayTo, int x, int y, int radius) {
+
+    Intent i = new Intent(context, WriteActivity.class);
+    i.putExtra(WriteActivity.KEY_REVEAL_START_X, x);
+    i.putExtra(WriteActivity.KEY_REVEAL_START_Y, y);
+    i.putExtra(WriteActivity.KEY_REVEAL_START_RADIUS, radius);
+
+    if (replayTo != null) {
+      i.putExtra(WriteActivity.KEY_REPLAY_MAIL, replayTo);
+    }
 
     context.startActivity(i);
   }

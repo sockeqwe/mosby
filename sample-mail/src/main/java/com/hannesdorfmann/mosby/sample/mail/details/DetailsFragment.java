@@ -1,17 +1,23 @@
 package com.hannesdorfmann.mosby.sample.mail.details;
 
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.transition.TransitionInflater;
 import android.transition.TransitionSet;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.InjectView;
+import butterknife.OnClick;
 import com.hannesdorfmann.fragmentargs.annotation.Arg;
+import com.hannesdorfmann.mosby.sample.mail.Intentomat;
 import com.hannesdorfmann.mosby.sample.mail.R;
 import com.hannesdorfmann.mosby.sample.mail.base.view.AuthFragment;
 import com.hannesdorfmann.mosby.sample.mail.base.view.viewstate.AuthParcelableDataViewState;
@@ -19,6 +25,7 @@ import com.hannesdorfmann.mosby.sample.mail.base.view.viewstate.AuthViewState;
 import com.hannesdorfmann.mosby.sample.mail.label.LabelLayout;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
 import com.hannesdorfmann.mosby.sample.mail.ui.transition.ExplodeFadeTransition;
+import com.hannesdorfmann.mosby.sample.mail.ui.transition.TextSizeEnterSharedElementCallback;
 import com.hannesdorfmann.mosby.sample.mail.ui.transition.TextSizeTransition;
 import com.hannesdorfmann.mosby.sample.mail.ui.view.StarView;
 import com.melnykov.fab.FloatingActionButton;
@@ -40,7 +47,6 @@ public class DetailsFragment extends AuthFragment<TextView, Mail, DetailsView, D
   @Arg String senderEmail;
   @Arg long date;
   @Arg boolean starred;
-
 
   @InjectView(R.id.senderPic) ImageView senderImageView;
   @InjectView(R.id.subject) TextView subjectView;
@@ -82,11 +88,7 @@ public class DetailsFragment extends AuthFragment<TextView, Mail, DetailsView, D
     // Shared element animation
     if (Build.VERSION.SDK_INT >= 21 && !isTablet()) {
 
-      TransitionSet transitionSet = new TransitionSet();
-      transitionSet.addTransition(
-          new ExplodeFadeTransition(senderNameView, senderMailView, separatorLine));
-      transitionSet.addTransition(new TextSizeTransition());
-      getActivity().getWindow().setEnterTransition(transitionSet);
+      initTransitions();
 
       view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
         @Override public boolean onPreDraw() {
@@ -96,6 +98,28 @@ public class DetailsFragment extends AuthFragment<TextView, Mail, DetailsView, D
         }
       });
     }
+  }
+
+  @TargetApi(21) private void initTransitions() {
+
+    getActivity().getWindow()
+        .setEnterTransition(
+            new ExplodeFadeTransition(senderNameView, senderMailView, separatorLine));
+
+    
+    TransitionSet textSizeSet = new TransitionSet();
+    textSizeSet.addTransition(
+        TransitionInflater.from(getActivity()).inflateTransition(android.R.transition.move));
+    TextSizeTransition textSizeTransition = new TextSizeTransition();
+    textSizeTransition.addTarget(R.id.subject);
+    textSizeTransition.addTarget(getString(R.string.shared_mail_subject));
+
+    textSizeSet.addTransition(textSizeTransition);
+    textSizeSet.setOrdering(TransitionSet.ORDERING_TOGETHER);
+
+    getActivity().getWindow().setSharedElementEnterTransition(textSizeSet);
+    getActivity().setEnterSharedElementCallback(
+        new TextSizeEnterSharedElementCallback(getActivity()));
   }
 
   private boolean isTablet() {
@@ -122,9 +146,18 @@ public class DetailsFragment extends AuthFragment<TextView, Mail, DetailsView, D
     dateView.setText(format.format(data.getDate()));
     labelView.setMail(data);
     labelView.setVisibility(View.VISIBLE);
+    replayView.setVisibility(View.VISIBLE);
+
+    // Animate only if not restoring
     if (!isRestoringViewState()) {
       labelView.setAlpha(0f);
       labelView.animate().alpha(1f).setDuration(150).start();
+
+      PropertyValuesHolder holderX = PropertyValuesHolder.ofFloat("scaleX", 0, 1);
+      PropertyValuesHolder holderY = PropertyValuesHolder.ofFloat("scaleY", 0, 1);
+      ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(replayView, holderX, holderY);
+      animator.setInterpolator(new OvershootInterpolator());
+      animator.start();
     }
   }
 
@@ -176,4 +209,8 @@ public class DetailsFragment extends AuthFragment<TextView, Mail, DetailsView, D
     // I'm just to lazy
   }
 
+  @OnClick(R.id.replay) public void onReplayClicked() {
+    Intentomat.showWriteMail(getActivity(), mail, (int) replayView.getX(), (int) replayView.getY(),
+        replayView.getWidth());
+  }
 }

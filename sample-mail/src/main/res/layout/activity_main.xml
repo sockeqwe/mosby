@@ -19,7 +19,7 @@
         android:colorControlNormal="@color/white"
         />
     <!-- The main content view -->
-    <include layout="@layout/main_split_pane" />
+    <include layout="@layout/merge_main_split_pane" />
 
   </LinearLayout>
 

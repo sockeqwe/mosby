@@ -20,7 +20,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.InjectView;
-import com.hannesdorfmann.mosby.sample.mail.Intentomat;
+import com.hannesdorfmann.mosby.sample.mail.IntentStarter;
 import com.hannesdorfmann.mosby.sample.mail.R;
 import com.hannesdorfmann.mosby.sample.mail.base.view.AuthRefreshRecyclerFragment;
 import com.hannesdorfmann.mosby.sample.mail.base.view.ListAdapter;
@@ -93,6 +93,6 @@ public class MenuFragment extends AuthRefreshRecyclerFragment<List<Label>, MenuV
   }
 
   @Override public void onLabelClicked(Label label) {
-    Intentomat.showMailsOfLabel(getActivity(), label);
+    IntentStarter.showMailsOfLabel(getActivity(), label);
   }
 }

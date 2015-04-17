@@ -64,28 +64,26 @@ public class MailProviderTest {
     }
   }
 
-  @Test
-  public void getMailById(){
+  @Test public void getMailById() {
 
     final AtomicBoolean mailFound = new AtomicBoolean(false);
     final int id = 1;
-      mailProvider.getMail(id).subscribe(new Subscriber<Mail>() {
-        @Override public void onCompleted() {
+    mailProvider.getMail(id).subscribe(new Subscriber<Mail>() {
+      @Override public void onCompleted() {
 
-        }
+      }
 
-        @Override public void onError(Throwable e) {
-          Assert.fail("Could not find mail with the id = " + id);
-        }
+      @Override public void onError(Throwable e) {
+        Assert.fail("Could not find mail with the id = " + id);
+      }
 
-        @Override public void onNext(Mail mail) {
-          Assert.assertEquals(id, mail.getId());
-          mailFound.set(true);
-        }
-      });
+      @Override public void onNext(Mail mail) {
+        Assert.assertEquals(id, mail.getId());
+        mailFound.set(true);
+      }
+    });
 
-   Assert.assertTrue(mailFound.get());
-
+    Assert.assertTrue(mailFound.get());
 
     // id not exists
 
@@ -101,14 +99,14 @@ public class MailProviderTest {
       }
 
       @Override public void onNext(Mail mail) {
-        Assert.fail("A mail with id = " + id+" found, but a mail with this id should not exist");
+        Assert.fail("A mail with id = " + id + " found, but a mail with this id should not exist");
       }
     });
 
     Assert.assertTrue(errorThrown.get());
   }
 
-  @Test public void starMail(){
+  @Test public void starMail() {
     final AtomicBoolean starredMail = new AtomicBoolean(false);
     final int id = 1;
     mailProvider.starMail(id, true).subscribe(new Subscriber<Mail>() {
@@ -129,7 +127,6 @@ public class MailProviderTest {
     });
 
     Assert.assertTrue(starredMail.get());
-
 
     final AtomicBoolean errorThrown = new AtomicBoolean(false);
     mailProvider.starMail(-1, true).subscribe(new Subscriber<Mail>() {
@@ -174,7 +171,6 @@ public class MailProviderTest {
 
     Assert.assertTrue(unStaredMail.get());
 
-
     final AtomicBoolean unstarErrorThrown = new AtomicBoolean(false);
     mailProvider.getMail(-1).subscribe(new Subscriber<Mail>() {
       @Override public void onCompleted() {
@@ -196,9 +192,7 @@ public class MailProviderTest {
     Assert.assertTrue(unstarErrorThrown.get());
   }
 
-
-  @Test
-  public void changeLabel(){
+  @Test public void changeLabel() {
     mailProvider.getMail(1).subscribe(new Action1<Mail>() {
       @Override public void call(Mail mail) {
 
@@ -222,5 +216,40 @@ public class MailProviderTest {
         Assert.assertTrue(changed.get());
       }
     });
+  }
+
+  @Test public void createMail() {
+    final Mail mail = new Mail();
+    mail.id(-1);
+
+    final int id = mailProvider.getLastMailId();
+    final AtomicBoolean successCalled = new AtomicBoolean(false);
+
+    mailProvider.addMailWithDelay(mail).subscribe(new Subscriber<Mail>() {
+      @Override public void onCompleted() {
+
+      }
+
+      @Override public void onError(Throwable e) {
+        e.printStackTrace();
+        Assert.fail("error occcurred");
+      }
+
+      @Override public void onNext(Mail created) {
+        Assert.assertEquals(mail, created);
+        Assert.assertEquals(created.getId(), id + 1);
+
+        successCalled.set(true);
+
+        mailProvider.getMail(id).subscribe(new Action1<Mail>() {
+          @Override public void call(Mail queried) {
+
+            Assert.assertEquals(queried.getId(), id);
+          }
+        });
+      }
+    });
+
+    Assert.assertTrue(successCalled.get());
   }
 }

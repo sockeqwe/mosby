@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -14,7 +14,8 @@
       />
 
   <ScrollView android:layout_width="match_parent"
-      android:layout_height="match_parent">
+      android:layout_height="match_parent"
+      android:layout_below="@+id/toolbar">
 
     <RelativeLayout android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -49,7 +50,6 @@
             android:id="@+id/subject"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword"
             android:hint="Subject"
             android:layout_marginTop="@dimen/space_login_form"
             android:textCursorDrawable="@drawable/text_cursor"
@@ -99,4 +99,27 @@
     </RelativeLayout>
   </ScrollView>
 
-</LinearLayout>
+
+  <FrameLayout
+      android:id="@+id/loadingOverlay"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:background="#A0424242"
+      android:visibility="gone">
+
+      <include layout="@layout/view_loading" />
+
+  </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/authOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#A0424242"
+        android:visibility="gone">
+
+        <include layout="@layout/view_authentication_required" />
+
+    </FrameLayout>
+
+</RelativeLayout>

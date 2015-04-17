@@ -2,9 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.hannesdorfmann.mosby.sample.mail" >
 
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
@@ -32,6 +34,18 @@
             android:theme="@style/WriteTheme"
             android:label=""
             android:windowSoftInputMode="adjustResize" />
+
+        <service android:name=".model.mail.service.SendMailService"
+            android:exported="false" />
+
+        <service android:name=".model.mail.service.GcmFakeIntentService"
+            android:exported="false" />
+
+        <receiver android:name=".model.mail.receiver.MailReceiver">
+            <intent-filter>
+                <action android:name="com.hannesdorfmann.mosby.sample.mail.RECEIVE" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

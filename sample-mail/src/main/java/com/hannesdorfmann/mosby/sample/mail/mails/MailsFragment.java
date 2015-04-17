@@ -1,16 +1,24 @@
 package com.hannesdorfmann.mosby.sample.mail.mails;
 
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.view.View;
+import android.view.animation.OvershootInterpolator;
 import android.widget.Toast;
+import butterknife.InjectView;
+import butterknife.OnClick;
 import com.hannesdorfmann.fragmentargs.annotation.Arg;
-import com.hannesdorfmann.mosby.sample.mail.Intentomat;
+import com.hannesdorfmann.mosby.sample.mail.IntentStarter;
 import com.hannesdorfmann.mosby.sample.mail.R;
 import com.hannesdorfmann.mosby.sample.mail.base.view.AuthRefreshRecyclerFragment;
 import com.hannesdorfmann.mosby.sample.mail.base.view.ListAdapter;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Label;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
+import com.melnykov.fab.FloatingActionButton;
 import java.util.List;
 
 /**
@@ -21,6 +29,8 @@ public class MailsFragment
     implements MailsView, MailsAdapter.MailClickedListener, MailsAdapter.MailStarListner {
 
   @Arg Label label;
+
+  @InjectView(R.id.createMail) FloatingActionButton createMailButton;
 
   MailsComponent mailsComponent;
 
@@ -51,7 +61,7 @@ public class MailsFragment
             Pair.create(getActivity().findViewById(R.id.toolbar),
                 getString(R.string.shared_mail_toolbar)));
 
-    Intentomat.showMailDetails(getActivity(), mail, options.toBundle());
+    IntentStarter.showMailDetails(getActivity(), mail, options.toBundle());
   }
 
   @Override public void onMailStarClicked(Mail mail) {
@@ -107,5 +117,48 @@ public class MailsFragment
       adapter.getItems().add(result.getIndex(), mail);
       adapter.notifyItemInserted(result.getIndex());
     }
+  }
+
+  @Override public void showContent() {
+    super.showContent();
+    if (createMailButton.getVisibility() != View.VISIBLE) {
+      createMailButton.setVisibility(View.VISIBLE);
+
+      if (!isRestoringViewState()) {
+        PropertyValuesHolder holderX = PropertyValuesHolder.ofFloat("scaleX", 0, 1);
+        PropertyValuesHolder holderY = PropertyValuesHolder.ofFloat("scaleY", 0, 1);
+        ObjectAnimator animator =
+            ObjectAnimator.ofPropertyValuesHolder(createMailButton, holderX, holderY);
+        animator.setInterpolator(new OvershootInterpolator());
+        animator.start();
+      }
+    }
+  }
+
+  @Override public void showLoading(boolean pullToRefresh) {
+    super.showLoading(pullToRefresh);
+    if (!pullToRefresh) {
+      createMailButton.setVisibility(View.GONE);
+    }
+  }
+
+  @Override public void showError(Throwable e, boolean pullToRefresh) {
+    super.showError(e, pullToRefresh);
+    if (!pullToRefresh) {
+      createMailButton.setVisibility(View.GONE);
+    }
+  }
+
+  @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
+    createMailButton.attachToRecyclerView(recyclerView);
+  }
+
+  @OnClick(R.id.createMail) public void onCreateMailClicked() {
+    ActivityOptionsCompat options =
+        ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), createMailButton,
+            getString(R.string.shared_write_action));
+
+    IntentStarter.showWriteMail(getActivity(), null, options.toBundle());
   }
 }

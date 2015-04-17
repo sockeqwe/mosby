@@ -7,10 +7,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.transition.Explode;
 import android.transition.TransitionInflater;
 import android.transition.TransitionSet;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.Window;
 import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,14 +20,14 @@ import android.widget.Toast;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import com.hannesdorfmann.fragmentargs.annotation.Arg;
-import com.hannesdorfmann.mosby.sample.mail.Intentomat;
+import com.hannesdorfmann.mosby.sample.mail.IntentStarter;
 import com.hannesdorfmann.mosby.sample.mail.R;
 import com.hannesdorfmann.mosby.sample.mail.base.view.AuthFragment;
 import com.hannesdorfmann.mosby.sample.mail.base.view.viewstate.AuthParcelableDataViewState;
 import com.hannesdorfmann.mosby.sample.mail.base.view.viewstate.AuthViewState;
 import com.hannesdorfmann.mosby.sample.mail.label.LabelLayout;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
-import com.hannesdorfmann.mosby.sample.mail.ui.transition.ExplodeFadeTransition;
+import com.hannesdorfmann.mosby.sample.mail.ui.transition.ExplodeFadeEnterTransition;
 import com.hannesdorfmann.mosby.sample.mail.ui.transition.TextSizeEnterSharedElementCallback;
 import com.hannesdorfmann.mosby.sample.mail.ui.transition.TextSizeTransition;
 import com.hannesdorfmann.mosby.sample.mail.ui.view.StarView;
@@ -103,9 +105,12 @@ public class DetailsFragment extends AuthFragment<TextView, Mail, DetailsView, D
 
   @TargetApi(21) private void initTransitions() {
 
-    getActivity().getWindow()
-        .setEnterTransition(
-            new ExplodeFadeTransition(senderNameView, senderMailView, separatorLine));
+    Window window = getActivity().getWindow();
+    window.setEnterTransition(
+        new ExplodeFadeEnterTransition(senderNameView, senderMailView, separatorLine));
+    window.setExitTransition(new Explode());
+    window.setReenterTransition(new Explode());
+    window.setReturnTransition(new Explode());
 
     TransitionSet textSizeSet = new TransitionSet();
     textSizeSet.addTransition(
@@ -117,7 +122,7 @@ public class DetailsFragment extends AuthFragment<TextView, Mail, DetailsView, D
     textSizeSet.addTransition(textSizeTransition);
     textSizeSet.setOrdering(TransitionSet.ORDERING_TOGETHER);
 
-    getActivity().getWindow().setSharedElementEnterTransition(textSizeSet);
+    window.setSharedElementEnterTransition(textSizeSet);
     getActivity().setEnterSharedElementCallback(
         new TextSizeEnterSharedElementCallback(getActivity()));
   }
@@ -215,7 +220,6 @@ public class DetailsFragment extends AuthFragment<TextView, Mail, DetailsView, D
         ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), replayView,
             getString(R.string.shared_write_action));
 
-    Intentomat.showWriteMail(getActivity(), mail, (int) replayView.getX(), (int) replayView.getY(),
-        replayView.getWidth(), options.toBundle());
+    IntentStarter.showWriteMail(getActivity(), mail, options.toBundle());
   }
 }

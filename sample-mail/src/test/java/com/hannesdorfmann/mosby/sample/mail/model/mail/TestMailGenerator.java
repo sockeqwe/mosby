@@ -48,4 +48,8 @@ class TestMailGenerator implements MailGenerator {
 
     return mailsList;
   }
+
+  @Override public Mail generateResponseMail(String senderMail) {
+    return null;
+  }
 }

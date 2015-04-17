@@ -16,7 +16,6 @@
 
 package com.hannesdorfmann.mosby.sample.mail.model.mail;
 
-import com.hannesdorfmann.mosby.sample.mail.R;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -180,13 +179,6 @@ public class RandomMailGenerator implements MailGenerator {
 
   @Override public List<Mail> generateMails() {
 
-    Person ted = new Person(1, "Ted Mosby", "ted@mosby.com", R.drawable.ted);
-    Person marshall =
-        new Person(2, "Marshall Eriksen", "marshall@eriksen.com", R.drawable.marshall);
-    Person robin = new Person(3, "Robin Scherbatsky", "robin@metronews1.com", R.drawable.robin);
-    Person lily = new Person(4, "Lily Aldrin", "lily@aldrin.com", R.drawable.lily);
-    Person barney = new Person(5, "Barney Stinson", "barney@legendary.me", R.drawable.barney);
-
     int id = 0;
     int mailSize = 50;
     List<Mail> mails = new ArrayList<>(mailSize);
@@ -197,22 +189,22 @@ public class RandomMailGenerator implements MailGenerator {
     for (int i = 0; i < mailSize; i++, timestamp -= day) {
 
       String quotes[] = barneyQuotes;
-      Person sender = barney;
+      Person sender = Person.BARNEY;
 
       switch (i % 5) {
 
         case 1:
-          sender = lily;
+          sender = Person.LILY;
           quotes = lilyQuotes;
           break;
 
         case 3:
-          sender = marshall;
+          sender = Person.MARSHALL;
           quotes = marshallQuotes;
           break;
 
         case 4:
-          sender = robin;
+          sender = Person.ROBIN;
           quotes = robinQuotes;
           break;
 
@@ -233,7 +225,7 @@ public class RandomMailGenerator implements MailGenerator {
           .date(new Date(timestamp))
           .label(label)
           .read((i % 6) != random.nextInt(6))
-          .receiver(ted)
+          .receiver(Person.TED)
           .sender(sender)
           .subject(randomString(subjects))
           .text(generateMsg(quotes)));
@@ -282,5 +274,35 @@ public class RandomMailGenerator implements MailGenerator {
     }
 
     return message.toString();
+  }
+
+  @Override public Mail generateResponseMail(String senderMail) {
+
+    String quotes[] = null;
+    Person sender = null;
+
+    if (senderMail.equals(Person.BARNEY.getEmail())) {
+      sender = Person.BARNEY;
+      quotes = barneyQuotes;
+    } else if (senderMail.equals(Person.LILY.getEmail())) {
+      quotes = lilyQuotes;
+      sender = Person.LILY;
+    } else if (senderMail.equals(Person.MARSHALL.getEmail())) {
+      quotes = marshallQuotes;
+      sender = Person.MARSHALL;
+    } else if (senderMail.equals(Person.ROBIN.getEmail())) {
+      quotes = robinQuotes;
+      sender = Person.ROBIN;
+    } else {
+      return null;
+    }
+
+    return new Mail().id(0)
+        .date(new Date())
+        .read(false)
+        .receiver(Person.TED)
+        .sender(sender)
+        .subject(randomString(subjects))
+        .text(generateMsg(quotes));
   }
 }

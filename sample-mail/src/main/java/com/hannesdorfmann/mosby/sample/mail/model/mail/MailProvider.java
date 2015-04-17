@@ -22,6 +22,7 @@ import com.hannesdorfmann.mosby.sample.mail.model.account.NotAuthenticatedExcept
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import rx.Observable;
 import rx.functions.Action2;
 import rx.functions.Func0;
@@ -36,6 +37,7 @@ public class MailProvider {
   public static int authExceptionEach = 15;
   public static int errorEach = 5;
   private int counter = 0;
+  private AtomicInteger lastId;
 
   private AccountManager accountManager;
   private List<Mail> mails;
@@ -47,6 +49,7 @@ public class MailProvider {
   public MailProvider(AccountManager accountManager, MailGenerator genrator) {
     this.accountManager = accountManager;
     mails = genrator.generateMails();
+    lastId = new AtomicInteger(mails.get(mails.size() - 1).getId());
   }
 
   /**
@@ -126,7 +129,6 @@ public class MailProvider {
     });
   }
 
-
   /**
    * Get a list of mails with the given label
    */
@@ -151,6 +153,37 @@ public class MailProvider {
       @Override public Mail call(Mail mail) {
         mail.setStarred(star);
         return mail;
+      }
+    });
+  }
+
+  /**
+   * Creates and saves a new mail
+   */
+  public Observable<Mail> addMailWithDelay(final Mail mail) {
+    return Observable.defer(new Func0<Observable<Mail>>() {
+      @Override public Observable<Mail> call() {
+
+        delay();
+        Observable o = checkExceptions();
+        if (o != null) {
+          return o;
+        }
+        return Observable.just(mail);
+      }
+    }).flatMap(new Func1<Mail, Observable<Mail>>() {
+      @Override public Observable<Mail> call(Mail mail) {
+        return addMail(mail);
+      }
+    });
+  }
+
+  public Observable<Mail> addMail(final Mail mail) {
+    return Observable.defer(new Func0<Observable<Mail>>() {
+      @Override public Observable<Mail> call() {
+        mail.id(lastId.incrementAndGet());
+        mails.add(mail);
+        return Observable.just(mail);
       }
     });
   }
@@ -219,5 +252,9 @@ public class MailProvider {
     }
 
     return null;
+  }
+
+  int getLastMailId() {
+    return lastId.get();
   }
 }

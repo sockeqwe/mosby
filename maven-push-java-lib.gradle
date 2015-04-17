@@ -101,6 +101,7 @@ afterEvaluate { project ->
     sign configurations.archives
   }
 
+  /*
   task javadocJar(type: Jar) {
     classifier = 'javadoc'
     from javadoc
@@ -115,4 +116,5 @@ afterEvaluate { project ->
     archives javadocJar
     archives sourceJar
   }
+  */
 }

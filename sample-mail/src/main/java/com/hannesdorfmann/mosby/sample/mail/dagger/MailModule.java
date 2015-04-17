@@ -20,6 +20,7 @@ import com.hannesdorfmann.mosby.mvp.rx.lce.scheduler.AndroidSchedulerTransformer
 import com.hannesdorfmann.mosby.mvp.rx.lce.scheduler.SchedulerTransformer;
 import com.hannesdorfmann.mosby.sample.mail.model.account.AccountManager;
 import com.hannesdorfmann.mosby.sample.mail.model.account.DefaultAccountManager;
+import com.hannesdorfmann.mosby.sample.mail.model.mail.MailGenerator;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.MailProvider;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.RandomMailGenerator;
 import dagger.Module;
@@ -33,9 +34,10 @@ import javax.inject.Singleton;
 @Module public class MailModule {
 
   // Singletons
+  private static MailGenerator generator = new RandomMailGenerator();
   private static AccountManager accountManager = new DefaultAccountManager();
   private static MailProvider mailProvider =
-      new MailProvider(accountManager, new RandomMailGenerator());
+      new MailProvider(accountManager, generator);
 
   @Singleton @Provides public AccountManager providesAccountManager() {
     return accountManager;
@@ -51,5 +53,9 @@ import javax.inject.Singleton;
 
   @Singleton @Provides public MailProvider providesMailProvider() {
     return mailProvider;
+  }
+
+  @Singleton @Provides public MailGenerator providesMailGenerator(){
+    return generator;
   }
 }

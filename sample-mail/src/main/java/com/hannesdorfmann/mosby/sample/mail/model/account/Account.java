@@ -19,6 +19,7 @@ package com.hannesdorfmann.mosby.sample.mail.model.account;
 import android.os.Parcel;
 import android.os.Parcelable;
 import com.hannesdorfmann.mosby.sample.mail.R;
+import com.hannesdorfmann.mosby.sample.mail.model.mail.Person;
 import com.hannesdorfmann.parcelableplease.annotation.ParcelablePlease;
 
 /**
@@ -27,7 +28,7 @@ import com.hannesdorfmann.parcelableplease.annotation.ParcelablePlease;
 @ParcelablePlease public class Account implements Parcelable {
 
   String name = "Ted Mosby";
-  String email = "ted@mosby.com";
+  String email = Person.MAIL_TED;
   int imageRes = R.drawable.ted;
 
   public String getName() {

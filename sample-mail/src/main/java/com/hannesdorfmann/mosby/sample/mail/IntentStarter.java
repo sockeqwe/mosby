@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import com.hannesdorfmann.mosby.sample.mail.details.DetailsActivity;
+import com.hannesdorfmann.mosby.sample.mail.login.LoginActivity;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Label;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
+import com.hannesdorfmann.mosby.sample.mail.model.mail.service.SendMailService;
 import com.hannesdorfmann.mosby.sample.mail.write.WriteActivity;
 
 /**
@@ -15,7 +17,7 @@ import com.hannesdorfmann.mosby.sample.mail.write.WriteActivity;
  * @author Hannes Dorfmann
  */
 // TODO make it injectable with dagger
-public class Intentomat {
+public class IntentStarter {
 
   private static boolean isTablet(Context context) {
     return context.getResources().getBoolean(R.bool.tablet);
@@ -29,11 +31,16 @@ public class Intentomat {
       i.putExtra(MainActivity.KEY_SHOW_ACTION, MainActivity.KEY_SHOW_ACTION_MAIL_DETAILS);
       i.putExtra(MainActivity.KEY_DATA_MAIL_DETAILS, mail);
     } else {
-      i = new Intent(context, DetailsActivity.class);
-      i.putExtra(DetailsActivity.KEY_MAIL, mail);
+      i = getShowMailInNewActivityIntent(context, mail);
     }
 
     context.startActivity(i, activityTransitionBundle);
+  }
+
+  public static Intent getShowMailInNewActivityIntent(Context context, Mail mail){
+    Intent i = new Intent(context, DetailsActivity.class);
+    i.putExtra(DetailsActivity.KEY_MAIL, mail);
+    return i;
   }
 
   public static void showMailsOfLabel(Context context, Label label) {
@@ -44,8 +51,8 @@ public class Intentomat {
     context.startActivity(i);
   }
 
-
-  public static void showWriteMail(Context context, Mail replayTo, int x, int y, int radius, Bundle activityTransitionBundle) {
+  public static void showWriteMail(Context context, Mail replayTo,
+      Bundle activityTransitionBundle) {
 
     Intent i = new Intent(context, WriteActivity.class);
 
@@ -54,5 +61,15 @@ public class Intentomat {
     }
 
     context.startActivity(i, activityTransitionBundle);
+  }
+
+  public static void showAuthentication(Context context) {
+    context.startActivity(new Intent(context, LoginActivity.class));
+  }
+
+  public static void sendMailViaService(Context context, Mail mail) {
+    Intent i = new Intent(context, SendMailService.class);
+    i.putExtra(SendMailService.KEY_MAIL, mail);
+    context.startService(i);
   }
 }

@@ -16,15 +16,14 @@
 
 package com.hannesdorfmann.mosby.sample.mail.base.view;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.MvpLceViewStateFragment;
+import com.hannesdorfmann.mosby.sample.mail.IntentStarter;
 import com.hannesdorfmann.mosby.sample.mail.R;
 import com.hannesdorfmann.mosby.sample.mail.base.view.viewstate.AuthViewState;
-import com.hannesdorfmann.mosby.sample.mail.login.LoginActivity;
 
 /**
  * @author Hannes Dorfmann
@@ -45,7 +44,7 @@ public abstract class AuthFragment<AV extends View, M, V extends AuthView<M>, P 
   }
 
   protected void onAuthViewClicked() {
-    startActivity(new Intent(getActivity(), LoginActivity.class));
+    IntentStarter.showAuthentication(getActivity());
   }
 
   @Override protected String getErrorMessage(Throwable e, boolean pullToRefresh) {

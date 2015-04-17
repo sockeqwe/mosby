@@ -14,13 +14,13 @@ import com.hannesdorfmann.mosby.sample.mail.R;
 /**
  * @author Hannes Dorfmann
  */
-@TargetApi(21) public class ExplodeFadeTransition extends Explode {
+@TargetApi(21) public class ExplodeFadeEnterTransition extends Explode {
 
   final View senderNameView;
   final View senderMailView;
   final View separatorLine;
 
-  public ExplodeFadeTransition(View senderNameView, View senderMailView, View separatorLine) {
+  public ExplodeFadeEnterTransition(View senderNameView, View senderMailView, View separatorLine) {
     this.senderMailView = senderMailView;
     this.senderNameView = senderNameView;
     this.separatorLine = separatorLine;
@@ -39,6 +39,10 @@ import com.hannesdorfmann.mosby.sample.mail.R;
 
     animator.addListener(new AnimatorListenerAdapter() {
       @Override public void onAnimationStart(Animator animation) {
+        senderNameView.setVisibility(View.VISIBLE);
+        senderMailView.setVisibility(View.VISIBLE);
+        separatorLine.setVisibility(View.VISIBLE);
+
         senderNameView.setAlpha(0);
         senderMailView.setAlpha(0);
         separatorLine.setAlpha(0);
@@ -52,6 +56,7 @@ import com.hannesdorfmann.mosby.sample.mail.R;
 
         set.setDuration(200).start();
       }
-    }); return animator;
+    });
+    return animator;
   }
 }

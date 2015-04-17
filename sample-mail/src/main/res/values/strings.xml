@@ -16,6 +16,7 @@
   <string name="error_unstaring_mail">Error unstarring mail from %s</string>
   <string name="error_loading_labels">Could not load Labels</string>
   <string name="error_label_change_failed">Could not change the label</string>
+  <string name="error_sending_mail">Mail not sent! Please retry!</string>
 
 
   <!-- Shared elements -->

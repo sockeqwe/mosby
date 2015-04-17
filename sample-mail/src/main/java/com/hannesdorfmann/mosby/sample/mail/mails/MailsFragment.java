@@ -116,6 +116,9 @@ public class MailsFragment
       // Not found, but should be added
       adapter.getItems().add(result.getIndex(), mail);
       adapter.notifyItemInserted(result.getIndex());
+      if (result.getIndex() == 0){
+        recyclerView.scrollToPosition(0);
+      }
     }
   }
 

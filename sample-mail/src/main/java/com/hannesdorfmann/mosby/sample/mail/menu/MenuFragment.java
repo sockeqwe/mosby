@@ -95,4 +95,15 @@ public class MenuFragment extends AuthRefreshRecyclerFragment<List<Label>, MenuV
   @Override public void onLabelClicked(Label label) {
     IntentStarter.showMailsOfLabel(getActivity(), label);
   }
+
+  @Override public void decrementUnreadCount(String label) {
+
+    for (Label l : adapter.getItems()) {
+      if (l.getName().equals(label)){
+        l.decrementUnreadCount();
+        adapter.notifyDataSetChanged();
+        return;
+      }
+    }
+  }
 }

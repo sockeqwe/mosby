@@ -25,5 +25,8 @@ import java.util.List;
  */
 public interface MailsView extends AuthMailView<List<Mail>> {
 
-
+  /**
+   * Marks a certain mail as read
+   */
+  public void markMailAsRead(Mail mail, boolean read);
 }

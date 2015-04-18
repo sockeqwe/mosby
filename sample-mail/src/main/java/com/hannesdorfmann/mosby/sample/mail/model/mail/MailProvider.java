@@ -141,6 +141,28 @@ public class MailProvider {
     });
   }
 
+  public Observable<Mail> markAsRead(final Mail mail, final boolean read) {
+    mail.read(read);
+    final int id = mail.getId();
+    return getFilteredMailList(new Func1<Mail, Boolean>() {
+      @Override public Boolean call(Mail mail) {
+        return mail.getId() == id;
+      }
+    }, false).flatMap(new Func1<List<Mail>, Observable<Mail>>() {
+      @Override public Observable<Mail> call(List<Mail> mails) {
+
+        if (mails == null || mails.isEmpty()) {
+          return Observable.error(new NotFoundException());
+        }
+
+        Mail toChange = mails.get(0);
+        toChange.read(read);
+
+        return Observable.just(toChange);
+      }
+    });
+  }
+
   /**
    * Star or unstar a mail
    *
@@ -197,17 +219,24 @@ public class MailProvider {
     });
   }
 
+  private Observable<List<Mail>> getFilteredMailList(Func1<Mail, Boolean> filterFnc) {
+    return getFilteredMailList(filterFnc, true);
+  }
+
   /**
    * Filters the list of mails by the given criteria
    */
-  private Observable<List<Mail>> getFilteredMailList(Func1<Mail, Boolean> filterFnc) {
+  private Observable<List<Mail>> getFilteredMailList(Func1<Mail, Boolean> filterFnc,
+      final boolean withDelayAndError) {
     return Observable.defer(new Func0<Observable<Mail>>() {
       @Override public Observable<Mail> call() {
 
-        delay();
-        Observable o = checkExceptions();
-        if (o != null) {
-          return o;
+        if (withDelayAndError) {
+          delay();
+          Observable o = checkExceptions();
+          if (o != null) {
+            return o;
+          }
         }
 
         return Observable.from(mails);

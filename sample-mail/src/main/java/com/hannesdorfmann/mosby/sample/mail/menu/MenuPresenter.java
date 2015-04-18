@@ -17,6 +17,7 @@
 package com.hannesdorfmann.mosby.sample.mail.menu;
 
 import com.hannesdorfmann.mosby.sample.mail.base.presenter.RxAuthPresenter;
+import com.hannesdorfmann.mosby.sample.mail.model.event.MailReadEvent;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Label;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.MailProvider;
 import com.hannesdorfmann.mosby.sample.mail.model.event.LoginSuccessfulEvent;
@@ -41,6 +42,13 @@ public class MenuPresenter extends RxAuthPresenter<MenuView, List<Label>> {
     super.onEventMainThread(event);
     if (isViewAttached()){
       getView().setAccount(event.getAccount());
+    }
+  }
+
+  public void onEventMainThread(MailReadEvent event){
+    if (isViewAttached()){
+      String label = event.getMail().getLabel();
+      getView().decrementUnreadCount(label);
     }
   }
 

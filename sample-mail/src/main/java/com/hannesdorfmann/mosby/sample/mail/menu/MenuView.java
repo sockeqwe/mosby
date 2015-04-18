@@ -27,4 +27,6 @@ import java.util.List;
 public interface MenuView extends AuthView<List<Label>> {
 
   public void setAccount(Account account);
+
+  public void decrementUnreadCount(String label);
 }

@@ -63,6 +63,10 @@ import com.hannesdorfmann.parcelableplease.annotation.ParcelablePlease;
     this.unreadCount = unreadCount;
   }
 
+  public void decrementUnreadCount(){
+    unreadCount--;
+  }
+
   @Override public int describeContents() {
     return 0;
   }

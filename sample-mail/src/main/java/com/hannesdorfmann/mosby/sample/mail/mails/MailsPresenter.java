@@ -18,6 +18,7 @@ package com.hannesdorfmann.mosby.sample.mail.mails;
 
 import com.hannesdorfmann.mosby.sample.mail.base.presenter.RxMailPresenter;
 import com.hannesdorfmann.mosby.sample.mail.model.event.MailLabelChangedEvent;
+import com.hannesdorfmann.mosby.sample.mail.model.event.MailReadEvent;
 import com.hannesdorfmann.mosby.sample.mail.model.event.MailReceivedEvent;
 import com.hannesdorfmann.mosby.sample.mail.model.event.MailSentEvent;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Label;
@@ -44,7 +45,13 @@ public class MailsPresenter extends RxMailPresenter<MailsView, List<Mail>> {
     onEventMainThread(new MailLabelChangedEvent(event.getMail(), event.getMail().getLabel()));
   }
 
-  public void onEventMainThread(MailReceivedEvent event){
+  public void onEventMainThread(MailReceivedEvent event) {
     onEventMainThread(new MailLabelChangedEvent(event.getMail(), event.getMail().getLabel()));
+  }
+
+  public void onEventMainThread(MailReadEvent event) {
+    if (isViewAttached()) {
+      getView().markMailAsRead(event.getMail(), event.isRead());
+    }
   }
 }

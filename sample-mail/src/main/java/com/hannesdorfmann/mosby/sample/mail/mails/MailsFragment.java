@@ -116,7 +116,7 @@ public class MailsFragment
       // Not found, but should be added
       adapter.getItems().add(result.getIndex(), mail);
       adapter.notifyItemInserted(result.getIndex());
-      if (result.getIndex() == 0){
+      if (result.getIndex() == 0) {
         recyclerView.scrollToPosition(0);
       }
     }
@@ -163,5 +163,14 @@ public class MailsFragment
             getString(R.string.shared_write_action));
 
     IntentStarter.showWriteMail(getActivity(), null, options.toBundle());
+  }
+
+  @Override public void markMailAsRead(Mail mail, boolean read) {
+
+    MailsAdapter.MailInAdapterResult result = ((MailsAdapter) adapter).findMail(mail);
+    if (result.isFound()) {
+      result.adapterMail.read(read);
+      adapter.notifyDataSetChanged();
+    }
   }
 }

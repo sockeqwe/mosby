@@ -222,4 +222,20 @@ public class DetailsFragment extends AuthFragment<TextView, Mail, DetailsView, D
 
     IntentStarter.showWriteMail(getActivity(), mail, options.toBundle());
   }
+
+  @Override public void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+  }
+
+  @Override protected void saveViewStateInstanceState(Bundle outState) {
+    super.saveViewStateInstanceState(outState);
+  }
+
+  @Override protected boolean createOrRestoreViewState(Bundle savedInstanceState) {
+    return super.createOrRestoreViewState(savedInstanceState);
+  }
+
+  @Override protected boolean applyViewState() {
+    return super.applyViewState();
+  }
 }

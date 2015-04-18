@@ -16,6 +16,7 @@
 
 package com.hannesdorfmann.mosby.sample.mail.menu;
 
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -105,5 +106,17 @@ public class MenuFragment extends AuthRefreshRecyclerFragment<List<Label>, MenuV
         return;
       }
     }
+  }
+
+  @Override protected void saveViewStateInstanceState(Bundle outState) {
+    super.saveViewStateInstanceState(outState);
+  }
+
+  @Override protected boolean applyViewState() {
+    return super.applyViewState();
+  }
+
+  @Override protected boolean createOrRestoreViewState(Bundle savedInstanceState) {
+    return super.createOrRestoreViewState(savedInstanceState);
   }
 }

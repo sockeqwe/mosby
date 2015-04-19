@@ -107,16 +107,4 @@ public class MenuFragment extends AuthRefreshRecyclerFragment<List<Label>, MenuV
       }
     }
   }
-
-  @Override protected void saveViewStateInstanceState(Bundle outState) {
-    super.saveViewStateInstanceState(outState);
-  }
-
-  @Override protected boolean applyViewState() {
-    return super.applyViewState();
-  }
-
-  @Override protected boolean createOrRestoreViewState(Bundle savedInstanceState) {
-    return super.createOrRestoreViewState(savedInstanceState);
-  }
 }

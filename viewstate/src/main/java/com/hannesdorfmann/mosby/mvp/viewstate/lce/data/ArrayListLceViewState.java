@@ -16,7 +16,6 @@
 
 package com.hannesdorfmann.mosby.mvp.viewstate.lce.data;
 
-import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
@@ -24,10 +23,14 @@ import com.hannesdorfmann.mosby.mvp.viewstate.RestoreableViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.AbsParcelableLceViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A {@link LceViewState} and {@link RestoreableViewState} that uses ArrayList containing
- * Parcelables as content data.
+ * Parcelables as content data. It uses the default class loader (you could override {@link
+ * #getClassLoader()}. It uses {@link Parcel#writeList(List)}
+ * and {@link Parcel#readArrayList(ClassLoader)} for serialisation.
+ *
  * <p>
  * Can be used for Activites and Fragments.
  * </p>
@@ -51,9 +54,6 @@ public class ArrayListLceViewState<D extends ArrayList<? extends Parcelable>, V 
         }
       };
 
-  private static final String BUNDLE_ARRAY_LIST_WORKAROUND =
-      "com.hannesdorfmann.mosby.mvp.viewstate.lce.ArrayListViewState.workaround";
-
   public ArrayListLceViewState() {
   }
 
@@ -62,24 +62,23 @@ public class ArrayListLceViewState<D extends ArrayList<? extends Parcelable>, V 
   }
 
   @Override public void writeToParcel(Parcel dest, int flags) {
-    super.writeToParcel(dest, flags);
 
-    // Content
-    Bundle b = new Bundle();
-    b.putParcelableArrayList(BUNDLE_ARRAY_LIST_WORKAROUND, loadedData);
-    dest.writeBundle(b);
+    dest.writeList(loadedData);
+
+    super.writeToParcel(dest, flags);
   }
 
   @Override protected void readFromParcel(Parcel source) {
+
+    loadedData = (D) source.readArrayList(getClassLoader());
+
     super.readFromParcel(source);
+  }
 
-    // content
-    Bundle b = source.readBundle();
-    if (b != null) {
-      loadedData = (D) b.getParcelableArrayList(BUNDLE_ARRAY_LIST_WORKAROUND);
-    }
-
-    // alternative ((Class) ((ParameterizedType) getClass()
-    // .getGenericSuperclass()).getActualTypeArguments()[0]);
+  /**
+   * The class loader used for deserializing the list of parcelable items
+   */
+  protected ClassLoader getClassLoader() {
+    return getClass().getClassLoader();
   }
 }

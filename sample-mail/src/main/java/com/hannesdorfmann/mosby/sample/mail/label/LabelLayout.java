@@ -30,6 +30,7 @@ public class LabelLayout extends MvpViewStateLinearLayout<LabelPresenter> implem
   @InjectView(R.id.labelLoadingView) View loadingView;
   @Icicle Mail mail;
 
+
   ListPopupWindow popUpWindow;
   LabelAdapter adapter;
 

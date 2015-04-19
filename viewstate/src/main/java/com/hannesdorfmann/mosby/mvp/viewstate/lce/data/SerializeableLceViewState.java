@@ -57,12 +57,13 @@ public class SerializeableLceViewState<D extends Serializable, V extends MvpLceV
   }
 
   public void writeToParcel(Parcel dest, int flags) {
-    super.writeToParcel(dest, flags);
+
     dest.writeSerializable(loadedData);
+    super.writeToParcel(dest, flags);
   }
 
   protected void readFromParcel(Parcel in) {
-    super.readFromParcel(in);
     loadedData = (D) in.readSerializable();
+    super.readFromParcel(in);
   }
 }

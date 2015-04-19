@@ -16,7 +16,6 @@
 
 package com.hannesdorfmann.mosby.mvp.viewstate.lce.data;
 
-import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
@@ -26,6 +25,9 @@ import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
 
 /**
  * A {@link LceViewState} and {@link RestoreableViewState} that uses Parcelable as content data.
+ * Internally it uses {@link Parcel#writeParcelable(Parcelable, int)} and {@link
+ * Parcel#readParcelable(ClassLoader)} for serialisation. It uses the default class loader. You can
+ * override {@link #getClassLoader()} for provide your own ClassLoader.
  *
  * <p>
  * Can be used for Activites and Fragments.
@@ -50,7 +52,6 @@ public class ParcelableDataLceViewState<D extends Parcelable, V extends MvpLceVi
         }
       };
 
-
   private static final String BUNDLE_PARCELABLE_WORKAROUND =
       "com.hannesdorfmann.mosby.mvp.viewstate.lce.ParcelableLceViewState.workaround";
 
@@ -62,23 +63,20 @@ public class ParcelableDataLceViewState<D extends Parcelable, V extends MvpLceVi
   }
 
   @Override public void writeToParcel(Parcel dest, int flags) {
-    super.writeToParcel(dest, flags);
 
-    // content, we use a Bundle to avoid the problem of specifying a class loader.
-    Bundle b = new Bundle();
-    b.putParcelable(BUNDLE_PARCELABLE_WORKAROUND, loadedData);
-    dest.writeBundle(b);
+    dest.writeParcelable(loadedData, flags);
+    super.writeToParcel(dest, flags);
   }
 
   @Override protected void readFromParcel(Parcel source) {
+    loadedData = source.readParcelable(getClassLoader());
     super.readFromParcel(source);
+  }
 
-    Bundle b = source.readBundle();
-    if (b != null) {
-      loadedData = b.getParcelable(BUNDLE_PARCELABLE_WORKAROUND);
-    }
-
-    // alternative ((Class) ((ParameterizedType) getClass()
-    // .getGenericSuperclass()).getActualTypeArguments()[0]);
+  /**
+   * Get the ClassLoader that is used for deserialization
+   */
+  protected ClassLoader getClassLoader() {
+    return getClass().getClassLoader();
   }
 }

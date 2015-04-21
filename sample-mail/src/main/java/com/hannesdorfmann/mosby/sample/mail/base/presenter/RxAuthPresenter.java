@@ -37,11 +37,12 @@ public class RxAuthPresenter<V extends AuthView<M>, M> extends MvpLceRxPresenter
     this.mailProvider = mailProvider;
   }
 
-  @Override protected void onError(Throwable e, boolean pullToRefresh) {
+  @Override
+  public void onRxError(Throwable e) {
     if (e instanceof NotAuthenticatedException) {
       eventBus.post(new NotAuthenticatedEvent());
     } else {
-      super.onError(e, pullToRefresh);
+      super.onRxError(e);
     }
   }
 

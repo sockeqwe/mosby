@@ -19,7 +19,6 @@ package com.hannesdorfmann.mosby.mvp.rx;
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
 
 import rx.Observable;
-import rx.Subscriber;
 
 /**
  * A presenter for RxJava, that assumes that only one Observable is subscribed by this presenter.
@@ -35,7 +34,6 @@ import rx.Subscriber;
  */
 public abstract class MvpLceRxPresenter<V extends MvpLceView<M>, M> extends MvpRxPresenter<V, M> {
 
-  protected Subscriber<M> subscriber;
   protected boolean pullToRefresh;
 
   /**
@@ -46,6 +44,7 @@ public abstract class MvpLceRxPresenter<V extends MvpLceView<M>, M> extends MvpR
    */
   public void subscribe(Observable<M> observable, final boolean pullToRefresh) {
     this.pullToRefresh = pullToRefresh;
+    super.subscribe(observable);
   }
 
   @Override

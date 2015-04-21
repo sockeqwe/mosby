@@ -75,12 +75,12 @@ public abstract class MvpRxPresenter<V extends MvpView, M>
         return observable.compose(new AndroidSchedulerTransformer<M>());
     }
 
-    protected void onCompleted() {
+    private void onCompleted() {
         onRxCompleted();
         unsubscribe();
     }
 
-    protected void onError(Throwable e) {
+    private void onError(Throwable e) {
         onRxError(e);
         unsubscribe();
     }

@@ -29,8 +29,7 @@ public class WriteViewState implements RestoreableViewState<WriteView> {
   @Override public void apply(WriteView view, boolean retained) {
     if (currentState == STATE_SHOWING_FORM) {
       view.showForm();
-    }
-    if (currentState == STATE_SHOWING_AUTH_REQUIRED) {
+    } else if (currentState == STATE_SHOWING_AUTH_REQUIRED) {
       view.showAuthenticationRequired();
     } else {
       view.showLoading();

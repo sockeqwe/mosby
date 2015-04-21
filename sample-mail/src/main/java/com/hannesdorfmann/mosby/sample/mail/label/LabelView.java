@@ -16,4 +16,6 @@ public interface LabelView extends MvpLceView<List<Label>> {
 
   public void showChangeLabelFailed(Mail mail, Throwable t);
 
+  public void setMail(Mail mail);
+
 }

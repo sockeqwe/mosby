@@ -80,6 +80,8 @@ public abstract class AbsParcelableLceViewState<D, V extends MvpLceView<D>>
     // Pull To Refresh
     pullToRefresh = readBoolean(in);
 
+    exception = (Throwable) in.readSerializable();
+
     // content will be read in subclass
   }
 

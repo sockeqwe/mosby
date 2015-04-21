@@ -18,6 +18,7 @@ import com.hannesdorfmann.mosby.sample.mail.model.mail.Label;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
 import com.hannesdorfmann.mosby.sample.mail.utils.DimensUtils;
 import icepick.Icepick;
+import icepick.Icicle;
 import java.util.List;
 
 /**
@@ -27,7 +28,7 @@ public class LabelLayout extends MvpViewStateLinearLayout<LabelPresenter> implem
 
   @InjectView(R.id.labelTextView) TextView labelView;
   @InjectView(R.id.labelLoadingView) View loadingView;
-  Mail mail;
+  @Icicle Mail mail;
 
 
   ListPopupWindow popUpWindow;

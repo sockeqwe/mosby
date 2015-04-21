@@ -4,12 +4,16 @@ import android.annotation.TargetApi;
 import android.app.SharedElementCallback;
 import android.content.Context;
 import android.content.res.Resources;
+import android.os.Build;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.TextView;
+
 import com.hannesdorfmann.mosby.sample.mail.R;
+
 import java.util.List;
 
+@TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class TextSizeEnterSharedElementCallback extends SharedElementCallback {
   private static final String TAG = "EnterSharedElementCallback";
 

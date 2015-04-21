@@ -6,6 +6,9 @@ import com.hannesdorfmann.mosby.sample.mail.model.mail.Label;
 import java.util.List;
 
 /**
+ * I'm to lazy to write my own view state class without an error state, therefore I reuse the
+ * CastedArrayListLceViewState. Don't do that in a real world application :)
+ *
  * @author Hannes Dorfmann
  */
 public class LabelViewState extends CastedArrayListLceViewState<List<Label>, LabelView> {
@@ -20,14 +23,12 @@ public class LabelViewState extends CastedArrayListLceViewState<List<Label>, Lab
     }
   };
 
-
-
   private final int STATE_SHOWING_LABEL = 3;
 
-  public LabelViewState(){
+  public LabelViewState() {
   }
 
-  protected LabelViewState(Parcel source){
+  protected LabelViewState(Parcel source) {
     super(source);
   }
 

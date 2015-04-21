@@ -210,6 +210,11 @@ public class MailProvider {
     });
   }
 
+  public Observable<Mail> setLabel(Mail mail, final String label) {
+    mail.label(label);
+    return setLabel(mail.getId(), label);
+  }
+
   public Observable<Mail> setLabel(int mailId, final String label) {
     return getMail(mailId).map(new Func1<Mail, Mail>() {
       @Override public Mail call(Mail mail) {

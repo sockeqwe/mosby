@@ -16,7 +16,7 @@
 
 package com.hannesdorfmann.mosby.sample.mail.base.presenter;
 
-import com.hannesdorfmann.mosby.mvp.rx.lce.scheduler.AndroidSchedulerTransformer;
+import com.hannesdorfmann.mosby.mvp.rx.scheduler.AndroidSchedulerTransformer;
 import com.hannesdorfmann.mosby.sample.mail.base.view.AuthMailView;
 import com.hannesdorfmann.mosby.sample.mail.model.event.MailLabelChangedEvent;
 import com.hannesdorfmann.mosby.sample.mail.model.event.MailStaredEvent;

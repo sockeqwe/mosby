@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.hannesdorfmann.mosby.mvp.rx.lce;
+package com.hannesdorfmann.mosby.mvp.rx;
 
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
-import com.hannesdorfmann.mosby.mvp.rx.lce.scheduler.AndroidSchedulerTransformer;
+import com.hannesdorfmann.mosby.mvp.rx.scheduler.AndroidSchedulerTransformer;
 import rx.Observable;
 import rx.Subscriber;
 

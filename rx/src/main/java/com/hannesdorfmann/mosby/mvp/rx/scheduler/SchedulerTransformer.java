@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.hannesdorfmann.mosby.mvp.rx.lce.scheduler;
+package com.hannesdorfmann.mosby.mvp.rx.scheduler;
 
-import com.hannesdorfmann.mosby.mvp.rx.lce.MvpLceRxPresenter;
+import com.hannesdorfmann.mosby.mvp.rx.MvpLceRxPresenter;
 import rx.Observable;
 
 /**

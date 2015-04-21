@@ -1,6 +1,6 @@
 package com.hannesdorfmann.mosby.rx.lce;
 
-import com.hannesdorfmann.mosby.mvp.rx.lce.MvpLceRxPresenter;
+import com.hannesdorfmann.mosby.mvp.rx.MvpLceRxPresenter;
 import rx.Observable;
 import rx.functions.Func0;
 import rx.schedulers.Schedulers;

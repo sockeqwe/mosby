@@ -16,7 +16,7 @@
 
 package com.hannesdorfmann.mosby.sample.mail.base.presenter;
 
-import com.hannesdorfmann.mosby.mvp.rx.lce.MvpLceRxPresenter;
+import com.hannesdorfmann.mosby.mvp.rx.MvpLceRxPresenter;
 import com.hannesdorfmann.mosby.sample.mail.base.view.AuthView;
 import com.hannesdorfmann.mosby.sample.mail.model.account.NotAuthenticatedException;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.MailProvider;

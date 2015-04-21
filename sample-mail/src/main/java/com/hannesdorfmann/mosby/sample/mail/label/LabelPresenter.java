@@ -1,7 +1,7 @@
 package com.hannesdorfmann.mosby.sample.mail.label;
 
-import com.hannesdorfmann.mosby.mvp.rx.lce.MvpLceRxPresenter;
-import com.hannesdorfmann.mosby.mvp.rx.lce.scheduler.SchedulerTransformer;
+import com.hannesdorfmann.mosby.mvp.rx.MvpLceRxPresenter;
+import com.hannesdorfmann.mosby.mvp.rx.scheduler.SchedulerTransformer;
 import com.hannesdorfmann.mosby.sample.mail.model.event.MailLabelChangedEvent;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Label;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;

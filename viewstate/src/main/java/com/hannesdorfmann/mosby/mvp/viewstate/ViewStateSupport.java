@@ -52,14 +52,14 @@ public interface ViewStateSupport<V extends MvpView> {
    * This method will be called by {@link ViewStateManager} to inform that restoring the view state
    * is in progress.
    *
-   * @param retstoringViewState true, if restoring viewstate is in progress, otherwise false
+   * @param restoringViewState true, if restoring viewstate is in progress, otherwise false
    */
-  public void setRestoringViewState(boolean retstoringViewState);
+  void setRestoringViewState(boolean restoringViewState);
 
   /**
    * @return true if the viewstate is restoring right now (not finished yet). Otherwise false.
    */
-  public boolean isRestoringViewState();
+  boolean isRestoringViewState();
 
   /**
    * Called if the {@link ViewState} instance has been restored successfully.
@@ -72,7 +72,7 @@ public interface ViewStateSupport<V extends MvpView> {
    * @param instanceStateRetained true, if the viewstate has been retained by using{@link
    * Fragment#setRetainInstance(boolean)}, otherwise false (always false for activities).
    */
-  public void onViewStateInstanceRestored(boolean instanceStateRetained);
+  void onViewStateInstanceRestored(boolean instanceStateRetained);
 
   /**
    * Called if a new {@link ViewState} has been created because no viewstate from a previous
@@ -80,5 +80,5 @@ public interface ViewStateSupport<V extends MvpView> {
    * <p><b>Typically this is called on the first time the <i>Activity</i> or <i>Fragment</i> starts
    * and therefore no view state instance previously exists</b></p>
    */
-  public void onNewViewStateInstance();
+  void onNewViewStateInstance();
 }

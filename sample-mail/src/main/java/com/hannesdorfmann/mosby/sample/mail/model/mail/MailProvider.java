@@ -21,6 +21,7 @@ import com.hannesdorfmann.mosby.sample.mail.model.account.AccountManager;
 import com.hannesdorfmann.mosby.sample.mail.model.account.NotAuthenticatedException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import rx.Observable;
@@ -220,6 +221,36 @@ public class MailProvider {
       @Override public Mail call(Mail mail) {
         mail.label(label);
         return mail;
+      }
+    });
+  }
+
+  public Observable<List<Mail>> searchForMails(String query, final int limit) {
+    return searchForOlderMails(query, new Date(), limit);
+  }
+
+  public Observable<List<Mail>> searchForOlderMails(final String query, final Date olderAs,
+      final int limit) {
+
+    return getFilteredMailList(new Func1<Mail, Boolean>() {
+      @Override public Boolean call(Mail mail) {
+        boolean senderCheck =
+            mail.getSender() != null ? mail.getSender().getEmail().contains(query) : false;
+
+        boolean receiverCheck =
+            mail.getReceiver() != null ? mail.getReceiver().getEmail().contains(query) : false;
+
+        return mail.getDate().before(olderAs) && (mail.getSubject().contains(query)
+            || mail.getText().contains(query)
+            || senderCheck
+            || receiverCheck);
+      }
+    }).map(new Func1<List<Mail>, List<Mail>>() {
+      @Override public List<Mail> call(List<Mail> mails) {
+        if (mails.size() <= limit) {
+          return mails;
+        }
+        return mails.subList(0, limit);
       }
     });
   }

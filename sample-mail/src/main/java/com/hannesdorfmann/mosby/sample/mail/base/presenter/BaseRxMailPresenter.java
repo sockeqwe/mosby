@@ -17,8 +17,8 @@
 package com.hannesdorfmann.mosby.sample.mail.base.presenter;
 
 import com.hannesdorfmann.mosby.mvp.rx.lce.scheduler.AndroidSchedulerTransformer;
-import com.hannesdorfmann.mosby.sample.mail.base.view.AuthMailView;
-import com.hannesdorfmann.mosby.sample.mail.model.event.MailLabelChangedEvent;
+import com.hannesdorfmann.mosby.sample.mail.base.view.BaseMailView;
+import com.hannesdorfmann.mosby.sample.mail.model.event.MailReadEvent;
 import com.hannesdorfmann.mosby.sample.mail.model.event.MailStaredEvent;
 import com.hannesdorfmann.mosby.sample.mail.model.event.MailUnstaredEvent;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
@@ -28,11 +28,18 @@ import javax.inject.Inject;
 import rx.Subscriber;
 
 /**
+ * Base Presenter implementation that already handles and listen
+ * <ul>
+ *   <li>Star a mail</li>
+ *   <li>Unstar a mail</li>
+ *   <li>mark mail as read</li>
+ * </ul>
  * @author Hannes Dorfmann
  */
-public class RxMailPresenter<V extends AuthMailView<M>, M> extends RxAuthPresenter<V, M> {
+public class BaseRxMailPresenter<V extends BaseMailView<M>, M>
+    extends BaseRxAuthPresenter<V, M> {
 
-  @Inject public RxMailPresenter(MailProvider mailProvider, EventBus eventBus) {
+  @Inject public BaseRxMailPresenter(MailProvider mailProvider, EventBus eventBus) {
     super(mailProvider, eventBus);
   }
 
@@ -88,9 +95,9 @@ public class RxMailPresenter<V extends AuthMailView<M>, M> extends RxAuthPresent
     }
   }
 
-  public void onEventMainThread(MailLabelChangedEvent event) {
+  public void onEventMainThread(MailReadEvent event) {
     if (isViewAttached()) {
-      getView().changeLabel(event.getMail(), event.getLabel());
+      getView().markMailAsRead(event.getMail(), event.isRead());
     }
   }
 }

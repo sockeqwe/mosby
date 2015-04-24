@@ -9,6 +9,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import butterknife.InjectView;
@@ -61,6 +62,16 @@ public class MainActivity extends MosbyActivity {
     setContentView(R.layout.activity_main);
 
     // Toolbar
+    toolbar.inflateMenu(R.menu.search_menu);
+    toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+      @Override public boolean onMenuItemClick(MenuItem menuItem) {
+        if (menuItem.getItemId() == R.id.search){
+          IntentStarter.showSearch(MainActivity.this);
+          return true;
+        }
+        return false;
+      }
+    });
     drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_open,
         R.string.drawer_close);
     drawerLayout.setDrawerListener(drawerToggle);
@@ -137,8 +148,8 @@ public class MainActivity extends MosbyActivity {
     rightPane.setVisibility(View.VISIBLE);
     Person sender = mail.getSender();
     DetailsFragment fragment =
-        new DetailsFragmentBuilder(mail.getDate().getTime(), mail.getId(), sender.getEmail(), sender.getName(),
-            sender.getImageRes(), mail.isStarred(), mail.getSubject()).build();
+        new DetailsFragmentBuilder(mail.getDate().getTime(), mail.getId(), sender.getEmail(),
+            sender.getName(), sender.getImageRes(), mail.isStarred(), mail.getSubject()).build();
 
     getSupportFragmentManager().beginTransaction()
         .replace(R.id.rightPane, fragment, FRAGMENT_TAG_DETAILS)
@@ -149,6 +160,9 @@ public class MainActivity extends MosbyActivity {
     return getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG_DETAILS);
   }
 
+  /**
+   * @return true if a fragment has been removed, otherwise false
+   */
   private boolean removeDetailsFragment() {
     Fragment detailsFragment = findDetailsFragment();
     if (detailsFragment != null) {
@@ -162,7 +176,7 @@ public class MainActivity extends MosbyActivity {
 
   @Override public void onBackPressed() {
 
-    // TODO make it easier to read readable
+    // TODO make this easier to read
     if (!removeDetailsFragment()) {
       super.onBackPressed();
     }

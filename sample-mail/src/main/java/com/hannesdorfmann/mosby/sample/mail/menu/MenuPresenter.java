@@ -16,7 +16,7 @@
 
 package com.hannesdorfmann.mosby.sample.mail.menu;
 
-import com.hannesdorfmann.mosby.sample.mail.base.presenter.RxAuthPresenter;
+import com.hannesdorfmann.mosby.sample.mail.base.presenter.BaseRxAuthPresenter;
 import com.hannesdorfmann.mosby.sample.mail.model.event.MailReadEvent;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Label;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.MailProvider;
@@ -28,7 +28,7 @@ import javax.inject.Inject;
 /**
  * @author Hannes Dorfmann
  */
-public class MenuPresenter extends RxAuthPresenter<MenuView, List<Label>> {
+public class MenuPresenter extends BaseRxAuthPresenter<MenuView, List<Label>> {
 
   @Inject public MenuPresenter(MailProvider mailProvider, EventBus eventBus) {
     super(mailProvider, eventBus);

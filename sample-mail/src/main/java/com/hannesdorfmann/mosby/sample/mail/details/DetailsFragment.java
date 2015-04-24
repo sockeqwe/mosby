@@ -7,7 +7,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.transition.Explode;
 import android.transition.TransitionInflater;
 import android.transition.TransitionSet;
 import android.view.View;
@@ -27,6 +26,7 @@ import com.hannesdorfmann.mosby.sample.mail.base.view.viewstate.AuthParcelableDa
 import com.hannesdorfmann.mosby.sample.mail.base.view.viewstate.AuthViewState;
 import com.hannesdorfmann.mosby.sample.mail.label.LabelLayout;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
+import com.hannesdorfmann.mosby.sample.mail.ui.transition.ExcludedExplodeTransition;
 import com.hannesdorfmann.mosby.sample.mail.ui.transition.ExplodeFadeEnterTransition;
 import com.hannesdorfmann.mosby.sample.mail.ui.transition.TextSizeEnterSharedElementCallback;
 import com.hannesdorfmann.mosby.sample.mail.ui.transition.TextSizeTransition;
@@ -108,9 +108,9 @@ public class DetailsFragment extends AuthFragment<TextView, Mail, DetailsView, D
     Window window = getActivity().getWindow();
     window.setEnterTransition(
         new ExplodeFadeEnterTransition(senderNameView, senderMailView, separatorLine));
-    window.setExitTransition(new Explode());
-    window.setReenterTransition(new Explode());
-    window.setReturnTransition(new Explode());
+    window.setExitTransition(new ExcludedExplodeTransition());
+    window.setReenterTransition(new ExcludedExplodeTransition());
+    window.setReturnTransition(new ExcludedExplodeTransition());
 
     TransitionSet textSizeSet = new TransitionSet();
     textSizeSet.addTransition(
@@ -209,11 +209,6 @@ public class DetailsFragment extends AuthFragment<TextView, Mail, DetailsView, D
     showStarErrorToast(R.string.error_unstaring_mail, mail);
   }
 
-  @Override public void changeLabel(Mail mail, String label) {
-    // In a real world app shouldn't be any empty methods.
-    // I'm just to lazy
-  }
-
   @OnClick(R.id.replay) public void onReplayClicked() {
 
     ActivityOptionsCompat options =
@@ -237,5 +232,9 @@ public class DetailsFragment extends AuthFragment<TextView, Mail, DetailsView, D
 
   @Override protected boolean applyViewState() {
     return super.applyViewState();
+  }
+
+  @Override public void markMailAsRead(Mail mail, boolean read) {
+    // TODO: currently there is no UI component that shows if that mail has been read or not
   }
 }

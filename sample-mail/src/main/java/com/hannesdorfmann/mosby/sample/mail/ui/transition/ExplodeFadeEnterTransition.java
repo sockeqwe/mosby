@@ -5,7 +5,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
-import android.transition.Explode;
 import android.transition.TransitionValues;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,7 @@ import com.hannesdorfmann.mosby.sample.mail.R;
 /**
  * @author Hannes Dorfmann
  */
-@TargetApi(21) public class ExplodeFadeEnterTransition extends Explode {
+@TargetApi(21) public class ExplodeFadeEnterTransition extends ExcludedExplodeTransition {
 
   final View senderNameView;
   final View senderMailView;
@@ -24,9 +23,6 @@ import com.hannesdorfmann.mosby.sample.mail.R;
     this.senderMailView = senderMailView;
     this.senderNameView = senderNameView;
     this.separatorLine = separatorLine;
-    excludeTarget(R.id.toolbar, true);
-    excludeTarget(android.R.id.statusBarBackground, true);
-    excludeTarget(android.R.id.navigationBarBackground, true);
     excludeTarget(R.id.senderName, true);
     excludeTarget(R.id.senderMail, true);
     excludeTarget(R.id.separatorLine, true);

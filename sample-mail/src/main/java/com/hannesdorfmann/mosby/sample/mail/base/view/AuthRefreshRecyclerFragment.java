@@ -87,4 +87,18 @@ public abstract class AuthRefreshRecyclerFragment<M extends List<? extends Parce
 
     super.showContent();
   }
+
+  @Override public void showLoading(boolean pullToRefresh) {
+    super.showLoading(pullToRefresh);
+    if (!pullToRefresh) {
+      emptyView.setVisibility(View.GONE);
+    }
+  }
+
+  @Override public void showError(Throwable e, boolean pullToRefresh) {
+    super.showError(e, pullToRefresh);
+    if (!pullToRefresh) {
+      emptyView.setVisibility(View.GONE);
+    }
+  }
 }

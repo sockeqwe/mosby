@@ -16,9 +16,8 @@
 
 package com.hannesdorfmann.mosby.sample.mail.mails;
 
-import com.hannesdorfmann.mosby.sample.mail.base.presenter.RxMailPresenter;
+import com.hannesdorfmann.mosby.sample.mail.base.presenter.BaseRxMailPresenter;
 import com.hannesdorfmann.mosby.sample.mail.model.event.MailLabelChangedEvent;
-import com.hannesdorfmann.mosby.sample.mail.model.event.MailReadEvent;
 import com.hannesdorfmann.mosby.sample.mail.model.event.MailReceivedEvent;
 import com.hannesdorfmann.mosby.sample.mail.model.event.MailSentEvent;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Label;
@@ -31,7 +30,7 @@ import javax.inject.Inject;
 /**
  * @author Hannes Dorfmann
  */
-public class MailsPresenter extends RxMailPresenter<MailsView, List<Mail>> {
+public class MailsPresenter extends BaseRxMailPresenter<MailsView, List<Mail>> {
 
   @Inject public MailsPresenter(MailProvider mailProvider, EventBus eventBus) {
     super(mailProvider, eventBus);
@@ -49,9 +48,9 @@ public class MailsPresenter extends RxMailPresenter<MailsView, List<Mail>> {
     onEventMainThread(new MailLabelChangedEvent(event.getMail(), event.getMail().getLabel()));
   }
 
-  public void onEventMainThread(MailReadEvent event) {
+  public void onEventMainThread(MailLabelChangedEvent event) {
     if (isViewAttached()) {
-      getView().markMailAsRead(event.getMail(), event.isRead());
+      getView().changeLabel(event.getMail(), event.getLabel());
     }
   }
 }

@@ -21,7 +21,7 @@ import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
 /**
  * @author Hannes Dorfmann
  */
-public interface AuthMailView<M> extends AuthView<M> {
+public interface BaseMailView<M> extends AuthView<M> {
 
   public void markMailAsStared(int mailId);
 
@@ -31,6 +31,10 @@ public interface AuthMailView<M> extends AuthView<M> {
 
   public void showUnstaringFailed(Mail mail);
 
-  public void changeLabel(Mail mail, String label);
+
+  /**
+   * Marks a certain mail as read
+   */
+  public void markMailAsRead(Mail mail, boolean read);
 
 }

@@ -11,12 +11,15 @@
   <string name="empty_emails">No mails!</string>
 
   <string name="error_wait_mail_loaded">Please wait until the mail is loaded and retry afterwards</string>
-
   <string name="error_staring_mail">Error starring mail from %s</string>
   <string name="error_unstaring_mail">Error unstarring mail from %s</string>
   <string name="error_loading_labels">Could not load Labels</string>
   <string name="error_label_change_failed">Could not change the label</string>
   <string name="error_sending_mail">Mail not sent! Please retry!</string>
+  <string name="error_search_load_older">An error has occurred while loading older mails</string>
+
+
+  <string name="search_no_more_mails_to_load">No more mails. You reached the end of the list.</string>
 
 
   <!-- Shared elements -->
@@ -26,5 +29,8 @@
   <string name="shared_mail_star">sharedMailStar</string>
   <string name="shared_mail_toolbar">sharedMailToolbar</string>
   <string name="shared_write_action">shareWrtieAction</string>
+
+
+
 
 </resources>

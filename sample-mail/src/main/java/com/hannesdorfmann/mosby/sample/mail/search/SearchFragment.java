@@ -32,6 +32,7 @@ public class SearchFragment extends BaseMailsFragment<SearchView, SearchPresente
   LinearLayoutManager layoutManager;
   boolean canLoadMore = true;
   boolean isLoadingMore = false;
+  String lastQuery = "";
 
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -76,6 +77,7 @@ public class SearchFragment extends BaseMailsFragment<SearchView, SearchPresente
       @Override public void afterTextChanged(Editable s) {
       }
     });
+
     // load more
     layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
     recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -128,8 +130,12 @@ public class SearchFragment extends BaseMailsFragment<SearchView, SearchPresente
 
   @Override public void loadData(boolean pullToRefresh) {
     String query = getQueryString();
-    presenter.searchFor(query, pullToRefresh);
-    canLoadMore = true;
+    if (!query.equals(
+        lastQuery)) { // Hack to solve textwatcher problem that forces reload on screen orientation
+      presenter.searchFor(query, pullToRefresh);
+      canLoadMore = true;
+      lastQuery = query;
+    }
   }
 
   private String getQueryString() {

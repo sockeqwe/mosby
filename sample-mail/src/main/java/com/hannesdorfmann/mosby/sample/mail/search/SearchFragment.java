@@ -144,6 +144,7 @@ public class SearchFragment extends BaseMailsFragment<SearchView, SearchPresente
   }
 
   @Override public void showSearchNotStartedYet() {
+    loadingView.setVisibility(View.GONE);
     contentView.setVisibility(View.GONE);
     errorView.setVisibility(View.GONE);
     authView.setVisibility(View.GONE);

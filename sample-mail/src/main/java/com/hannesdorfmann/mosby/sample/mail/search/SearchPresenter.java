@@ -1,5 +1,6 @@
 package com.hannesdorfmann.mosby.sample.mail.search;
 
+import android.text.TextUtils;
 import com.hannesdorfmann.mosby.mvp.rx.lce.scheduler.AndroidSchedulerTransformer;
 import com.hannesdorfmann.mosby.sample.mail.base.presenter.BaseRxMailPresenter;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
@@ -58,6 +59,13 @@ public class SearchPresenter extends BaseRxMailPresenter<SearchView, List<Mail>>
 
   public void searchFor(String query, boolean pullToRefresh) {
 
+    // If searching for empty string, then do nothing
+    if (isViewAttached() && TextUtils.isEmpty(query)) {
+      unsubscribe();
+      getView().showSearchNotStartedYet();
+      return;
+    }
+
     // in case the previous action was load more we have to reset the view
     if (isViewAttached()) {
       getView().showLoadMore(false);
@@ -73,15 +81,4 @@ public class SearchPresenter extends BaseRxMailPresenter<SearchView, List<Mail>>
     }
   }
 
-  @Override protected void onError(Throwable e, boolean pullToRefresh) {
-    super.onError(e, pullToRefresh);
-  }
-
-  @Override protected void onNext(List<Mail> data) {
-    super.onNext(data);
-  }
-
-  @Override protected void onCompleted() {
-    super.onCompleted();
-  }
 }

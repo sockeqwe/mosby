@@ -27,12 +27,12 @@ import de.greenrobot.event.EventBus;
 /**
  * @author Hannes Dorfmann
  */
-public class RxAuthPresenter<V extends AuthView<M>, M> extends MvpLceRxPresenter<V, M> {
+public class BaseRxAuthPresenter<V extends AuthView<M>, M> extends MvpLceRxPresenter<V, M> {
 
   protected EventBus eventBus;
   protected MailProvider mailProvider;
 
-  public RxAuthPresenter(MailProvider mailProvider, EventBus eventBus) {
+  public BaseRxAuthPresenter(MailProvider mailProvider, EventBus eventBus) {
     this.eventBus = eventBus;
     this.mailProvider = mailProvider;
   }

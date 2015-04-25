@@ -53,13 +53,10 @@ public class CastedArrayListLceViewState<D extends List<? extends Parcelable>, V
         }
       };
 
-  private static final String BUNDLE_ARRAY_LIST_WORKAROUND =
-      "com.hannesdorfmann.mosby.mvp.viewstate.lce.CastedArrayListViewState.workaround";
-
   public CastedArrayListLceViewState() {
   }
 
-  private CastedArrayListLceViewState(Parcel source) {
+  protected CastedArrayListLceViewState(Parcel source) {
     readFromParcel(source);
   }
 

@@ -47,7 +47,7 @@ public class LabelPresenter extends MvpLceRxPresenter<LabelView, List<Label>> {
     final String oldLabel = mail.getLabel();
     eventBus.post(new MailLabelChangedEvent(mail, newLabel));
 
-    mailProvider.setLabel(mail.getId(), newLabel)
+    mailProvider.setLabel(mail, newLabel)
         .compose(schedulerTransformer)
         .subscribe(new Subscriber<Mail>() {
           @Override public void onCompleted() {

@@ -16,7 +16,6 @@
 
 package com.hannesdorfmann.mosby.sample.mail.menu;
 
-import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;

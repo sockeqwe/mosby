@@ -2,7 +2,6 @@ package com.hannesdorfmann.mosby.sample.mail.write;
 
 import android.annotation.TargetApi;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -20,6 +19,7 @@ import com.hannesdorfmann.mosby.sample.mail.R;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Label;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Person;
+import com.hannesdorfmann.mosby.sample.mail.utils.BuildUtils;
 import java.util.Date;
 import java.util.regex.Pattern;
 
@@ -46,7 +46,7 @@ import java.util.regex.Pattern;
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_write);
 
-    if (isMinApi21()) {
+    if (BuildUtils.isMinApi21()) {
       getWindow().getEnterTransition()
           .excludeTarget(R.id.toolbar, true)
           .excludeTarget(android.R.id.statusBarBackground, true)
@@ -56,7 +56,7 @@ import java.util.regex.Pattern;
     toolbar.setNavigationIcon(getBackArrowDrawable());
     toolbar.setNavigationOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
-        if (isMinApi21()) {
+        if (BuildUtils.isMinApi21()) {
           finishAfterTransition();
         } else {
           finish();
@@ -80,16 +80,14 @@ import java.util.regex.Pattern;
 
   @TargetApi(21) private Drawable getBackArrowDrawable() {
 
-    if (isMinApi21()) {
+    if (BuildUtils.isMinApi21()) {
       return getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha, getTheme());
     } else {
       return getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
     }
   }
 
-  private boolean isMinApi21() {
-    return Build.VERSION.SDK_INT >= 21;
-  }
+
 
   @Override public RestoreableViewState createViewState() {
     return new WriteViewState();

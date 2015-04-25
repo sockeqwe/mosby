@@ -16,17 +16,14 @@
 
 package com.hannesdorfmann.mosby.sample.mail.mails;
 
-import com.hannesdorfmann.mosby.sample.mail.base.view.AuthMailView;
+import com.hannesdorfmann.mosby.sample.mail.base.view.BaseMailView;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
 import java.util.List;
 
 /**
  * @author Hannes Dorfmann
  */
-public interface MailsView extends AuthMailView<List<Mail>> {
+public interface MailsView extends BaseMailView<List<Mail>> {
 
-  /**
-   * Marks a certain mail as read
-   */
-  public void markMailAsRead(Mail mail, boolean read);
+  public void changeLabel(Mail mail, String label);
 }

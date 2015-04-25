@@ -17,7 +17,7 @@
 package com.hannesdorfmann.mosby;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import butterknife.ButterKnife;
 import icepick.Icepick;
 
@@ -32,7 +32,7 @@ import icepick.Icepick;
  * @author Hannes Dorfmann
  * @since 1.0.0
  */
-public class MosbyActivity extends ActionBarActivity {
+public class MosbyActivity extends AppCompatActivity {
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -45,8 +45,8 @@ public class MosbyActivity extends ActionBarActivity {
     Icepick.saveInstanceState(this, outState);
   }
 
-  @Override public void onSupportContentChanged() {
-    super.onSupportContentChanged();
+  @Override public void onContentChanged() {
+    super.onContentChanged();
     ButterKnife.inject(this);
   }
 

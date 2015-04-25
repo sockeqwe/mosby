@@ -1,5 +1,6 @@
 package com.hannesdorfmann.mosby.sample.mail;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import com.hannesdorfmann.mosby.sample.mail.login.LoginActivity;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Label;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.service.SendMailService;
+import com.hannesdorfmann.mosby.sample.mail.search.SearchActivity;
 import com.hannesdorfmann.mosby.sample.mail.write.WriteActivity;
 
 /**
@@ -37,7 +39,7 @@ public class IntentStarter {
     context.startActivity(i, activityTransitionBundle);
   }
 
-  public static Intent getShowMailInNewActivityIntent(Context context, Mail mail){
+  public static Intent getShowMailInNewActivityIntent(Context context, Mail mail) {
     Intent i = new Intent(context, DetailsActivity.class);
     i.putExtra(DetailsActivity.KEY_MAIL, mail);
     return i;
@@ -71,5 +73,11 @@ public class IntentStarter {
     Intent i = new Intent(context, SendMailService.class);
     i.putExtra(SendMailService.KEY_MAIL, mail);
     context.startService(i);
+  }
+
+  public static void showSearch(Activity context) {
+    Intent i = new Intent(context, SearchActivity.class);
+    context.startActivity(i);
+    context.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
   }
 }

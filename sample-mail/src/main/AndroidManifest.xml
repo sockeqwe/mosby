@@ -35,6 +35,10 @@
             android:label=""
             android:windowSoftInputMode="adjustResize" />
 
+        <activity android:name=".search.SearchActivity"
+            android:label=""
+            android:windowSoftInputMode="adjustResize" />
+
         <service android:name=".model.mail.service.SendMailService"
             android:exported="false" />
 

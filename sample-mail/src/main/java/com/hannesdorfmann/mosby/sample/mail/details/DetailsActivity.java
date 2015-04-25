@@ -1,7 +1,6 @@
 package com.hannesdorfmann.mosby.sample.mail.details;
 
 import android.annotation.TargetApi;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -11,6 +10,7 @@ import com.hannesdorfmann.mosby.MosbyActivity;
 import com.hannesdorfmann.mosby.sample.mail.R;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Person;
+import com.hannesdorfmann.mosby.sample.mail.utils.BuildUtils;
 
 /**
  * @author Hannes Dorfmann
@@ -26,11 +26,11 @@ public class DetailsActivity extends MosbyActivity {
     setContentView(R.layout.activity_mail_details);
 
     // Activity Transitions
-    if (isMinApi21()) {
+    if (BuildUtils.isMinApi21()) {
       postponeEnterTransition();
     }
 
-    toolbar.setNavigationIcon(getBackArrowDrawable());
+    toolbar.setNavigationIcon(BuildUtils.getBackArrowDrawable(this));
     toolbar.setNavigationOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
         if (Build.VERSION.SDK_INT >= 21) {
@@ -55,16 +55,6 @@ public class DetailsActivity extends MosbyActivity {
     }
   }
 
-  @TargetApi(21) private Drawable getBackArrowDrawable() {
 
-    if (isMinApi21()) {
-      return getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha, getTheme());
-    } else {
-      return getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
-    }
-  }
 
-  private boolean isMinApi21() {
-    return Build.VERSION.SDK_INT >= 21;
-  }
 }

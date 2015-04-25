@@ -38,6 +38,7 @@
         android:layout_height="wrap_content"
         android:hint="Search word ..."
         android:textCursorDrawable="@drawable/text_cursor"
+        android:textSize="14sp"
         app:met_baseColor="@color/white"
         app:met_floatingLabel="none"
         app:met_primaryColor="@color/white"

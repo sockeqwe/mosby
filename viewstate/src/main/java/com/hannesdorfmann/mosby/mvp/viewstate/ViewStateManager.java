@@ -133,7 +133,7 @@ public class ViewStateManager<V extends MvpView> {
     }
 
     // Save the viewstate
-    if (viewState != null && viewState instanceof RestoreableViewState) {
+    if (viewState != null && viewState instanceof RestoreableViewState && !retainingInstanceState) {
       ((RestoreableViewState) viewState).saveInstanceState(outState);
     }
 

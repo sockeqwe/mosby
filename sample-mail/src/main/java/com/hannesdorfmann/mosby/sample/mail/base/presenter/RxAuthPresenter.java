@@ -38,11 +38,11 @@ public class RxAuthPresenter<V extends AuthView<M>, M> extends MvpLceRxPresenter
   }
 
   @Override
-  public void onRxError(Throwable e) {
+  public void onError(Throwable e) {
     if (e instanceof NotAuthenticatedException) {
       eventBus.post(new NotAuthenticatedEvent());
     } else {
-      super.onRxError(e);
+      super.onError(e);
     }
   }
 

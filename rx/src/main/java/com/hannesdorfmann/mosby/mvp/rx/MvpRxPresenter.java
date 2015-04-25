@@ -49,15 +49,15 @@ public abstract class MvpRxPresenter<V extends MvpView, M>
 
         subscriber = new Subscriber<M>() {
             @Override public void onCompleted() {
-                MvpRxPresenter.this.onCompleted();
+                MvpRxPresenter.this.onRxCompleted();
             }
 
             @Override public void onError(Throwable e) {
-                MvpRxPresenter.this.onError(e);
+                MvpRxPresenter.this.onRxError(e);
             }
 
             @Override public void onNext(M m) {
-                MvpRxPresenter.this.onNext(m);
+                MvpRxPresenter.this.onRxNext(m);
             }
         };
 
@@ -75,24 +75,28 @@ public abstract class MvpRxPresenter<V extends MvpView, M>
         return observable.compose(new AndroidSchedulerTransformer<M>());
     }
 
-    private void onCompleted() {
-        onRxCompleted();
+    private void onRxCompleted() {
+        onCompleted();
         unsubscribe();
     }
 
-    private void onError(Throwable e) {
-        onRxError(e);
+    private void onRxError(Throwable e) {
+        onError(e);
         unsubscribe();
     }
 
-    protected void onNext(M data) {
-        onRxNext(data);
+    private void onRxNext(M data) {
+        onNext(data);
     }
 
-    public abstract void onRxSubscribe();
-    public abstract void onRxNext(M data);
-    public abstract void onRxError(Throwable e);
-    public abstract void onRxCompleted();
+    private void onRxSubscribe() {
+        onSubscribe();
+    }
+
+    public abstract void onSubscribe();
+    public abstract void onNext(M data);
+    public abstract void onError(Throwable e);
+    public abstract void onCompleted();
 
     @Override public void detachView(boolean retainInstance) {
         super.detachView(retainInstance);

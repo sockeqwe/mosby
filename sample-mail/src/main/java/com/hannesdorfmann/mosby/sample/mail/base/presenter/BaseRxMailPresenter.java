@@ -16,15 +16,17 @@
 
 package com.hannesdorfmann.mosby.sample.mail.base.presenter;
 
-import com.hannesdorfmann.mosby.mvp.rx.lce.scheduler.AndroidSchedulerTransformer;
+import com.hannesdorfmann.mosby.mvp.rx.scheduler.AndroidSchedulerTransformer;
 import com.hannesdorfmann.mosby.sample.mail.base.view.BaseMailView;
 import com.hannesdorfmann.mosby.sample.mail.model.event.MailReadEvent;
 import com.hannesdorfmann.mosby.sample.mail.model.event.MailStaredEvent;
 import com.hannesdorfmann.mosby.sample.mail.model.event.MailUnstaredEvent;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.MailProvider;
-import de.greenrobot.event.EventBus;
+
 import javax.inject.Inject;
+
+import de.greenrobot.event.EventBus;
 import rx.Subscriber;
 
 /**

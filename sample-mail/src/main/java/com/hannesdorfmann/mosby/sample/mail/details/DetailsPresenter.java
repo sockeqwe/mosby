@@ -1,12 +1,14 @@
 package com.hannesdorfmann.mosby.sample.mail.details;
 
-import com.hannesdorfmann.mosby.mvp.rx.lce.scheduler.AndroidSchedulerTransformer;
+import com.hannesdorfmann.mosby.mvp.rx.scheduler.AndroidSchedulerTransformer;
 import com.hannesdorfmann.mosby.sample.mail.base.presenter.BaseRxMailPresenter;
 import com.hannesdorfmann.mosby.sample.mail.model.event.MailReadEvent;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.MailProvider;
-import de.greenrobot.event.EventBus;
+
 import javax.inject.Inject;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * @author Hannes Dorfmann

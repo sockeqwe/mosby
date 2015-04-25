@@ -93,10 +93,10 @@ public abstract class MvpRxPresenter<V extends MvpView, M>
         onSubscribe();
     }
 
-    public abstract void onSubscribe();
-    public abstract void onNext(M data);
-    public abstract void onError(Throwable e);
-    public abstract void onCompleted();
+    protected abstract void onSubscribe();
+    protected abstract void onNext(M data);
+    protected abstract void onError(Throwable e);
+    protected abstract void onCompleted();
 
     @Override public void detachView(boolean retainInstance) {
         super.detachView(retainInstance);

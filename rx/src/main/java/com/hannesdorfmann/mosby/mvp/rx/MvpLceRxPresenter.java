@@ -48,28 +48,33 @@ public abstract class MvpLceRxPresenter<V extends MvpLceView<M>, M> extends MvpR
   }
 
   @Override
-  public void onSubscribe() {
+  protected void onSubscribe() {
     if (isViewAttached()) {
       getView().showLoading(pullToRefresh);
     }
   }
 
+
   @Override
-  public void onError(Throwable e) {
+  protected void onError(Throwable e) {
+    onError(e, pullToRefresh);
+  }
+
+  protected void onError(Throwable e, boolean pullToRefresh) {
     if (isViewAttached()) {
       getView().showError(e, pullToRefresh);
     }
   }
 
   @Override
-  public void onNext(M data) {
+  protected void onNext(M data) {
     if (isViewAttached()) {
       getView().setData(data);
     }
   }
 
   @Override
-  public void onCompleted() {
+  protected void onCompleted() {
     if (isViewAttached()) {
       getView().showContent();
     }

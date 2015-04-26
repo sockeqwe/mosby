@@ -1,8 +1,8 @@
 package com.hannesdorfmann.mosby.sample.mail.search;
 
 import android.text.TextUtils;
+
 import com.hannesdorfmann.mosby.mvp.rx.scheduler.AndroidSchedulerTransformer;
-import com.hannesdorfmann.mosby.mvp.rx.lce.scheduler.AndroidSchedulerTransformer;
 import com.hannesdorfmann.mosby.sample.mail.base.presenter.BaseRxMailPresenter;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.MailProvider;

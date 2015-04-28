@@ -20,6 +20,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import com.hannesdorfmann.mosby.sample.mail.R;
 import com.hannesdorfmann.parcelableplease.annotation.ParcelablePlease;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  * @author Hannes Dorfmann
@@ -32,14 +34,19 @@ import com.hannesdorfmann.parcelableplease.annotation.ParcelablePlease;
   public static final String MAIL_LILY = "lily@aldrin.com";
   public static final String MAIL_BARNEY = "barney@legendary.me";
 
-  public static final Person TED = new Person(1, "Ted Mosby", Person.MAIL_TED, R.drawable.ted);
+  public static final Person TED = new Person(1, "Ted Mosby", Person.MAIL_TED, R.drawable.ted,
+      new GregorianCalendar(1978, 3, 25).getTime(), R.string.bio_ted);
   public static final Person MARSHALL =
-      new Person(2, "Marshall Eriksen", Person.MAIL_MARSHALL, R.drawable.marshall);
+      new Person(2, "Marshall Eriksen", Person.MAIL_MARSHALL, R.drawable.marshall,
+          new GregorianCalendar(1978, 0, 1).getTime(), R.string.bio_marshall);
   public static final Person ROBIN =
-      new Person(3, "Robin Scherbatsky", Person.MAIL_ROBIN, R.drawable.robin);
-  public static final Person LILY = new Person(4, "Lily Aldrin", Person.MAIL_LILY, R.drawable.lily);
+      new Person(3, "Robin Scherbatsky", Person.MAIL_ROBIN, R.drawable.robin,
+          new GregorianCalendar(1980, 6, 23).getTime(), R.string.bio_robin);
+  public static final Person LILY = new Person(4, "Lily Aldrin", Person.MAIL_LILY, R.drawable.lily,
+      new GregorianCalendar(1978, 0, 1).getTime(), R.string.bio_lily);
   public static final Person BARNEY =
-      new Person(5, "Barney Stinson", Person.MAIL_BARNEY, R.drawable.barney);
+      new Person(5, "Barney Stinson", Person.MAIL_BARNEY, R.drawable.barney,
+          new GregorianCalendar(1974, 0, 1).getTime(), R.string.bio_barney);
 
   int id;
 
@@ -51,12 +58,16 @@ import com.hannesdorfmann.parcelableplease.annotation.ParcelablePlease;
   int imageRes;
 
   String email;
+  Date birthday;
+  int bioRes;
 
-  public Person(int id, String name, String email, int imageRes) {
+  public Person(int id, String name, String email, int imageRes, Date birthday, int bioRes) {
     this.id = id;
     this.name = name;
     this.imageRes = imageRes;
     this.email = email;
+    this.birthday = birthday;
+    this.bioRes = bioRes;
   }
 
   private Person() {
@@ -77,6 +88,14 @@ import com.hannesdorfmann.parcelableplease.annotation.ParcelablePlease;
 
   public String getEmail() {
     return email;
+  }
+
+  public Date getBirthday() {
+    return birthday;
+  }
+
+  public int getBioRes() {
+    return bioRes;
   }
 
   @Override public int describeContents() {

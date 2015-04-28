@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import com.hannesdorfmann.mosby.sample.mail.model.contact.Person;
 import com.hannesdorfmann.mosby.sample.mail.model.contact.ProfileScreen;
+import com.hannesdorfmann.mosby.sample.mail.profile.about.AboutFragmentBuilder;
 import com.hannesdorfmann.mosby.sample.mail.profile.mails.ProfileMailsFragmentBuilder;
 import java.util.List;
 
@@ -35,14 +36,16 @@ public class ProfileScreensAdapter extends FragmentPagerAdapter {
     if (screen.getType() == ProfileScreen.TYPE_MAILS) {
       return new ProfileMailsFragmentBuilder(person).build();
     }
+    if (screen.getType() == ProfileScreen.TYPE_ABOUT) {
+      return new AboutFragmentBuilder(person).build();
+    }
 
-    return null;
+    throw new RuntimeException("Unknown Profile Screen (no fragment associated with this type");
   }
 
   @Override public int getCount() {
 
-    // return screens == null ? 0 : screens.size();
-    return 1;
+    return screens == null ? 0 : screens.size();
   }
 
   @Override public CharSequence getPageTitle(int position) {

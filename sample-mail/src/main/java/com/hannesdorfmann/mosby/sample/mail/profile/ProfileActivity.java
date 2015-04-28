@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.InjectView;
@@ -29,8 +28,8 @@ import java.util.List;
 /**
  * @author Hannes Dorfmann
  */
-public class ProfileActivity
-    extends MvpLceViewStateActivity<FrameLayout, List<ProfileScreen>, ProfileView, ProfilePresenter>
+public class ProfileActivity extends
+    MvpLceViewStateActivity<DragTopLayout, List<ProfileScreen>, ProfileView, ProfilePresenter>
     implements ProfileView {
 
   public static final String KEY_PERSON =
@@ -41,10 +40,10 @@ public class ProfileActivity
   @InjectView(R.id.viewPager) ViewPager viewPager;
   @InjectView(R.id.tabs) PagerSlidingTabStrip tabs;
   @InjectView(R.id.fadingToolbarHelper) View fadingToolbarHelper;
+  @InjectView(R.id.separatorLine) View separatorLine;
   @InjectView(R.id.toolbar) Toolbar toolbar;
   @InjectView(R.id.toolbarTitle) TextView toolbarTitle;
   @InjectView(R.id.profileHeaderPic) ImageView headerImage;
-  @InjectView(R.id.dragTopLayout) DragTopLayout dragTopLayout;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -62,7 +61,7 @@ public class ProfileActivity
       }
     });
 
-    dragTopLayout.listener(new DragTopLayout.SimplePanelListener() {
+    contentView.listener(new DragTopLayout.SimplePanelListener() {
 
       @Override public void onSliding(float v) {
         fadingToolbarHelper.setAlpha(1f - v);
@@ -70,6 +69,7 @@ public class ProfileActivity
             -(headerImage.getHeight() - toolbar.getHeight() - tabs.getHeight()), 0f) * 0.5f);
 
         toolbarTitle.setAlpha(MathUtils.mapPoint(v, 0, 0.4f, 1f, 0f));
+        separatorLine.setAlpha(MathUtils.mapPoint(v, 0, 0.4f, 1f, 0f));
       }
     });
   }
@@ -103,22 +103,30 @@ public class ProfileActivity
   }
 
   @Override protected void animateContentViewIn() {
-    AnimatorSet animations = new AnimatorSet();
-    animations.playTogether(ObjectAnimator.ofFloat(contentView, "alpha", 0f, 1f),
-        ObjectAnimator.ofFloat(loadingView, "alpha", 1f, 0f),
-        ObjectAnimator.ofFloat(headerImage, "alpha", 0f, 1f)
+    if (contentView.getVisibility() != View.VISIBLE) {
+      AnimatorSet animations = new AnimatorSet();
+      animations.playTogether(ObjectAnimator.ofFloat(contentView, "alpha", 0f, 1f),
+          ObjectAnimator.ofFloat(loadingView, "alpha", 1f, 0f),
+          ObjectAnimator.ofFloat(headerImage, "alpha", 0f, 1f)
 
-    );
-    animations.addListener(new AnimatorListenerAdapter() {
-      @Override public void onAnimationStart(Animator animation) {
-        contentView.setVisibility(View.VISIBLE);
-      }
+      );
+      animations.addListener(new AnimatorListenerAdapter() {
+        @Override public void onAnimationStart(Animator animation) {
+          contentView.setVisibility(View.VISIBLE);
+        }
 
-      @Override public void onAnimationEnd(Animator animation) {
-        loadingView.setVisibility(View.GONE);
-      }
-    });
-    animations.setDuration(500);
-    animations.start();
+        @Override public void onAnimationEnd(Animator animation) {
+          loadingView.setVisibility(View.GONE);
+        }
+      });
+      animations.setDuration(500);
+      animations.start();
+    } else {
+      contentView.setVisibility(View.VISIBLE);
+      errorView.setVisibility(View.GONE);
+      loadingView.setVisibility(View.GONE);
+      headerImage.setVisibility(View.VISIBLE);
+      headerImage.setAlpha(1f);
+    }
   }
 }

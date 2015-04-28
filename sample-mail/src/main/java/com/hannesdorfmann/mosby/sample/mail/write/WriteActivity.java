@@ -163,7 +163,7 @@ import java.util.regex.Pattern;
       receiver = Person.ROBIN;
     } else {
       String name = email.split("@")[0];
-      receiver = new Person(23, name, email, R.drawable.unknown);
+      receiver = new Person(23, name, email, R.drawable.unknown, null, 0);
     }
 
     String text = message.getText().toString();

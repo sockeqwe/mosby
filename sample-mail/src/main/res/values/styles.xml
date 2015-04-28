@@ -43,4 +43,12 @@
     <item name="cpb_rotation_speed">@string/cpb_default_rotation_speed</item>
   </style>
 
+
+
+  <style name="ProfileTitle" parent="TextAppearance.AppCompat.Body1">
+    <item name="android:textColor">@color/primary_text</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:gravity">left</item>
+  </style>
+
 </resources>

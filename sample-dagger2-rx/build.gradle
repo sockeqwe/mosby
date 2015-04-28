@@ -46,7 +46,7 @@ dependencies {
   compile project(':viewstate')
   compile project(':rx')
 
-  compile 'com.android.support:recyclerview-v7:22.0.+'
+  compile 'com.android.support:recyclerview-v7:22.1.1'
   compile 'com.android.support:appcompat-v7:' + rootProject.ext.appcompat7Version
 
   apt 'com.hannesdorfmann.annotatedadapter:processor:' + annotatedAdapter

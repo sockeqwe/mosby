@@ -5,7 +5,7 @@ buildscript {
     jcenter()
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:1.2.0-beta1'
+    classpath 'com.android.tools.build:gradle:1.1.3'
     classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
     classpath 'org.robolectric:robolectric-gradle-plugin:1.0.1'
   }
@@ -32,12 +32,12 @@ allprojects {
 ext {
   minSdk = 14
   targetSdk = 22
-  buildToolsVersion = '22.0.0'
+  buildToolsVersion = '22.0.1'
   compileSdkVersion = 22
 
   // Libraries
-  appcompat7Version = '22.1.0'
-  recyclerviewVersion = '22.1.0'
+  appcompat7Version = '22.1.1'
+  recyclerviewVersion = '22.1.1'
   fragmentargsVersion = '2.0.1'
   butterknifeVersion = '6.1.0'
   icepickVersion = '3.0.2'

@@ -51,7 +51,7 @@
           android:paddingLeft="56dp"
           android:paddingRight="56dp"
           psts:pstsTextAlpha="80"
-          android:textColor="#BEFFFFFF"
+          android:textColor="#AAFFFFFF"
           psts:pstsIndicatorHeight="0dp"
           />
 
@@ -83,6 +83,7 @@
       android:layout_height="@dimen/abc_action_bar_default_height_material"
       android:background="@null"
       android:colorControlNormal="@color/white"
+      android:alpha="0"
       >
 
     <TextView

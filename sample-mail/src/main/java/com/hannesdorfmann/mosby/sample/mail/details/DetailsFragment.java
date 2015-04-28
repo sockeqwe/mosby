@@ -88,6 +88,14 @@ public class DetailsFragment extends AuthFragment<TextView, Mail, DetailsView, D
     starView.setStarred(starred);
     dateView.setText(format.format(new Date(date)));
 
+    senderImageView.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        if (mail != null) {
+          IntentStarter.showProfile(getActivity(), mail.getSender());
+        }
+      }
+    });
+
     // Shared element animation
     if (Build.VERSION.SDK_INT >= 21 && !isTablet()) {
 

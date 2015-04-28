@@ -107,7 +107,8 @@ public class ProfileActivity extends
       AnimatorSet animations = new AnimatorSet();
       animations.playTogether(ObjectAnimator.ofFloat(contentView, "alpha", 0f, 1f),
           ObjectAnimator.ofFloat(loadingView, "alpha", 1f, 0f),
-          ObjectAnimator.ofFloat(headerImage, "alpha", 0f, 1f)
+          ObjectAnimator.ofFloat(headerImage, "alpha", 0f, 1f),
+          ObjectAnimator.ofFloat(toolbar, "alpha", 0f, 1f)
 
       );
       animations.addListener(new AnimatorListenerAdapter() {
@@ -125,6 +126,7 @@ public class ProfileActivity extends
       contentView.setVisibility(View.VISIBLE);
       errorView.setVisibility(View.GONE);
       loadingView.setVisibility(View.GONE);
+      toolbar.setAlpha(1f);
       headerImage.setVisibility(View.VISIBLE);
       headerImage.setAlpha(1f);
     }

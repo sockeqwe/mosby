@@ -25,7 +25,7 @@
         android:id="@+id/email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/titleEmail"
+        android:layout_toRightOf="@+id/titleBio"
         android:layout_marginTop="@dimen/profile_margin_next_row"
         android:layout_marginBottom="@dimen/profile_margin_next_row"
         />
@@ -47,7 +47,7 @@
         android:id="@+id/birthday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/titleBirthday"
+        android:layout_toRightOf="@+id/titleBio"
         android:layout_below="@+id/email"
         android:layout_marginTop="@dimen/profile_margin_next_row"
         android:layout_marginBottom="@dimen/profile_margin_next_row"

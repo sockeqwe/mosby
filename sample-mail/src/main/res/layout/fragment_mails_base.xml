@@ -22,19 +22,4 @@
 
   <include layout="@layout/merge_mails"/>
 
-  <com.melnykov.fab.FloatingActionButton
-      xmlns:fab="http://schemas.android.com/apk/res-auto"
-      android:id="@+id/createMail"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginRight="16dp"
-      android:layout_marginBottom="16dp"
-      android:layout_gravity="bottom|right"
-      android:src="@drawable/ic_create"
-      android:transitionName="@string/shared_write_action"
-      android:textColor="@color/white"
-      fab:fab_colorNormal="@color/accent"
-      fab:fab_colorPressed="@color/accent_dark"
-      fab:fab_colorRipple="@color/accent"
-      />
 </FrameLayout>

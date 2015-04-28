@@ -1,24 +1,16 @@
 package com.hannesdorfmann.mosby.sample.mail.base.view;
 
-import android.animation.ObjectAnimator;
-import android.animation.PropertyValuesHolder;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.view.View;
-import android.view.animation.OvershootInterpolator;
 import android.widget.Toast;
-import butterknife.InjectView;
-import butterknife.OnClick;
 import com.hannesdorfmann.mosby.sample.mail.IntentStarter;
 import com.hannesdorfmann.mosby.sample.mail.R;
 import com.hannesdorfmann.mosby.sample.mail.base.presenter.BaseRxMailPresenter;
 import com.hannesdorfmann.mosby.sample.mail.mails.MailsAdapter;
 import com.hannesdorfmann.mosby.sample.mail.mails.MailsAdapterHolders;
-import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
 import com.hannesdorfmann.mosby.sample.mail.model.contact.Person;
-import com.melnykov.fab.FloatingActionButton;
+import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
 import java.util.List;
 
 /**
@@ -28,13 +20,11 @@ import java.util.List;
  */
 public abstract class BaseMailsFragment<V extends BaseMailView<List<Mail>>, P extends BaseRxMailPresenter<V, List<Mail>>>
     extends AuthRefreshRecyclerFragment<List<Mail>, V, P>
-    implements BaseMailView<List<Mail>>, MailsAdapter.MailClickedListener, MailsAdapter.PersonClickListener,
-    MailsAdapter.MailStarListner {
-
-  @InjectView(R.id.createMail) FloatingActionButton createMailButton;
+    implements BaseMailView<List<Mail>>, MailsAdapter.MailClickedListener,
+    MailsAdapter.PersonClickListener, MailsAdapter.MailStarListner {
 
   @Override protected int getLayoutRes() {
-    return R.layout.fragment_mails;
+    return R.layout.fragment_mails_base;
   }
 
   @Override protected ListAdapter<List<Mail>> createAdapter() {
@@ -56,7 +46,6 @@ public abstract class BaseMailsFragment<V extends BaseMailView<List<Mail>>, P ex
   }
 
   @Override public void onPersonClicked(Person person) {
-    // TODO implement
     IntentStarter.showProfile(getActivity(), person);
   }
 
@@ -96,49 +85,6 @@ public abstract class BaseMailsFragment<V extends BaseMailView<List<Mail>>, P ex
     showStarErrorToast(R.string.error_unstaring_mail, mail);
   }
 
-  @Override public void showContent() {
-    super.showContent();
-    if (createMailButton.getVisibility() != View.VISIBLE) {
-      createMailButton.setVisibility(View.VISIBLE);
-
-      if (!isRestoringViewState()) {
-        PropertyValuesHolder holderX = PropertyValuesHolder.ofFloat("scaleX", 0, 1);
-        PropertyValuesHolder holderY = PropertyValuesHolder.ofFloat("scaleY", 0, 1);
-        ObjectAnimator animator =
-            ObjectAnimator.ofPropertyValuesHolder(createMailButton, holderX, holderY);
-        animator.setInterpolator(new OvershootInterpolator());
-        animator.start();
-      }
-    }
-  }
-
-  @Override public void showLoading(boolean pullToRefresh) {
-    super.showLoading(pullToRefresh);
-    if (!pullToRefresh) {
-      createMailButton.setVisibility(View.GONE);
-    }
-  }
-
-  @Override public void showError(Throwable e, boolean pullToRefresh) {
-    super.showError(e, pullToRefresh);
-    if (!pullToRefresh) {
-      createMailButton.setVisibility(View.GONE);
-    }
-  }
-
-  @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-    super.onViewCreated(view, savedInstanceState);
-    createMailButton.attachToRecyclerView(recyclerView);
-  }
-
-  @OnClick(R.id.createMail) public void onCreateMailClicked() {
-    ActivityOptionsCompat options =
-        ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), createMailButton,
-            getString(R.string.shared_write_action));
-
-    IntentStarter.showWriteMail(getActivity(), null, options.toBundle());
-  }
-
   @Override public void markMailAsRead(Mail mail, boolean read) {
 
     MailsAdapter.MailInAdapterResult result = ((MailsAdapter) adapter).findMail(mail);
@@ -147,6 +93,4 @@ public abstract class BaseMailsFragment<V extends BaseMailView<List<Mail>>, P ex
       adapter.notifyDataSetChanged();
     }
   }
-
-
 }

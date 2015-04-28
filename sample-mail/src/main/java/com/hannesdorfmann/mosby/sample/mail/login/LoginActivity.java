@@ -17,6 +17,7 @@
 package com.hannesdorfmann.mosby.sample.mail.login;
 
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import com.hannesdorfmann.mosby.sample.mail.R;
 

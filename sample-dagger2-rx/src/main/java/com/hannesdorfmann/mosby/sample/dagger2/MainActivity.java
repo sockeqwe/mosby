@@ -1,6 +1,7 @@
 package com.hannesdorfmann.mosby.sample.dagger2;
 
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import com.hannesdorfmann.mosby.sample.dagger2.repos.ReposFragment;
 

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <dimen name="foo">@dimen/abc_action_bar_default_height_material</dimen>
+
+  <dimen name="profile_tabs_height">32dp</dimen>
+  <dimen name="profile_header_collapsed_height">88dp</dimen>
+</resources>

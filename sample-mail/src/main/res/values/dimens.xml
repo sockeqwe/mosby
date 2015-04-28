@@ -20,4 +20,10 @@
   <dimen name="details_subject_text_size">18sp</dimen>
   <dimen name="list_mail_item_subject_text_size">16sp</dimen>
 
+
+  <dimen name="profile_pic_header_height">200dp</dimen>
+  <dimen name="profile_pic_width_heigth">64dp</dimen>
+  <dimen name="profile_tabs_height">40dp</dimen>
+  <dimen name="profile_header_collapsed_height">96dp</dimen>
+
 </resources>

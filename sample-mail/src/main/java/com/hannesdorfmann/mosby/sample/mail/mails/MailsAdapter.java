@@ -28,6 +28,7 @@ import com.hannesdorfmann.mosby.sample.mail.R;
 import com.hannesdorfmann.mosby.sample.mail.base.view.ListAdapter;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.MailComparator;
+import com.hannesdorfmann.mosby.sample.mail.model.contact.Person;
 import com.hannesdorfmann.mosby.sample.mail.ui.view.StarView;
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -47,6 +48,10 @@ public class MailsAdapter extends ListAdapter<List<Mail>> implements MailsAdapte
     public void onMailStarClicked(Mail mail);
   }
 
+  public interface PersonClickListener {
+    public void onPersonClicked(Person person);
+  }
+
   @ViewType(
       layout = R.layout.list_mail_item,
       fields = {
@@ -59,13 +64,15 @@ public class MailsAdapter extends ListAdapter<List<Mail>> implements MailsAdapte
 
   private MailClickedListener clickListener;
   private MailStarListner starListner;
+  private PersonClickListener personClickListener;
   private Format format = new SimpleDateFormat("dd. MMM");
 
   public MailsAdapter(Context context, MailClickedListener clickListener,
-      MailStarListner starListener) {
+      MailStarListner starListener, PersonClickListener personClickListener) {
     super(context);
     this.clickListener = clickListener;
     this.starListner = starListener;
+    this.personClickListener = personClickListener;
   }
 
   @Override public void bindViewHolder(final MailsAdapterHolders.MailViewHolder vh, int position) {
@@ -97,6 +104,11 @@ public class MailsAdapter extends ListAdapter<List<Mail>> implements MailsAdapte
     vh.star.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
         starListner.onMailStarClicked(mail);
+      }
+    });
+    vh.senderPic.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        personClickListener.onPersonClicked(mail.getSender());
       }
     });
   }

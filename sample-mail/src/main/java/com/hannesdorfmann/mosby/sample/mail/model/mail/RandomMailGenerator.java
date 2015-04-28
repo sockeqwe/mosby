@@ -16,6 +16,7 @@
 
 package com.hannesdorfmann.mosby.sample.mail.model.mail;
 
+import com.hannesdorfmann.mosby.sample.mail.model.contact.Person;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;

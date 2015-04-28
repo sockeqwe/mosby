@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+  <include layout="@layout/view_loading"/>
+  <include layout="@layout/view_error"/>
+
+
+
+  <ImageView
+      android:id="@+id/profileHeaderPic"
+      android:layout_width="match_parent"
+      android:layout_height="@dimen/profile_pic_header_height"
+      android:background="@color/primary_light"
+      android:scaleType="centerCrop"
+      android:alpha="0"
+      />
+
+  <FrameLayout
+      android:id="@+id/contentView"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+
+  <github.chenupt.dragtoplayout.DragTopLayout
+      xmlns:dtl="http://schemas.android.com/apk/res-auto"
+      android:id="@+id/dragTopLayout"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      dtl:dtlOverDrag="false"
+      dtl:dtlCollapseOffset="@dimen/profile_header_collapsed_height"
+      >
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="4dp">
+
+      <View
+          android:id="@+id/fadingToolbarHelper"
+          android:layout_width="match_parent"
+          android:layout_height="@dimen/profile_pic_header_height"
+          android:background="@color/primary"
+          android:alpha="0"
+          />
+
+
+      <com.astuetz.PagerSlidingTabStrip
+          android:id="@+id/tabs"
+          android:layout_width="match_parent"
+          android:layout_height="@dimen/profile_tabs_height"
+          android:layout_gravity="bottom"
+          xmlns:psts="http://schemas.android.com/apk/res-auto"
+          psts:pstsIndicatorHeight="0dp"
+          android:paddingLeft="56dp"
+          />
+
+    </FrameLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?android:attr/windowBackground"
+        />
+
+
+  </github.chenupt.dragtoplayout.DragTopLayout>
+
+  </FrameLayout>
+
+  <android.support.v7.widget.Toolbar
+      android:id="@+id/toolbar"
+      android:layout_width="match_parent"
+      android:layout_height="@dimen/abc_action_bar_default_height_material"
+      android:background="@null"
+      android:colorControlNormal="@color/white"
+      >
+
+    <TextView
+        android:id="@+id/toolbarTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        style="@style/Base.TextAppearance.AppCompat.Title"
+        android:alpha="0"
+        />
+
+      </android.support.v7.widget.Toolbar>
+
+</FrameLayout>

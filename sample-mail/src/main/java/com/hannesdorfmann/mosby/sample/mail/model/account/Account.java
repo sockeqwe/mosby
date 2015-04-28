@@ -19,7 +19,7 @@ package com.hannesdorfmann.mosby.sample.mail.model.account;
 import android.os.Parcel;
 import android.os.Parcelable;
 import com.hannesdorfmann.mosby.sample.mail.R;
-import com.hannesdorfmann.mosby.sample.mail.model.mail.Person;
+import com.hannesdorfmann.mosby.sample.mail.model.contact.Person;
 import com.hannesdorfmann.parcelableplease.annotation.ParcelablePlease;
 
 /**

@@ -39,6 +39,9 @@
             android:label=""
             android:windowSoftInputMode="adjustResize" />
 
+        <activity android:name=".profile.ProfileActivity"
+            />
+
         <service android:name=".model.mail.service.SendMailService"
             android:exported="false" />
 

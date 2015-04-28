@@ -2,6 +2,7 @@ package com.hannesdorfmann.mosby.sample.mail.model.mail;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import com.hannesdorfmann.mosby.sample.mail.model.contact.Person;
 import com.hannesdorfmann.parcelableplease.annotation.ParcelablePlease;
 import java.util.Date;
 

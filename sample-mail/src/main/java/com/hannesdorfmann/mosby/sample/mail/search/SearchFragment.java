@@ -118,7 +118,7 @@ public class SearchFragment extends BaseMailsFragment<SearchView, SearchPresente
   }
 
   @Override protected ListAdapter<List<Mail>> createAdapter() {
-    return new SearchResultAdapter(getActivity(), this, this);
+    return new SearchResultAdapter(getActivity(), this, this, this);
   }
 
   @Override public void showLoadMore(boolean showLoadMore) {

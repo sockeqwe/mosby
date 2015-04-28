@@ -18,8 +18,8 @@ public class SearchResultAdapter extends MailsAdapter implements SearchResultAda
   private boolean showLoadMore = false;
 
   public SearchResultAdapter(Context context, MailClickedListener clickListener,
-      MailStarListner starListener) {
-    super(context, clickListener, starListener);
+      MailStarListner starListener, PersonClickListener personClickListener) {
+    super(context, clickListener, starListener, personClickListener);
   }
 
   @Override public int getItemCount() {

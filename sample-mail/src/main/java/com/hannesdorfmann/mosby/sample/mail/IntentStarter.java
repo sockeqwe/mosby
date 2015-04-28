@@ -8,7 +8,9 @@ import com.hannesdorfmann.mosby.sample.mail.details.DetailsActivity;
 import com.hannesdorfmann.mosby.sample.mail.login.LoginActivity;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Label;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
+import com.hannesdorfmann.mosby.sample.mail.model.contact.Person;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.service.SendMailService;
+import com.hannesdorfmann.mosby.sample.mail.profile.ProfileActivity;
 import com.hannesdorfmann.mosby.sample.mail.search.SearchActivity;
 import com.hannesdorfmann.mosby.sample.mail.write.WriteActivity;
 
@@ -79,5 +81,13 @@ public class IntentStarter {
     Intent i = new Intent(context, SearchActivity.class);
     context.startActivity(i);
     context.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+  }
+
+  public static void showProfile(Context context, Person person) {
+    Intent i = new Intent(context, ProfileActivity.class);
+    i.putExtra(ProfileActivity.KEY_PERSON, person);
+    context.startActivity(i);
+
+    // TODO shared element
   }
 }

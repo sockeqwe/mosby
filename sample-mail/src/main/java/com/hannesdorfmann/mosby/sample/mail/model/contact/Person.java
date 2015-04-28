@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hannesdorfmann.mosby.sample.mail.model.mail;
+package com.hannesdorfmann.mosby.sample.mail.model.contact;
 
 import android.os.Parcel;
 import android.os.Parcelable;

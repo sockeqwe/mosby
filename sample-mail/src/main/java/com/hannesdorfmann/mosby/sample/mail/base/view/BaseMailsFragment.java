@@ -17,6 +17,7 @@ import com.hannesdorfmann.mosby.sample.mail.base.presenter.BaseRxMailPresenter;
 import com.hannesdorfmann.mosby.sample.mail.mails.MailsAdapter;
 import com.hannesdorfmann.mosby.sample.mail.mails.MailsAdapterHolders;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
+import com.hannesdorfmann.mosby.sample.mail.model.contact.Person;
 import com.melnykov.fab.FloatingActionButton;
 import java.util.List;
 
@@ -27,7 +28,7 @@ import java.util.List;
  */
 public abstract class BaseMailsFragment<V extends BaseMailView<List<Mail>>, P extends BaseRxMailPresenter<V, List<Mail>>>
     extends AuthRefreshRecyclerFragment<List<Mail>, V, P>
-    implements BaseMailView<List<Mail>>, MailsAdapter.MailClickedListener,
+    implements BaseMailView<List<Mail>>, MailsAdapter.MailClickedListener, MailsAdapter.PersonClickListener,
     MailsAdapter.MailStarListner {
 
   @InjectView(R.id.createMail) FloatingActionButton createMailButton;
@@ -37,7 +38,7 @@ public abstract class BaseMailsFragment<V extends BaseMailView<List<Mail>>, P ex
   }
 
   @Override protected ListAdapter<List<Mail>> createAdapter() {
-    return new MailsAdapter(getActivity(), this, this);
+    return new MailsAdapter(getActivity(), this, this, this);
   }
 
   @Override public void onMailClicked(MailsAdapterHolders.MailViewHolder vh, Mail mail) {
@@ -52,6 +53,11 @@ public abstract class BaseMailsFragment<V extends BaseMailView<List<Mail>>, P ex
                 getString(R.string.shared_mail_toolbar)));
 
     IntentStarter.showMailDetails(getActivity(), mail, options.toBundle());
+  }
+
+  @Override public void onPersonClicked(Person person) {
+    // TODO implement
+    IntentStarter.showProfile(getActivity(), person);
   }
 
   @Override public void onMailStarClicked(Mail mail) {

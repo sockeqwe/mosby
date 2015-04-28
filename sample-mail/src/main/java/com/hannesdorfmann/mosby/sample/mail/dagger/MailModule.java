@@ -36,8 +36,7 @@ import javax.inject.Singleton;
   // Singletons
   private static MailGenerator generator = new RandomMailGenerator();
   private static AccountManager accountManager = new DefaultAccountManager();
-  private static MailProvider mailProvider =
-      new MailProvider(accountManager, generator);
+  private static MailProvider mailProvider = new MailProvider(accountManager, generator);
 
   @Singleton @Provides public AccountManager providesAccountManager() {
     return accountManager;
@@ -55,7 +54,8 @@ import javax.inject.Singleton;
     return mailProvider;
   }
 
-  @Singleton @Provides public MailGenerator providesMailGenerator(){
+  @Singleton @Provides public MailGenerator providesMailGenerator() {
     return generator;
   }
+
 }

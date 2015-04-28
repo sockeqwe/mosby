@@ -259,6 +259,14 @@ public class MailProvider {
     return getFilteredMailList(filterFnc, true);
   }
 
+  public Observable<List<Mail>> getMailsSentBy(final int personId) {
+    return getFilteredMailList(new Func1<Mail, Boolean>() {
+      @Override public Boolean call(Mail mail) {
+        return mail.getSender().getId() == personId;
+      }
+    });
+  }
+
   /**
    * Filters the list of mails by the given criteria
    */

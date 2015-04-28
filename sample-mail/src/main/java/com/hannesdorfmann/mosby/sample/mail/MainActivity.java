@@ -22,7 +22,7 @@ import com.hannesdorfmann.mosby.sample.mail.mails.MailsFragmentBuilder;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Label;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.MailProvider;
-import com.hannesdorfmann.mosby.sample.mail.model.mail.Person;
+import com.hannesdorfmann.mosby.sample.mail.model.contact.Person;
 import icepick.Icicle;
 
 public class MainActivity extends MosbyActivity {

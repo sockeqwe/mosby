@@ -137,6 +137,8 @@ public class SearchFragment extends BaseMailsFragment<SearchView, SearchPresente
       presenter.searchFor(query, pullToRefresh);
       canLoadMore = true;
       lastQuery = query;
+    } else {
+      contentView.setRefreshing(false);
     }
   }
 

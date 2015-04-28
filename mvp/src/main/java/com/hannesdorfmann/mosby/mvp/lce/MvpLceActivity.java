@@ -50,8 +50,8 @@ public abstract class MvpLceActivity<CV extends View, M, V extends MvpLceView<M>
   protected CV contentView;
   protected TextView errorView;
 
-  @Override public void onSupportContentChanged() {
-    super.onSupportContentChanged();
+  @Override public void onContentChanged() {
+    super.onContentChanged();
     loadingView = findViewById(R.id.loadingView);
     contentView = (CV) findViewById(R.id.contentView);
     errorView = (TextView) findViewById(R.id.errorView);

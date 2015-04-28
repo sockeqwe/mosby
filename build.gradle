@@ -5,7 +5,7 @@ buildscript {
     jcenter()
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:1.1.3'
+    classpath 'com.android.tools.build:gradle:1.2.0'
     classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
     classpath 'org.robolectric:robolectric-gradle-plugin:1.0.1'
   }
@@ -40,7 +40,7 @@ ext {
   recyclerviewVersion = '22.1.1'
   fragmentargsVersion = '2.0.1'
   butterknifeVersion = '6.1.0'
-  icepickVersion = '3.0.2'
+  icepickVersion = '3.0.3-SNAPSHOT'
 
   // Test Libs
   robolectricVersion = '2.4'

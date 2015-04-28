@@ -79,11 +79,11 @@ public abstract class MvpLceViewStateActivity<CV extends View, M, V extends MvpL
     viewStateManager.saveViewState(outState, false);
   }
 
-  @Override public RestoreableViewState getViewState() {
+  @Override public RestoreableViewState<V> getViewState() {
     return viewState;
   }
 
-  @Override public void setViewState(ViewState viewState) {
+  @Override public void setViewState(ViewState<V> viewState) {
     if (!(viewState instanceof ParcelableLceViewState)) {
       throw new IllegalArgumentException(
           "Only " + RestoreableViewState.class.getSimpleName() + " are allowed");

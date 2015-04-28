@@ -133,13 +133,11 @@ public class SearchFragment extends BaseMailsFragment<SearchView, SearchPresente
 
     // Workaround to solve textwatcher problem that forces reload on screen orientation change, since
     // textwatcher triggers onTextChanged() after restoring edittext after screen orientation changes
-    if (!query.equals(lastQuery)) {
+    if (pullToRefresh || !query.equals(lastQuery)) {
       presenter.searchFor(query, pullToRefresh);
       canLoadMore = true;
       lastQuery = query;
-    } else {
-      contentView.setRefreshing(false);
-    }
+    } 
   }
 
   private String getQueryString() {
@@ -162,6 +160,11 @@ public class SearchFragment extends BaseMailsFragment<SearchView, SearchPresente
 
     SearchViewState vs = (SearchViewState) getViewState();
     vs.setShowSearchNotStarted();
+  }
+
+  @Override protected void onErrorViewClicked() {
+    lastQuery = "";
+    super.onErrorViewClicked();
   }
 
   @Override public void onNewViewStateInstance() {

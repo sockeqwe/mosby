@@ -137,7 +137,7 @@ public class SearchFragment extends BaseMailsFragment<SearchView, SearchPresente
       presenter.searchFor(query, pullToRefresh);
       canLoadMore = true;
       lastQuery = query;
-    } 
+    }
   }
 
   private String getQueryString() {
@@ -157,6 +157,7 @@ public class SearchFragment extends BaseMailsFragment<SearchView, SearchPresente
     errorView.setVisibility(View.GONE);
     authView.setVisibility(View.GONE);
     emptyView.setVisibility(View.GONE);
+    lastQuery = "";
 
     SearchViewState vs = (SearchViewState) getViewState();
     vs.setShowSearchNotStarted();
@@ -173,5 +174,6 @@ public class SearchFragment extends BaseMailsFragment<SearchView, SearchPresente
 
   @Override public void showLoadMoreError(Throwable e) {
     Toast.makeText(getActivity(), R.string.error_search_load_older, Toast.LENGTH_SHORT).show();
+    lastQuery = "";
   }
 }

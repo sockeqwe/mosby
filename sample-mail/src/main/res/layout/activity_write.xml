@@ -85,7 +85,7 @@
           android:id="@+id/message"
           android:inputType="textMultiLine"
           android:gravity="top|left"
-          android:layout_marginLeft="16dp"
+          android:layout_marginLeft="@dimen/write_edit_box_margin_left"
           android:layout_marginRight="16dp"
           android:layout_below="@+id/send"
           android:layout_height="wrap_content"

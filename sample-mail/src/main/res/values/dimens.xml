@@ -30,4 +30,6 @@
   <dimen name="profile_about_title_margin_text">16dp</dimen>
   <dimen name="profile_margin_next_row">8dp</dimen>
 
+  <dimen name="write_edit_box_margin_left">16dp</dimen>
+
 </resources>

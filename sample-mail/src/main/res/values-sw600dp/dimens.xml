@@ -10,4 +10,6 @@
 
   <dimen name="mail_sender_pic_width_height">54dp</dimen>
 
+  <dimen name="write_edit_box_margin_left">72dp</dimen>
+
 </resources>

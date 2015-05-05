@@ -20,15 +20,17 @@ import android.app.Application;
 import com.hannesdorfmann.mosby.dagger1.Injector;
 import com.hannesdorfmann.mosby.mvp.MvpActivity;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
+import com.hannesdorfmann.mosby.mvp.MvpView;
 import dagger.ObjectGraph;
 
 /**
  * {@link MvpActivity} with dagger 1 support
+ *
  * @author Hannes Dorfmann
  * @since 1.0.0
  */
-public abstract class Dagger1MvpActivity<P extends MvpPresenter> extends MvpActivity<P> implements
-    Injector {
+public abstract class Dagger1MvpActivity<V extends MvpView, P extends MvpPresenter<V>>
+    extends MvpActivity<V, P> implements Injector {
 
   /**
    * Returns daggers object graph. As defaultit assumes that your {@link
@@ -56,5 +58,4 @@ public abstract class Dagger1MvpActivity<P extends MvpPresenter> extends MvpActi
     Injector appInjector = (Injector) getApplication();
     return appInjector.getObjectGraph();
   }
-
 }

@@ -45,4 +45,5 @@ ext {
   // Test Libs
   robolectricVersion = '2.4'
   junitVersion = '4.12'
+  mockitoVersion = '1.9.5'
 }

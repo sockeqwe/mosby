@@ -1,6 +1,6 @@
 apply plugin: 'com.android.library'
 apply from: '../maven-push.gradle'
-
+apply plugin: 'org.robolectric'
 
 android {
   compileSdkVersion rootProject.ext.compileSdkVersion
@@ -11,6 +11,10 @@ android {
     targetSdkVersion rootProject.ext.targetSdk
     versionName project.VERSION_NAME
     versionCode Integer.parseInt(project.VERSION_CODE)
+
+    packagingOptions {
+      exclude 'LICENSE.txt'
+    }
   }
   buildTypes {
     release {
@@ -18,10 +22,20 @@ android {
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
   }
+
+  /*
+  testOptions {
+    unitTests.returnDefaultValues = true
+  }
+  */
+
+
 }
 
 dependencies {
+
   compile project(':core')
 
   testCompile 'junit:junit:' + rootProject.ext.junitVersion
+  testCompile 'org.mockito:mockito-core:'+rootProject.ext.mockitoVersion
 }

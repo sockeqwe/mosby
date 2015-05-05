@@ -78,7 +78,7 @@ public class ProfileActivity extends
     return getString(R.string.error_has_occurred);
   }
 
-  @Override protected ProfilePresenter createPresenter() {
+  @Override public ProfilePresenter createPresenter() {
     return DaggerProfileComponent.builder().build().presenter();
   }
 

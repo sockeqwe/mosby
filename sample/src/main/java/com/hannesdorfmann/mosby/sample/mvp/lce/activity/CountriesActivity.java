@@ -65,7 +65,7 @@ public class CountriesActivity
     return CountriesErrorMessage.get(e, pullToRefresh, this);
   }
 
-  @Override protected CountriesPresenter createPresenter() {
+  @Override public CountriesPresenter createPresenter() {
     return new SimpleCountriesPresenter();
   }
 

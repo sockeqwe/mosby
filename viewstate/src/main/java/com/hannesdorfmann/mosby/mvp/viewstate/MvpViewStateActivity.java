@@ -19,6 +19,7 @@ package com.hannesdorfmann.mosby.mvp.viewstate;
 import android.os.Bundle;
 import com.hannesdorfmann.mosby.mvp.MvpActivity;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
+import com.hannesdorfmann.mosby.mvp.MvpView;
 
 /**
  * This is a enhancement of {@link com.hannesdorfmann.mosby.mvp.MvpActivity} that introduces the
@@ -32,7 +33,7 @@ import com.hannesdorfmann.mosby.mvp.MvpPresenter;
  * @author Hannes Dorfmann
  * @since 1.0.0
  */
-public abstract class MvpViewStateActivity<P extends MvpPresenter> extends MvpActivity<P>
+public abstract class MvpViewStateActivity<V extends MvpView, P extends MvpPresenter<V>> extends MvpActivity<V, P>
     implements ViewStateSupport {
 
 

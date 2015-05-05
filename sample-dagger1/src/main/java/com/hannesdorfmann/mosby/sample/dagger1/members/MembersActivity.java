@@ -68,7 +68,7 @@ public class MembersActivity extends
     return errorMessageDeterminer.getErrorMessage(e, pullToRefresh);
   }
 
-  @Override protected MembersPresenter createPresenter() {
+  @Override public MembersPresenter createPresenter() {
     return getObjectGraph().get(MembersPresenter.class);
   }
 

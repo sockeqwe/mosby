@@ -19,19 +19,22 @@ package com.hannesdorfmann.mosby.dagger1.viewstate;
 import android.app.Application;
 import com.hannesdorfmann.mosby.dagger1.Injector;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
+import com.hannesdorfmann.mosby.mvp.MvpView;
 import com.hannesdorfmann.mosby.mvp.viewstate.MvpViewStateActivity;
 import dagger.ObjectGraph;
 
 /**
  * A {@link MvpViewStateActivity} with dagger1 support by implementing {@link Injector}
+ *
  * @author Hannes Dorfmann
  * @since 1.0.0
  */
-public abstract class Dagger1MvpViewStateActivity<P extends MvpPresenter> extends MvpViewStateActivity<P> implements
-    Injector{
+public abstract class Dagger1MvpViewStateActivity<V extends MvpView, P extends MvpPresenter<V>>
+    extends MvpViewStateActivity<V, P> implements Injector {
 
   /**
-   * Returns daggers object graph. As default {@link Dagger1MvpViewStateActivity} assumes that your {@link
+   * Returns daggers object graph. As default {@link Dagger1MvpViewStateActivity} assumes that your
+   * {@link
    * Application} implements {@link Injector} and that one will be accessed. If you want to do your
    * own thing override this method. However, injecting should not be done in this method but in
    * {@link #injectDependencies()}
@@ -56,6 +59,4 @@ public abstract class Dagger1MvpViewStateActivity<P extends MvpPresenter> extend
     Injector appInjector = (Injector) getApplication();
     return appInjector.getObjectGraph();
   }
-
-
 }

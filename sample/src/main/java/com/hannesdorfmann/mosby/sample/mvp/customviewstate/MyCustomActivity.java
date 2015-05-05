@@ -30,7 +30,7 @@ import com.hannesdorfmann.mosby.sample.mvp.model.custom.B;
 /**
  * @author Hannes Dorfmann
  */
-public class MyCustomActivity extends MvpViewStateActivity<MyCustomPresenter>
+public class MyCustomActivity extends MvpViewStateActivity<MyCustomView, MyCustomPresenter>
     implements MyCustomView {
 
   @InjectView(R.id.textViewA) TextView aView;
@@ -49,7 +49,7 @@ public class MyCustomActivity extends MvpViewStateActivity<MyCustomPresenter>
     presenter.doA();
   }
 
-  @Override protected MyCustomPresenter createPresenter() {
+  @Override public MyCustomPresenter createPresenter() {
     return new MyCustomPresenter();
   }
 

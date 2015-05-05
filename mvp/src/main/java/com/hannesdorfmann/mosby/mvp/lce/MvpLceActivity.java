@@ -44,7 +44,7 @@ import com.hannesdorfmann.mosby.mvp.R;
  * @param <P> The type of the Presenter. Must extend from {@link MvpPresenter}
  */
 public abstract class MvpLceActivity<CV extends View, M, V extends MvpLceView<M>, P extends MvpPresenter<V>>
-    extends MvpActivity<P> implements MvpLceView<M> {
+    extends MvpActivity<V, P> implements MvpLceView<M> {
 
   protected View loadingView;
   protected CV contentView;

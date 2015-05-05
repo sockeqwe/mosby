@@ -18,6 +18,9 @@ package com.hannesdorfmann.mosby.mvp;
 
 import android.os.Bundle;
 import com.hannesdorfmann.mosby.MosbyActivity;
+import com.hannesdorfmann.mosby.mvp.delegate.ActivityMvpDelegate;
+import com.hannesdorfmann.mosby.mvp.delegate.DefaultActivityMvpDelegate;
+import com.hannesdorfmann.mosby.mvp.delegate.MvpDelegateCallback;
 
 /**
  * A {@link MosbyActivity} that uses an {@link MvpPresenter} to implement a Model-View-Presenter
@@ -26,22 +29,60 @@ import com.hannesdorfmann.mosby.MosbyActivity;
  * @author Hannes Dorfmann
  * @since 1.0.0
  */
-public abstract class MvpActivity<P extends MvpPresenter> extends MosbyActivity implements MvpView {
+public abstract class MvpActivity<V extends MvpView, P extends MvpPresenter<V>>
+    extends MosbyActivity implements MvpDelegateCallback<V, P>, MvpView {
 
+  private ActivityMvpDelegate mvpDelegate;
   protected P presenter;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    presenter = createPresenter();
-    if (presenter == null){
-      throw new NullPointerException("Presenter is null! Do you return null in createPresenter()?");
-    }
-    presenter.attachView(this);
+    getMvpDelegate().onCreate(savedInstanceState);
   }
 
   @Override protected void onDestroy() {
     super.onDestroy();
-    presenter.detachView(false);
+    getMvpDelegate().onDestroy();
+  }
+
+  @Override protected void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    getMvpDelegate().onSaveInstanceState(outState);
+  }
+
+  @Override protected void onPause() {
+    super.onPause();
+    getMvpDelegate().onPause();
+  }
+
+  @Override protected void onResume() {
+    super.onResume();
+    getMvpDelegate().onResume();
+  }
+
+  @Override protected void onStart() {
+    super.onStart();
+    getMvpDelegate().onStart();
+  }
+
+  @Override protected void onStop() {
+    super.onStop();
+    getMvpDelegate().onStop();
+  }
+
+  @Override protected void onRestart() {
+    super.onRestart();
+    getMvpDelegate().onRestart();
+  }
+
+  @Override public void onContentChanged() {
+    super.onContentChanged();
+    getMvpDelegate().onContentChanged();
+  }
+
+  @Override protected void onPostCreate(Bundle savedInstanceState) {
+    super.onPostCreate(savedInstanceState);
+    getMvpDelegate().onPostCreate(savedInstanceState);
   }
 
   /**
@@ -49,5 +90,35 @@ public abstract class MvpActivity<P extends MvpPresenter> extends MosbyActivity 
    *
    * @return The {@link MvpPresenter} for this view
    */
-  protected abstract P createPresenter();
+  public abstract P createPresenter();
+
+  /**
+   * Get the mvp delegate. This is internally used for creating presenter, attaching and detaching
+   * view from presenter.
+   *
+   * @return The {@link DefaultActivityMvpDelegate}
+   */
+  protected ActivityMvpDelegate<V, P> getMvpDelegate() {
+    if (mvpDelegate == null) {
+      mvpDelegate = new DefaultActivityMvpDelegate(this);
+    }
+
+    return mvpDelegate;
+  }
+
+  @Override public P getPresenter() {
+    return presenter;
+  }
+
+  @Override public void setPresenter(P presenter) {
+    this.presenter = presenter;
+  }
+
+  @Override public V getView() {
+    return (V) this;
+  }
+
+  @Override public boolean isRetainingInstance() {
+    return false;
+  }
 }

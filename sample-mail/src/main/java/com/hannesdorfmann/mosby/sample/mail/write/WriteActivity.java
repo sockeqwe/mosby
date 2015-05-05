@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
 /**
  * @author Hannes Dorfmann
  */
-@TargetApi(21) public class WriteActivity extends MvpViewStateActivity<WritePresenter>
+@TargetApi(21) public class WriteActivity extends MvpViewStateActivity<WriteView, WritePresenter>
     implements WriteView {
 
   public static final String KEY_REPLAY_MAIL =
@@ -93,7 +93,7 @@ import java.util.regex.Pattern;
     return new WriteViewState();
   }
 
-  @Override protected WritePresenter createPresenter() {
+  @Override public WritePresenter createPresenter() {
     return DaggerWriteComponent.create().presenter();
   }
 

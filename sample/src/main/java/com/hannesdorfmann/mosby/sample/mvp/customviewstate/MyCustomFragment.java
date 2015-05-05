@@ -29,7 +29,7 @@ import com.hannesdorfmann.mosby.sample.mvp.model.custom.B;
 /**
  * @author Hannes Dorfmann
  */
-public class MyCustomFragment extends MvpViewStateFragment<MyCustomPresenter>
+public class MyCustomFragment extends MvpViewStateFragment<MyCustomView, MyCustomPresenter>
     implements MyCustomView {
 
   @InjectView(R.id.textViewA) TextView aView;
@@ -47,7 +47,7 @@ public class MyCustomFragment extends MvpViewStateFragment<MyCustomPresenter>
     presenter.doA();
   }
 
-  @Override protected MyCustomPresenter createPresenter() {
+  @Override public MyCustomPresenter createPresenter() {
     return new MyCustomPresenter();
   }
 

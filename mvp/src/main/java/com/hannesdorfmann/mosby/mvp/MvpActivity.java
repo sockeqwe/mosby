@@ -96,7 +96,15 @@ public abstract class MvpActivity<V extends MvpView, P extends MvpPresenter<V>>
    * Get the mvp delegate. This is internally used for creating presenter, attaching and detaching
    * view from presenter.
    *
-   * @return The {@link DefaultActivityMvpDelegate}
+   * <p><b>Please note that only one instance of mvp delegate should be used per Activity
+   * instance</b>.
+   * </p>
+   *
+   * <p>
+   * Only override this method if you really know what you are doing.
+   * </p>
+   *
+   * @return {@link DefaultActivityMvpDelegate}
    */
   protected ActivityMvpDelegate<V, P> getMvpDelegate() {
     if (mvpDelegate == null) {
@@ -114,7 +122,7 @@ public abstract class MvpActivity<V extends MvpView, P extends MvpPresenter<V>>
     this.presenter = presenter;
   }
 
-  @Override public V getView() {
+  @Override public V getMvpView() {
     return (V) this;
   }
 

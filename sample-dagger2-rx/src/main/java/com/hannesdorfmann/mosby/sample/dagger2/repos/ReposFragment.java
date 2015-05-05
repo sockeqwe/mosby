@@ -60,7 +60,7 @@ public class ReposFragment
     return errorMessageDeterminer.getErrorMessage(e, pullToRefresh);
   }
 
-  @Override protected ReposPresenter createPresenter() {
+  @Override public ReposPresenter createPresenter() {
     return reposComponent.presenter();
   }
 

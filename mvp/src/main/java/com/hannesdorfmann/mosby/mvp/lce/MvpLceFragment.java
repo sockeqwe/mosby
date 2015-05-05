@@ -50,7 +50,7 @@ import com.hannesdorfmann.mosby.mvp.R;
  * @since 1.0.0
  */
 public abstract class MvpLceFragment<CV extends View, M, V extends MvpLceView<M>, P extends MvpPresenter<V>>
-    extends MvpFragment<P> implements MvpLceView<M> {
+    extends MvpFragment<V, P> implements MvpLceView<M> {
 
   protected View loadingView;
   protected CV contentView;

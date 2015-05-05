@@ -67,7 +67,7 @@ public class CountriesFragment
   }
 
 
-  @Override protected CountriesPresenter createPresenter() {
+  @Override public CountriesPresenter createPresenter() {
     return new SimpleCountriesPresenter();
   }
 

@@ -109,7 +109,7 @@ public class SearchFragment extends BaseMailsFragment<SearchView, SearchPresente
     return new SearchViewState();
   }
 
-  @Override protected SearchPresenter createPresenter() {
+  @Override public SearchPresenter createPresenter() {
     return DaggerSearchComponent.create().presenter();
   }
 

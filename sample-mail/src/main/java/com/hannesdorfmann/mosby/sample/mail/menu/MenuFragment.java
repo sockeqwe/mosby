@@ -79,7 +79,7 @@ public class MenuFragment extends AuthRefreshRecyclerFragment<List<Label>, MenuV
     profilePic.setVisibility(View.GONE);
   }
 
-  @Override protected MenuPresenter createPresenter() {
+  @Override public MenuPresenter createPresenter() {
     return menuComponent.presenter();
   }
 

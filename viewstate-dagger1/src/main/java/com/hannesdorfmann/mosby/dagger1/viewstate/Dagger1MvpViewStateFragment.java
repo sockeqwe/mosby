@@ -18,6 +18,7 @@ package com.hannesdorfmann.mosby.dagger1.viewstate;
 
 import com.hannesdorfmann.mosby.dagger1.Injector;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
+import com.hannesdorfmann.mosby.mvp.MvpView;
 import com.hannesdorfmann.mosby.mvp.viewstate.MvpViewStateFragment;
 import dagger.ObjectGraph;
 
@@ -27,8 +28,8 @@ import dagger.ObjectGraph;
  * @author Hannes Dorfmann
  * @since 1.0.0
  */
-public abstract class Dagger1MvpViewStateFragment<P extends MvpPresenter>
-    extends MvpViewStateFragment<P> implements Injector {
+public abstract class Dagger1MvpViewStateFragment<V extends MvpView, P extends MvpPresenter<V>>
+    extends MvpViewStateFragment<V, P> implements Injector {
 
   @Override public ObjectGraph getObjectGraph() {
 

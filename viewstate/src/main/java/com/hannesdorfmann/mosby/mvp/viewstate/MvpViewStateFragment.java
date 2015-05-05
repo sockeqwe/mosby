@@ -21,6 +21,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import com.hannesdorfmann.mosby.mvp.MvpFragment;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
+import com.hannesdorfmann.mosby.mvp.MvpView;
 
 /**
  * This is a enhancement of {@link com.hannesdorfmann.mosby.mvp.MvpFragment} that introduces the
@@ -34,7 +35,7 @@ import com.hannesdorfmann.mosby.mvp.MvpPresenter;
  * @author Hannes Dorfmann
  * @since 1.0.0
  */
-public abstract class MvpViewStateFragment<P extends MvpPresenter> extends MvpFragment<P>
+public abstract class MvpViewStateFragment<V extends MvpView, P extends MvpPresenter<V>> extends MvpFragment<V, P>
     implements ViewStateSupport {
 
   protected ViewStateManager<?> viewStateManager = new ViewStateManager<>(this, this);

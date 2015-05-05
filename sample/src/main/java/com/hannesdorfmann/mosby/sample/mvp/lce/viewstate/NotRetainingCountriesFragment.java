@@ -71,7 +71,7 @@ public class NotRetainingCountriesFragment extends
   }
 
 
-  @Override protected CountriesPresenter createPresenter() {
+  @Override public CountriesPresenter createPresenter() {
     return new SimpleCountriesPresenter();
   }
 

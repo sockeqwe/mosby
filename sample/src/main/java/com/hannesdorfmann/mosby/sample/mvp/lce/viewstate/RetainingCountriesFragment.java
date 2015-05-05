@@ -76,7 +76,7 @@ public class RetainingCountriesFragment extends
     return CountriesErrorMessage.get(e, pullToRefresh, getActivity());
   }
 
-  @Override protected CountriesPresenter createPresenter() {
+  @Override public CountriesPresenter createPresenter() {
     return new SimpleCountriesPresenter();
   }
 

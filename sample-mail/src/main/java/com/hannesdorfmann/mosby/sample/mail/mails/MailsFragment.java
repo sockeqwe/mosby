@@ -38,7 +38,7 @@ public class MailsFragment extends BaseMailsFragment<MailsView, MailsPresenter>
     createMailButton.attachToRecyclerView(recyclerView);
   }
 
-  @Override protected MailsPresenter createPresenter() {
+  @Override public MailsPresenter createPresenter() {
     return mailsComponent.presenter();
   }
 

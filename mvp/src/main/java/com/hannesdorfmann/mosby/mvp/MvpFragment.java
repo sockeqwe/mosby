@@ -16,10 +16,14 @@
 
 package com.hannesdorfmann.mosby.mvp;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import com.hannesdorfmann.mosby.MosbyFragment;
+import com.hannesdorfmann.mosby.mvp.delegate.DefaultFragmentMvpDelegate;
+import com.hannesdorfmann.mosby.mvp.delegate.FragmentMvpDelegate;
+import com.hannesdorfmann.mosby.mvp.delegate.MvpDelegateCallback;
 
 /**
  * A {@link MosbyFragment} that uses an {@link MvpPresenter} to implement a Model-View-Presenter
@@ -28,7 +32,10 @@ import com.hannesdorfmann.mosby.MosbyFragment;
  * @author Hannes Dorfmann
  * @since 1.0.0
  */
-public abstract class MvpFragment<P extends MvpPresenter> extends MosbyFragment implements MvpView {
+public abstract class MvpFragment<V extends MvpView, P extends MvpPresenter<V>>
+    extends MosbyFragment implements MvpDelegateCallback<V, P>, MvpView {
+
+  private FragmentMvpDelegate<V, P> mvpDelegate;
 
   /**
    * The presenter for this view. Will be instantiated with {@link #createPresenter()}
@@ -37,27 +44,108 @@ public abstract class MvpFragment<P extends MvpPresenter> extends MosbyFragment 
 
   /**
    * Creates a new presenter instance, if needed. Will reuse the previous presenter instance if
-   * {@link #setRetainInstance(boolean)} is set to true. This method will be called after from
+   * {@link #setRetainInstance(boolean)} is set to true. This method will be called from
    * {@link #onViewCreated(View, Bundle)}
    */
-  protected abstract P createPresenter();
+  public abstract P createPresenter();
+
+  /**
+   * * Get the mvp delegate. This is internally used for creating presenter, attaching and
+   * detaching view from presenter.
+   *
+   * <p>
+   * <b>Please note that only one instance of mvp delegate should be used per Fragment
+   * instance</b>.
+   * </p>
+   *
+   * <p>
+   * Only override this method if you really know what you are doing.
+   * </p>
+   *
+   * @return {@link DefaultFragmentMvpDelegate}
+   */
+  protected FragmentMvpDelegate<V, P> getMvpDelegate() {
+    if (mvpDelegate == null) {
+      mvpDelegate = new DefaultFragmentMvpDelegate<>(this);
+    }
+
+    return mvpDelegate;
+  }
+
+  @Override public P getPresenter() {
+    return presenter;
+  }
+
+  @Override public void setPresenter(P presenter) {
+    this.presenter = presenter;
+  }
+
+  @Override public boolean isRetainingInstance() {
+    return getRetainInstance();
+  }
+
+  @Override public V getMvpView() {
+    return (V) this;
+  }
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-
-    // Create the presenter if needed
-    if (presenter == null) {
-      presenter = createPresenter();
-
-      if (presenter == null){
-        throw new NullPointerException("Presenter is null! Do you return null in createPresenter()?");
-      }
-    }
-    presenter.attachView(this);
+    getMvpDelegate().onViewCreated(view, savedInstanceState);
   }
 
   @Override public void onDestroyView() {
     super.onDestroyView();
-    presenter.detachView(getRetainInstance());
+    getMvpDelegate().onDestroyView();
+  }
+
+  @Override public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    getMvpDelegate().onCreate(savedInstanceState);
+  }
+
+  @Override public void onDestroy() {
+    super.onDestroy();
+    getMvpDelegate().onDestroy();
+  }
+
+  @Override public void onPause() {
+    super.onPause();
+    getMvpDelegate().onPause();
+  }
+
+  @Override public void onResume() {
+    super.onResume();
+    getMvpDelegate().onResume();
+  }
+
+  @Override public void onStart() {
+    super.onStart();
+    getMvpDelegate().onStart();
+  }
+
+  @Override public void onStop() {
+    super.onStop();
+    getMvpDelegate().onStop();
+  }
+
+  @Override public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
+    getMvpDelegate().onActivityCreated(savedInstanceState);
+  }
+
+  @Override public void onAttach(Activity activity) {
+    super.onAttach(activity);
+    getMvpDelegate().onAttach(activity);
+  }
+
+  @Override public void onDetach() {
+    super.onDetach();
+    getMvpDelegate().onDetach();
+  }
+
+  @Override public void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    getMvpDelegate().onDetach();
   }
 }
+

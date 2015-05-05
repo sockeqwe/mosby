@@ -12,7 +12,7 @@ public class ProfileMailsFragment extends BaseMailsFragment<ProfileMailsView, Pr
 
   @Arg Person person;
 
-  @Override protected ProfileMailsPresenter createPresenter() {
+  @Override public ProfileMailsPresenter createPresenter() {
     return DaggerProfileMailsComponent.builder().build().presenter();
   }
 

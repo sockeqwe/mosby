@@ -143,7 +143,7 @@ public class DetailsFragment extends AuthFragment<TextView, Mail, DetailsView, D
     return mail;
   }
 
-  @Override protected DetailsPresenter createPresenter() {
+  @Override public DetailsPresenter createPresenter() {
     return DaggerDetailsComponent.create().presenter();
   }
 

@@ -19,6 +19,7 @@ package com.hannesdorfmann.mosby.dagger1.mvp;
 import com.hannesdorfmann.mosby.dagger1.Injector;
 import com.hannesdorfmann.mosby.mvp.MvpFragment;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
+import com.hannesdorfmann.mosby.mvp.MvpView;
 import dagger.ObjectGraph;
 
 /**
@@ -26,7 +27,7 @@ import dagger.ObjectGraph;
  * @author Hannes Dorfmann
  * @since 1.0.0
  */
-public abstract class Dagger1MvpFragment<P extends MvpPresenter> extends MvpFragment<P>
+public abstract class Dagger1MvpFragment<V extends MvpView, P extends MvpPresenter<V>>extends MvpFragment<V, P>
     implements Injector {
 
   @Override public ObjectGraph getObjectGraph() {

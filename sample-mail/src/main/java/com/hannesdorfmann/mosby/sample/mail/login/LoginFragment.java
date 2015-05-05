@@ -38,7 +38,7 @@ import com.hkm.ui.processbutton.iml.ActionProcessButton;
 /**
  * @author Hannes Dorfmann
  */
-public class LoginFragment extends MvpViewStateFragment<LoginPresenter> implements LoginView {
+public class LoginFragment extends MvpViewStateFragment<LoginView, LoginPresenter> implements LoginView {
 
   @InjectView(R.id.username) EditText username;
   @InjectView(R.id.password) EditText password;
@@ -71,7 +71,7 @@ public class LoginFragment extends MvpViewStateFragment<LoginPresenter> implemen
     return new LoginViewState();
   }
 
-  @Override protected LoginPresenter createPresenter() {
+  @Override public LoginPresenter createPresenter() {
     return DaggerLoginComponent.create().presenter();
   }
 

@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * @author Hannes Dorfmann
  */
-public class CountriesLayout extends MvpViewStateFrameLayout<CountriesPresenter>
+public class CountriesLayout extends MvpViewStateFrameLayout<CountriesView, CountriesPresenter>
     implements CountriesView, SwipeRefreshLayout.OnRefreshListener {
 
   @InjectView(R.id.loadingView) View loadingView;
@@ -63,7 +63,7 @@ public class CountriesLayout extends MvpViewStateFrameLayout<CountriesPresenter>
     recyclerView.setAdapter(adapter);
   }
 
-  @Override protected CountriesPresenter createPresenter() {
+  @Override public CountriesPresenter createPresenter() {
     return new SimpleCountriesPresenter();
   }
 

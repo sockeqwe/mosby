@@ -54,7 +54,7 @@ public abstract class MvpFragment<V extends MvpView, P extends MvpPresenter<V>>
    * detaching view from presenter.
    *
    * <p>
-   * <b>Please note that only one instance of mvp delegate should be used per Fragment
+   * <b>Please note that only one instance of mvp delegate should be used per fragment
    * instance</b>.
    * </p>
    *
@@ -145,7 +145,7 @@ public abstract class MvpFragment<V extends MvpView, P extends MvpPresenter<V>>
 
   @Override public void onSaveInstanceState(Bundle outState) {
     super.onSaveInstanceState(outState);
-    getMvpDelegate().onDetach();
+    getMvpDelegate().onSaveInstanceState(outState);
   }
 }
 

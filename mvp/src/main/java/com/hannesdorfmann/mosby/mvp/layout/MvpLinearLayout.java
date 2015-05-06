@@ -22,6 +22,9 @@ import android.widget.LinearLayout;
 import butterknife.ButterKnife;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
+import com.hannesdorfmann.mosby.mvp.delegate.DefaultViewMvpDelegate;
+import com.hannesdorfmann.mosby.mvp.delegate.MvpDelegateCallback;
+import com.hannesdorfmann.mosby.mvp.delegate.ViewMvpDelegate;
 
 /**
  * A LinearLayout that can be used as view with an presenter
@@ -29,10 +32,11 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
  * @author Hannes Dorfmann
  * @since 1.1
  */
-public abstract class MvpLinearLayout<P extends MvpPresenter> extends LinearLayout
-    implements MvpView {
+public abstract class MvpLinearLayout<V extends MvpView, P extends MvpPresenter<V>>
+    extends LinearLayout implements MvpView, MvpDelegateCallback<V, P> {
 
   protected P presenter;
+  protected ViewMvpDelegate<V, P> mvpDelegate;
 
   public MvpLinearLayout(Context context) {
     super(context);
@@ -56,18 +60,36 @@ public abstract class MvpLinearLayout<P extends MvpPresenter> extends LinearLayo
     ButterKnife.inject(this, this);
   }
 
+  /**
+   * Get the mvp delegate. This is internally used for creating presenter, attaching and detaching
+   * view from presenter etc.
+   *
+   * <p><b>Please note that only one instance of mvp delegate should be used per android.view.View
+   * instance</b>.
+   * </p>
+   *
+   * <p>
+   * Only override this method if you really know what you are doing.
+   * </p>
+   *
+   * @return {@link DefaultViewMvpDelegate}
+   */
+  protected ViewMvpDelegate<V, P> getMvpDelegate() {
+    if (mvpDelegate == null) {
+      mvpDelegate = new DefaultViewMvpDelegate<>(this);
+    }
+
+    return mvpDelegate;
+  }
+
   @Override protected void onAttachedToWindow() {
     super.onAttachedToWindow();
-    presenter = createPresenter();
-    if (presenter == null) {
-      throw new NullPointerException("Presenter is null! Do you return null in createPresenter()?");
-    }
-    presenter.attachView(this);
+    getMvpDelegate().onAttachedToWindow();
   }
 
   @Override protected void onDetachedFromWindow() {
     super.onDetachedFromWindow();
-    presenter.detachView(false);
+    getMvpDelegate().onDetachedFromWindow();
   }
 
   /**
@@ -75,5 +97,21 @@ public abstract class MvpLinearLayout<P extends MvpPresenter> extends LinearLayo
    *
    * @return The {@link MvpPresenter} for this view
    */
-  protected abstract P createPresenter();
+  public abstract P createPresenter();
+
+  @Override public P getPresenter() {
+    return presenter;
+  }
+
+  @Override public void setPresenter(P presenter) {
+    this.presenter = presenter;
+  }
+
+  @Override public V getMvpView() {
+    return (V) this;
+  }
+
+  @Override public boolean isRetainingInstance() {
+    return false;
+  }
 }

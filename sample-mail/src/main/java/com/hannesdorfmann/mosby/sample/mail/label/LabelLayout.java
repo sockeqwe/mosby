@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * @author Hannes Dorfmann
  */
-public class LabelLayout extends MvpViewStateLinearLayout<LabelPresenter> implements LabelView {
+public class LabelLayout extends MvpViewStateLinearLayout<LabelView, LabelPresenter> implements LabelView {
 
   @InjectView(R.id.labelTextView) TextView labelView;
   @InjectView(R.id.labelLoadingView) View loadingView;
@@ -103,7 +103,7 @@ public class LabelLayout extends MvpViewStateLinearLayout<LabelPresenter> implem
     labelView.setText(mail.getLabel());
   }
 
-  @Override protected LabelPresenter createPresenter() {
+  @Override public LabelPresenter createPresenter() {
     return DaggerLabelLayoutComponent.create().presenter();
   }
 

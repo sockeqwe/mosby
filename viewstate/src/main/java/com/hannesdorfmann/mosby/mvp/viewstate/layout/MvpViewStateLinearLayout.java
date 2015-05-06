@@ -20,6 +20,7 @@ import android.content.Context;
 import android.os.Parcelable;
 import android.util.AttributeSet;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
+import com.hannesdorfmann.mosby.mvp.MvpView;
 import com.hannesdorfmann.mosby.mvp.layout.MvpLinearLayout;
 import com.hannesdorfmann.mosby.mvp.viewstate.RestoreableParcelableViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
@@ -31,7 +32,7 @@ import com.hannesdorfmann.mosby.mvp.viewstate.ViewStateSupport;
  * @author Hannes Dorfmann
  * @since 1.1
  */
-public abstract class MvpViewStateLinearLayout<P extends MvpPresenter> extends MvpLinearLayout<P>
+public abstract class MvpViewStateLinearLayout<V extends MvpView, P extends MvpPresenter<V>> extends MvpLinearLayout<V, P>
     implements ViewStateSupport {
 
   private LayoutViewStateManager viewStateManager = new LayoutViewStateManager(this, this);

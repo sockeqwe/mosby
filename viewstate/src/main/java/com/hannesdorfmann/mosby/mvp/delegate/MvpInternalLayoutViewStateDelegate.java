@@ -14,43 +14,35 @@
  * limitations under the License.
  */
 
-package com.hannesdorfmann.mosby.mvp.viewstate.layout;
+package com.hannesdorfmann.mosby.mvp.delegate;
 
 import android.os.Parcelable;
+import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 import com.hannesdorfmann.mosby.mvp.viewstate.RestoreableParcelableViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.RestoreableViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
-import com.hannesdorfmann.mosby.mvp.viewstate.ViewStateSupport;
+import com.hannesdorfmann.mosby.mvp.viewstate.layout.MvpViewStateFrameLayout;
+import com.hannesdorfmann.mosby.mvp.viewstate.layout.ViewStateSavedState;
 
 /**
  * This class
- * is used to save, restore and apply a {@link ViewState} by using {@link ViewStateSupport}. It's
+ * is used to save, restore and apply a {@link ViewState} by using {@link
+ * ViewStateDelegateCallback}. It's
  * just a little helper / utils class that avoids to many copy & paste code clones.
  * This class is designed to be for custom Layouts like {@link MvpViewStateFrameLayout} etc.
  *
  * @author Hannes Dorfmann
  * @since 1.1
  */
-public class LayoutViewStateManager<V extends MvpView> {
+class MvpInternalLayoutViewStateDelegate<V extends MvpView, P extends MvpPresenter<V>>
+    extends MvpInternalDelegate<V, P> {
 
-  private V view;
-  private ViewStateSupport viewStateSupport;
-  private boolean retainingInstanceState = false;
   private boolean applyViewState = false;
   private boolean createOrRestoreCalled = false;
 
-  public LayoutViewStateManager(ViewStateSupport viewStateSupport, V view) {
-    this.viewStateSupport = viewStateSupport;
-    this.view = view;
-
-    if (viewStateSupport == null) {
-      throw new NullPointerException("ViewStateSupport can not be null");
-    }
-
-    if (view == null) {
-      throw new NullPointerException("View can not be null");
-    }
+  MvpInternalLayoutViewStateDelegate(ViewStateLayoutDelegateCallback<V, P> delegateCallback) {
+    super(delegateCallback);
   }
 
   /**
@@ -59,8 +51,9 @@ public class LayoutViewStateManager<V extends MvpView> {
    *
    * @return true, if the viewstate has been restored (in other words restored from parcelable)
    * (calls {@link
-   * ViewStateSupport#onViewStateInstanceRestored(boolean) after having restored the viewstate}.
-   * Otherwise returns false and calls {@link ViewStateSupport#onNewViewStateInstance()}
+   * ViewStateDelegateCallback#onViewStateInstanceRestored(boolean) after having restored the
+   * viewstate}.
+   * Otherwise returns false and calls {@link ViewStateDelegateCallback#onNewViewStateInstance()}
    */
   public boolean createOrRestoreViewState(ViewStateSavedState savedState) {
 
@@ -69,34 +62,33 @@ public class LayoutViewStateManager<V extends MvpView> {
     }
     createOrRestoreCalled = true;
 
+    ViewStateLayoutDelegateCallback delegate = (ViewStateLayoutDelegateCallback) delegateCallback;
+
     // ViewState already exists (Fragment retainsInstanceState == true)
-    if (viewStateSupport.getViewState() != null) {
-      retainingInstanceState = true;
+    if (delegate.getViewState() != null) {
       applyViewState = true;
       return false;
     }
 
     if (savedState != null) {
       ViewState viewState = savedState.getMosbyViewState();
-      viewStateSupport.setViewState(viewState);
-      boolean restoredFromBundle = viewStateSupport.getViewState() != null;
+      delegate.setViewState(viewState);
+      boolean restoredFromBundle = delegate.getViewState() != null;
 
       if (restoredFromBundle) {
-        retainingInstanceState = false;
         applyViewState = true;
         return true;
       }
     }
 
     // Create view state
-    viewStateSupport.setViewState(viewStateSupport.createViewState());
-    if (viewStateSupport.getViewState() == null) {
+    delegate.setViewState(delegate.createViewState());
+    if (delegate.getViewState() == null) {
       throw new NullPointerException(
           "ViewState is null! Do you return null in createViewState() method?");
     }
 
     // ViewState not restored, activity / fragment starting first time
-    retainingInstanceState = false;
     applyViewState = false;
     return false;
   }
@@ -108,15 +100,18 @@ public class LayoutViewStateManager<V extends MvpView> {
    * starting for the first time)
    */
   public boolean applyViewState() {
+
+    ViewStateLayoutDelegateCallback delegate = (ViewStateLayoutDelegateCallback) delegateCallback;
+
     if (applyViewState) {
-      viewStateSupport.setRestoringViewState(true);
-      viewStateSupport.getViewState().apply(view, retainingInstanceState);
-      viewStateSupport.setRestoringViewState(false);
-      viewStateSupport.onViewStateInstanceRestored(retainingInstanceState);
+      delegate.setRestoringViewState(true);
+      delegate.getViewState().apply(delegate.getMvpView(), delegate.isRetainingInstance());
+      delegate.setRestoringViewState(false);
+      delegate.onViewStateInstanceRestored(delegate.isRetainingInstance());
       return true;
     }
 
-    viewStateSupport.onNewViewStateInstance();
+    delegate.onNewViewStateInstance();
     return false;
   }
 
@@ -124,13 +119,13 @@ public class LayoutViewStateManager<V extends MvpView> {
    * Saves {@link RestoreableViewState} in a bundle. <b>Should be called from View
    * onSaveInstanceState(Parcelable) method</b>
    */
-  public Parcelable saveViewState(Parcelable superState, boolean retainingInstanceState) {
+  public Parcelable saveViewState(Parcelable superState) {
 
-    if (viewStateSupport == null) {
-      throw new NullPointerException("ViewStateSupport can not be null");
-    }
+    ViewStateLayoutDelegateCallback delegate = (ViewStateLayoutDelegateCallback) delegateCallback;
 
-    ViewState viewState = viewStateSupport.getViewState();
+    boolean retainingInstanceState = delegate.isRetainingInstance();
+
+    ViewState viewState = delegate.getViewState();
     if (viewState == null) {
       throw new NullPointerException("ViewState is null! That's not allowed");
     }
@@ -141,7 +136,7 @@ public class LayoutViewStateManager<V extends MvpView> {
       return null;
     } else {
       ViewStateSavedState state = new ViewStateSavedState(superState);
-      state.setMosbyViewState((RestoreableParcelableViewState) viewStateSupport.getViewState());
+      state.setMosbyViewState((RestoreableParcelableViewState) delegate.getViewState());
       return state;
     }
   }

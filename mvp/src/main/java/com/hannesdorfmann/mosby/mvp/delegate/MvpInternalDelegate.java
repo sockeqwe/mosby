@@ -29,9 +29,14 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
  */
 class MvpInternalDelegate<V extends MvpView, P extends MvpPresenter<V>> {
 
-  private MvpDelegateCallback<V, P> delegateCallback;
+  protected MvpDelegateCallback<V, P> delegateCallback;
 
   MvpInternalDelegate(MvpDelegateCallback<V, P> delegateCallback) {
+
+    if (delegateCallback == null) {
+      throw new NullPointerException(delegateCallback.getClass().getSimpleName() + " is null!");
+    }
+
     this.delegateCallback = delegateCallback;
   }
 

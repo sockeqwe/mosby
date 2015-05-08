@@ -36,6 +36,9 @@ public class DefaultActivityMvpDelegate<V extends MvpView, P extends MvpPresente
   protected MvpDelegateCallback<V, P> delegateCallback;
 
   public DefaultActivityMvpDelegate(MvpDelegateCallback<V, P> delegateCallback) {
+    if (delegateCallback == null){
+      throw new NullPointerException(delegateCallback.getClass().getSimpleName()+" is null!");
+    }
     this.delegateCallback = delegateCallback;
   }
 

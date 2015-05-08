@@ -30,7 +30,7 @@ import com.hannesdorfmann.mosby.mvp.delegate.ViewMvpDelegate;
  * A FrameLayout that can be used as View with an presenter
  *
  * @author Hannes Dorfmann
- * @since 1.1
+ * @since 1.1.0
  */
 public abstract class MvpFrameLayout<V extends MvpView, P extends MvpPresenter<V>>
     extends FrameLayout implements MvpDelegateCallback<V, P>, MvpView {

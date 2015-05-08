@@ -16,15 +16,15 @@
 
 package com.hannesdorfmann.mosby.mvp.viewstate.lce;
 
-import android.os.Bundle;
 import android.view.View;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
+import com.hannesdorfmann.mosby.mvp.delegate.ActivityMvpDelegate;
+import com.hannesdorfmann.mosby.mvp.delegate.DefaultActivityMvpViewStateDelegate;
+import com.hannesdorfmann.mosby.mvp.delegate.ViewStateDelegateCallback;
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceActivity;
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
 import com.hannesdorfmann.mosby.mvp.viewstate.RestoreableViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
-import com.hannesdorfmann.mosby.mvp.viewstate.ViewStateManager;
-import com.hannesdorfmann.mosby.mvp.viewstate.ViewStateSupport;
 
 /**
  * A {@link MvpLceActivity} with {@link ViewState} support.
@@ -33,50 +33,19 @@ import com.hannesdorfmann.mosby.mvp.viewstate.ViewStateSupport;
  * @since 1.0.0
  */
 public abstract class MvpLceViewStateActivity<CV extends View, M, V extends MvpLceView<M>, P extends MvpPresenter<V>>
-    extends MvpLceActivity<CV, M, V, P> implements MvpLceView<M>, ViewStateSupport<V> {
+    extends MvpLceActivity<CV, M, V, P> implements MvpLceView<M>, ViewStateDelegateCallback<V, P> {
 
 
-  protected ViewStateManager<?> viewStateManager = new ViewStateManager<>(this, this);
   protected ParcelableLceViewState<M, V> viewState;
   protected boolean restoringViewState = false;
 
 
-  @Override protected void onPostCreate(Bundle savedInstanceState) {
-    super.onPostCreate(savedInstanceState);
-    createOrRestoreViewState(savedInstanceState);
-    applyViewState();
-  }
+  @Override protected ActivityMvpDelegate<V, P> getMvpDelegate() {
+    if (mvpDelegate == null) {
+      mvpDelegate = new DefaultActivityMvpViewStateDelegate<>(this);
+    }
 
-  /**
-   * Creates or restores the viewstate
-   *
-   * @param savedInstanceState The Bundle that may or may not contain the viewstate
-   * @return true if restored successfully, otherwise fals
-   */
-  protected boolean createOrRestoreViewState(Bundle savedInstanceState) {
-    return viewStateManager.createOrRestoreViewState(savedInstanceState);
-  }
-
-  /**
-   * Applies the view state. Checks internally if this is necessary and return true, if applied or
-   * false if not applied (i.e. first time activity / fragment runs)
-   */
-  protected boolean applyViewState() {
-    return viewStateManager.applyViewState();
-  }
-
-  @Override public void onSaveInstanceState(Bundle outState) {
-    super.onSaveInstanceState(outState);
-    saveViewStateInstanceState(outState);
-  }
-
-  /**
-   * Called from {@link #onSaveInstanceState(Bundle)} to store the bundle persistent
-   *
-   * @param outState The bundle to store
-   */
-  protected void saveViewStateInstanceState(Bundle outState) {
-    viewStateManager.saveViewState(outState, false);
+    return mvpDelegate;
   }
 
   @Override public RestoreableViewState<V> getViewState() {

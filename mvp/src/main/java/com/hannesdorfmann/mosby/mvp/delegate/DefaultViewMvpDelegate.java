@@ -33,6 +33,9 @@ public class DefaultViewMvpDelegate<V extends MvpView, P extends MvpPresenter<V>
   protected MvpInternalDelegate<V, P> internalDelegate;
 
   public DefaultViewMvpDelegate(MvpDelegateCallback<V, P> delegateCallback) {
+    if (delegateCallback == null) {
+      throw new NullPointerException(delegateCallback.getClass().getSimpleName() + " is null!");
+    }
     this.delegateCallback = delegateCallback;
   }
 
@@ -52,5 +55,4 @@ public class DefaultViewMvpDelegate<V extends MvpView, P extends MvpPresenter<V>
   @Override public void onDetachedFromWindow() {
     getInternalDelegate().detachView();
   }
-
 }

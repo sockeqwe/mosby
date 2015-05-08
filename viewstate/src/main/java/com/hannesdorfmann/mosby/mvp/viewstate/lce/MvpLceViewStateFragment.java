@@ -17,14 +17,14 @@
 package com.hannesdorfmann.mosby.mvp.viewstate.lce;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.View;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
+import com.hannesdorfmann.mosby.mvp.delegate.DefaultFragmentMvpViewStateDelegate;
+import com.hannesdorfmann.mosby.mvp.delegate.FragmentMvpDelegate;
+import com.hannesdorfmann.mosby.mvp.delegate.ViewStateDelegateCallback;
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceFragment;
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
-import com.hannesdorfmann.mosby.mvp.viewstate.ViewStateManager;
-import com.hannesdorfmann.mosby.mvp.viewstate.ViewStateSupport;
 
 /**
  * A {@link MvpLceFragment} with {@link ViewState} support.
@@ -33,9 +33,7 @@ import com.hannesdorfmann.mosby.mvp.viewstate.ViewStateSupport;
  * @since 1.0.0
  */
 public abstract class MvpLceViewStateFragment<CV extends View, M, V extends MvpLceView<M>, P extends MvpPresenter<V>>
-    extends MvpLceFragment<CV, M, V, P> implements MvpLceView<M>, ViewStateSupport<V> {
-
-  protected ViewStateManager<?> viewStateManager = new ViewStateManager<>(this, this);
+    extends MvpLceFragment<CV, M, V, P> implements MvpLceView<M>, ViewStateDelegateCallback<V, P> {
 
   /**
    * The viewstate will be instantiated by calling {@link #createViewState()} in {@link
@@ -53,47 +51,12 @@ public abstract class MvpLceViewStateFragment<CV extends View, M, V extends MvpL
    */
   public abstract LceViewState<M, V> createViewState();
 
-  @Override public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    createOrRestoreViewState(savedInstanceState);
-  }
+  @Override protected FragmentMvpDelegate<V, P> getMvpDelegate() {
+    if (mvpDelegate == null) {
+      mvpDelegate = new DefaultFragmentMvpViewStateDelegate<V, P>(this);
+    }
 
-  /**
-   * Creates or restores the viewstate instance. It doesn't apply the viewstate to this view. that
-   * will be done in {@link #applyViewState()}
-   *
-   * @param savedInstanceState The Bundle that may or may not contain the viewstate
-   * @return true if restored successfully, otherwise fals
-   */
-  protected boolean createOrRestoreViewState(Bundle savedInstanceState) {
-    return viewStateManager.createOrRestoreViewState(savedInstanceState);
-  }
-
-  @Override public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-    super.onActivityCreated(savedInstanceState);
-    applyViewState();
-  }
-
-  /**
-   * Applys the view state. That means, that the view state instance calls the methods of the view
-   * to get back to the view state before screen orientation change happened.
-   */
-  protected boolean applyViewState() {
-    return viewStateManager.applyViewState();
-  }
-
-  @Override public void onSaveInstanceState(Bundle outState) {
-    super.onSaveInstanceState(outState);
-    saveViewStateInstanceState(outState);
-  }
-
-  /**
-   * Called from {@link #onSaveInstanceState(Bundle)} to store the bundle persistent
-   *
-   * @param outState The bundle to store
-   */
-  protected void saveViewStateInstanceState(Bundle outState) {
-    viewStateManager.saveViewState(outState, getRetainInstance());
+    return mvpDelegate;
   }
 
   @Override public ViewState getViewState() {

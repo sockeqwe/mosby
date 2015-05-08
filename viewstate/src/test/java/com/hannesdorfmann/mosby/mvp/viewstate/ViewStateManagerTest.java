@@ -4,6 +4,8 @@ import android.os.Bundle;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
 import com.hannesdorfmann.mosby.mvp.viewstate.data.ParcelabledDummyData;
+import com.hannesdorfmann.mosby.mvp.delegate.MvpViewStateInternalDelegate;
+import com.hannesdorfmann.mosby.mvp.delegate.ViewStateDelegateCallback;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.ParcelableDataLceViewState;
 import junit.framework.Assert;
 import org.junit.Test;
@@ -25,21 +27,23 @@ import static org.mockito.Mockito.when;
 public class ViewStateManagerTest {
 
   interface ParcelableDummyView
-      extends MvpLceView<ParcelabledDummyData>, ViewStateSupport<MvpLceView<ParcelabledDummyData>> {
+      extends MvpLceView<ParcelabledDummyData>,
+      ViewStateDelegateCallback<MvpLceView<ParcelabledDummyData>> {
 
   }
 
   @Test(expected = NullPointerException.class) public void viewStateSupportIsNull() {
-    new ViewStateManager(null, mock(MvpView.class));
+    new MvpViewStateInternalDelegate(null, mock(MvpView.class));
   }
 
   @Test(expected = NullPointerException.class) public void viewIsNull() {
-    ViewStateManager vs = new ViewStateManager(mock(ViewStateSupport.class), null);
+    MvpViewStateInternalDelegate
+        vs = new MvpViewStateInternalDelegate(mock(ViewStateDelegateCallback.class), null);
   }
 
   @Test(expected = NullPointerException.class) public void failBecauseViewStateNull() {
     ParcelableDummyView view = mock(ParcelableDummyView.class);
-    new ViewStateManager(view, view).createOrRestoreViewState(new Bundle());
+    new MvpViewStateInternalDelegate(view, view).createOrRestoreViewState(new Bundle());
   }
 
   @Test public void testCreateNew() {
@@ -58,9 +62,9 @@ public class ViewStateManagerTest {
       }
     });
 
-    ViewStateManager manager = null;
+    MvpViewStateInternalDelegate manager = null;
     // Make call
-    manager = new ViewStateManager(view, view);
+    manager = new MvpViewStateInternalDelegate(view, view);
 
     boolean restored = manager.createOrRestoreViewState(null);
     boolean applied = manager.applyViewState();
@@ -86,7 +90,7 @@ public class ViewStateManagerTest {
     when(view.getViewState()).thenReturn(viewState);
 
     // Make call
-    ViewStateManager manager = new ViewStateManager(view, view);
+    MvpViewStateInternalDelegate manager = new MvpViewStateInternalDelegate(view, view);
     boolean restored = manager.createOrRestoreViewState(null);
     boolean applied = manager.applyViewState();
 
@@ -120,7 +124,7 @@ public class ViewStateManagerTest {
     viewState.setStateShowContent(data);
 
     Bundle bundle = new Bundle();
-    ViewStateManager manager = new ViewStateManager(view, view);
+    MvpViewStateInternalDelegate manager = new MvpViewStateInternalDelegate(view, view);
     manager.saveViewState(bundle, false);
 
     // Make call

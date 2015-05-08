@@ -21,10 +21,12 @@ import android.os.Parcelable;
 import android.util.AttributeSet;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
+import com.hannesdorfmann.mosby.mvp.delegate.DefaultViewMvpViewStateDelegate;
+import com.hannesdorfmann.mosby.mvp.delegate.ViewMvpDelegate;
+import com.hannesdorfmann.mosby.mvp.delegate.ViewStateLayoutDelegateCallback;
 import com.hannesdorfmann.mosby.mvp.layout.MvpFrameLayout;
 import com.hannesdorfmann.mosby.mvp.viewstate.RestoreableParcelableViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
-import com.hannesdorfmann.mosby.mvp.viewstate.ViewStateSupport;
 
 /**
  * A {@link MvpFrameLayout} with ViewState support.
@@ -32,10 +34,9 @@ import com.hannesdorfmann.mosby.mvp.viewstate.ViewStateSupport;
  * @author Hannes Dorfmann
  * @since 1.1
  */
-public abstract class MvpViewStateFrameLayout<V extends MvpView, P extends MvpPresenter<V>> extends MvpFrameLayout<V, P>
-    implements ViewStateSupport {
+public abstract class MvpViewStateFrameLayout<V extends MvpView, P extends MvpPresenter<V>>
+    extends MvpFrameLayout<V, P> implements ViewStateLayoutDelegateCallback<V, P> {
 
-  private LayoutViewStateManager viewStateManager = new LayoutViewStateManager(this, this);
   private boolean restoringViewState = false;
   protected RestoreableParcelableViewState viewState;
 
@@ -57,44 +58,20 @@ public abstract class MvpViewStateFrameLayout<V extends MvpView, P extends MvpPr
     super(context, attrs, defStyleAttr, defStyleRes);
   }
 
-  @Override protected void onAttachedToWindow() {
-    super.onAttachedToWindow();
-    viewStateManager.createOrRestoreViewState(null);
-    applyViewState();
+  protected ViewMvpDelegate<V, P> getMvpDelegate() {
+    if (mvpDelegate == null) {
+      mvpDelegate = new DefaultViewMvpViewStateDelegate<V, P>(this);
+    }
+
+    return mvpDelegate;
   }
 
   @Override protected Parcelable onSaveInstanceState() {
-    Parcelable superParcelable = super.onSaveInstanceState();
-
-    Parcelable vsParcelable = saveViewState(superParcelable);
-    if (vsParcelable != null) {
-      return vsParcelable;
-    } else {
-      return superParcelable;
-    }
-  }
-
-  protected Parcelable saveViewState(Parcelable state) {
-    return viewStateManager.saveViewState(state, false);
+    return ((DefaultViewMvpViewStateDelegate) getMvpDelegate()).onSaveInstanceState();
   }
 
   @Override protected void onRestoreInstanceState(Parcelable state) {
-    if (!(state instanceof ViewStateSavedState)) {
-      super.onRestoreInstanceState(state);
-      return;
-    }
-
-    ViewStateSavedState vsState = (ViewStateSavedState) state;
-    restoreViewState(vsState);
-    super.onRestoreInstanceState(vsState.getSuperState());
-  }
-
-  protected boolean restoreViewState(ViewStateSavedState state) {
-    return viewStateManager.createOrRestoreViewState(state);
-  }
-
-  protected void applyViewState() {
-    viewStateManager.applyViewState();
+    ((DefaultViewMvpViewStateDelegate) getMvpDelegate()).onRestoreInstanceState(state);
   }
 
   @Override public RestoreableParcelableViewState getViewState() {
@@ -115,5 +92,13 @@ public abstract class MvpViewStateFrameLayout<V extends MvpView, P extends MvpPr
 
   @Override public void onViewStateInstanceRestored(boolean instanceStateRetained) {
     // can be overridden in subclass
+  }
+
+  @Override public Parcelable superOnSaveInstanceState() {
+    return super.onSaveInstanceState();
+  }
+
+  @Override public void superOnRestoreInstanceState(Parcelable state) {
+    super.onRestoreInstanceState(state);
   }
 }

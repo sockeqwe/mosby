@@ -35,7 +35,7 @@ import com.hannesdorfmann.mosby.mvp.delegate.MvpDelegateCallback;
 public abstract class MvpFragment<V extends MvpView, P extends MvpPresenter<V>>
     extends MosbyFragment implements MvpDelegateCallback<V, P>, MvpView {
 
-  private FragmentMvpDelegate<V, P> mvpDelegate;
+  protected FragmentMvpDelegate<V, P> mvpDelegate;
 
   /**
    * The presenter for this view. Will be instantiated with {@link #createPresenter()}

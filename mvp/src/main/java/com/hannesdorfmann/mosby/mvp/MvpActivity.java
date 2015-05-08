@@ -32,7 +32,7 @@ import com.hannesdorfmann.mosby.mvp.delegate.MvpDelegateCallback;
 public abstract class MvpActivity<V extends MvpView, P extends MvpPresenter<V>>
     extends MosbyActivity implements MvpDelegateCallback<V, P>, MvpView {
 
-  private ActivityMvpDelegate mvpDelegate;
+  protected ActivityMvpDelegate mvpDelegate;
   protected P presenter;
 
   @Override protected void onCreate(Bundle savedInstanceState) {

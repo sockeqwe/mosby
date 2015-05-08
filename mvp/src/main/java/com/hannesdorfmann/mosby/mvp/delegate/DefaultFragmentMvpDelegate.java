@@ -38,12 +38,16 @@ public class DefaultFragmentMvpDelegate<V extends MvpView, P extends MvpPresente
   protected MvpDelegateCallback<V, P> delegateCallback;
   protected MvpInternalDelegate<V, P> internalDelegate;
 
-  public DefaultFragmentMvpDelegate(MvpDelegateCallback<V, P> delegateCallback){
+  public DefaultFragmentMvpDelegate(MvpDelegateCallback<V, P> delegateCallback) {
+    if (delegateCallback == null) {
+      throw new NullPointerException(delegateCallback.getClass().getSimpleName() + " is null!");
+    }
+
     this.delegateCallback = delegateCallback;
   }
 
-  protected MvpInternalDelegate<V, P> getInternalDelegate(){
-    if (internalDelegate == null){
+  protected MvpInternalDelegate<V, P> getInternalDelegate() {
+    if (internalDelegate == null) {
       internalDelegate = new MvpInternalDelegate<>(delegateCallback);
     }
 

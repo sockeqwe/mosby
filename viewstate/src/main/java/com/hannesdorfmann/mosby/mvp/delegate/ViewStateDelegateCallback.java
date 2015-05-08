@@ -14,52 +14,52 @@
  * limitations under the License.
  */
 
-package com.hannesdorfmann.mosby.mvp.viewstate;
+package com.hannesdorfmann.mosby.mvp.delegate;
 
 import android.support.v4.app.Fragment;
+import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
+import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 
 /**
- * I know, that word doesn't exist in english :)
- * <p>
- * I was looking for a word to say: The class that implements this interface has a {@link
- * ViewState}. It's just a common interface  for Activities and Fragments that support {@link
- * ViewState} that is used with the  {@link ViewStateManager} to rededuce code clones (copy and
- * pasting through subclasses)
- * </p>
+ * An enhanced version of {@link MvpDelegateCallback} that adds {@link ViewState} support.
+ * This interface must be implemented by all (subclasses of) Activity, Fragmen or android.view.View
+ * that want to support {@link
+ * ViewState} and mvo.
  *
  * @author Hannes Dorfmann
  * @since 1.0.0
  */
-public interface ViewStateSupport<V extends MvpView> {
+public interface ViewStateDelegateCallback<V extends MvpView, P extends MvpPresenter<V>>
+    extends MvpDelegateCallback<V, P> {
 
   /**
    * Get the viewState
    */
-  ViewState<V> getViewState();
+  public ViewState<V> getViewState();
 
   /**
-   * Set the viewstate. <b>Should only be called by {@link ViewStateManager}</b>
+   * Set the viewstate. <b>Should only be called by {@link MvpViewStateInternalDelegate}</b>
    */
-  void setViewState(ViewState<V> viewState);
+  public void setViewState(ViewState<V> viewState);
 
   /**
-   * Create the viewstate. Will be called by the {@link ViewStateManager}.
+   * Create the viewstate. Will be called by the {@link MvpViewStateInternalDelegate}.
    */
-  ViewState<V> createViewState();
+  public ViewState<V> createViewState();
 
   /**
-   * This method will be called by {@link ViewStateManager} to inform that restoring the view state
+   * This method will be called by {@link MvpViewStateInternalDelegate} to inform that restoring the view state
    * is in progress.
    *
    * @param restoringViewState true, if restoring viewstate is in progress, otherwise false
    */
-  void setRestoringViewState(boolean restoringViewState);
+  public void setRestoringViewState(boolean restoringViewState);
 
   /**
    * @return true if the viewstate is restoring right now (not finished yet). Otherwise false.
    */
-  boolean isRestoringViewState();
+  public boolean isRestoringViewState();
 
   /**
    * Called if the {@link ViewState} instance has been restored successfully.
@@ -72,7 +72,7 @@ public interface ViewStateSupport<V extends MvpView> {
    * @param instanceStateRetained true, if the viewstate has been retained by using{@link
    * Fragment#setRetainInstance(boolean)}, otherwise false (always false for activities).
    */
-  void onViewStateInstanceRestored(boolean instanceStateRetained);
+  public void onViewStateInstanceRestored(boolean instanceStateRetained);
 
   /**
    * Called if a new {@link ViewState} has been created because no viewstate from a previous
@@ -80,5 +80,5 @@ public interface ViewStateSupport<V extends MvpView> {
    * <p><b>Typically this is called on the first time the <i>Activity</i> or <i>Fragment</i> starts
    * and therefore no view state instance previously exists</b></p>
    */
-  void onNewViewStateInstance();
+  public void onNewViewStateInstance();
 }

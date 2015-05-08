@@ -14,14 +14,18 @@
  * limitations under the License.
  */
 
-package com.hannesdorfmann.mosby.mvp.viewstate;
+package com.hannesdorfmann.mosby.mvp.delegate;
 
 import android.os.Bundle;
+import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
+import com.hannesdorfmann.mosby.mvp.viewstate.RestoreableViewState;
+import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 
 /**
  * This class
- * is used to save, restore and apply a {@link ViewState} by using {@link ViewStateSupport}. It's
+ * is used to save, restore and apply a {@link ViewState} by using {@link
+ * ViewStateDelegateCallback}. It's
  * just a little helper / utils class that avoids to many copy & paste code clones.
  * However, you have to hook in the corresponding methods correctly in your Fragment, Activity or
  * android.widget.View
@@ -29,24 +33,14 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
  * @author Hannes Dorfmann
  * @since 1.0.0
  */
-public class ViewStateManager<V extends MvpView> {
+public class MvpViewStateInternalDelegate<V extends MvpView, P extends MvpPresenter<V>>
+    extends MvpInternalDelegate<V, P> {
 
-  private V view;
-  private ViewStateSupport viewStateSupport;
   private boolean retainingInstanceState = false;
   private boolean applyViewState = false;
 
-  public ViewStateManager(ViewStateSupport viewStateSupport, V view) {
-    this.viewStateSupport = viewStateSupport;
-    this.view = view;
-
-    if (viewStateSupport == null) {
-      throw new NullPointerException("ViewStateSupport can not be null");
-    }
-
-    if (view == null) {
-      throw new NullPointerException("View can not be null");
-    }
+  public MvpViewStateInternalDelegate(ViewStateDelegateCallback<V, P> delegateCallback) {
+    super(delegateCallback);
   }
 
   /**
@@ -55,10 +49,14 @@ public class ViewStateManager<V extends MvpView> {
    *
    * @return true, if the viewstate has been restored (in other words {@link
    * ViewState#apply(MvpView, boolean)} has been invoked) (calls {@link
-   * ViewStateSupport#onViewStateInstanceRestored(boolean) after having restored the viewstate}.
-   * Otherwise returns false and calls {@link ViewStateSupport#onNewViewStateInstance()}
+   * ViewStateDelegateCallback#onViewStateInstanceRestored(boolean) after having restored the
+   * viewstate}.
+   * Otherwise returns false and calls {@link ViewStateDelegateCallback#onNewViewStateInstance()}
    */
-  public <V extends MvpView> boolean createOrRestoreViewState(Bundle savedInstanceState) {
+  public boolean createOrRestoreViewState(Bundle savedInstanceState) {
+
+    ViewStateDelegateCallback<V, P> viewStateSupport =
+        (ViewStateDelegateCallback<V, P>) delegateCallback;
 
     // ViewState already exists (Fragment retainsInstanceState == true)
     if (viewStateSupport.getViewState() != null) {
@@ -104,15 +102,19 @@ public class ViewStateManager<V extends MvpView> {
    * starting for the first time)
    */
   public boolean applyViewState() {
+
+    ViewStateDelegateCallback<V, P> delegate =
+        (ViewStateDelegateCallback<V, P>) delegateCallback;
+
     if (applyViewState) {
-      viewStateSupport.setRestoringViewState(true);
-      viewStateSupport.getViewState().apply(view, retainingInstanceState);
-      viewStateSupport.setRestoringViewState(false);
-      viewStateSupport.onViewStateInstanceRestored(retainingInstanceState);
+      delegate.setRestoringViewState(true);
+      delegate.getViewState().apply(delegate.getMvpView(), retainingInstanceState);
+      delegate.setRestoringViewState(false);
+      delegate.onViewStateInstanceRestored(retainingInstanceState);
       return true;
     }
 
-    viewStateSupport.onNewViewStateInstance();
+    delegate.onNewViewStateInstance();
     return false;
   }
 
@@ -121,13 +123,18 @@ public class ViewStateManager<V extends MvpView> {
    * fragments
    * onSaveInstanceState(Bundle) method</b>
    */
-  public void saveViewState(Bundle outState, boolean retainingInstanceState) {
+  public void saveViewState(Bundle outState) {
 
-    if (viewStateSupport == null) {
+    ViewStateDelegateCallback<V, P> delegate =
+        (ViewStateDelegateCallback<V, P>) delegateCallback;
+
+    boolean retainingInstanceState = delegate.isRetainingInstance();
+
+    if (delegate == null) {
       throw new NullPointerException("ViewStateSupport can not be null");
     }
 
-    ViewState viewState = viewStateSupport.getViewState();
+    ViewState viewState = delegate.getViewState();
     if (viewState == null) {
       throw new NullPointerException("ViewState is null! That's not allowed");
     }

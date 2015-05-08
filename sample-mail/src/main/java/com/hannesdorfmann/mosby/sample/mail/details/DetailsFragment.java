@@ -226,21 +226,6 @@ public class DetailsFragment extends AuthFragment<TextView, Mail, DetailsView, D
     IntentStarter.showWriteMail(getActivity(), mail, options.toBundle());
   }
 
-  @Override public void onSaveInstanceState(Bundle outState) {
-    super.onSaveInstanceState(outState);
-  }
-
-  @Override protected void saveViewStateInstanceState(Bundle outState) {
-    super.saveViewStateInstanceState(outState);
-  }
-
-  @Override protected boolean createOrRestoreViewState(Bundle savedInstanceState) {
-    return super.createOrRestoreViewState(savedInstanceState);
-  }
-
-  @Override protected boolean applyViewState() {
-    return super.applyViewState();
-  }
 
   @Override public void markMailAsRead(Mail mail, boolean read) {
     // TODO: currently there is no UI component that shows if that mail has been read or not

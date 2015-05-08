@@ -5,7 +5,7 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
 import com.hannesdorfmann.mosby.mvp.viewstate.data.ParcelabledDummyData;
 import com.hannesdorfmann.mosby.mvp.delegate.MvpViewStateInternalDelegate;
-import com.hannesdorfmann.mosby.mvp.delegate.ViewStateDelegateCallback;
+import com.hannesdorfmann.mosby.mvp.delegate.MvpViewStateDelegateCallback;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.ParcelableDataLceViewState;
 import junit.framework.Assert;
 import org.junit.Test;
@@ -28,7 +28,7 @@ public class ViewStateManagerTest {
 
   interface ParcelableDummyView
       extends MvpLceView<ParcelabledDummyData>,
-      ViewStateDelegateCallback<MvpLceView<ParcelabledDummyData>> {
+      MvpViewStateDelegateCallback<MvpLceView<ParcelabledDummyData>> {
 
   }
 
@@ -38,7 +38,7 @@ public class ViewStateManagerTest {
 
   @Test(expected = NullPointerException.class) public void viewIsNull() {
     MvpViewStateInternalDelegate
-        vs = new MvpViewStateInternalDelegate(mock(ViewStateDelegateCallback.class), null);
+        vs = new MvpViewStateInternalDelegate(mock(MvpViewStateDelegateCallback.class), null);
   }
 
   @Test(expected = NullPointerException.class) public void failBecauseViewStateNull() {

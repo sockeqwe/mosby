@@ -32,13 +32,13 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
  * @see FragmentMvpDelegate
  * @since 1.1.0
  */
-public class DefaultFragmentMvpDelegate<V extends MvpView, P extends MvpPresenter<V>>
+public class FragmentMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<V>>
     implements FragmentMvpDelegate<V, P> {
 
   protected MvpDelegateCallback<V, P> delegateCallback;
   protected MvpInternalDelegate<V, P> internalDelegate;
 
-  public DefaultFragmentMvpDelegate(MvpDelegateCallback<V, P> delegateCallback) {
+  public FragmentMvpDelegateImpl(MvpDelegateCallback<V, P> delegateCallback) {
     if (delegateCallback == null) {
       throw new NullPointerException(delegateCallback.getClass().getSimpleName() + " is null!");
     }

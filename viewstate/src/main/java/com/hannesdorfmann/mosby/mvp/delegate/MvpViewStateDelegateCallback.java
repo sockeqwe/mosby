@@ -30,7 +30,7 @@ import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
  * @author Hannes Dorfmann
  * @since 1.0.0
  */
-public interface ViewStateDelegateCallback<V extends MvpView, P extends MvpPresenter<V>>
+public interface MvpViewStateDelegateCallback<V extends MvpView, P extends MvpPresenter<V>>
     extends MvpDelegateCallback<V, P> {
 
   /**

@@ -27,17 +27,17 @@ import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
  * @author Hannes Dorfmann
  * @since 1.1.0
  */
-public class DefaultActivityMvpViewStateDelegate<V extends MvpView, P extends MvpPresenter<V>>
-    extends DefaultActivityMvpDelegate<V, P> {
+public class ActivityMvpViewStateDelegateImpl<V extends MvpView, P extends MvpPresenter<V>>
+    extends ActivityMvpDelegateImpl<V, P> {
 
-  public DefaultActivityMvpViewStateDelegate(ViewStateDelegateCallback<V, P> delegateCallback) {
+  public ActivityMvpViewStateDelegateImpl(MvpViewStateDelegateCallback<V, P> delegateCallback) {
     super(delegateCallback);
   }
 
   @Override protected MvpInternalDelegate<V, P> getInternalDelegate() {
     if (internalDelegate == null) {
       internalDelegate =
-          new MvpViewStateInternalDelegate<>((ViewStateDelegateCallback) delegateCallback);
+          new MvpViewStateInternalDelegate<>((MvpViewStateDelegateCallback) delegateCallback);
     }
 
     return internalDelegate;

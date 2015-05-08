@@ -21,9 +21,9 @@ import android.view.View;
 import com.hannesdorfmann.mosby.mvp.MvpFragment;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
-import com.hannesdorfmann.mosby.mvp.delegate.DefaultFragmentMvpViewStateDelegate;
+import com.hannesdorfmann.mosby.mvp.delegate.FragmentMvpViewStateDelegateImpl;
 import com.hannesdorfmann.mosby.mvp.delegate.FragmentMvpDelegate;
-import com.hannesdorfmann.mosby.mvp.delegate.ViewStateDelegateCallback;
+import com.hannesdorfmann.mosby.mvp.delegate.MvpViewStateDelegateCallback;
 
 /**
  * This is a enhancement of {@link com.hannesdorfmann.mosby.mvp.MvpFragment} that introduces the
@@ -38,7 +38,7 @@ import com.hannesdorfmann.mosby.mvp.delegate.ViewStateDelegateCallback;
  * @since 1.0.0
  */
 public abstract class MvpViewStateFragment<V extends MvpView, P extends MvpPresenter<V>>
-    extends MvpFragment<V, P> implements ViewStateDelegateCallback<V, P> {
+    extends MvpFragment<V, P> implements MvpViewStateDelegateCallback<V, P> {
 
   /**
    * The viewstate will be instantiated by calling {@link #createViewState()} in {@link
@@ -58,7 +58,7 @@ public abstract class MvpViewStateFragment<V extends MvpView, P extends MvpPrese
 
   @Override protected FragmentMvpDelegate<V, P> getMvpDelegate() {
     if (mvpDelegate == null) {
-      mvpDelegate = new DefaultFragmentMvpViewStateDelegate<V, P>(this);
+      mvpDelegate = new FragmentMvpViewStateDelegateImpl<V, P>(this);
     }
 
     return mvpDelegate;

@@ -23,22 +23,22 @@ import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.layout.ViewStateSavedState;
 
 /**
- * A {@link ViewMvpDelegate} that supports {@link ViewState}
+ * A {@link ViewGroupMvpDelegate} that supports {@link ViewState}
  *
  * @author Hannes Dorfmann
  * @since 1.1.0
  */
-public class DefaultViewMvpViewStateDelegate<V extends MvpView, P extends MvpPresenter<V>>
-    extends DefaultViewMvpDelegate<V, P> {
+public class ViewGroupMvpViewStateDelegateImpl<V extends MvpView, P extends MvpPresenter<V>>
+    extends ViewGroupMvpDelegateImpl<V, P> {
 
-  public DefaultViewMvpViewStateDelegate(ViewStateLayoutDelegateCallback<V, P> delegateCallback) {
+  public ViewGroupMvpViewStateDelegateImpl(MvpViewStateViewGroupDelegateCallback<V, P> delegateCallback) {
     super(delegateCallback);
   }
 
   @Override protected MvpInternalDelegate<V, P> getInternalDelegate() {
     if (internalDelegate == null) {
       internalDelegate = new MvpInternalLayoutViewStateDelegate<V, P>(
-          (ViewStateLayoutDelegateCallback) delegateCallback);
+          (MvpViewStateViewGroupDelegateCallback) delegateCallback);
     }
 
     return internalDelegate;
@@ -57,7 +57,7 @@ public class DefaultViewMvpViewStateDelegate<V extends MvpView, P extends MvpPre
    */
   public Parcelable onSaveInstanceState() {
 
-    ViewStateLayoutDelegateCallback delegate = (ViewStateLayoutDelegateCallback) delegateCallback;
+    MvpViewStateViewGroupDelegateCallback delegate = (MvpViewStateViewGroupDelegateCallback) delegateCallback;
     Parcelable superParcelable = delegate.superOnSaveInstanceState();
 
     Parcelable vsParcelable =
@@ -74,7 +74,7 @@ public class DefaultViewMvpViewStateDelegate<V extends MvpView, P extends MvpPre
    */
   public void onRestoreInstanceState(Parcelable state) {
 
-    ViewStateLayoutDelegateCallback delegate = (ViewStateLayoutDelegateCallback) delegateCallback;
+    MvpViewStateViewGroupDelegateCallback delegate = (MvpViewStateViewGroupDelegateCallback) delegateCallback;
 
     if (!(state instanceof ViewStateSavedState)) {
       delegate.superOnRestoreInstanceState(state);

@@ -19,7 +19,7 @@ package com.hannesdorfmann.mosby.mvp;
 import android.os.Bundle;
 import com.hannesdorfmann.mosby.MosbyActivity;
 import com.hannesdorfmann.mosby.mvp.delegate.ActivityMvpDelegate;
-import com.hannesdorfmann.mosby.mvp.delegate.DefaultActivityMvpDelegate;
+import com.hannesdorfmann.mosby.mvp.delegate.ActivityMvpDelegateImpl;
 import com.hannesdorfmann.mosby.mvp.delegate.MvpDelegateCallback;
 
 /**
@@ -104,11 +104,11 @@ public abstract class MvpActivity<V extends MvpView, P extends MvpPresenter<V>>
    * Only override this method if you really know what you are doing.
    * </p>
    *
-   * @return {@link DefaultActivityMvpDelegate}
+   * @return {@link ActivityMvpDelegateImpl}
    */
   protected ActivityMvpDelegate<V, P> getMvpDelegate() {
     if (mvpDelegate == null) {
-      mvpDelegate = new DefaultActivityMvpDelegate(this);
+      mvpDelegate = new ActivityMvpDelegateImpl(this);
     }
 
     return mvpDelegate;

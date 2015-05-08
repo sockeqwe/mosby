@@ -22,9 +22,9 @@ import android.widget.LinearLayout;
 import butterknife.ButterKnife;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
-import com.hannesdorfmann.mosby.mvp.delegate.DefaultViewMvpDelegate;
+import com.hannesdorfmann.mosby.mvp.delegate.ViewGroupMvpDelegateImpl;
 import com.hannesdorfmann.mosby.mvp.delegate.MvpDelegateCallback;
-import com.hannesdorfmann.mosby.mvp.delegate.ViewMvpDelegate;
+import com.hannesdorfmann.mosby.mvp.delegate.ViewGroupMvpDelegate;
 
 /**
  * A LinearLayout that can be used as view with an presenter
@@ -36,7 +36,7 @@ public abstract class MvpLinearLayout<V extends MvpView, P extends MvpPresenter<
     extends LinearLayout implements MvpView, MvpDelegateCallback<V, P> {
 
   protected P presenter;
-  protected ViewMvpDelegate<V, P> mvpDelegate;
+  protected ViewGroupMvpDelegate<V, P> mvpDelegate;
 
   public MvpLinearLayout(Context context) {
     super(context);
@@ -72,11 +72,11 @@ public abstract class MvpLinearLayout<V extends MvpView, P extends MvpPresenter<
    * Only override this method if you really know what you are doing.
    * </p>
    *
-   * @return {@link DefaultViewMvpDelegate}
+   * @return {@link ViewGroupMvpDelegateImpl}
    */
-  protected ViewMvpDelegate<V, P> getMvpDelegate() {
+  protected ViewGroupMvpDelegate<V, P> getMvpDelegate() {
     if (mvpDelegate == null) {
-      mvpDelegate = new DefaultViewMvpDelegate<>(this);
+      mvpDelegate = new ViewGroupMvpDelegateImpl<>(this);
     }
 
     return mvpDelegate;

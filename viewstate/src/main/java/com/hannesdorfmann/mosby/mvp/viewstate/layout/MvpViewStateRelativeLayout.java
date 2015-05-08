@@ -21,9 +21,9 @@ import android.os.Parcelable;
 import android.util.AttributeSet;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
-import com.hannesdorfmann.mosby.mvp.delegate.DefaultViewMvpViewStateDelegate;
-import com.hannesdorfmann.mosby.mvp.delegate.ViewMvpDelegate;
-import com.hannesdorfmann.mosby.mvp.delegate.ViewStateLayoutDelegateCallback;
+import com.hannesdorfmann.mosby.mvp.delegate.ViewGroupMvpViewStateDelegateImpl;
+import com.hannesdorfmann.mosby.mvp.delegate.ViewGroupMvpDelegate;
+import com.hannesdorfmann.mosby.mvp.delegate.MvpViewStateViewGroupDelegateCallback;
 import com.hannesdorfmann.mosby.mvp.layout.MvpRelativeLayout;
 import com.hannesdorfmann.mosby.mvp.viewstate.RestoreableParcelableViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
@@ -35,7 +35,7 @@ import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
  * @since 1.1.0
  */
 public abstract class MvpViewStateRelativeLayout<V extends MvpView, P extends MvpPresenter<V>>
-    extends MvpRelativeLayout<V, P> implements ViewStateLayoutDelegateCallback<V, P> {
+    extends MvpRelativeLayout<V, P> implements MvpViewStateViewGroupDelegateCallback<V, P> {
 
   private boolean restoringViewState = false;
   protected RestoreableParcelableViewState viewState;
@@ -59,20 +59,20 @@ public abstract class MvpViewStateRelativeLayout<V extends MvpView, P extends Mv
   }
 
 
-  protected ViewMvpDelegate<V, P> getMvpDelegate() {
+  protected ViewGroupMvpDelegate<V, P> getMvpDelegate() {
     if (mvpDelegate == null) {
-      mvpDelegate = new DefaultViewMvpViewStateDelegate<V, P>(this);
+      mvpDelegate = new ViewGroupMvpViewStateDelegateImpl<V, P>(this);
     }
 
     return mvpDelegate;
   }
 
   @Override protected Parcelable onSaveInstanceState() {
-    return ((DefaultViewMvpViewStateDelegate) getMvpDelegate()).onSaveInstanceState();
+    return ((ViewGroupMvpViewStateDelegateImpl) getMvpDelegate()).onSaveInstanceState();
   }
 
   @Override protected void onRestoreInstanceState(Parcelable state) {
-    ((DefaultViewMvpViewStateDelegate) getMvpDelegate()).onRestoreInstanceState(state);
+    ((ViewGroupMvpViewStateDelegateImpl) getMvpDelegate()).onRestoreInstanceState(state);
   }
 
   @Override public RestoreableParcelableViewState getViewState() {

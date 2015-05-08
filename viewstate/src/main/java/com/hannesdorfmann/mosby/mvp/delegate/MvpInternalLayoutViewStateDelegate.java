@@ -28,7 +28,7 @@ import com.hannesdorfmann.mosby.mvp.viewstate.layout.ViewStateSavedState;
 /**
  * This class
  * is used to save, restore and apply a {@link ViewState} by using {@link
- * ViewStateDelegateCallback}. It's
+ * MvpViewStateDelegateCallback}. It's
  * just a little helper / utils class that avoids to many copy & paste code clones.
  * This class is designed to be for custom Layouts like {@link MvpViewStateFrameLayout} etc.
  *
@@ -41,7 +41,7 @@ class MvpInternalLayoutViewStateDelegate<V extends MvpView, P extends MvpPresent
   private boolean applyViewState = false;
   private boolean createOrRestoreCalled = false;
 
-  MvpInternalLayoutViewStateDelegate(ViewStateLayoutDelegateCallback<V, P> delegateCallback) {
+  MvpInternalLayoutViewStateDelegate(MvpViewStateViewGroupDelegateCallback<V, P> delegateCallback) {
     super(delegateCallback);
   }
 
@@ -51,9 +51,9 @@ class MvpInternalLayoutViewStateDelegate<V extends MvpView, P extends MvpPresent
    *
    * @return true, if the viewstate has been restored (in other words restored from parcelable)
    * (calls {@link
-   * ViewStateDelegateCallback#onViewStateInstanceRestored(boolean) after having restored the
+   * MvpViewStateDelegateCallback#onViewStateInstanceRestored(boolean) after having restored the
    * viewstate}.
-   * Otherwise returns false and calls {@link ViewStateDelegateCallback#onNewViewStateInstance()}
+   * Otherwise returns false and calls {@link MvpViewStateDelegateCallback#onNewViewStateInstance()}
    */
   public boolean createOrRestoreViewState(ViewStateSavedState savedState) {
 
@@ -62,7 +62,7 @@ class MvpInternalLayoutViewStateDelegate<V extends MvpView, P extends MvpPresent
     }
     createOrRestoreCalled = true;
 
-    ViewStateLayoutDelegateCallback delegate = (ViewStateLayoutDelegateCallback) delegateCallback;
+    MvpViewStateViewGroupDelegateCallback delegate = (MvpViewStateViewGroupDelegateCallback) delegateCallback;
 
     // ViewState already exists (Fragment retainsInstanceState == true)
     if (delegate.getViewState() != null) {
@@ -101,7 +101,7 @@ class MvpInternalLayoutViewStateDelegate<V extends MvpView, P extends MvpPresent
    */
   public boolean applyViewState() {
 
-    ViewStateLayoutDelegateCallback delegate = (ViewStateLayoutDelegateCallback) delegateCallback;
+    MvpViewStateViewGroupDelegateCallback delegate = (MvpViewStateViewGroupDelegateCallback) delegateCallback;
 
     if (applyViewState) {
       delegate.setRestoringViewState(true);
@@ -121,7 +121,7 @@ class MvpInternalLayoutViewStateDelegate<V extends MvpView, P extends MvpPresent
    */
   public Parcelable saveViewState(Parcelable superState) {
 
-    ViewStateLayoutDelegateCallback delegate = (ViewStateLayoutDelegateCallback) delegateCallback;
+    MvpViewStateViewGroupDelegateCallback delegate = (MvpViewStateViewGroupDelegateCallback) delegateCallback;
 
     boolean retainingInstanceState = delegate.isRetainingInstance();
 

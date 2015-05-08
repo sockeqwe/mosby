@@ -19,9 +19,9 @@ package com.hannesdorfmann.mosby.mvp.viewstate.lce;
 import android.os.Bundle;
 import android.view.View;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
-import com.hannesdorfmann.mosby.mvp.delegate.DefaultFragmentMvpViewStateDelegate;
+import com.hannesdorfmann.mosby.mvp.delegate.FragmentMvpViewStateDelegateImpl;
 import com.hannesdorfmann.mosby.mvp.delegate.FragmentMvpDelegate;
-import com.hannesdorfmann.mosby.mvp.delegate.ViewStateDelegateCallback;
+import com.hannesdorfmann.mosby.mvp.delegate.MvpViewStateDelegateCallback;
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceFragment;
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
@@ -33,7 +33,8 @@ import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
  * @since 1.0.0
  */
 public abstract class MvpLceViewStateFragment<CV extends View, M, V extends MvpLceView<M>, P extends MvpPresenter<V>>
-    extends MvpLceFragment<CV, M, V, P> implements MvpLceView<M>, ViewStateDelegateCallback<V, P> {
+    extends MvpLceFragment<CV, M, V, P> implements MvpLceView<M>,
+    MvpViewStateDelegateCallback<V, P> {
 
   /**
    * The viewstate will be instantiated by calling {@link #createViewState()} in {@link
@@ -53,7 +54,7 @@ public abstract class MvpLceViewStateFragment<CV extends View, M, V extends MvpL
 
   @Override protected FragmentMvpDelegate<V, P> getMvpDelegate() {
     if (mvpDelegate == null) {
-      mvpDelegate = new DefaultFragmentMvpViewStateDelegate<V, P>(this);
+      mvpDelegate = new FragmentMvpViewStateDelegateImpl<V, P>(this);
     }
 
     return mvpDelegate;

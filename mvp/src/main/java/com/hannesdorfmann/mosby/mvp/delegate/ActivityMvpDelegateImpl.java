@@ -29,13 +29,13 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
  * @see ActivityMvpDelegate
  * @since 1.1.0
  */
-public class DefaultActivityMvpDelegate<V extends MvpView, P extends MvpPresenter<V>>
+public class ActivityMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<V>>
     implements ActivityMvpDelegate {
 
   protected MvpInternalDelegate<V, P> internalDelegate;
   protected MvpDelegateCallback<V, P> delegateCallback;
 
-  public DefaultActivityMvpDelegate(MvpDelegateCallback<V, P> delegateCallback) {
+  public ActivityMvpDelegateImpl(MvpDelegateCallback<V, P> delegateCallback) {
     if (delegateCallback == null){
       throw new NullPointerException(delegateCallback.getClass().getSimpleName()+" is null!");
     }

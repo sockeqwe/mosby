@@ -20,19 +20,19 @@ import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 
 /**
- * The default implementation of {@link ViewMvpDelegate}
+ * The default implementation of {@link ViewGroupMvpDelegate}
  *
  * @author Hannes Dorfmann
- * @see ViewMvpDelegate
+ * @see ViewGroupMvpDelegate
  * @since 1.1.0
  */
-public class DefaultViewMvpDelegate<V extends MvpView, P extends MvpPresenter<V>>
-    implements ViewMvpDelegate<V, P> {
+public class ViewGroupMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<V>>
+    implements ViewGroupMvpDelegate<V, P> {
 
   protected MvpDelegateCallback<V, P> delegateCallback;
   protected MvpInternalDelegate<V, P> internalDelegate;
 
-  public DefaultViewMvpDelegate(MvpDelegateCallback<V, P> delegateCallback) {
+  public ViewGroupMvpDelegateImpl(MvpDelegateCallback<V, P> delegateCallback) {
     if (delegateCallback == null) {
       throw new NullPointerException(delegateCallback.getClass().getSimpleName() + " is null!");
     }

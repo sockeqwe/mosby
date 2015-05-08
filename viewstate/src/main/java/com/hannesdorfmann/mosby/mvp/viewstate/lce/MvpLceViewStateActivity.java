@@ -19,8 +19,8 @@ package com.hannesdorfmann.mosby.mvp.viewstate.lce;
 import android.view.View;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.delegate.ActivityMvpDelegate;
-import com.hannesdorfmann.mosby.mvp.delegate.DefaultActivityMvpViewStateDelegate;
-import com.hannesdorfmann.mosby.mvp.delegate.ViewStateDelegateCallback;
+import com.hannesdorfmann.mosby.mvp.delegate.ActivityMvpViewStateDelegateImpl;
+import com.hannesdorfmann.mosby.mvp.delegate.MvpViewStateDelegateCallback;
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceActivity;
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
 import com.hannesdorfmann.mosby.mvp.viewstate.RestoreableViewState;
@@ -33,7 +33,8 @@ import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
  * @since 1.0.0
  */
 public abstract class MvpLceViewStateActivity<CV extends View, M, V extends MvpLceView<M>, P extends MvpPresenter<V>>
-    extends MvpLceActivity<CV, M, V, P> implements MvpLceView<M>, ViewStateDelegateCallback<V, P> {
+    extends MvpLceActivity<CV, M, V, P> implements MvpLceView<M>,
+    MvpViewStateDelegateCallback<V, P> {
 
 
   protected ParcelableLceViewState<M, V> viewState;
@@ -42,7 +43,7 @@ public abstract class MvpLceViewStateActivity<CV extends View, M, V extends MvpL
 
   @Override protected ActivityMvpDelegate<V, P> getMvpDelegate() {
     if (mvpDelegate == null) {
-      mvpDelegate = new DefaultActivityMvpViewStateDelegate<>(this);
+      mvpDelegate = new ActivityMvpViewStateDelegateImpl<>(this);
     }
 
     return mvpDelegate;

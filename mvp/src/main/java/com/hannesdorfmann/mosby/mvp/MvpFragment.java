@@ -21,7 +21,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import com.hannesdorfmann.mosby.MosbyFragment;
-import com.hannesdorfmann.mosby.mvp.delegate.DefaultFragmentMvpDelegate;
+import com.hannesdorfmann.mosby.mvp.delegate.FragmentMvpDelegateImpl;
 import com.hannesdorfmann.mosby.mvp.delegate.FragmentMvpDelegate;
 import com.hannesdorfmann.mosby.mvp.delegate.MvpDelegateCallback;
 
@@ -62,11 +62,11 @@ public abstract class MvpFragment<V extends MvpView, P extends MvpPresenter<V>>
    * Only override this method if you really know what you are doing.
    * </p>
    *
-   * @return {@link DefaultFragmentMvpDelegate}
+   * @return {@link FragmentMvpDelegateImpl}
    */
   protected FragmentMvpDelegate<V, P> getMvpDelegate() {
     if (mvpDelegate == null) {
-      mvpDelegate = new DefaultFragmentMvpDelegate<>(this);
+      mvpDelegate = new FragmentMvpDelegateImpl<>(this);
     }
 
     return mvpDelegate;

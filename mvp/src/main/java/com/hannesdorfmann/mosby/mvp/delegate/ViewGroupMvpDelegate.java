@@ -36,7 +36,7 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
  * @author Hannes Dorfmann
  * @since 1.1.0
  */
-public interface ViewMvpDelegate<V extends MvpView, P extends MvpPresenter<V>> {
+public interface ViewGroupMvpDelegate<V extends MvpView, P extends MvpPresenter<V>> {
 
   /**
    * Must be called from {@link View#onAttachedToWindow()}

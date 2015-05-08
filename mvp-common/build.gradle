@@ -1,0 +1,2 @@
+apply plugin: 'java'
+apply from: '../maven-push-java-lib.gradle'

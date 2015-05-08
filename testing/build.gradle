@@ -2,6 +2,7 @@ apply plugin: 'java'
 apply from: '../maven-push-java-lib.gradle'
 
 dependencies {
+  compile project(':mvp-common')
   compile 'junit:junit:'+rootProject.ext.junitVersion
   compile 'org.mockito:mockito-core:'+rootProject.ext.mockitoVersion
   compile 'org.robolectric:robolectric:'+rootProject.ext.robolectricVersion

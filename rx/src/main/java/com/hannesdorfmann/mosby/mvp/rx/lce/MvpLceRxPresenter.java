@@ -17,7 +17,7 @@
 package com.hannesdorfmann.mosby.mvp.rx.lce;
 
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
-import com.hannesdorfmann.mosby.mvp.rx.lce.scheduler.AndroidSchedulerTransformer;
+import com.hannesdorfmann.mosby.mvp.rx.scheduler.AndroidSchedulerTransformer;
 import rx.Observable;
 import rx.Subscriber;
 

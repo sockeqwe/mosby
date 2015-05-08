@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hannesdorfmann.mosby.mvp.rx.lce.scheduler;
+package com.hannesdorfmann.mosby.mvp.rx.scheduler;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;

@@ -1,7 +1,7 @@
 package com.hannesdorfmann.mosby.sample.dagger2.repos;
 
 import com.hannesdorfmann.mosby.mvp.rx.lce.MvpLceRxPresenter;
-import com.hannesdorfmann.mosby.mvp.rx.lce.scheduler.SchedulerTransformer;
+import com.hannesdorfmann.mosby.mvp.rx.scheduler.SchedulerTransformer;
 import com.hannesdorfmann.mosby.sample.dagger2.model.GithubApi;
 import com.hannesdorfmann.mosby.sample.dagger2.model.Repo;
 import java.util.Collections;

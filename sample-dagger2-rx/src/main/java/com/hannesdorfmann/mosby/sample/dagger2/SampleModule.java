@@ -1,8 +1,8 @@
 package com.hannesdorfmann.mosby.sample.dagger2;
 
 import android.content.Context;
-import com.hannesdorfmann.mosby.mvp.rx.lce.scheduler.AndroidSchedulerTransformer;
-import com.hannesdorfmann.mosby.mvp.rx.lce.scheduler.SchedulerTransformer;
+import com.hannesdorfmann.mosby.mvp.rx.scheduler.AndroidSchedulerTransformer;
+import com.hannesdorfmann.mosby.mvp.rx.scheduler.SchedulerTransformer;
 import com.hannesdorfmann.mosby.sample.dagger2.model.ErrorMessageDeterminer;
 import com.hannesdorfmann.mosby.sample.dagger2.model.GithubApi;
 import com.squareup.okhttp.Cache;

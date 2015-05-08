@@ -16,8 +16,8 @@
 
 package com.hannesdorfmann.mosby.sample.mail.dagger;
 
-import com.hannesdorfmann.mosby.mvp.rx.lce.scheduler.AndroidSchedulerTransformer;
-import com.hannesdorfmann.mosby.mvp.rx.lce.scheduler.SchedulerTransformer;
+import com.hannesdorfmann.mosby.mvp.rx.scheduler.AndroidSchedulerTransformer;
+import com.hannesdorfmann.mosby.mvp.rx.scheduler.SchedulerTransformer;
 import com.hannesdorfmann.mosby.sample.mail.model.account.AccountManager;
 import com.hannesdorfmann.mosby.sample.mail.model.account.DefaultAccountManager;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.MailGenerator;

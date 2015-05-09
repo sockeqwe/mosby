@@ -26,8 +26,7 @@ def parcelablePlease = '1.0.1'
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:22.1.1'
-
+    compile 'com.android.support:appcompat-v7:' + rootProject.ext.appcompat7Version
 
     compile project(':viewstate')
     compile project(':rx')
@@ -44,7 +43,6 @@ dependencies {
     compile 'com.github.chenupt:DragTopLayout:1.2.1'
 
     compile 'com.android.support:recyclerview-v7:22.1.1'
-    compile 'com.android.support:appcompat-v7:' + rootProject.ext.appcompat7Version
 
     apt 'com.hannesdorfmann.annotatedadapter:processor:' + annotatedAdapter
     compile 'com.hannesdorfmann.annotatedadapter:annotation:' + annotatedAdapter

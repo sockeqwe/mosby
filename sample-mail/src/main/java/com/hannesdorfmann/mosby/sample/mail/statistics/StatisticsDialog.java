@@ -1,9 +1,12 @@
 package com.hannesdorfmann.mosby.sample.mail.statistics;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AppCompatDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -73,8 +76,6 @@ public class StatisticsDialog extends DialogFragment
     super.onViewCreated(view, savedInstanceState);
     delegate.onViewCreated(view, savedInstanceState);
 
-    getDialog().setTitle(R.string.menu_statistics);
-
     ButterKnife.inject(this, view);
     adapter = new StatisticsAdapter(getActivity());
     contentView.setAdapter(adapter);
@@ -114,6 +115,13 @@ public class StatisticsDialog extends DialogFragment
   //
   // End delegates
   //
+
+  @NonNull @Override public Dialog onCreateDialog(Bundle savedInstanceState) {
+
+    AppCompatDialog dialog = new AppCompatDialog(getActivity(),  getTheme());
+    dialog.setTitle(R.string.menu_statistics);
+    return dialog;
+  }
 
   @Override public void showAuthenticationRequired() {
     contentView.setVisibility(View.GONE);

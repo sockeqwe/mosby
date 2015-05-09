@@ -11,10 +11,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 import butterknife.InjectView;
+import com.hannesdorfmann.mosby.sample.mail.MailApplication;
 import com.hannesdorfmann.mosby.sample.mail.R;
 import com.hannesdorfmann.mosby.sample.mail.base.view.BaseMailsFragment;
 import com.hannesdorfmann.mosby.sample.mail.base.view.ListAdapter;
 import com.hannesdorfmann.mosby.sample.mail.base.view.viewstate.AuthViewState;
+import com.hannesdorfmann.mosby.sample.mail.dagger.NavigationModule;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
 import com.hannesdorfmann.mosby.sample.mail.utils.BuildUtils;
 import com.rengwuxian.materialedittext.MaterialEditText;
@@ -28,6 +30,8 @@ public class SearchFragment extends BaseMailsFragment<SearchView, SearchPresente
 
   @InjectView(R.id.toolbar) Toolbar toolbar;
   @InjectView(R.id.searchEditView) MaterialEditText searchEditView;
+
+  private SearchComponent searchComponent;
 
   LinearLayoutManager layoutManager;
   boolean canLoadMore = true;
@@ -110,7 +114,7 @@ public class SearchFragment extends BaseMailsFragment<SearchView, SearchPresente
   }
 
   @Override public SearchPresenter createPresenter() {
-    return DaggerSearchComponent.create().presenter();
+    return searchComponent.presenter();
   }
 
   private SearchResultAdapter getAdapter() {
@@ -175,5 +179,15 @@ public class SearchFragment extends BaseMailsFragment<SearchView, SearchPresente
   @Override public void showLoadMoreError(Throwable e) {
     Toast.makeText(getActivity(), R.string.error_search_load_older, Toast.LENGTH_SHORT).show();
     lastQuery = "";
+  }
+
+  @Override protected void injectDependencies() {
+    searchComponent = DaggerSearchComponent.builder()
+        .mailAppComponent(MailApplication.getMailComponents())
+        .navigationModule(new NavigationModule())
+        .build();
+
+
+    searchComponent.inject(this);
   }
 }

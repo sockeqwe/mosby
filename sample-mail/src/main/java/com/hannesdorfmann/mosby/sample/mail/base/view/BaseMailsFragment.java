@@ -12,6 +12,7 @@ import com.hannesdorfmann.mosby.sample.mail.mails.MailsAdapterHolders;
 import com.hannesdorfmann.mosby.sample.mail.model.contact.Person;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
 import java.util.List;
+import javax.inject.Inject;
 
 /**
  * Base class for fragments that want to dipslay a list of Mails
@@ -22,6 +23,8 @@ public abstract class BaseMailsFragment<V extends BaseMailView<List<Mail>>, P ex
     extends AuthRefreshRecyclerFragment<List<Mail>, V, P>
     implements BaseMailView<List<Mail>>, MailsAdapter.MailClickedListener,
     MailsAdapter.PersonClickListener, MailsAdapter.MailStarListner {
+
+  @Inject IntentStarter intentStarter;
 
   @Override protected int getLayoutRes() {
     return R.layout.fragment_mails_base;
@@ -42,11 +45,11 @@ public abstract class BaseMailsFragment<V extends BaseMailView<List<Mail>>, P ex
             Pair.create(getActivity().findViewById(R.id.toolbar),
                 getString(R.string.shared_mail_toolbar)));
 
-    IntentStarter.showMailDetails(getActivity(), mail, options.toBundle());
+    intentStarter.showMailDetails(getActivity(), mail, options.toBundle());
   }
 
   @Override public void onPersonClicked(Person person) {
-    IntentStarter.showProfile(getActivity(), person);
+    intentStarter.showProfile(getActivity(), person);
   }
 
   @Override public void onMailStarClicked(Mail mail) {

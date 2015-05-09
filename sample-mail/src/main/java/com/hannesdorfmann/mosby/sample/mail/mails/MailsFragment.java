@@ -11,11 +11,14 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 import com.hannesdorfmann.fragmentargs.annotation.Arg;
 import com.hannesdorfmann.mosby.sample.mail.IntentStarter;
+import com.hannesdorfmann.mosby.sample.mail.MailApplication;
 import com.hannesdorfmann.mosby.sample.mail.R;
 import com.hannesdorfmann.mosby.sample.mail.base.view.BaseMailsFragment;
+import com.hannesdorfmann.mosby.sample.mail.dagger.NavigationModule;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Label;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
 import com.melnykov.fab.FloatingActionButton;
+import javax.inject.Inject;
 
 /**
  * @author Hannes Dorfmann
@@ -24,6 +27,8 @@ public class MailsFragment extends BaseMailsFragment<MailsView, MailsPresenter>
     implements MailsView, MailsAdapter.MailClickedListener, MailsAdapter.MailStarListner {
 
   @Arg Label label;
+
+  @Inject IntentStarter intentStarter;
 
   @InjectView(R.id.createMail) FloatingActionButton createMailButton;
 
@@ -47,7 +52,10 @@ public class MailsFragment extends BaseMailsFragment<MailsView, MailsPresenter>
   }
 
   @Override protected void injectDependencies() {
-    mailsComponent = DaggerMailsComponent.create();
+    mailsComponent = DaggerMailsComponent.builder()
+        .mailAppComponent(MailApplication.getMailComponents())
+        .navigationModule(new NavigationModule())
+        .build();
     mailsComponent.inject(this);
   }
 
@@ -94,7 +102,7 @@ public class MailsFragment extends BaseMailsFragment<MailsView, MailsPresenter>
         ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), createMailButton,
             getString(R.string.shared_write_action));
 
-    IntentStarter.showWriteMail(getActivity(), null, options.toBundle());
+    intentStarter.showWriteMail(getActivity(), null, options.toBundle());
   }
 
   @Override public void showContent() {

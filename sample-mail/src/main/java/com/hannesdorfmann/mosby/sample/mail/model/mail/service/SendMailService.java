@@ -2,6 +2,8 @@ package com.hannesdorfmann.mosby.sample.mail.model.mail.service;
 
 import android.app.IntentService;
 import android.content.Intent;
+import com.hannesdorfmann.mosby.sample.mail.MailApplication;
+import com.hannesdorfmann.mosby.sample.mail.dagger.NavigationModule;
 import com.hannesdorfmann.mosby.sample.mail.model.account.AccountManager;
 import com.hannesdorfmann.mosby.sample.mail.model.event.MailSentErrorEvent;
 import com.hannesdorfmann.mosby.sample.mail.model.event.MailSentEvent;
@@ -29,8 +31,11 @@ public class SendMailService extends IntentService {
 
   public SendMailService() {
     super("MailingService");
-
-    DaggerServiceComponent.create().inject(this);
+    DaggerServiceComponent.builder()
+        .mailAppComponent(MailApplication.getMailComponents())
+        .navigationModule(new NavigationModule())
+        .build()
+        .inject(this);
   }
 
   @Override protected void onHandleIntent(Intent intent) {

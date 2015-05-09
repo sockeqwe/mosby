@@ -7,7 +7,9 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.support.v4.app.NotificationCompat;
 import com.hannesdorfmann.mosby.sample.mail.IntentStarter;
+import com.hannesdorfmann.mosby.sample.mail.MailApplication;
 import com.hannesdorfmann.mosby.sample.mail.R;
+import com.hannesdorfmann.mosby.sample.mail.dagger.NavigationModule;
 import com.hannesdorfmann.mosby.sample.mail.model.event.MailReceivedEvent;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Label;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
@@ -27,10 +29,15 @@ public class GcmFakeIntentService extends IntentService {
 
   @Inject MailProvider mailProvider;
   @Inject EventBus eventBus;
+  @Inject IntentStarter intentStarter;
 
   public GcmFakeIntentService() {
     super("GcmFakeIntentService");
-    DaggerServiceComponent.create().inject(this);
+    DaggerServiceComponent.builder()
+        .mailAppComponent(MailApplication.getMailComponents())
+        .navigationModule(new NavigationModule())
+        .build()
+        .inject(this);
   }
 
   @Override protected void onHandleIntent(Intent intent) {
@@ -50,7 +57,8 @@ public class GcmFakeIntentService extends IntentService {
 
     NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext());
 
-    Intent startIntent = IntentStarter.getShowMailInNewActivityIntent(getApplicationContext(), mail);
+    Intent startIntent =
+        intentStarter.getShowMailInNewActivityIntent(getApplicationContext(), mail);
 
     PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, startIntent, 0);
     builder.setContentIntent(pendingIntent);
@@ -59,12 +67,12 @@ public class GcmFakeIntentService extends IntentService {
         mail.getSender().getImageRes()));
 
     builder.setSmallIcon(R.drawable.ic_launcher)
-        .setLights(getResources().getColor(R.color.primary),1800, 3500)
+        .setLights(getResources().getColor(R.color.primary), 1800, 3500)
         .setAutoCancel(true)
         .setContentTitle(mail.getSubject())
         .setContentText(mail.getText())
         .setWhen(mail.getDate().getTime())
-        .setVibrate(new long[]{1000, 1000});
+        .setVibrate(new long[] { 1000, 1000 });
 
     NotificationManager notificationManager =
         (NotificationManager) getSystemService(NOTIFICATION_SERVICE);

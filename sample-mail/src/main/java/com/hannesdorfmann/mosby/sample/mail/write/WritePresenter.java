@@ -17,15 +17,16 @@ import javax.inject.Inject;
 public class WritePresenter extends MvpBasePresenter<WriteView> {
 
   private EventBus eventBus;
+  private IntentStarter intentStarter;
 
-
-  @Inject public WritePresenter(EventBus eventBus) {
+  @Inject public WritePresenter(EventBus eventBus, IntentStarter intentStarter) {
     this.eventBus = eventBus;
+    this.intentStarter = intentStarter;
   }
 
   public void writeMail(Context context, Mail mail) {
     getView().showLoading();
-    IntentStarter.sendMailViaService(context, mail);
+    intentStarter.sendMailViaService(context, mail);
   }
 
 

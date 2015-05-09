@@ -20,6 +20,7 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 import com.hannesdorfmann.fragmentargs.annotation.Arg;
 import com.hannesdorfmann.mosby.sample.mail.IntentStarter;
+import com.hannesdorfmann.mosby.sample.mail.MailApplication;
 import com.hannesdorfmann.mosby.sample.mail.R;
 import com.hannesdorfmann.mosby.sample.mail.base.view.AuthFragment;
 import com.hannesdorfmann.mosby.sample.mail.base.view.viewstate.AuthParcelableDataViewState;
@@ -36,6 +37,7 @@ import com.melnykov.fab.ObservableScrollView;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.inject.Inject;
 
 /**
  * @author Hannes Dorfmann
@@ -51,6 +53,8 @@ public class DetailsFragment extends AuthFragment<TextView, Mail, DetailsView, D
   @Arg long date;
   @Arg boolean starred;
 
+  @Inject IntentStarter intentStarter;
+
   @InjectView(R.id.senderPic) ImageView senderImageView;
   @InjectView(R.id.subject) TextView subjectView;
   @InjectView(R.id.date) TextView dateView;
@@ -61,6 +65,8 @@ public class DetailsFragment extends AuthFragment<TextView, Mail, DetailsView, D
   @InjectView(R.id.separatorLine) View separatorLine;
   @InjectView(R.id.label) LabelLayout labelView;
   @InjectView(R.id.scrollView) ObservableScrollView scrollView;
+
+  private DetailsComponent detailsComponent;
 
   Format format = new SimpleDateFormat("d. MMM");
 
@@ -91,7 +97,7 @@ public class DetailsFragment extends AuthFragment<TextView, Mail, DetailsView, D
     senderImageView.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
         if (mail != null) {
-          IntentStarter.showProfile(getActivity(), mail.getSender());
+          intentStarter.showProfile(getActivity(), mail.getSender());
         }
       }
     });
@@ -144,7 +150,7 @@ public class DetailsFragment extends AuthFragment<TextView, Mail, DetailsView, D
   }
 
   @Override public DetailsPresenter createPresenter() {
-    return DaggerDetailsComponent.create().presenter();
+    return detailsComponent.presenter();
   }
 
   @Override public void setData(Mail data) {
@@ -223,11 +229,16 @@ public class DetailsFragment extends AuthFragment<TextView, Mail, DetailsView, D
         ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), replayView,
             getString(R.string.shared_write_action));
 
-    IntentStarter.showWriteMail(getActivity(), mail, options.toBundle());
+    intentStarter.showWriteMail(getActivity(), mail, options.toBundle());
   }
-
 
   @Override public void markMailAsRead(Mail mail, boolean read) {
     // TODO: currently there is no UI component that shows if that mail has been read or not
+  }
+
+  @Override protected void injectDependencies() {
+    detailsComponent =
+        DaggerDetailsComponent.builder().mailAppComponent(MailApplication.getMailComponents()).build();
+    detailsComponent.inject(this);
   }
 }

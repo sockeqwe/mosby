@@ -26,36 +26,36 @@ import com.hannesdorfmann.mosby.sample.mail.model.mail.RandomMailGenerator;
 import dagger.Module;
 import dagger.Provides;
 import de.greenrobot.event.EventBus;
-import javax.inject.Singleton;
 
 /**
  * @author Hannes Dorfmann
  */
 @Module public class MailModule {
 
-  // Singletons
+  /* Singletons
   private static MailGenerator generator = new RandomMailGenerator();
   private static AccountManager accountManager = new DefaultAccountManager();
   private static MailProvider mailProvider = new MailProvider(accountManager, generator);
+*/
 
-  @Singleton @Provides public AccountManager providesAccountManager() {
-    return accountManager;
+  @ApplicationWide @Provides public AccountManager providesAccountManager() {
+    return new DefaultAccountManager();
   }
 
-  @Singleton @Provides public SchedulerTransformer providesSchedulerTransformer() {
+  @ApplicationWide @Provides public SchedulerTransformer providesSchedulerTransformer() {
     return new AndroidSchedulerTransformer();
   }
 
-  @Singleton @Provides public EventBus providesEventBus() {
+  @ApplicationWide @Provides public EventBus providesEventBus() {
     return EventBus.getDefault();
   }
 
-  @Singleton @Provides public MailProvider providesMailProvider() {
-    return mailProvider;
+  @ApplicationWide @Provides
+  public MailProvider providesMailProvider(AccountManager manager, MailGenerator generator) {
+    return new MailProvider(manager, generator);
   }
 
-  @Singleton @Provides public MailGenerator providesMailGenerator() {
-    return generator;
+  @ApplicationWide @Provides public MailGenerator providesMailGenerator() {
+    return new RandomMailGenerator();
   }
-
 }

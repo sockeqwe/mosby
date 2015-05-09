@@ -13,6 +13,7 @@ import android.widget.Toast;
 import butterknife.InjectView;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.layout.MvpViewStateLinearLayout;
+import com.hannesdorfmann.mosby.sample.mail.MailApplication;
 import com.hannesdorfmann.mosby.sample.mail.R;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Label;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
@@ -24,12 +25,12 @@ import java.util.List;
 /**
  * @author Hannes Dorfmann
  */
-public class LabelLayout extends MvpViewStateLinearLayout<LabelView, LabelPresenter> implements LabelView {
+public class LabelLayout extends MvpViewStateLinearLayout<LabelView, LabelPresenter>
+    implements LabelView {
 
   @InjectView(R.id.labelTextView) TextView labelView;
   @InjectView(R.id.labelLoadingView) View loadingView;
   @Icicle Mail mail;
-
 
   ListPopupWindow popUpWindow;
   LabelAdapter adapter;
@@ -103,8 +104,12 @@ public class LabelLayout extends MvpViewStateLinearLayout<LabelView, LabelPresen
     labelView.setText(mail.getLabel());
   }
 
+
   @Override public LabelPresenter createPresenter() {
-    return DaggerLabelLayoutComponent.create().presenter();
+    return DaggerLabelLayoutComponent.builder()
+        .mailAppComponent(MailApplication.getMailComponents())
+        .build()
+        .presenter();
   }
 
   @Override public void showLoading(boolean pullToRefresh) {

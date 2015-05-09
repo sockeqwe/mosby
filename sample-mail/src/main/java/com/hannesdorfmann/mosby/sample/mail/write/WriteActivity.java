@@ -15,13 +15,16 @@ import butterknife.OnClick;
 import com.hannesdorfmann.mosby.mvp.viewstate.MvpViewStateActivity;
 import com.hannesdorfmann.mosby.mvp.viewstate.RestoreableViewState;
 import com.hannesdorfmann.mosby.sample.mail.IntentStarter;
+import com.hannesdorfmann.mosby.sample.mail.MailApplication;
 import com.hannesdorfmann.mosby.sample.mail.R;
+import com.hannesdorfmann.mosby.sample.mail.dagger.NavigationModule;
+import com.hannesdorfmann.mosby.sample.mail.model.contact.Person;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Label;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
-import com.hannesdorfmann.mosby.sample.mail.model.contact.Person;
 import com.hannesdorfmann.mosby.sample.mail.utils.BuildUtils;
 import java.util.Date;
 import java.util.regex.Pattern;
+import javax.inject.Inject;
 
 /**
  * @author Hannes Dorfmann
@@ -38,6 +41,10 @@ import java.util.regex.Pattern;
   @InjectView(R.id.message) EditText message;
   @InjectView(R.id.subject) EditText subject;
   @InjectView(R.id.receiver) EditText receiver;
+
+  @Inject IntentStarter intentStarter;
+
+  private WriteComponent writeComponent;
 
   private Pattern emailPattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
       + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
@@ -87,14 +94,12 @@ import java.util.regex.Pattern;
     }
   }
 
-
-
   @Override public RestoreableViewState createViewState() {
     return new WriteViewState();
   }
 
   @Override public WritePresenter createPresenter() {
-    return DaggerWriteComponent.create().presenter();
+    return writeComponent.presenter();
   }
 
   @Override public void onNewViewStateInstance() {
@@ -133,7 +138,7 @@ import java.util.regex.Pattern;
   }
 
   @OnClick(R.id.authView) public void onAuthViewClicked() {
-    IntentStarter.showAuthentication(this);
+    intentStarter.showAuthentication(this);
   }
 
   @OnClick(R.id.send) public void onSendClicked() {
@@ -180,5 +185,14 @@ import java.util.regex.Pattern;
 
   @Override public void finishBecauseSuccessful() {
     finishAfterTransition();
+  }
+
+  @Override protected void injectDependencies() {
+    writeComponent = DaggerWriteComponent.builder()
+        .mailAppComponent(MailApplication.getMailComponents())
+        .navigationModule(new NavigationModule())
+        .build();
+
+    writeComponent.inject(this);
   }
 }

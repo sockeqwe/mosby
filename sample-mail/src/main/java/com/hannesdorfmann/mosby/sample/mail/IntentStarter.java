@@ -23,11 +23,11 @@ import com.hannesdorfmann.mosby.sample.mail.write.WriteActivity;
 // TODO make it injectable with dagger
 public class IntentStarter {
 
-  private static boolean isTablet(Context context) {
+  private boolean isTablet(Context context) {
     return context.getResources().getBoolean(R.bool.tablet);
   }
 
-  public static void showMailDetails(Context context, Mail mail, Bundle activityTransitionBundle) {
+  public void showMailDetails(Context context, Mail mail, Bundle activityTransitionBundle) {
 
     Intent i = null;
     if (isTablet(context)) {
@@ -41,13 +41,13 @@ public class IntentStarter {
     context.startActivity(i, activityTransitionBundle);
   }
 
-  public static Intent getShowMailInNewActivityIntent(Context context, Mail mail) {
+  public Intent getShowMailInNewActivityIntent(Context context, Mail mail) {
     Intent i = new Intent(context, DetailsActivity.class);
     i.putExtra(DetailsActivity.KEY_MAIL, mail);
     return i;
   }
 
-  public static void showMailsOfLabel(Context context, Label label) {
+  public void showMailsOfLabel(Context context, Label label) {
     Intent i = new Intent(context, MainActivity.class);
     i.putExtra(MainActivity.KEY_SHOW_ACTION, MainActivity.KEY_SHOW_ACTION_MAILS_OF_LABEL);
     i.putExtra(MainActivity.KEY_DATA_MAILS_OF_LABEL, label);
@@ -55,8 +55,7 @@ public class IntentStarter {
     context.startActivity(i);
   }
 
-  public static void showWriteMail(Context context, Mail replayTo,
-      Bundle activityTransitionBundle) {
+  public void showWriteMail(Context context, Mail replayTo, Bundle activityTransitionBundle) {
 
     Intent i = new Intent(context, WriteActivity.class);
 
@@ -67,27 +66,25 @@ public class IntentStarter {
     context.startActivity(i, activityTransitionBundle);
   }
 
-  public static void showAuthentication(Context context) {
+  public void showAuthentication(Context context) {
     context.startActivity(new Intent(context, LoginActivity.class));
   }
 
-  public static void sendMailViaService(Context context, Mail mail) {
+  public void sendMailViaService(Context context, Mail mail) {
     Intent i = new Intent(context, SendMailService.class);
     i.putExtra(SendMailService.KEY_MAIL, mail);
     context.startService(i);
   }
 
-  public static void showSearch(Activity context) {
+  public void showSearch(Activity context) {
     Intent i = new Intent(context, SearchActivity.class);
     context.startActivity(i);
     context.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
   }
 
-  public static void showProfile(Context context, Person person) {
+  public void showProfile(Context context, Person person) {
     Intent i = new Intent(context, ProfileActivity.class);
     i.putExtra(ProfileActivity.KEY_PERSON, person);
     context.startActivity(i);
-
-    // TODO shared element
   }
 }

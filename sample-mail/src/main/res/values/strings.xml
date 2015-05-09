@@ -7,6 +7,7 @@
   <string name="drawer_close">Close menu</string>
 
   <string name="empty_emails">No mails!</string>
+  <string name="menu_statistics">Statistics</string>
 
   <string name="error_wait_mail_loaded">Please wait until the mail is loaded and retry afterwards
   </string>

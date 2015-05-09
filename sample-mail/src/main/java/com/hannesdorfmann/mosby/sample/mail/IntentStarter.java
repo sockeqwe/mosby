@@ -6,9 +6,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import com.hannesdorfmann.mosby.sample.mail.details.DetailsActivity;
 import com.hannesdorfmann.mosby.sample.mail.login.LoginActivity;
+import com.hannesdorfmann.mosby.sample.mail.model.contact.Person;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Label;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
-import com.hannesdorfmann.mosby.sample.mail.model.contact.Person;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.service.SendMailService;
 import com.hannesdorfmann.mosby.sample.mail.profile.ProfileActivity;
 import com.hannesdorfmann.mosby.sample.mail.search.SearchActivity;
@@ -87,4 +87,5 @@ public class IntentStarter {
     i.putExtra(ProfileActivity.KEY_PERSON, person);
     context.startActivity(i);
   }
+
 }

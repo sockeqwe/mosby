@@ -29,6 +29,7 @@ import com.hannesdorfmann.mosby.sample.mail.base.view.viewstate.AuthViewState;
 import com.hannesdorfmann.mosby.sample.mail.dagger.NavigationModule;
 import com.hannesdorfmann.mosby.sample.mail.model.account.Account;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Label;
+import com.hannesdorfmann.mosby.sample.mail.statistics.StatisticsDialog;
 import de.greenrobot.event.EventBus;
 import java.util.List;
 import javax.inject.Inject;
@@ -100,6 +101,13 @@ public class MenuFragment extends AuthRefreshRecyclerFragment<List<Label>, MenuV
 
   @Override public void onLabelClicked(Label label) {
     intentStarter.showMailsOfLabel(getActivity(), label);
+  }
+
+  @Override public void onStatisticsClicked() {
+    getActivity().getSupportFragmentManager()
+        .beginTransaction()
+        .add(new StatisticsDialog(), null)
+        .commit();
   }
 
   @Override public void decrementUnreadCount(String label) {

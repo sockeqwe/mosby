@@ -19,10 +19,14 @@ package com.hannesdorfmann.mosby.sample.mail.model.mail;
 import com.hannesdorfmann.mosby.sample.mail.R;
 import com.hannesdorfmann.mosby.sample.mail.model.account.AccountManager;
 import com.hannesdorfmann.mosby.sample.mail.model.account.NotAuthenticatedException;
+import com.hannesdorfmann.mosby.sample.mail.model.mail.statistics.MailStatistics;
+import com.hannesdorfmann.mosby.sample.mail.model.mail.statistics.MailsCount;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import rx.Observable;
 import rx.functions.Action2;
@@ -263,6 +267,34 @@ public class MailProvider {
     return getFilteredMailList(new Func1<Mail, Boolean>() {
       @Override public Boolean call(Mail mail) {
         return mail.getSender().getId() == personId;
+      }
+    });
+  }
+
+  public Observable<MailStatistics> getStatistics() {
+    return Observable.defer(new Func0<Observable<MailStatistics>>() {
+      @Override public Observable<MailStatistics> call() {
+
+        delay();
+        Observable o = checkExceptions();
+        if (o != null) {
+          return o;
+        }
+
+        Map<String, MailsCount> mailsCountMap = new HashMap<String, MailsCount>();
+
+        for (Mail m : mails) {
+          MailsCount count = mailsCountMap.get(m.getLabel());
+          if (count == null) {
+            count = new MailsCount(m.getLabel(), 0);
+            mailsCountMap.put(m.getLabel(), count);
+          }
+
+          count.incrementCount();
+        }
+
+        return Observable.just(
+            new MailStatistics(new ArrayList<MailsCount>(mailsCountMap.values())));
       }
     });
   }

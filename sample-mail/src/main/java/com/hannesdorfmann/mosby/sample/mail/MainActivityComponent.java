@@ -1,13 +1,13 @@
 package com.hannesdorfmann.mosby.sample.mail;
 
-import com.hannesdorfmann.mosby.sample.mail.dagger.ApplicationWide;
 import com.hannesdorfmann.mosby.sample.mail.dagger.NavigationModule;
 import dagger.Component;
+import javax.inject.Singleton;
 
 /**
  * @author Hannes Dorfmann
  */
-@ApplicationWide
+@Singleton
 @Component(
     modules = NavigationModule.class) public interface MainActivityComponent {
 

@@ -6,7 +6,7 @@ import dagger.Component;
  * @author Hannes Dorfmann
  */
 
-@ApplicationWide
+
 @Component(
     modules = MailModule.class
 )

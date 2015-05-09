@@ -21,10 +21,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.InjectView;
 import com.hannesdorfmann.mosby.sample.mail.IntentStarter;
+import com.hannesdorfmann.mosby.sample.mail.MailApplication;
 import com.hannesdorfmann.mosby.sample.mail.R;
 import com.hannesdorfmann.mosby.sample.mail.base.view.AuthRefreshRecyclerFragment;
 import com.hannesdorfmann.mosby.sample.mail.base.view.ListAdapter;
 import com.hannesdorfmann.mosby.sample.mail.base.view.viewstate.AuthViewState;
+import com.hannesdorfmann.mosby.sample.mail.dagger.NavigationModule;
 import com.hannesdorfmann.mosby.sample.mail.model.account.Account;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Label;
 import de.greenrobot.event.EventBus;
@@ -42,6 +44,7 @@ public class MenuFragment extends AuthRefreshRecyclerFragment<List<Label>, MenuV
   @InjectView(R.id.profilePic) ImageView profilePic;
 
   @Inject EventBus eventBus;
+  @Inject IntentStarter intentStarter;
 
   private MenuComponent menuComponent;
 
@@ -88,18 +91,21 @@ public class MenuFragment extends AuthRefreshRecyclerFragment<List<Label>, MenuV
   }
 
   @Override protected void injectDependencies() {
-    menuComponent = DaggerMenuComponent.create();
+    menuComponent = DaggerMenuComponent.builder()
+        .mailAppComponent(MailApplication.getMailComponents())
+        .navigationModule(new NavigationModule())
+        .build();
     menuComponent.inject(this);
   }
 
   @Override public void onLabelClicked(Label label) {
-    IntentStarter.showMailsOfLabel(getActivity(), label);
+    intentStarter.showMailsOfLabel(getActivity(), label);
   }
 
   @Override public void decrementUnreadCount(String label) {
 
     for (Label l : adapter.getItems()) {
-      if (l.getName().equals(label)){
+      if (l.getName().equals(label)) {
         l.decrementUnreadCount();
         adapter.notifyDataSetChanged();
         return;

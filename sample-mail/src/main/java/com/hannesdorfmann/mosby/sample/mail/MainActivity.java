@@ -24,6 +24,7 @@ import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.MailProvider;
 import com.hannesdorfmann.mosby.sample.mail.model.contact.Person;
 import icepick.Icicle;
+import javax.inject.Inject;
 
 public class MainActivity extends MosbyActivity {
 
@@ -48,6 +49,8 @@ public class MainActivity extends MosbyActivity {
 
   @Icicle String toolbarTitle;
 
+  @Inject IntentStarter intentStarter;
+
   @InjectView(R.id.drawerLayout) DrawerLayout drawerLayout;
   @InjectView(R.id.toolbar) Toolbar toolbar;
   @InjectView(R.id.leftPane) ViewGroup leftPane;
@@ -56,6 +59,7 @@ public class MainActivity extends MosbyActivity {
   @Optional @InjectView(R.id.paneContainer) ViewGroup paneContainer;
 
   ActionBarDrawerToggle drawerToggle;
+  private MainActivityComponent mainActivityComponent;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -65,8 +69,8 @@ public class MainActivity extends MosbyActivity {
     toolbar.inflateMenu(R.menu.search_menu);
     toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
       @Override public boolean onMenuItemClick(MenuItem menuItem) {
-        if (menuItem.getItemId() == R.id.search){
-          IntentStarter.showSearch(MainActivity.this);
+        if (menuItem.getItemId() == R.id.search) {
+          intentStarter.showSearch(MainActivity.this);
           return true;
         }
         return false;
@@ -180,5 +184,10 @@ public class MainActivity extends MosbyActivity {
     if (!removeDetailsFragment()) {
       super.onBackPressed();
     }
+  }
+
+  @Override protected void injectDependencies() {
+    mainActivityComponent = DaggerMainActivityComponent.create();
+    mainActivityComponent.inject(this);
   }
 }

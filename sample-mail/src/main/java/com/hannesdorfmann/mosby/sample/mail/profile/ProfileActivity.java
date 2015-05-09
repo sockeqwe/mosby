@@ -17,6 +17,7 @@ import com.astuetz.PagerSlidingTabStrip;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.MvpLceViewStateActivity;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.ParcelableLceViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.CastedArrayListLceViewState;
+import com.hannesdorfmann.mosby.sample.mail.MailApplication;
 import com.hannesdorfmann.mosby.sample.mail.R;
 import com.hannesdorfmann.mosby.sample.mail.model.contact.Person;
 import com.hannesdorfmann.mosby.sample.mail.model.contact.ProfileScreen;
@@ -37,6 +38,7 @@ public class ProfileActivity extends
 
   private Person person;
   private ProfileScreensAdapter adapter;
+  private ProfileComponent profileComponent;
   @InjectView(R.id.viewPager) ViewPager viewPager;
   @InjectView(R.id.tabs) PagerSlidingTabStrip tabs;
   @InjectView(R.id.fadingToolbarHelper) View fadingToolbarHelper;
@@ -79,7 +81,7 @@ public class ProfileActivity extends
   }
 
   @Override public ProfilePresenter createPresenter() {
-    return DaggerProfileComponent.builder().build().presenter();
+    return profileComponent.presenter();
   }
 
   @Override public void setData(List<ProfileScreen> data) {
@@ -130,5 +132,13 @@ public class ProfileActivity extends
       headerImage.setVisibility(View.VISIBLE);
       headerImage.setAlpha(1f);
     }
+  }
+
+
+
+  @Override protected void injectDependencies() {
+    profileComponent = DaggerProfileComponent.builder()
+        .mailAppComponent(MailApplication.getMailComponents())
+        .build();
   }
 }

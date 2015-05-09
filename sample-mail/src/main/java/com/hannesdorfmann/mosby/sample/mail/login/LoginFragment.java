@@ -30,6 +30,7 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 import com.hannesdorfmann.mosby.mvp.viewstate.MvpViewStateFragment;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
+import com.hannesdorfmann.mosby.sample.mail.MailApplication;
 import com.hannesdorfmann.mosby.sample.mail.R;
 import com.hannesdorfmann.mosby.sample.mail.model.account.AuthCredentials;
 import com.hannesdorfmann.mosby.sample.mail.utils.KeyboardUtils;
@@ -38,13 +39,16 @@ import com.hkm.ui.processbutton.iml.ActionProcessButton;
 /**
  * @author Hannes Dorfmann
  */
-public class LoginFragment extends MvpViewStateFragment<LoginView, LoginPresenter> implements LoginView {
+public class LoginFragment extends MvpViewStateFragment<LoginView, LoginPresenter>
+    implements LoginView {
 
   @InjectView(R.id.username) EditText username;
   @InjectView(R.id.password) EditText password;
   @InjectView(R.id.loginButton) ActionProcessButton loginButton;
   @InjectView(R.id.errorView) TextView errorView;
   @InjectView(R.id.loginForm) ViewGroup loginForm;
+
+  private LoginComponent loginComponent;
 
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -72,7 +76,7 @@ public class LoginFragment extends MvpViewStateFragment<LoginView, LoginPresente
   }
 
   @Override public LoginPresenter createPresenter() {
-    return DaggerLoginComponent.create().presenter();
+    return loginComponent.presenter();
   }
 
   @OnClick(R.id.loginButton) public void onLoginClicked() {
@@ -159,4 +163,9 @@ public class LoginFragment extends MvpViewStateFragment<LoginView, LoginPresente
     getActivity().finish();
     getActivity().overridePendingTransition(0, R.anim.zoom_out);
   }
+
+  @Override protected void injectDependencies() {
+    loginComponent = DaggerLoginComponent.builder().mailAppComponent(MailApplication.getMailComponents()).build();
+  }
+
 }

@@ -50,7 +50,8 @@ import javax.inject.Singleton;
     return EventBus.getDefault();
   }
 
-  @Singleton @Provides public MailProvider providesMailProvider() {
+  @Singleton @Provides
+  public MailProvider providesMailProvider(AccountManager manager, MailGenerator generator) {
     return mailProvider;
   }
 
@@ -58,4 +59,26 @@ import javax.inject.Singleton;
     return generator;
   }
 
+  /*
+  @Singleton @Provides public AccountManager providesAccountManager() {
+    return new DefaultAccountManager();
+  }
+
+  @Singleton @Provides public SchedulerTransformer providesSchedulerTransformer() {
+    return new AndroidSchedulerTransformer();
+  }
+
+  @Singleton @Provides public EventBus providesEventBus() {
+    return EventBus.getDefault();
+  }
+
+  @Singleton @Provides
+  public MailProvider providesMailProvider(AccountManager manager, MailGenerator generator) {
+    return new MailProvider(manager, generator);
+  }
+
+  @Singleton @Provides public MailGenerator providesMailGenerator() {
+    return new RandomMailGenerator();
+  }
+  */
 }

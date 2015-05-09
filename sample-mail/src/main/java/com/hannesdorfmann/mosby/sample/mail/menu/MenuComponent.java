@@ -16,21 +16,22 @@
 
 package com.hannesdorfmann.mosby.sample.mail.menu;
 
+import com.hannesdorfmann.mosby.sample.mail.dagger.MailAppComponent;
 import com.hannesdorfmann.mosby.sample.mail.dagger.MailModule;
+import com.hannesdorfmann.mosby.sample.mail.dagger.NavigationModule;
 import dagger.Component;
 import javax.inject.Singleton;
 
 /**
  * @author Hannes Dorfmann
  */
-@Singleton
-@Component(
-    modules = MailModule.class
-)
-public interface MenuComponent {
+@Singleton @Component(
+    modules = { MailModule.class, NavigationModule.class },
+    dependencies = MailAppComponent.class
+
+) public interface MenuComponent {
 
   MenuPresenter presenter();
 
   void inject(MenuFragment menuFragment);
-
 }

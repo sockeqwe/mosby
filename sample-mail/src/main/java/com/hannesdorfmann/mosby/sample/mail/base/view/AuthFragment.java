@@ -24,6 +24,7 @@ import com.hannesdorfmann.mosby.mvp.viewstate.lce.MvpLceViewStateFragment;
 import com.hannesdorfmann.mosby.sample.mail.IntentStarter;
 import com.hannesdorfmann.mosby.sample.mail.R;
 import com.hannesdorfmann.mosby.sample.mail.base.view.viewstate.AuthViewState;
+import javax.inject.Inject;
 
 /**
  * @author Hannes Dorfmann
@@ -32,6 +33,7 @@ public abstract class AuthFragment<AV extends View, M, V extends AuthView<M>, P 
     extends MvpLceViewStateFragment<AV, M, V, P> implements AuthView<M> {
 
   protected View authView;
+  @Inject IntentStarter intentStarter;
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
@@ -44,7 +46,7 @@ public abstract class AuthFragment<AV extends View, M, V extends AuthView<M>, P 
   }
 
   protected void onAuthViewClicked() {
-    IntentStarter.showAuthentication(getActivity());
+    intentStarter.showAuthentication(getActivity());
   }
 
   @Override protected String getErrorMessage(Throwable e, boolean pullToRefresh) {
@@ -81,4 +83,5 @@ public abstract class AuthFragment<AV extends View, M, V extends AuthView<M>, P 
   }
 
   @Override public abstract AuthViewState<M, V> createViewState();
+
 }

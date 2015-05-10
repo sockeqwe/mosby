@@ -56,7 +56,6 @@ public class DefaultAccountManager implements AccountManager {
   }
 
   @Override public boolean isUserAuthenticated() {
-    return true; // TODO remove for testing
-    //return currentAccount != null;
+    return currentAccount != null;
   }
 }

@@ -28,5 +28,7 @@ public class ProfileMailsFragment extends BaseMailsFragment<ProfileMailsView, Pr
         .mailAppComponent(MailApplication.getMailComponents())
         .navigationModule(new NavigationModule())
         .build();
+
+    profileMailsComponent.inject(this);
   }
 }

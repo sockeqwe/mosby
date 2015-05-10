@@ -54,7 +54,7 @@ allprojects {
 
 dependencies {
   apt 'frankiesardo:icepick-processor:3.0.2'
-  apt 'com.hannesdorfmann.fragmentargs:processor:2.0.1'
+  apt 'com.hannesdorfmann.fragmentargs:processor:2.1.0'
 
   // If you want to use dagger1
   apt 'com.squareup.dagger:dagger-compiler:1.2.2'
@@ -62,5 +62,8 @@ dependencies {
 ```
 
 # Sample APK
-You can download the sample apk from [here](https://db.tt/ycrCwt1L).
-The Dagger1 sample apk can be downloaded [here](https://db.tt/3fVqVdAz) and Dagger2 sample apk can be downloaded [here](https://db.tt/z85y4fSY)
+You can find the smaple apk files in the [release section](https://github.com/sockeqwe/mosby/releases)
+
+# Proguard
+Mosby itself doesn't nee any specific proguard rules.
+However, third party libraries that are integrated in mosby like [Butterknife](http://jakewharton.github.io/butterknife/), [FragmentArgs](https://github.com/sockeqwe/fragmentargs), [Icepick](https://github.com/frankiesardo/icepick) and (optional) [dagger 1](http://square.github.io/dagger/) may have there own proguard rules. Please visit these projects site.

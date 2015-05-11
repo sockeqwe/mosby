@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'org.robolectric'
+
 
 android {
   compileSdkVersion rootProject.ext.compileSdkVersion
@@ -64,4 +66,5 @@ dependencies {
 
 
   testCompile 'junit:junit:4.12'
+  testCompile 'org.robolectric:robolectric:'+rootProject.ext.robolectricVersion
 }

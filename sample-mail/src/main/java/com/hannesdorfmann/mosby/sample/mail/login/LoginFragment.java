@@ -111,13 +111,13 @@ public class LoginFragment extends MvpViewStateFragment<LoginView, LoginPresente
   }
 
   @Override public void onNewViewStateInstance() {
-    showLogin();
+    showLoginForm();
   }
 
-  @Override public void showLogin() {
+  @Override public void showLoginForm() {
 
     LoginViewState vs = (LoginViewState) viewState;
-    vs.setShowLogin();
+    vs.setShowLoginForm();
 
     errorView.setVisibility(View.GONE);
     setFormEnabled(true);

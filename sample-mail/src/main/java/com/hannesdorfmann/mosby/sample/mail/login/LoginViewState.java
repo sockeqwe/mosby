@@ -23,11 +23,11 @@ import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
  */
 public class LoginViewState implements ViewState<LoginView> {
 
-  private final int STATE_SHOW_LOGIN_FORM = 0;
-  private final int STATE_SHOW_LOADING = 1;
-  private final int STATE_SHOW_ERROR = 2;
+  final int STATE_SHOW_LOGIN_FORM = 0;
+  final int STATE_SHOW_LOADING = 1;
+  final int STATE_SHOW_ERROR = 2;
 
-  private int state = STATE_SHOW_LOGIN_FORM;
+  int state = STATE_SHOW_LOGIN_FORM;
 
   @Override public void apply(LoginView view, boolean retained) {
 
@@ -41,12 +41,12 @@ public class LoginViewState implements ViewState<LoginView> {
         break;
 
       case STATE_SHOW_LOGIN_FORM:
-        view.showLogin();
+        view.showLoginForm();
         break;
     }
   }
 
-  public void setShowLogin() {
+  public void setShowLoginForm() {
     state = STATE_SHOW_LOGIN_FORM;
   }
 

@@ -88,4 +88,8 @@ public class LoginPresenter extends MvpBasePresenter<LoginView> {
       cancelSubscription();
     }
   }
+
+  @Override public void attachView(LoginView view) {
+    super.attachView(view);
+  }
 }

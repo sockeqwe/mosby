@@ -71,8 +71,6 @@ import javax.inject.Inject;
       }
     });
 
-    setSupportActionBar(toolbar);
-
     Mail replayMail = getIntent().getParcelableExtra(KEY_REPLAY_MAIL);
     if (replayMail != null) {
       if (TextUtils.isEmpty(receiver.getText().toString())) {

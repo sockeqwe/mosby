@@ -1,0 +1,27 @@
+---
+---
+/* SITE */
+# humanstxt.org/
+# The humans responsible & technology colophon
+
+# TEAM
+
+
+
+# THANKS
+
+Name: Moritz »mo.« Sauer
+Role: Webdesigner of Theme
+Site: http://mo.phlow.de/
+Theme: http://phlow.github.io/feeling-responsive/
+Twitter: http://twitter.com/phlow
+
+# TECHNOLOGY COLOPHON
+
+Last Updated: {{ site.time | date:"%Y/%m/%d" }}
+Standards: HTML5, CSS3
+Software: Sublime Text, Chrome, Jekyll, Git, Imageoptim, JPEGMini, Gulp.js, Sass
+Components: Modernizr, jQuery, Backstretch.js, Reveal, Foundation Framework
+
+
+

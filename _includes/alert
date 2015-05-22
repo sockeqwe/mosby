@@ -1,0 +1,33 @@
+{% comment %}
+*  
+*  This include lets you easily display an alert.
+*  To use the include no `.html` ending is necessary.
+*  You can use five different kinds of alerts:
+*
+*  - warning
+*  - info
+*  - success
+*  - alert
+*  - text
+*
+*  You can even use <html>-tags inside the alert. Beware:
+*  Use " and ' properly. 
+*  
+*  Example: {% include alert info='Show an info alert with outstanding information' %}
+*  
+{% endcomment %}
+
+
+{% if include.warning %}
+<div class="alert-box warning radius">{{ include.warning }}</div>
+{% elsif include.info %}
+<div class="alert-box info radius">{{ include.info }}</div>
+{% elsif include.success %}
+<div class="alert-box success radius">{{ include.success }}</div>
+{% elsif include.alert %}
+<div class="alert-box alert radius">{{ include.alert }}</div>
+{% elsif include.text %}
+<div class="alert-box text radius">{{ include.text }}</div>
+{% elsif include.terminal %}
+<div class="alert-box terminal radius">{{ include.terminal }}</div>
+{% endif %}

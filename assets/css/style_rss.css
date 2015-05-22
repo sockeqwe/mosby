@@ -1,0 +1,116 @@
+rss {
+display:block;
+margin:10px;
+padding: 10px 0;
+font-size: 62.5%;
+}
+
+rss:before {
+content:"\00BB  Sie befinden sich auf einem RSS-NewsFeed, nicht auf der Website. Bitte besuchen Sie die Website bueltge.de";
+font-size: 2em;
+color: red;
+margin: 10px;
+}
+
+channel {
+display:block;
+background-color:#eee;
+font-size: 1.2em;
+font-family: Verdana, Arial, Helvetice, sans-serif;
+padding: 5px 0;
+}
+
+item {
+display: block;
+padding:10px;
+margin: 5px 0;
+border-top:1px solid #CCC;
+border-bottom:1px solid #CCC;
+background-color: white;
+}
+
+channel>title, channel>description, channel>pubDate {
+display: block;
+margin: 10px;
+background-color: #eee;
+color: #556B2F;
+}
+
+channel>pubDate {
+font-size: .8em;
+}
+
+channel>pubDate:before {
+content:"Letzte Aktualisierung: ";
+}
+
+channel>title {
+font-size: 1.6em;
+font-weight: bold;
+}
+
+channel>description {
+font-size: 1.1em;
+margin-bottom: 10px;
+font-weight: bold;
+}
+
+item {
+font-size: 0px
+}
+
+item>title {
+font-weight:bold;
+font-size: 12px;
+}
+
+item>title:after {
+content:" \00BB ";
+}
+
+item>link, item>pubDate, item>category {
+color: #556B2F;
+font-size: 11px;
+}
+
+item>link:before {
+content:" Link zum Beitrag: ";
+color: black;
+}
+
+item>pubDate:before {
+color: black;
+content:" erstellt am: ";
+margin-left: 100%;
+}
+
+item>category:before {
+color: black;
+content:" in Kategorie: ";
+}
+
+item>description:before {
+color: black;
+font-weight:bold;
+content:" \00BB ";
+}
+
+item>description {
+font-size: 11px;
+margin-left: 100%;
+}
+
+item>description:after {
+color: black;
+font-weight:bold;
+content:" \00AB ";
+}
+
+channel>link, channel>generator, channel>language, channel>docs, channel>image {
+display: none;
+}
+
+item>comments, item>guid {
+ 
+display: none;
+}

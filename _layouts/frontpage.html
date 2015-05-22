@@ -1,0 +1,107 @@
+---
+layout: default
+format: blog-index
+---
+<div id="header-home">
+    <div class="row">
+        <div class="small-12 columns">
+        </div><!-- /.medium-4.columns -->
+    </div><!-- /.row -->
+</div><!-- /#header-home -->
+
+
+{% comment %}
+*
+* First check, if widget is empty or not by checking if there is a title
+*
+{% endcomment %}
+<div class="row t60">
+    {% if page.widget-1.title %}
+    <div class="medium-4 columns">
+        <a href="{{ page.widget-1.url }}">{% if page.widget-1.image %}<img src="{{ site.urlimg }}/{{ page.widget-1.image }}" width="302" height="182" alt="">{% endif %}{% if page.widget-1.video %}{{ page.widget-1.video }}{% endif %}</a>
+        <h2 class="font-size-h3 t10">{{ page.widget-1.title }}</h2>
+        <p>{{ page.widget-1.text }}</p>
+        <p><a class="button tiny radius" href="{{ page.widget-1.url }}">{{ site.data.language.more }}</a></p>
+    </div><!-- /.medium-4.columns -->
+    {% endif %}
+
+
+    {% if page.widget-2.title %}
+    <div class="medium-4 columns">
+        <a href="{{ page.widget-2.url }}">{% if page.widget-2.image %}<img src="{{ site.urlimg }}/{{ page.widget-2.image }}" width="302" height="182" alt="">{% endif %}{% if page.widget-2.video %}{{ page.widget-2.video }}{% endif %}</a>
+        <h2 class="font-size-h3 t10">{{ page.widget-2.title }}</h2>
+        <p>{{ page.widget-2.text }}</p>
+        <p><a class="button tiny radius" href="{{ page.widget-2.url }}">{{ site.data.language.more }}</a></p>
+    </div><!-- /.medium-4.columns -->
+    {% endif %}
+
+
+    {% if page.widget-3.title %}
+    <div class="medium-4 columns">
+        <a href="{{ page.widget-3.url }}">{% if page.widget-3.image %}<img src="{{ site.urlimg }}/{{ page.widget-3.image }}" width="302" height="182" alt="">{% endif %}{% if page.widget-3.video %}{{ page.widget-3.video }}{% endif %}</a>
+        <h2 class="font-size-h3 t10">{{ page.widget-3.title }}</h2>
+        <p>{{ page.widget-3.text }}</p>
+        <p><a class="button tiny radius" href="{{ page.widget-3.url }}">Download &#64; GitHub ›</a></p>
+    </div><!-- /.medium-4.columns -->
+    {% endif %}
+</div><!-- /.row -->
+
+
+{% comment %}
+*
+* First check, if there are any posts at all
+*
+{% endcomment %}
+
+{% unless site.posts == empty %}
+    <div class="row t30 b20 homepage">
+        <div class="small-12 columns">
+            {% for post in site.posts limit:1 %}
+            {% if post.image.homepage %}
+            <p>
+                <a href="{{ site.url }}{{ post.url }}" title="{{ post.title escape_once }}"><img width="970" src="{{ site.url }}/images/{{ post.image.homepage }}" alt="{{ page.title escape_once }}"></a>
+            </p>
+
+            {% if post.image.caption_url && post.image.caption %}
+            <p class="text-right caption">
+                <a href="{{ post.image.caption_url }}">{{ post.image.caption }}</a>
+            </p>
+            {% endif %}
+            {% elsif post.image.homepage == NULL %}
+            <h2>{{ site.data.language.new_blog_entries }}</h2>
+            {% endif %}
+            {% endfor %}
+        </div><!-- /.small-12.columns -->
+    </div><!-- /.row -->
+
+
+    <div class="row">
+        <div class="medium-6 columns">
+            {% for post in site.posts limit:1 %}
+            {% if post.subheadline %}<p class="subheadline">{{ post.subheadline }}</p>{% endif %}
+            <h2><a href="{{ site.url }}{{ post.url }}">{{ post.title }}</a></h2>
+            <p>
+                {% if post.meta_description %}{{ post.meta_description | strip_html | escape }}{% elsif post.teaser %}{{ post.teaser | strip_html | escape }}{% endif %}
+                <a href="{{ site.url }}{{ post.url }}" title="Read {{ post.title escape_once }}"><strong>{{ site.data.language.read_more }}</strong></a>
+            </p>
+            {% endfor %}
+        </div><!-- /.medium-5.columns -->
+
+
+        <div class="medium-6 columns">
+            <p><strong>{{ site.data.language.more_articles }}</strong></p>
+            {% include list-posts.html entries='3' offset='1' %}
+        </div><!-- /.medium-7.columns -->
+    </div><!-- /.row -->
+{% endunless %}
+
+
+{% comment %}
+*
+* Finally, if there is content, spit it out.
+*
+{% endcomment %}
+
+<div class="row">
+    {{ content }}
+</div><!-- /.row -->

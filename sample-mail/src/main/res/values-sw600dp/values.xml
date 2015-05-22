@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-  <dimen name="profile_tabs_height">48dp</dimen>
-  <dimen name="profile_header_collapsed_height">104dp</dimen>
-
-</resources>

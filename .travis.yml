@@ -4,7 +4,7 @@ android:
   components:
     - build-tools-21.1.2
     - extra-android-m2repository
-    - android-21
+    - android-22
     - android-18
     - sys-img-armeabi-v7a-android-18
 

@@ -40,7 +40,7 @@ public class FragmentMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<V
 
   public FragmentMvpDelegateImpl(MvpDelegateCallback<V, P> delegateCallback) {
     if (delegateCallback == null) {
-      throw new NullPointerException(delegateCallback.getClass().getSimpleName() + " is null!");
+      throw new NullPointerException("MvpDelegateCallback is null!");
     }
 
     this.delegateCallback = delegateCallback;

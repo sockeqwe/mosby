@@ -6,7 +6,7 @@ android:
     - extra-android-m2repository
     - android-22
     - android-18
-    - sys-img-armeabi-v7a-android-18
+#    - sys-img-armeabi-v7a-android-18
 
 jdk:
   - oraclejdk7

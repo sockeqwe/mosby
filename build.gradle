@@ -35,6 +35,9 @@ ext {
   buildToolsVersion = '22.0.1'
   compileSdkVersion = 22
 
+  javaSourceCompatibility = JavaVersion.VERSION_1_7
+  javaTargetCompatibility = JavaVersion.VERSION_1_7
+
   // Libraries
   appcompat7Version = '22.1.1'
   recyclerviewVersion = '22.1.1'

@@ -5,6 +5,11 @@ android {
   compileSdkVersion rootProject.ext.compileSdkVersion
   buildToolsVersion rootProject.ext.buildToolsVersion
 
+  compileOptions {
+    sourceCompatibility rootProject.ext.javaSourceCompatibility
+    targetCompatibility rootProject.ext.javaTargetCompatibility
+  }
+
   defaultConfig {
     minSdkVersion rootProject.ext.minSdk
     targetSdkVersion rootProject.ext.targetSdk
@@ -17,6 +22,8 @@ android {
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
   }
+
+
 }
 
 dependencies {

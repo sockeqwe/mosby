@@ -33,6 +33,11 @@ android {
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
   }
+
+  compileOptions {
+    sourceCompatibility rootProject.ext.javaSourceCompatibility
+    targetCompatibility rootProject.ext.javaTargetCompatibility
+  }
 }
 
 dependencies {

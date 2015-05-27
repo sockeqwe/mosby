@@ -23,6 +23,11 @@ android {
     }
   }
 
+  compileOptions {
+    sourceCompatibility rootProject.ext.javaSourceCompatibility
+    targetCompatibility rootProject.ext.javaTargetCompatibility
+  }
+
   /*
   testOptions {
     unitTests.returnDefaultValues = true

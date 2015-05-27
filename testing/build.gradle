@@ -1,6 +1,9 @@
 apply plugin: 'java'
 apply from: '../maven-push-java-lib.gradle'
 
+sourceCompatibility = rootProject.ext.javaSourceCompatibility
+targetCompatibility = rootProject.ext.javaTargetCompatibility
+
 dependencies {
   compile project(':mvp-common')
   compile 'junit:junit:'+rootProject.ext.junitVersion

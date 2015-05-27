@@ -20,6 +20,11 @@ android {
   compileSdkVersion rootProject.ext.compileSdkVersion
   buildToolsVersion rootProject.ext.buildToolsVersion
 
+  compileOptions {
+    sourceCompatibility rootProject.ext.javaSourceCompatibility
+    targetCompatibility rootProject.ext.javaTargetCompatibility
+  }
+
   defaultConfig {
     applicationId "com.hannesdorfmann.mosby.sample.dagger2"
     minSdkVersion rootProject.ext.minSdk

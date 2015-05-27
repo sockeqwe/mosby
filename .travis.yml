@@ -1,0 +1,33 @@
+language: android
+
+android:
+  components:
+    - build-tools-21.1.2
+    - extra-android-m2repository
+    - android-21
+    - android-18
+    - sys-img-armeabi-v7a-android-18
+
+jdk:
+  - oraclejdk7
+
+#after_success:
+#  - .buildscript/deploy_snapshot.sh
+
+#env:
+#  global:
+#    - secure: "NIWC0zkThskXn7uduTJ1yT78voqEgzEfw8tOImGNBjZ/NDU6yxM4bh+tq+fnkn5ENjELV6fgcYd2DUJSWmkFD2k9ZMRNLm//AqlQihl8aT+DpWhDdCkQjnolHnjm1O7+ys7Q/vswBZEzkBxzIgivajZEzvjarQItJjbpBftQ0Cs="
+#    - secure: "ahPT9EzJVpkM4q2HA/VBxUzgicvfdOOZaEvOiQKJofy1FrLjrBS2LFxqCbyffg0sjGUyvBMLg767CSt/0xRRFWIpsjxCfmvEmAURi89zdZ8MUNXIwe7x/0lXCdQIt8eueq3Qh5qFwJUy4aFbzVvcmMXKswWzw1O0+IcvYX00/xc="
+
+branches:
+  except:
+    - gh-pages
+
+notifications:
+  email: false
+
+sudo: false
+
+cache:
+  directories:
+    - $HOME/.gradle

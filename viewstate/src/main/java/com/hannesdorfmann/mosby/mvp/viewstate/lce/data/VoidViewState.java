@@ -31,7 +31,7 @@ import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
  *
  * @param <V> The type of the view
  * @author Hannes Dorfmann
- * @Since 1.0.0
+ * @since 1.0.0
  */
 public class VoidViewState<V extends MvpLceView<Void>> extends AbsParcelableLceViewState<Void, V> {
 }

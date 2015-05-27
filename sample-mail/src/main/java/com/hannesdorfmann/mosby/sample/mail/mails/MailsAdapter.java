@@ -34,6 +34,7 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * @author Hannes Dorfmann
@@ -65,7 +66,7 @@ public class MailsAdapter extends ListAdapter<List<Mail>> implements MailsAdapte
   private MailClickedListener clickListener;
   private MailStarListner starListner;
   private PersonClickListener personClickListener;
-  private Format format = new SimpleDateFormat("dd. MMM");
+  private Format format = new SimpleDateFormat("dd. MMM", Locale.getDefault());
 
   public MailsAdapter(Context context, MailClickedListener clickListener,
       MailStarListner starListener, PersonClickListener personClickListener) {

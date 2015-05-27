@@ -11,6 +11,7 @@ import com.hannesdorfmann.mosby.MosbyFragment;
 import com.hannesdorfmann.mosby.sample.mail.R;
 import com.hannesdorfmann.mosby.sample.mail.model.contact.Person;
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 /**
  * @author Hannes Dorfmann
@@ -29,7 +30,7 @@ public class AboutFragment extends MosbyFragment {
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    SimpleDateFormat sdf = new SimpleDateFormat("d MMM yyyy");
+    SimpleDateFormat sdf = new SimpleDateFormat("d MMM yyyy", Locale.getDefault());
 
     if (!TextUtils.isEmpty(person.getEmail())) {
       email.setText(person.getEmail());

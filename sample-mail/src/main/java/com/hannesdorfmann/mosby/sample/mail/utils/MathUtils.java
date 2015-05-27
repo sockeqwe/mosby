@@ -134,10 +134,10 @@ public class MathUtils {
   /**
    * Checks if a value is between up and down (inclusive up and down)
    *
-   * @param x
-   * @param down
-   * @param up
-   * @return
+   * @param x the value to check
+   * @param down the lower bound
+   * @param up the upper bound
+   * @return true, if between bounds, otherwise false
    */
   public static boolean isBetween(float x, float down, float up) {
     return x >= down && x <= up;
@@ -146,7 +146,7 @@ public class MathUtils {
   /**
    * Get a random int
    *
-   * @return
+   * @return a random integer
    */
   public static int randomInt() {
     return random.nextInt(Integer.MAX_VALUE - 1);

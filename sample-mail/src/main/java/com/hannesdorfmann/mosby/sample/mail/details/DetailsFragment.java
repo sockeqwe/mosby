@@ -37,6 +37,7 @@ import com.melnykov.fab.ObservableScrollView;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import javax.inject.Inject;
 
 /**
@@ -68,7 +69,7 @@ public class DetailsFragment extends AuthFragment<TextView, Mail, DetailsView, D
 
   private DetailsComponent detailsComponent;
 
-  Format format = new SimpleDateFormat("d. MMM");
+  Format format = new SimpleDateFormat("d. MMM",  Locale.getDefault());
 
   // The loaded data
   private Mail mail;

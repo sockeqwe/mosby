@@ -14,102 +14,96 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:ignore="SmallSp"
     >
-
-
-  <ScrollView
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
+  <LinearLayout
+      android:id="@+id/loginForm"
+      android:layout_width="250dp"
+      android:layout_height="wrap_content"
+      android:background="@android:color/white"
+      android:orientation="vertical"
+      android:layout_gravity="center"
+      android:padding="16dp"
+      android:clipToPadding="false"
       >
-    <LinearLayout
-        android:id="@+id/loginForm"
-        android:layout_width="250dp"
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/username"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:orientation="vertical"
+        android:hint="Username"
+        android:textCursorDrawable="@drawable/text_cursor"
+        android:layout_marginRight="@dimen/login_editbox_margin_right"
+        app:met_iconLeft="@drawable/ic_username"
+        app:met_floatingLabel="highlight"
+        app:met_primaryColor="@color/accent"
+        app:met_iconPadding="16dp"
+        />
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:hint="Password"
+        android:layout_marginTop="@dimen/space_login_form"
+        android:textCursorDrawable="@drawable/text_cursor"
+        android:layout_marginRight="@dimen/login_editbox_margin_right"
+        app:met_iconLeft="@drawable/ic_password"
+        app:met_floatingLabel="highlight"
+        app:met_primaryColor="@color/accent"
+        />
+
+    <com.hkm.ui.processbutton.iml.ActionProcessButton
+        android:id="@+id/loginButton"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:text="Sign in"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:textAllCaps="false"
+        app:pb_colorComplete="@color/green_complete"
+        app:pb_colorNormal="@color/accent"
+        app:pb_colorPressed="@color/accent_dark"
+        app:pb_textComplete="Successful"
+        app:pb_textProgress="Loading"
+        />
+
+
+    <TextView
+        android:id="@+id/errorView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/red"
+        android:textSize="14sp"
+        android:text="Bad username or password"
+        android:visibility="gone"
         android:layout_gravity="center"
-        android:padding="16dp"
-        android:clipToPadding="false"
-        >
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        />
 
-      <com.rengwuxian.materialedittext.MaterialEditText
-          android:id="@+id/username"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:hint="Username"
-          android:textCursorDrawable="@drawable/text_cursor"
-          android:layout_marginRight="@dimen/login_editbox_margin_right"
-          app:met_iconLeft="@drawable/ic_username"
-          app:met_floatingLabel="highlight"
-          app:met_primaryColor="@color/accent"
-          app:met_iconPadding="16dp"
-          />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:textSize="10sp"
+        android:textColor="@color/secondary_text"
+        android:text="Hint:\nusername = ted   password = robin"
 
-      <com.rengwuxian.materialedittext.MaterialEditText
-          android:id="@+id/password"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:inputType="textPassword"
-          android:hint="Password"
-          android:layout_marginTop="@dimen/space_login_form"
-          android:textCursorDrawable="@drawable/text_cursor"
-          android:layout_marginRight="@dimen/login_editbox_margin_right"
-          app:met_iconLeft="@drawable/ic_password"
-          app:met_floatingLabel="highlight"
-          app:met_primaryColor="@color/accent"
-          />
+        />
 
-      <com.hkm.ui.processbutton.iml.ActionProcessButton
-          android:id="@+id/loginButton"
-          android:layout_width="match_parent"
-          android:layout_height="48dp"
-          android:layout_marginBottom="16dp"
-          android:layout_marginTop="32dp"
-          android:layout_marginLeft="16dp"
-          android:layout_marginRight="16dp"
-          android:text="Sign in"
-          android:textColor="@android:color/white"
-          android:textSize="18sp"
-          android:textAllCaps="false"
-          app:pb_colorComplete="@color/green_complete"
-          app:pb_colorNormal="@color/accent"
-          app:pb_colorPressed="@color/accent_dark"
-          app:pb_textComplete="Successful"
-          app:pb_textProgress="Loading"
-          />
+  </LinearLayout>
 
-
-      <TextView
-          android:id="@+id/errorView"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:textColor="@color/red"
-          android:textSize="14sp"
-          android:text="Bad username or password"
-          android:visibility="gone"
-          android:layout_gravity="center"
-          android:layout_marginTop="8dp"
-          android:layout_marginBottom="16dp"
-          />
-
-      <TextView
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginLeft="16dp"
-          android:layout_marginRight="16dp"
-          android:textSize="10sp"
-          android:textColor="@color/secondary_text"
-          android:text="Hint:\nusername = ted   password = robin"
-
-          />
-
-    </LinearLayout>
-
-  </ScrollView>
-
-</FrameLayout>
+</ScrollView>

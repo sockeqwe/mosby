@@ -25,7 +25,7 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
  * by
  * invoking the corresponding presenter method</li>
  *
- * <li>{@link #showError(Exception, boolean)}: Display a error view (a TextView) on the screen if
+ * <li>{@link #showError(Throwable, boolean)}: Display a error view (a TextView) on the screen if
  * an error has occurred while loading data. You can distinguish between a pull-to-refresh error by
  * checking the boolean parameter and display the error message in another, more suitable way like
  * a

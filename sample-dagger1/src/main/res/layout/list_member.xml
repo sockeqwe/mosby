@@ -37,7 +37,7 @@
         app:riv_border_color="#333333"
         app:riv_mutate_background="true"
         app:riv_tile_mode="repeat"
-        app:riv_oval="true" />
+        app:riv_oval="true"
         />
 
     <TextView

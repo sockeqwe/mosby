@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.hannesdorfmann.mosby.sample.mail.R;
 import java.util.List;
 
+@TargetApi(21)
 public class TextSizeEnterSharedElementCallback extends SharedElementCallback {
   private static final String TAG = "EnterSharedElementCallback";
 

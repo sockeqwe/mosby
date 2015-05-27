@@ -272,6 +272,7 @@ public class RandomMailGenerator implements MailGenerator {
       } while (used.contains(index));
 
       message.append(quotes[index]);
+      used.add(index);
     }
 
     return message.toString();

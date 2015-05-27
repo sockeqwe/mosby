@@ -49,7 +49,7 @@
         <service android:name=".model.mail.service.GcmFakeIntentService"
             android:exported="false" />
 
-        <receiver android:name=".model.mail.receiver.MailReceiver">
+        <receiver android:name=".model.mail.receiver.MailReceiver" android:exported="false">
             <intent-filter>
                 <action android:name="com.hannesdorfmann.mosby.sample.mail.RECEIVE" />
             </intent-filter>

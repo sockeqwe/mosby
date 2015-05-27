@@ -103,7 +103,7 @@ public abstract class MvpLceViewStateActivity<CV extends View, M, V extends MvpL
 
   /**
    * Creates the viewstate
-   * @return
+   * @return a new ViewState
    */
   public abstract ParcelableLceViewState<M, V> createViewState();
 

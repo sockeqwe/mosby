@@ -2,7 +2,9 @@ package com.hannesdorfmann.mosby.sample.mail.ui.transition;
 
 import android.animation.Animator;
 import android.animation.TimeInterpolator;
+import android.annotation.TargetApi;
 
+@TargetApi(21)
 public class PauseableAnimator extends Animator {
 
   private final Animator mWrappedAnimator;

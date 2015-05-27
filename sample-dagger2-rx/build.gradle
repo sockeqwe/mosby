@@ -41,8 +41,9 @@ android {
   }
 
   lintOptions {
-    abortOnError false
+    warning 'InvalidPackage' // okhttp uses nio which is not part of android
   }
+
 }
 
 def annotatedAdapter = '1.0.0'

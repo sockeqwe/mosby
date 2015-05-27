@@ -84,7 +84,7 @@ public class SearchFragment extends BaseMailsFragment<SearchView, SearchPresente
 
     // load more
     layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-    recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+    recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
       @Override public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
         int visibleItemCount = layoutManager.getChildCount();
         int totalItemCount = layoutManager.getItemCount();

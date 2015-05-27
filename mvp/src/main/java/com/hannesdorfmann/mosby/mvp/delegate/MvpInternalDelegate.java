@@ -34,7 +34,7 @@ class MvpInternalDelegate<V extends MvpView, P extends MvpPresenter<V>> {
   MvpInternalDelegate(MvpDelegateCallback<V, P> delegateCallback) {
 
     if (delegateCallback == null) {
-      throw new NullPointerException(delegateCallback.getClass().getSimpleName() + " is null!");
+      throw new NullPointerException("MvpDelegateCallback is null!");
     }
 
     this.delegateCallback = delegateCallback;

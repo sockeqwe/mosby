@@ -6,7 +6,8 @@ android:
     - extra-android-m2repository
     - android-22
     - android-18
-#    - sys-img-armeabi-v7a-android-18
+    - sys-img-armeabi-v7a-android-18
+    - sys-img-armeabi-v7a-android-22
 
 jdk:
   - oraclejdk7
@@ -31,3 +32,9 @@ sudo: false
 cache:
   directories:
     - $HOME/.gradle
+
+before_script:
+  - echo no | android create avd --force -n test -t android-22 --abi armeabi-v7a
+  - emulator -avd test -no-skin -no-audio -no-window &
+  - android-wait-for-emulator
+  - adb shell input keyevent 82 &

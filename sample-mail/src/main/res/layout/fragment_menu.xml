@@ -27,6 +27,7 @@
       android:layout_height="160dp"
       android:scaleType="centerCrop"
       android:src="@drawable/profile_background"
+      android:clickable="true"
       />
 
   <TextView

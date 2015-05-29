@@ -34,7 +34,7 @@ public class ViewGroupMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<
 
   public ViewGroupMvpDelegateImpl(MvpDelegateCallback<V, P> delegateCallback) {
     if (delegateCallback == null) {
-      throw new NullPointerException(delegateCallback.getClass().getSimpleName() + " is null!");
+      throw new NullPointerException("MvpDelegateCallback is null!");
     }
     this.delegateCallback = delegateCallback;
   }

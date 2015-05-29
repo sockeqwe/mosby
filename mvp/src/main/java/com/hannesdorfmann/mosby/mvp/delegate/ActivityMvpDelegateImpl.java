@@ -37,7 +37,7 @@ public class ActivityMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<V
 
   public ActivityMvpDelegateImpl(MvpDelegateCallback<V, P> delegateCallback) {
     if (delegateCallback == null){
-      throw new NullPointerException(delegateCallback.getClass().getSimpleName()+" is null!");
+      throw new NullPointerException("MvpDelegateCallback is null!");
     }
     this.delegateCallback = delegateCallback;
   }
@@ -47,7 +47,7 @@ public class ActivityMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<V
    */
   protected MvpInternalDelegate<V, P> getInternalDelegate() {
     if (internalDelegate == null) {
-      internalDelegate = new MvpInternalDelegate(delegateCallback);
+      internalDelegate = new MvpInternalDelegate<>(delegateCallback);
     }
 
     return internalDelegate;

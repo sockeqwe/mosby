@@ -1,5 +1,5 @@
-# mosby
-A Model-View-Presenter framework for modern Android apps.
+# Mosby
+A Model-View-Presenter library for modern Android apps.
 
 Read more about mosby in [my blog post](http://hannesdorfmann.com/android/mosby/)
 

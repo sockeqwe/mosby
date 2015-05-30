@@ -60,21 +60,21 @@ class MvpInternalDelegate<V extends MvpView, P extends MvpPresenter<V>> {
    * Attaches the view to the presenter
    */
   void attachView() {
-    P presenter = delegateCallback.getPresenter();
-    if (presenter == null) {
-      throw new NullPointerException("Presenter returned from getPresenter() is null");
-    }
-    presenter.attachView(delegateCallback.getMvpView());
-  }
+    getPresenter().attachView(delegateCallback.getMvpView());
+  } 
 
   /**
    * Called to detach the view from presenter
    */
   void detachView() {
+    getPresenter().detachView(delegateCallback.isRetainingInstance());
+  }
+
+  private P getPresenter() {
     P presenter = delegateCallback.getPresenter();
     if (presenter == null) {
       throw new NullPointerException("Presenter returned from getPresenter() is null");
     }
-    presenter.detachView(delegateCallback.isRetainingInstance());
+    return presenter;
   }
 }

@@ -3,3 +3,10 @@ apply from: '../maven-push-java-lib.gradle'
 
 sourceCompatibility = rootProject.ext.javaSourceCompatibility
 targetCompatibility = rootProject.ext.javaTargetCompatibility
+
+
+dependencies {
+
+  testCompile 'junit:junit:' + rootProject.ext.junitVersion
+  testCompile 'org.mockito:mockito-core:'+rootProject.ext.mockitoVersion
+}

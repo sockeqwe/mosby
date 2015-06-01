@@ -1,6 +1,6 @@
 package com.hannesdorfmann.mosby.mvp;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**

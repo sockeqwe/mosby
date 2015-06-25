@@ -182,7 +182,11 @@ import javax.inject.Inject;
   }
 
   @Override public void finishBecauseSuccessful() {
-    finishAfterTransition();
+    if (BuildUtils.isMinApi21()) {
+      finishAfterTransition();
+    } else {
+      finish();
+    }
   }
 
   @Override protected void injectDependencies() {

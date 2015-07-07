@@ -36,7 +36,6 @@ import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 public class MvpViewStateInternalDelegate<V extends MvpView, P extends MvpPresenter<V>>
     extends MvpInternalDelegate<V, P> {
 
-  private boolean retainingInstanceState = false;
   private boolean applyViewState = false;
 
   public MvpViewStateInternalDelegate(MvpViewStateDelegateCallback<V, P> delegateCallback) {
@@ -60,7 +59,6 @@ public class MvpViewStateInternalDelegate<V extends MvpView, P extends MvpPresen
 
     // ViewState already exists (Fragment retainsInstanceState == true)
     if (viewStateSupport.getViewState() != null) {
-      retainingInstanceState = true;
       applyViewState = true;
       return true;
     }
@@ -84,7 +82,6 @@ public class MvpViewStateInternalDelegate<V extends MvpView, P extends MvpPresen
 
       if (restoredFromBundle) {
         viewStateSupport.setViewState(restoredViewState);
-        retainingInstanceState = false;
         applyViewState = true;
         return true;
       }
@@ -107,10 +104,11 @@ public class MvpViewStateInternalDelegate<V extends MvpView, P extends MvpPresen
         (MvpViewStateDelegateCallback<V, P>) delegateCallback;
 
     if (applyViewState) {
+      boolean retainingInstance = delegateCallback.isRetainingInstance();
       delegate.setRestoringViewState(true);
-      delegate.getViewState().apply(delegate.getMvpView(), retainingInstanceState);
+      delegate.getViewState().apply(delegate.getMvpView(), retainingInstance);
       delegate.setRestoringViewState(false);
-      delegate.onViewStateInstanceRestored(retainingInstanceState);
+      delegate.onViewStateInstanceRestored(retainingInstance);
       return true;
     }
 

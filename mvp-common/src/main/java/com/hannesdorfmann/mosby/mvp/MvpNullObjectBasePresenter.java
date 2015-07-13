@@ -1,6 +1,6 @@
 package com.hannesdorfmann.mosby.mvp;
 
-public class MvpBasePresenter2<V extends MvpView> implements MvpPresenter<V> {
+public class MvpNullObjectBasePresenter<V extends MvpView> implements MvpPresenter<V> {
 
   private V view;
 

@@ -1,0 +1,34 @@
+apply plugin: 'findbugs'
+
+afterEvaluate {
+  def variants = plugins.hasPlugin('com.android.application') ?
+      android.applicationVariants : android.libraryVariants
+
+  variants.each { variant ->
+    def task = tasks.create("findBugs${variant.name.capitalize()}", FindBugs)
+
+    task.group = 'verification'
+    task.description = "Run FindBugs for the ${variant.description}."
+
+    task.effort = 'max'
+
+    task.reportLevel = 'high'
+    task.reports {
+      xml {
+        enabled = false
+      }
+      html {
+        enabled = true
+      }
+    }
+
+    def variantCompile = variant.javaCompile
+
+    task.classes = fileTree(variantCompile.destinationDir)
+    task.source = variantCompile.source
+    task.classpath = variantCompile.classpath.plus(project.files(android.bootClasspath))
+
+    task.dependsOn(variantCompile)
+    tasks.getByName('check').dependsOn(task)
+  }
+}

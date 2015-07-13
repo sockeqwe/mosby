@@ -40,7 +40,6 @@ android {
   }
 }
 dependencies {
-  compile project (':core-dagger1')
-  compile project (':viewstate')
-
+  compile project(':core-dagger1')
+  compile project(':viewstate')
 }

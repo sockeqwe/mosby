@@ -8,5 +8,5 @@ targetCompatibility = rootProject.ext.javaTargetCompatibility
 dependencies {
 
   testCompile 'junit:junit:' + rootProject.ext.junitVersion
-  testCompile 'org.mockito:mockito-core:'+rootProject.ext.mockitoVersion
+  testCompile 'org.mockito:mockito-core:' + rootProject.ext.mockitoVersion
 }

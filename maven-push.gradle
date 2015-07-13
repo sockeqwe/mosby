@@ -39,21 +39,20 @@ def getRepositoryPassword() {
   return hasProperty('NEXUS_PASSWORD') ? NEXUS_PASSWORD : ""
 }
 
-
 afterEvaluate { project ->
   uploadArchives {
     repositories {
       mavenDeployer {
         beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-/*
-        pom.withXml {
-          asNode().children().first().parent()
-              .appendNode('repositories')
-                .appendNode('repository')
-                  .appendNode('id', 'clojars').parent()
-                  .appendNode('url', 'https://clojars.org/repo/')
-        }
-*/
+        /*
+                pom.withXml {
+                  asNode().children().first().parent()
+                      .appendNode('repositories')
+                        .appendNode('repository')
+                          .appendNode('id', 'clojars').parent()
+                          .appendNode('url', 'https://clojars.org/repo/')
+                }
+        */
 
         pom.groupId = GROUP
         pom.artifactId = POM_ARTIFACT_ID

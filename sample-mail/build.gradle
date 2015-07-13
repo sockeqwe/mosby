@@ -35,7 +35,7 @@ dependencies {
   compile fileTree(dir: 'libs', include: ['*.jar'])
   compile 'com.android.support:appcompat-v7:' + rootProject.ext.appcompat7Version
   compile 'com.android.support:recyclerview-v7:22.1.1'
-  
+
   compile project(':viewstate')
   compile project(':rx')
 
@@ -71,5 +71,5 @@ dependencies {
 
 
   testCompile 'junit:junit:4.12'
-  testCompile 'org.robolectric:robolectric:'+rootProject.ext.robolectricVersion
+  testCompile 'org.robolectric:robolectric:' + rootProject.ext.robolectricVersion
 }

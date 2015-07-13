@@ -10,7 +10,7 @@ import java.util.Comparator;
 public class MailComparator implements Comparator<Mail> {
 
 
-  public static MailComparator INSTANCE = new MailComparator();
+  public static final  MailComparator INSTANCE = new MailComparator();
 
   private MailComparator(){
 

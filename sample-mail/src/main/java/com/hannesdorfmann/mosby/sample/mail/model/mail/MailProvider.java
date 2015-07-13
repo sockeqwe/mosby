@@ -21,6 +21,7 @@ import com.hannesdorfmann.mosby.sample.mail.model.account.AccountManager;
 import com.hannesdorfmann.mosby.sample.mail.model.account.NotAuthenticatedException;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.statistics.MailStatistics;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.statistics.MailsCount;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -38,7 +39,7 @@ import rx.functions.Func1;
  */
 public class MailProvider {
 
-  public static int DELAY = 2000;
+  @SuppressFBWarnings("MS_SHOULD_BE_FINAL") public static int DELAY = 2000;
   public static int authExceptionEach = 15;
   public static int errorEach = 5;
   private int counter = 0;
@@ -46,7 +47,7 @@ public class MailProvider {
 
   private AccountManager accountManager;
   private List<Mail> mails;
-  public static Label INBOX_LABEL = new Label(Label.INBOX, R.drawable.ic_inbox, 0);
+  public static final Label INBOX_LABEL = new Label(Label.INBOX, R.drawable.ic_inbox, 0);
   private Label sentLabel = new Label(Label.SENT, R.drawable.ic_send, 0);
   private Label spamLabel = new Label(Label.SPAM, R.drawable.ic_spam, 0);
   private Label trashLabel = new Label(Label.TRASH, R.drawable.ic_delete, 0);

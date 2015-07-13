@@ -5,12 +5,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import butterknife.InjectView;
+
 import com.hannesdorfmann.mosby.MosbyActivity;
 import com.hannesdorfmann.mosby.sample.mail.R;
-import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
 import com.hannesdorfmann.mosby.sample.mail.model.contact.Person;
+import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
 import com.hannesdorfmann.mosby.sample.mail.utils.BuildUtils;
+
+import butterknife.Bind;
 
 /**
  * @author Hannes Dorfmann
@@ -19,7 +21,7 @@ public class DetailsActivity extends MosbyActivity {
 
   public static final String KEY_MAIL = "com.hannesdorfmann.mosby.MosbyActivity.MAIL";
 
-  @InjectView(R.id.toolbar) Toolbar toolbar;
+  @Bind(R.id.toolbar) Toolbar toolbar;
 
   @TargetApi(21) @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);

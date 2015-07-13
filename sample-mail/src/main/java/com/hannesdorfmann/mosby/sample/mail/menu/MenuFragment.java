@@ -19,7 +19,7 @@ package com.hannesdorfmann.mosby.sample.mail.menu;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import butterknife.InjectView;
+
 import com.hannesdorfmann.mosby.sample.mail.IntentStarter;
 import com.hannesdorfmann.mosby.sample.mail.MailApplication;
 import com.hannesdorfmann.mosby.sample.mail.R;
@@ -30,9 +30,13 @@ import com.hannesdorfmann.mosby.sample.mail.dagger.NavigationModule;
 import com.hannesdorfmann.mosby.sample.mail.model.account.Account;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Label;
 import com.hannesdorfmann.mosby.sample.mail.statistics.StatisticsDialog;
-import de.greenrobot.event.EventBus;
+
 import java.util.List;
+
 import javax.inject.Inject;
+
+import butterknife.Bind;
+import de.greenrobot.event.EventBus;
 
 /**
  * @author Hannes Dorfmann
@@ -40,9 +44,9 @@ import javax.inject.Inject;
 public class MenuFragment extends AuthRefreshRecyclerFragment<List<Label>, MenuView, MenuPresenter>
     implements MenuView, MenuAdapter.LabelClickListener {
 
-  @InjectView(R.id.email) TextView email;
-  @InjectView(R.id.name) TextView name;
-  @InjectView(R.id.profilePic) ImageView profilePic;
+  @Bind(R.id.email) TextView email;
+  @Bind(R.id.name) TextView name;
+  @Bind(R.id.profilePic) ImageView profilePic;
 
   @Inject EventBus eventBus;
   @Inject IntentStarter intentStarter;

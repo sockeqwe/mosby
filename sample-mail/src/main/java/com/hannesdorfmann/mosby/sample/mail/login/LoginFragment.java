@@ -26,8 +26,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.TextView;
-import butterknife.InjectView;
-import butterknife.OnClick;
+
 import com.hannesdorfmann.mosby.mvp.viewstate.MvpViewStateFragment;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 import com.hannesdorfmann.mosby.sample.mail.MailApplication;
@@ -36,17 +35,20 @@ import com.hannesdorfmann.mosby.sample.mail.model.account.AuthCredentials;
 import com.hannesdorfmann.mosby.sample.mail.utils.KeyboardUtils;
 import com.hkm.ui.processbutton.iml.ActionProcessButton;
 
+import butterknife.Bind;
+import butterknife.OnClick;
+
 /**
  * @author Hannes Dorfmann
  */
 public class LoginFragment extends MvpViewStateFragment<LoginView, LoginPresenter>
     implements LoginView {
 
-  @InjectView(R.id.username) EditText username;
-  @InjectView(R.id.password) EditText password;
-  @InjectView(R.id.loginButton) ActionProcessButton loginButton;
-  @InjectView(R.id.errorView) TextView errorView;
-  @InjectView(R.id.loginForm) ViewGroup loginForm;
+  @Bind(R.id.username) EditText username;
+  @Bind(R.id.password) EditText password;
+  @Bind(R.id.loginButton) ActionProcessButton loginButton;
+  @Bind(R.id.errorView) TextView errorView;
+  @Bind(R.id.loginForm) ViewGroup loginForm;
 
   private LoginComponent loginComponent;
 

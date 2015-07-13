@@ -5,12 +5,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import butterknife.ButterKnife;
-import butterknife.InjectView;
+
 import com.hannesdorfmann.mosby.sample.mail.R;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Label;
 import com.hannesdorfmann.mosby.sample.mail.utils.SimpleAdapter;
+
 import java.util.List;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * @author Hannes Dorfmann
@@ -19,11 +22,11 @@ public class LabelAdapter extends SimpleAdapter<List<Label>> {
 
   static class ViewHolder {
 
-    @InjectView(R.id.name) TextView text;
-    @InjectView(R.id.icon) ImageView icon;
+    @Bind(R.id.name) TextView text;
+    @Bind(R.id.icon) ImageView icon;
 
     public ViewHolder(View v) {
-      ButterKnife.inject(this, v);
+      ButterKnife.bind(this, v);
       icon.setColorFilter(icon.getResources().getColor(R.color.secondary_text));
     }
   }

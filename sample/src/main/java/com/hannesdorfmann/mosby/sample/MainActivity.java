@@ -22,18 +22,20 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import butterknife.InjectView;
+
 import com.hannesdorfmann.mosby.MosbyActivity;
 import com.hannesdorfmann.mosby.sample.mvp.customviewstate.MyCustomActivity;
 import com.hannesdorfmann.mosby.sample.mvp.lce.activity.CountriesActivity;
 import com.hannesdorfmann.mosby.sample.mvp.lce.layout.CountriesLayoutActivity;
 import com.hannesdorfmann.mosby.sample.mvp.lce.viewstate.CountriesViewStateActivity;
 
+import butterknife.Bind;
+
 public class MainActivity extends MosbyActivity implements AdapterView.OnItemClickListener {
 
   Demo[] demos;
 
-  @InjectView(R.id.listView) ListView listView;
+  @Bind(R.id.listView) ListView listView;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);

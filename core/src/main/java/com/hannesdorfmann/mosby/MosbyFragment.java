@@ -22,8 +22,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import butterknife.ButterKnife;
+
 import com.hannesdorfmann.fragmentargs.FragmentArgs;
+
+import butterknife.ButterKnife;
 import icepick.Icepick;
 
 /**
@@ -83,12 +85,12 @@ public abstract class MosbyFragment extends Fragment {
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     injectDependencies();
-    ButterKnife.inject(this, view);
+    ButterKnife.bind(this, view);
   }
 
   @Override public void onDestroy() {
     super.onDestroy();
-    ButterKnife.reset(this);
+    ButterKnife.unbind(this);
   }
 
   /**

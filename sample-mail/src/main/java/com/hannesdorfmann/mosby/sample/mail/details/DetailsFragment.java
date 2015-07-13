@@ -16,8 +16,7 @@ import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import butterknife.InjectView;
-import butterknife.OnClick;
+
 import com.hannesdorfmann.fragmentargs.annotation.Arg;
 import com.hannesdorfmann.mosby.sample.mail.IntentStarter;
 import com.hannesdorfmann.mosby.sample.mail.MailApplication;
@@ -34,11 +33,16 @@ import com.hannesdorfmann.mosby.sample.mail.ui.transition.TextSizeTransition;
 import com.hannesdorfmann.mosby.sample.mail.ui.view.StarView;
 import com.melnykov.fab.FloatingActionButton;
 import com.melnykov.fab.ObservableScrollView;
+
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
 import javax.inject.Inject;
+
+import butterknife.Bind;
+import butterknife.OnClick;
 
 /**
  * @author Hannes Dorfmann
@@ -56,16 +60,16 @@ public class DetailsFragment extends AuthFragment<TextView, Mail, DetailsView, D
 
   @Inject IntentStarter intentStarter;
 
-  @InjectView(R.id.senderPic) ImageView senderImageView;
-  @InjectView(R.id.subject) TextView subjectView;
-  @InjectView(R.id.date) TextView dateView;
-  @InjectView(R.id.starButton) StarView starView;
-  @InjectView(R.id.replay) FloatingActionButton replayView;
-  @InjectView(R.id.senderName) TextView senderNameView;
-  @InjectView(R.id.senderMail) TextView senderMailView;
-  @InjectView(R.id.separatorLine) View separatorLine;
-  @InjectView(R.id.label) LabelLayout labelView;
-  @InjectView(R.id.scrollView) ObservableScrollView scrollView;
+  @Bind(R.id.senderPic) ImageView senderImageView;
+  @Bind(R.id.subject) TextView subjectView;
+  @Bind(R.id.date) TextView dateView;
+  @Bind(R.id.starButton) StarView starView;
+  @Bind(R.id.replay) FloatingActionButton replayView;
+  @Bind(R.id.senderName) TextView senderNameView;
+  @Bind(R.id.senderMail) TextView senderMailView;
+  @Bind(R.id.separatorLine) View separatorLine;
+  @Bind(R.id.label) LabelLayout labelView;
+  @Bind(R.id.scrollView) ObservableScrollView scrollView;
 
   private DetailsComponent detailsComponent;
 

@@ -10,7 +10,7 @@ import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
-import butterknife.InjectView;
+
 import com.hannesdorfmann.mosby.sample.mail.MailApplication;
 import com.hannesdorfmann.mosby.sample.mail.R;
 import com.hannesdorfmann.mosby.sample.mail.base.view.BaseMailsFragment;
@@ -20,7 +20,10 @@ import com.hannesdorfmann.mosby.sample.mail.dagger.NavigationModule;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
 import com.hannesdorfmann.mosby.sample.mail.utils.BuildUtils;
 import com.rengwuxian.materialedittext.MaterialEditText;
+
 import java.util.List;
+
+import butterknife.Bind;
 
 /**
  * @author Hannes Dorfmann
@@ -28,8 +31,8 @@ import java.util.List;
 public class SearchFragment extends BaseMailsFragment<SearchView, SearchPresenter>
     implements SearchView {
 
-  @InjectView(R.id.toolbar) Toolbar toolbar;
-  @InjectView(R.id.searchEditView) MaterialEditText searchEditView;
+  @Bind(R.id.toolbar) Toolbar toolbar;
+  @Bind(R.id.searchEditView) MaterialEditText searchEditView;
 
   private SearchComponent searchComponent;
 

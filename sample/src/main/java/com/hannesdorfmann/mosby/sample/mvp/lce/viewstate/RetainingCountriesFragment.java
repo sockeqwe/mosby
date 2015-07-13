@@ -22,7 +22,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import butterknife.InjectView;
+
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.MvpLceViewStateFragment;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.RetainingFragmentLceViewState;
@@ -30,10 +30,13 @@ import com.hannesdorfmann.mosby.sample.R;
 import com.hannesdorfmann.mosby.sample.mvp.CountriesAdapter;
 import com.hannesdorfmann.mosby.sample.mvp.CountriesErrorMessage;
 import com.hannesdorfmann.mosby.sample.mvp.CountriesPresenter;
-import com.hannesdorfmann.mosby.sample.mvp.lce.SimpleCountriesPresenter;
 import com.hannesdorfmann.mosby.sample.mvp.CountriesView;
+import com.hannesdorfmann.mosby.sample.mvp.lce.SimpleCountriesPresenter;
 import com.hannesdorfmann.mosby.sample.mvp.model.Country;
+
 import java.util.List;
+
+import butterknife.Bind;
 
 /**
  * @author Hannes Dorfmann
@@ -42,7 +45,7 @@ public class RetainingCountriesFragment extends
     MvpLceViewStateFragment<SwipeRefreshLayout, List<Country>, CountriesView, CountriesPresenter>
     implements CountriesView, SwipeRefreshLayout.OnRefreshListener {
 
-  @InjectView(R.id.recyclerView) RecyclerView recyclerView;
+  @Bind(R.id.recyclerView) RecyclerView recyclerView;
 
   CountriesAdapter adapter;
 

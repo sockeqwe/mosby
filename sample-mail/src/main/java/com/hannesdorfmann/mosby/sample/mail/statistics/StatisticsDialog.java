@@ -13,8 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import butterknife.ButterKnife;
-import butterknife.InjectView;
+
 import com.hannesdorfmann.mosby.mvp.delegate.FragmentMvpDelegate;
 import com.hannesdorfmann.mosby.mvp.delegate.FragmentMvpViewStateDelegateImpl;
 import com.hannesdorfmann.mosby.mvp.delegate.MvpViewStateDelegateCallback;
@@ -24,16 +23,19 @@ import com.hannesdorfmann.mosby.sample.mail.R;
 import com.hannesdorfmann.mosby.sample.mail.base.view.viewstate.AuthParcelableDataViewState;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.statistics.MailStatistics;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 /**
  * @author Hannes Dorfmann
  */
 public class StatisticsDialog extends DialogFragment
     implements StatisticsView, MvpViewStateDelegateCallback<StatisticsView, StatisticsPresenter> {
 
-  @InjectView(R.id.contentView) RecyclerView contentView;
-  @InjectView(R.id.loadingView) View loadingView;
-  @InjectView(R.id.errorView) TextView errorView;
-  @InjectView(R.id.authView) View authView;
+  @Bind(R.id.contentView) RecyclerView contentView;
+  @Bind(R.id.loadingView) View loadingView;
+  @Bind(R.id.errorView) TextView errorView;
+  @Bind(R.id.authView) View authView;
 
   StatisticsPresenter presenter;
   ViewState<StatisticsView> viewState;
@@ -76,7 +78,7 @@ public class StatisticsDialog extends DialogFragment
     super.onViewCreated(view, savedInstanceState);
     delegate.onViewCreated(view, savedInstanceState);
 
-    ButterKnife.inject(this, view);
+    ButterKnife.bind(this, view);
     adapter = new StatisticsAdapter(getActivity());
     contentView.setAdapter(adapter);
     contentView.setLayoutManager(new LinearLayoutManager(getActivity()));

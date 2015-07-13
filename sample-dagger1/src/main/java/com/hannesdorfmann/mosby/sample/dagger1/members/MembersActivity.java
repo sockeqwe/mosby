@@ -20,15 +20,19 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import butterknife.InjectView;
+
 import com.hannesdorfmann.mosby.dagger1.viewstate.lce.Dagger1MvpLceViewStateActivity;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.ParcelableLceViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.CastedArrayListLceViewState;
 import com.hannesdorfmann.mosby.sample.dagger1.R;
 import com.hannesdorfmann.mosby.sample.dagger1.model.ErrorMessageDeterminer;
 import com.hannesdorfmann.mosby.sample.dagger1.model.User;
+
 import java.util.List;
+
 import javax.inject.Inject;
+
+import butterknife.Bind;
 
 /**
  * @author Hannes Dorfmann
@@ -37,7 +41,7 @@ public class MembersActivity extends
     Dagger1MvpLceViewStateActivity<SwipeRefreshLayout, List<User>, MembersView, MembersPresenter>
     implements MembersView, SwipeRefreshLayout.OnRefreshListener {
 
-  @InjectView(R.id.recyclerView) RecyclerView recyclerView;
+  @Bind(R.id.recyclerView) RecyclerView recyclerView;
   @Inject ErrorMessageDeterminer errorMessageDeterminer;
   MembersAdapter adapter;
 

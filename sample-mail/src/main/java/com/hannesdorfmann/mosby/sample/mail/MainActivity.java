@@ -4,6 +4,7 @@ import android.animation.LayoutTransition;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -12,19 +13,21 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import butterknife.InjectView;
-import butterknife.Optional;
+
 import com.hannesdorfmann.mosby.MosbyActivity;
 import com.hannesdorfmann.mosby.sample.mail.details.DetailsFragment;
 import com.hannesdorfmann.mosby.sample.mail.details.DetailsFragmentBuilder;
 import com.hannesdorfmann.mosby.sample.mail.mails.MailsFragment;
 import com.hannesdorfmann.mosby.sample.mail.mails.MailsFragmentBuilder;
+import com.hannesdorfmann.mosby.sample.mail.model.contact.Person;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Label;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.MailProvider;
-import com.hannesdorfmann.mosby.sample.mail.model.contact.Person;
-import icepick.Icicle;
+
 import javax.inject.Inject;
+
+import butterknife.Bind;
+import icepick.Icicle;
 
 public class MainActivity extends MosbyActivity {
 
@@ -51,12 +54,13 @@ public class MainActivity extends MosbyActivity {
 
   @Inject IntentStarter intentStarter;
 
-  @InjectView(R.id.drawerLayout) DrawerLayout drawerLayout;
-  @InjectView(R.id.toolbar) Toolbar toolbar;
-  @InjectView(R.id.leftPane) ViewGroup leftPane;
-  @Optional @InjectView(R.id.rightPane) ViewGroup rightPane;
+  @Bind(R.id.drawerLayout) DrawerLayout drawerLayout;
+  @Bind(R.id.toolbar) Toolbar toolbar;
+  @Bind(R.id.leftPane) ViewGroup leftPane;
+  @Nullable @Bind(R.id.rightPane) ViewGroup rightPane;
   // contains leftPane + rightPane
-  @Optional @InjectView(R.id.paneContainer) ViewGroup paneContainer;
+  @Nullable
+  @Bind(R.id.paneContainer) ViewGroup paneContainer;
 
   ActionBarDrawerToggle drawerToggle;
   private MainActivityComponent mainActivityComponent;

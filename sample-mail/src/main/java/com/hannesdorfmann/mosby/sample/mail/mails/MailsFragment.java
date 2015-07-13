@@ -7,8 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
-import butterknife.InjectView;
-import butterknife.OnClick;
+
 import com.hannesdorfmann.fragmentargs.annotation.Arg;
 import com.hannesdorfmann.mosby.sample.mail.IntentStarter;
 import com.hannesdorfmann.mosby.sample.mail.MailApplication;
@@ -18,7 +17,11 @@ import com.hannesdorfmann.mosby.sample.mail.dagger.NavigationModule;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Label;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
 import com.melnykov.fab.FloatingActionButton;
+
 import javax.inject.Inject;
+
+import butterknife.Bind;
+import butterknife.OnClick;
 
 /**
  * @author Hannes Dorfmann
@@ -30,7 +33,7 @@ public class MailsFragment extends BaseMailsFragment<MailsView, MailsPresenter>
 
   @Inject IntentStarter intentStarter;
 
-  @InjectView(R.id.createMail) FloatingActionButton createMailButton;
+  @Bind(R.id.createMail) FloatingActionButton createMailButton;
 
   MailsComponent mailsComponent;
 

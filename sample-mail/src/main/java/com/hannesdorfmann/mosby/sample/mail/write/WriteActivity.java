@@ -10,8 +10,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.Toast;
-import butterknife.InjectView;
-import butterknife.OnClick;
+
 import com.hannesdorfmann.mosby.mvp.viewstate.MvpViewStateActivity;
 import com.hannesdorfmann.mosby.mvp.viewstate.RestoreableViewState;
 import com.hannesdorfmann.mosby.sample.mail.IntentStarter;
@@ -22,9 +21,14 @@ import com.hannesdorfmann.mosby.sample.mail.model.contact.Person;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Label;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
 import com.hannesdorfmann.mosby.sample.mail.utils.BuildUtils;
+
 import java.util.Date;
 import java.util.regex.Pattern;
+
 import javax.inject.Inject;
+
+import butterknife.Bind;
+import butterknife.OnClick;
 
 /**
  * @author Hannes Dorfmann
@@ -35,12 +39,12 @@ import javax.inject.Inject;
   public static final String KEY_REPLAY_MAIL =
       "com.hannesdorfmann.mosby.sample.mail.write.REPLAY_MAIL";
 
-  @InjectView(R.id.loadingOverlay) View loadingOverlay;
-  @InjectView(R.id.authOverlay) View authOverlay;
-  @InjectView(R.id.toolbar) Toolbar toolbar;
-  @InjectView(R.id.message) EditText message;
-  @InjectView(R.id.subject) EditText subject;
-  @InjectView(R.id.receiver) EditText receiver;
+  @Bind(R.id.loadingOverlay) View loadingOverlay;
+  @Bind(R.id.authOverlay) View authOverlay;
+  @Bind(R.id.toolbar) Toolbar toolbar;
+  @Bind(R.id.message) EditText message;
+  @Bind(R.id.subject) EditText subject;
+  @Bind(R.id.receiver) EditText receiver;
 
   @Inject IntentStarter intentStarter;
 

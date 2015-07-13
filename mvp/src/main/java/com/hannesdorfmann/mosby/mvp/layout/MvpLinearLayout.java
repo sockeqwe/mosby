@@ -19,12 +19,14 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
-import butterknife.ButterKnife;
+
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
-import com.hannesdorfmann.mosby.mvp.delegate.ViewGroupMvpDelegateImpl;
 import com.hannesdorfmann.mosby.mvp.delegate.MvpDelegateCallback;
 import com.hannesdorfmann.mosby.mvp.delegate.ViewGroupMvpDelegate;
+import com.hannesdorfmann.mosby.mvp.delegate.ViewGroupMvpDelegateImpl;
+
+import butterknife.ButterKnife;
 
 /**
  * A LinearLayout that can be used as view with an presenter
@@ -57,7 +59,7 @@ public abstract class MvpLinearLayout<V extends MvpView, P extends MvpPresenter<
 
   @Override protected void onFinishInflate() {
     super.onFinishInflate();
-    ButterKnife.inject(this, this);
+    ButterKnife.bind(this);
   }
 
   /**

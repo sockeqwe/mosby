@@ -18,13 +18,15 @@ package com.hannesdorfmann.mosby.sample.mvp.customviewstate;
 
 import android.view.View;
 import android.widget.TextView;
-import butterknife.InjectView;
-import butterknife.OnClick;
+
 import com.hannesdorfmann.mosby.mvp.viewstate.MvpViewStateFragment;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 import com.hannesdorfmann.mosby.sample.R;
 import com.hannesdorfmann.mosby.sample.mvp.model.custom.A;
 import com.hannesdorfmann.mosby.sample.mvp.model.custom.B;
+
+import butterknife.Bind;
+import butterknife.OnClick;
 
 /**
  * @author Hannes Dorfmann
@@ -32,8 +34,8 @@ import com.hannesdorfmann.mosby.sample.mvp.model.custom.B;
 public class MyCustomFragment extends MvpViewStateFragment<MyCustomView, MyCustomPresenter>
     implements MyCustomView {
 
-  @InjectView(R.id.textViewA) TextView aView;
-  @InjectView(R.id.textViewB) TextView bView;
+  @Bind(R.id.textViewA) TextView aView;
+  @Bind(R.id.textViewB) TextView bView;
 
   @Override protected int getLayoutRes() {
     return R.layout.my_custom_view;

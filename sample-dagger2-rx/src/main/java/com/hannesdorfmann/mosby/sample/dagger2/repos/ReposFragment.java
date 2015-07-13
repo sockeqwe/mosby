@@ -6,7 +6,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import butterknife.InjectView;
+
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.MvpLceViewStateFragment;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.RetainingFragmentLceViewState;
@@ -14,8 +14,12 @@ import com.hannesdorfmann.mosby.sample.dagger2.R;
 import com.hannesdorfmann.mosby.sample.dagger2.SampleModule;
 import com.hannesdorfmann.mosby.sample.dagger2.model.ErrorMessageDeterminer;
 import com.hannesdorfmann.mosby.sample.dagger2.model.Repo;
+
 import java.util.List;
+
 import javax.inject.Inject;
+
+import butterknife.Bind;
 
 /**
  * @author Hannes Dorfmann
@@ -24,7 +28,7 @@ public class ReposFragment
     extends MvpLceViewStateFragment<SwipeRefreshLayout, List<Repo>, ReposView, ReposPresenter>
     implements ReposView, SwipeRefreshLayout.OnRefreshListener {
 
-  @InjectView(R.id.recyclerView) RecyclerView recyclerView;
+  @Bind(R.id.recyclerView) RecyclerView recyclerView;
   @Inject ErrorMessageDeterminer errorMessageDeterminer;
   ReposComponent reposComponent;
   ReposAdapter adapter;

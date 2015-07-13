@@ -47,7 +47,7 @@ public class MosbyActivity extends AppCompatActivity {
 
   @Override public void onContentChanged() {
     super.onContentChanged();
-    ButterKnife.inject(this);
+    ButterKnife.bind(this);
   }
 
   /**

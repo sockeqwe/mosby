@@ -5,7 +5,7 @@ android:
     - build-tools-22.0.1
     - extra-android-m2repository
     - android-22
-    - android-18
+#    - android-18
 #    - sys-img-armeabi-v7a-android-18
 #    - sys-img-armeabi-v7a-android-22
 
@@ -29,9 +29,9 @@ notifications:
 
 sudo: false
 
-cache:
-  directories:
-    - $HOME/.gradle
+# cache:
+#  directories:
+#    - $HOME/.gradle
 
 # before_script:
 #  - echo no | android create avd --force -n test -t android-22 --abi armeabi-v7a

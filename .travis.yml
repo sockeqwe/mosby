@@ -29,9 +29,9 @@ notifications:
 
 sudo: false
 
-script: "./gradlew buildRelease findBugsRelease"
+script: gradle buildRelease findBugsRelease
 
- cache:
+cache:
   directories:
     - $HOME/.gradle
 

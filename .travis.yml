@@ -29,7 +29,7 @@ notifications:
 
 sudo: false
 
-script: gradle buildRelease findBugsRelease
+script: gradle build
 
 cache:
   directories:

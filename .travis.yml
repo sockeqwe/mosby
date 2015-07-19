@@ -29,9 +29,11 @@ notifications:
 
 sudo: false
 
-# cache:
-#  directories:
-#    - $HOME/.gradle
+script: "./gradlew buildRelease findBugsRelease"
+
+ cache:
+  directories:
+    - $HOME/.gradle
 
 # before_script:
 #  - echo no | android create avd --force -n test -t android-22 --abi armeabi-v7a

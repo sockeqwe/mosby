@@ -23,6 +23,7 @@ import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.TextView;
@@ -39,7 +40,7 @@ public class LceAnimator {
    * Show the loading view. No animations, because sometimes loading things is pretty fast (i.e.
    * retrieve data from memory cache).
    */
-  public static void showLoading(View loadingView, View contentView, View errorView) {
+  public static void showLoading(@NonNull View loadingView, @NonNull View contentView, @NonNull View errorView) {
 
     contentView.setVisibility(View.GONE);
     errorView.setVisibility(View.GONE);
@@ -49,7 +50,7 @@ public class LceAnimator {
   /**
    * Shows the error view instead of the loading view
    */
-  public static void showErrorView(final View loadingView, final View contentView,
+  public static void showErrorView(@NonNull final View loadingView, @NonNull final View contentView,
       final TextView errorView) {
 
     if (Build.VERSION.SDK_INT < 11) {
@@ -93,8 +94,8 @@ public class LceAnimator {
    * Display the content instead of the loadingView
    */
   @TargetApi(11)
-  public static void showContent(final View loadingView, final View contentView,
-      final View errorView) {
+  public static void showContent(@NonNull final View loadingView, @NonNull final View contentView,
+      @NonNull final View errorView) {
 
     if (contentView.getVisibility() == View.VISIBLE) {
       // No Changing needed, because contentView is already visible

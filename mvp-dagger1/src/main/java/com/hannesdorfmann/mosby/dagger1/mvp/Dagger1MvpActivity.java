@@ -24,7 +24,12 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
 import dagger.ObjectGraph;
 
 /**
- * {@link MvpActivity} with dagger 1 support
+ * {@link MvpActivity} with dagger 1 support by implementing {@link Injector}
+ *
+ * <p>
+ * Does not automatically inject itself dependencies. To do so please override {@link
+ * #injectDependencies()}
+ * </p>
  *
  * @author Hannes Dorfmann
  * @since 1.0.0

@@ -25,7 +25,12 @@ import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
 import dagger.ObjectGraph;
 
 /**
- * {@link MvpLceActivity} with dagger 1 support
+ * {@link MvpLceActivity} with dagger 1 support by implementing {@link Injector}.
+ *
+ * <p>
+ * Does not automatically inject itself dependencies. To do so please override {@link
+ * #injectDependencies()}
+ * </p>
  *
  * @author Hannes Dorfmann
  * @since 1.0.0
@@ -59,5 +64,4 @@ public abstract class Dagger1MvpLceActivity<CV extends View, M, V extends MvpLce
     Injector appInjector = (Injector) getApplication();
     return appInjector.getObjectGraph();
   }
-
 }

@@ -23,6 +23,11 @@ import dagger.ObjectGraph;
  * {@link MosbyFragment} with dagger 1 support by implementing {@link Injector}. As default {@link
  * #getObjectGraph()} calls <code>getActivity().getObjectGraph()</code>
  *
+ * <p>
+ * Does not automatically inject itself dependencies. To do so please override {@link
+ * #injectDependencies()}
+ * </p>
+ *
  * @author Hannes Dorfmann
  * @since 1.0.0
  */
@@ -44,9 +49,5 @@ public class Dagger1MosbyFragment extends MosbyFragment implements Injector {
     }
 
     return ((Injector) getActivity()).getObjectGraph();
-  }
-
-  @Override protected void injectDependencies() {
-    getObjectGraph().inject(this);
   }
 }

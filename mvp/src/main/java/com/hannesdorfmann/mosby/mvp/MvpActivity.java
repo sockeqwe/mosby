@@ -17,6 +17,7 @@
 package com.hannesdorfmann.mosby.mvp;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import com.hannesdorfmann.mosby.MosbyActivity;
 import com.hannesdorfmann.mosby.mvp.delegate.ActivityMvpDelegate;
 import com.hannesdorfmann.mosby.mvp.delegate.ActivityMvpDelegateImpl;
@@ -90,7 +91,7 @@ public abstract class MvpActivity<V extends MvpView, P extends MvpPresenter<V>>
    *
    * @return The {@link MvpPresenter} for this view
    */
-  public abstract P createPresenter();
+  @NonNull public abstract P createPresenter();
 
   /**
    * Get the mvp delegate. This is internally used for creating presenter, attaching and detaching
@@ -106,7 +107,7 @@ public abstract class MvpActivity<V extends MvpView, P extends MvpPresenter<V>>
    *
    * @return {@link ActivityMvpDelegateImpl}
    */
-  protected ActivityMvpDelegate<V, P> getMvpDelegate() {
+  @NonNull protected ActivityMvpDelegate<V, P> getMvpDelegate() {
     if (mvpDelegate == null) {
       mvpDelegate = new ActivityMvpDelegateImpl(this);
     }
@@ -114,15 +115,15 @@ public abstract class MvpActivity<V extends MvpView, P extends MvpPresenter<V>>
     return mvpDelegate;
   }
 
-  @Override public P getPresenter() {
+  @NonNull @Override public P getPresenter() {
     return presenter;
   }
 
-  @Override public void setPresenter(P presenter) {
+  @Override public void setPresenter(@NonNull P presenter) {
     this.presenter = presenter;
   }
 
-  @Override public V getMvpView() {
+  @NonNull @Override public V getMvpView() {
     return (V) this;
   }
 

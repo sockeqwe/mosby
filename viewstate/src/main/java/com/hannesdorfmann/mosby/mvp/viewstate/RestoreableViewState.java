@@ -17,6 +17,7 @@
 package com.hannesdorfmann.mosby.mvp.viewstate;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.AbsParcelableLceViewState;
 
@@ -37,11 +38,12 @@ public interface RestoreableViewState<V extends MvpView> extends ViewState<V> {
    *
    * @param out The bundle where the viewstate should be stored in
    */
-  public void saveInstanceState(Bundle out);
+  public void saveInstanceState(@NonNull Bundle out);
 
   /**
    * Restores the viewstate that has been saved before with {@link #saveInstanceState(Bundle)}
    *
+   * @param in the bundle to read the data from
    * @return null, if view state could not be restored or the restore viestate instance. Typically
    * this method will return <code>this</code>. {@link AbsParcelableLceViewState} will return a
    * copy, which is also ok.

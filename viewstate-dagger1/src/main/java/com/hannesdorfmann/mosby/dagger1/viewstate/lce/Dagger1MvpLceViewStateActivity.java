@@ -27,6 +27,11 @@ import dagger.ObjectGraph;
 /**
  * A {@link MvpLceViewStateActivity} with support for dagger1 by implementing {@link Injector}
  *
+ * <p>
+ * Does not automatically inject itself dependencies. To do so please override {@link
+ * #injectDependencies()}
+ * </p>
+ *
  * @author Hannes Dorfmann
  * @since 1.0.0
  */
@@ -60,5 +65,4 @@ public abstract class Dagger1MvpLceViewStateActivity<CV extends View, M, V exten
     Injector appInjector = (Injector) getApplication();
     return appInjector.getObjectGraph();
   }
-
 }

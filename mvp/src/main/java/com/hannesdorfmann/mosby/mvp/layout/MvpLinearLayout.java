@@ -17,6 +17,7 @@ package com.hannesdorfmann.mosby.mvp.layout;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
@@ -76,7 +77,7 @@ public abstract class MvpLinearLayout<V extends MvpView, P extends MvpPresenter<
    *
    * @return {@link ViewGroupMvpDelegateImpl}
    */
-  protected ViewGroupMvpDelegate<V, P> getMvpDelegate() {
+  @NonNull protected ViewGroupMvpDelegate<V, P> getMvpDelegate() {
     if (mvpDelegate == null) {
       mvpDelegate = new ViewGroupMvpDelegateImpl<>(this);
     }

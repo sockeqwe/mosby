@@ -23,7 +23,12 @@ import com.hannesdorfmann.mosby.mvp.viewstate.MvpViewStateFragment;
 import dagger.ObjectGraph;
 
 /**
- * {@link MvpViewStateFragment} with dagger1 support
+ * {@link MvpViewStateFragment} with dagger1 support by implementing {@link Injector}.
+ *
+ * <p>
+ * Does not automatically inject itself dependencies. To do so please override {@link
+ * #injectDependencies()}
+ * </p>
  *
  * @author Hannes Dorfmann
  * @since 1.0.0
@@ -48,5 +53,4 @@ public abstract class Dagger1MvpViewStateFragment<V extends MvpView, P extends M
 
     return ((Injector) getActivity()).getObjectGraph();
   }
-
 }

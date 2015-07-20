@@ -16,6 +16,7 @@
 
 package com.hannesdorfmann.mosby.mvp.lce;
 
+import android.support.annotation.CallSuper;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,7 +31,8 @@ import com.hannesdorfmann.mosby.mvp.R;
  * inflated xml layout</li>
  * <li>Display a error view: A <b>TextView</b> with <b>R.id.errorView</b> must be declared in your
  * inflated xml layout</li>
- * <li>Display content view: A view witjh <b>R.id.contentView</b> must be specified in your inflated
+ * <li>Display content view: A view witjh <b>R.id.contentView</b> must be specified in your
+ * inflated
  * xml layout</li>
  * </ul>
  *
@@ -39,7 +41,8 @@ import com.hannesdorfmann.mosby.mvp.R;
  * etc. (everything that extends from android.view.View)
  * @param <M> The underlying data model that will be displayed with this view
  * @param <V> The View interface that must be implemented by this view. You can use {@link
- * MvpLceView}, but if you want to add more methods you have to provide your own view interface that
+ * MvpLceView}, but if you want to add more methods you have to provide your own view interface
+ * that
  * extends from {@link MvpLceView}
  * @param <P> The type of the Presenter. Must extend from {@link MvpPresenter}
  */
@@ -50,7 +53,7 @@ public abstract class MvpLceActivity<CV extends View, M, V extends MvpLceView<M>
   protected CV contentView;
   protected TextView errorView;
 
-  @Override public void onContentChanged() {
+  @CallSuper @Override public void onContentChanged() {
     super.onContentChanged();
     loadingView = findViewById(R.id.loadingView);
     contentView = (CV) findViewById(R.id.contentView);
@@ -76,7 +79,7 @@ public abstract class MvpLceActivity<CV extends View, M, V extends MvpLceView<M>
 
     errorView.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
-          onErrorViewClicked();
+        onErrorViewClicked();
       }
     });
   }
@@ -89,7 +92,7 @@ public abstract class MvpLceActivity<CV extends View, M, V extends MvpLceView<M>
    * Called if the error view has been clicked. To disable clicking on the errorView use
    * <code>errorView.setClickable(false)</code>
    */
-  protected void onErrorViewClicked(){
+  protected void onErrorViewClicked() {
     loadData(false);
   }
 
@@ -109,8 +112,7 @@ public abstract class MvpLceActivity<CV extends View, M, V extends MvpLceView<M>
     LceAnimator.showLoading(loadingView, contentView, errorView);
   }
 
-  @Override
-  public void showContent() {
+  @Override public void showContent() {
     animateContentViewIn();
   }
 
@@ -136,8 +138,7 @@ public abstract class MvpLceActivity<CV extends View, M, V extends MvpLceView<M>
     Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
   }
 
-  @Override
-  public void showError(Throwable e, boolean pullToRefresh) {
+  @Override public void showError(Throwable e, boolean pullToRefresh) {
 
     String errorMsg = getErrorMessage(e, pullToRefresh);
 

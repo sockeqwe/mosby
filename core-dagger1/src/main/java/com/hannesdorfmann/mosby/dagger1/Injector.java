@@ -20,7 +20,12 @@ import dagger.ObjectGraph;
 
 /**
  * Injector will be passed around in the application to get access to the {@link
- * dagger.ObjectGraph}
+ * dagger.ObjectGraph}.
+ *
+ * <p>
+ * Since Injector can be Activity or Fragment, never ever store the injector since <b>it can cause
+ * memory leaks</b>. If there is really no other solution then pass around the object graph {@link #getObjectGraph()}
+ * </p>
  *
  * @author Hannes Dorfmann
  * @since 1.0.0

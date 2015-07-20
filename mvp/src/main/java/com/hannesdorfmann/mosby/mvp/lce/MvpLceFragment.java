@@ -17,6 +17,7 @@
 package com.hannesdorfmann.mosby.mvp.lce;
 
 import android.os.Bundle;
+import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.TextView;
@@ -56,7 +57,7 @@ public abstract class MvpLceFragment<CV extends View, M, V extends MvpLceView<M>
   protected CV contentView;
   protected TextView errorView;
 
-  @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+  @CallSuper @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
 
     loadingView = view.findViewById(R.id.loadingView);
@@ -104,8 +105,7 @@ public abstract class MvpLceFragment<CV extends View, M, V extends MvpLceView<M>
     LceAnimator.showLoading(loadingView, contentView, errorView);
   }
 
-  @Override
-  public void showContent() {
+  @Override public void showContent() {
     animateContentViewIn();
   }
 
@@ -137,12 +137,11 @@ public abstract class MvpLceFragment<CV extends View, M, V extends MvpLceView<M>
    * Called if the error view has been clicked. To disable clicking on the errorView use
    * <code>errorView.setClickable(false)</code>
    */
-  protected void onErrorViewClicked(){
+  protected void onErrorViewClicked() {
     loadData(false);
   }
 
-  @Override
-  public void showError(Throwable e, boolean pullToRefresh) {
+  @Override public void showError(Throwable e, boolean pullToRefresh) {
 
     String errorMsg = getErrorMessage(e, pullToRefresh);
 

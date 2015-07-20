@@ -17,7 +17,6 @@
 
 package com.hannesdorfmann.mosby.mvp;
 
-import java.util.Date;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -26,19 +25,17 @@ import org.junit.Test;
  */
 public class MvpNullObjectBasePresenterTest {
 
-  public interface TestView extends MvpView {
+  public  interface TestView extends MvpView {
     public void showFoo(TestData data);
 
     public void showThat();
   }
 
-  public class TestData {
-    int a;
-    String b;
-    Date date = new Date();
+  public static class TestData {
+
   }
 
-  public class TestNullObjectPresenter
+  public static class TestNullObjectPresenter
       extends MvpNullObjectBasePresenter<MvpNullObjectBasePresenterTest.TestView> {
 
     public void viewShowFoo(TestData data) {

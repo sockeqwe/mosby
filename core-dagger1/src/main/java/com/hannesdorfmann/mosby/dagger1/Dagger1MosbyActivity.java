@@ -17,12 +17,16 @@
 package com.hannesdorfmann.mosby.dagger1;
 
 import android.app.Application;
-import android.os.Bundle;
 import com.hannesdorfmann.mosby.MosbyActivity;
 import dagger.ObjectGraph;
 
 /**
  * {@link MosbyActivity} with Dagger 1 support, because this activity impelements {@link Injector}.
+ *
+ * <p>
+ * Does not automatically inject itself dependencies. To do so please override {@link
+ * #injectDependencies()}
+ * </p>
  *
  * @author Hannes Dorfmann
  * @since 1.0.0
@@ -54,13 +58,5 @@ public class Dagger1MosbyActivity extends MosbyActivity implements Injector {
 
     Injector appInjector = (Injector) getApplication();
     return appInjector.getObjectGraph();
-  }
-
-  /**
-   * Called from {@link #onCreate(Bundle)}. As default it calls {@link #getObjectGraph()} and
-   * injects to this activity
-   */
-  @Override protected void injectDependencies() {
-    getObjectGraph().inject(this);
   }
 }

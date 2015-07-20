@@ -1,5 +1,7 @@
 package com.hannesdorfmann.mosby.mvp;
 
+import android.support.annotation.NonNull;
+
 /**
  * A {@link MvpPresenter} implmenetation that implements the <a href="https://en.wikipedia.org/wiki/Null_Object_pattern">null
  * object pattern</a> for the attached mvp view. So whenever the view gets detached from this
@@ -21,7 +23,7 @@ public class MvpNullObjectBasePresenter<V extends MvpView> implements MvpPresent
     this.view = view;
   }
 
-  protected V getView() {
+  @NonNull protected V getView() {
     if (view == null) {
       throw new NullPointerException("MvpView reference is null. Have you called attachView()?");
     }

@@ -16,6 +16,7 @@
 
 package com.hannesdorfmann.mosby.mvp;
 
+import android.support.annotation.Nullable;
 import java.lang.ref.WeakReference;
 
 /**
@@ -46,7 +47,7 @@ public class MvpBasePresenter<V extends MvpView> implements MvpPresenter<V> {
    *
    * @return <code>null</code>, if view is not attached, otherwise the concrete view instance
    */
-  protected V getView() {
+  @Nullable protected V getView() {
     return viewRef == null ? null : viewRef.get();
   }
 

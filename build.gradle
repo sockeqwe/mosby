@@ -40,10 +40,12 @@ ext {
 
   // Libraries
   appcompat7Version = '22.1.1'
+  supportAnnotations = '22.2.0'
   recyclerviewVersion = '22.1.1'
   fragmentargsVersion = '2.1.0'
   butterknifeVersion = '7.0.1'
   icepickVersion = '3.0.2'
+
 
   // Test Libs
   robolectricVersion = '2.4'

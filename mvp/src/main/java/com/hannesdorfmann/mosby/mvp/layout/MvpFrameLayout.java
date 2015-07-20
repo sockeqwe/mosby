@@ -17,6 +17,7 @@ package com.hannesdorfmann.mosby.mvp.layout;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
@@ -57,12 +58,10 @@ public abstract class MvpFrameLayout<V extends MvpView, P extends MvpPresenter<V
     super(context, attrs, defStyleAttr, defStyleRes);
   }
 
-
   @Override protected void onFinishInflate() {
     super.onFinishInflate();
     ButterKnife.bind(this);
   }
-
 
   /**
    * Get the mvp delegate. This is internally used for creating presenter, attaching and detaching
@@ -78,14 +77,13 @@ public abstract class MvpFrameLayout<V extends MvpView, P extends MvpPresenter<V
    *
    * @return {@link ViewGroupMvpDelegateImpl}
    */
-  protected ViewGroupMvpDelegate<V, P> getMvpDelegate() {
+  @NonNull protected ViewGroupMvpDelegate<V, P> getMvpDelegate() {
     if (mvpDelegate == null) {
       mvpDelegate = new ViewGroupMvpDelegateImpl<>(this);
     }
 
     return mvpDelegate;
   }
-
 
   @Override protected void onAttachedToWindow() {
     super.onAttachedToWindow();

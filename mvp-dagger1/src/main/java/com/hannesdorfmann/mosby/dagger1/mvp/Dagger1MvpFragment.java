@@ -23,12 +23,18 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
 import dagger.ObjectGraph;
 
 /**
- * {@link MvpFragment} with dagger 1 support.
+ * {@link MvpFragment} with dagger 1 support by implementing {@link Injector}.
+ *
+ * <p>
+ * Does not automatically inject itself dependencies. To do so please override {@link
+ * #injectDependencies()}
+ * </p>
+ *
  * @author Hannes Dorfmann
  * @since 1.0.0
  */
-public abstract class Dagger1MvpFragment<V extends MvpView, P extends MvpPresenter<V>>extends MvpFragment<V, P>
-    implements Injector {
+public abstract class Dagger1MvpFragment<V extends MvpView, P extends MvpPresenter<V>>
+    extends MvpFragment<V, P> implements Injector {
 
   @Override public ObjectGraph getObjectGraph() {
 
@@ -47,5 +53,4 @@ public abstract class Dagger1MvpFragment<V extends MvpView, P extends MvpPresent
 
     return ((Injector) getActivity()).getObjectGraph();
   }
-
 }

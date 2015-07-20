@@ -18,6 +18,7 @@ package com.hannesdorfmann.mosby.mvp;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 import com.hannesdorfmann.mosby.MosbyFragment;
@@ -64,7 +65,7 @@ public abstract class MvpFragment<V extends MvpView, P extends MvpPresenter<V>>
    *
    * @return {@link FragmentMvpDelegateImpl}
    */
-  protected FragmentMvpDelegate<V, P> getMvpDelegate() {
+  @NonNull protected FragmentMvpDelegate<V, P> getMvpDelegate() {
     if (mvpDelegate == null) {
       mvpDelegate = new FragmentMvpDelegateImpl<>(this);
     }
@@ -72,11 +73,11 @@ public abstract class MvpFragment<V extends MvpView, P extends MvpPresenter<V>>
     return mvpDelegate;
   }
 
-  @Override public P getPresenter() {
+  @NonNull @Override public P getPresenter() {
     return presenter;
   }
 
-  @Override public void setPresenter(P presenter) {
+  @Override public void setPresenter(@NonNull P presenter) {
     this.presenter = presenter;
   }
 
@@ -84,7 +85,7 @@ public abstract class MvpFragment<V extends MvpView, P extends MvpPresenter<V>>
     return getRetainInstance();
   }
 
-  @Override public V getMvpView() {
+  @NonNull @Override public V getMvpView() {
     return (V) this;
   }
 

@@ -17,6 +17,7 @@
 package com.hannesdorfmann.mosby;
 
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -105,8 +106,9 @@ public abstract class MosbyFragment extends Fragment {
   /**
    * Return the layout resource like R.layout.my_layout
    *
-   * @return the layout resource or null, if you don't want to have an UI
+   * @return the layout resource or zero ("0"), if you don't want to have an UI
    */
+  @LayoutRes
   protected int getLayoutRes() {
     return 0;
   }

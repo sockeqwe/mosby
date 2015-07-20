@@ -10,7 +10,7 @@ import rx.Subscriber;
 /**
  * A presenter for RxJava, that assumes that only one Observable is subscribed by this presenter.
  * The idea is, that you make your (chain of) Observable and pass it to {@link
- * #subscribe(Observable)}. The presenter internally subscribes himself as Subscriber to the
+ * #subscribe(Observable)} . The presenter internally subscribes himself as Subscriber to the
  * observable
  * (which executes the observable). Before subscribing the presenter calls
  * {@link #applyScheduler(Observable)} to apply the <code>subscribeOn()</code> and
@@ -67,6 +67,9 @@ public abstract class MvpRxPresenter<V extends MvpView, M> extends MvpBasePresen
    * <code>observeOn()</code>. As default it uses {@link AndroidSchedulerTransformer}. Override
    * this
    * method if you want to provide your own scheduling implementation.
+   *
+   * @param observable The observable
+   * @return the observable with the applied scheduler
    */
   protected Observable<M> applyScheduler(Observable<M> observable) {
     return observable.compose(new AndroidSchedulerTransformer<M>());

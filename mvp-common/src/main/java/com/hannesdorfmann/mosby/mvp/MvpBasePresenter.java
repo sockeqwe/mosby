@@ -26,7 +26,9 @@ import java.lang.ref.WeakReference;
  * presenter before calling {@link #getView()} to access the view.
  * </p>
  *
+ * @param <V> type of the {@link MvpView}
  * @author Hannes Dorfmann
+ * @see MvpNullObjectBasePresenter
  * @since 1.0.0
  */
 public class MvpBasePresenter<V extends MvpView> implements MvpPresenter<V> {

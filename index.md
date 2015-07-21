@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: page_without_disqus
 ---
 
 # Model-View-Presenter library for android
@@ -56,6 +56,9 @@ dependencies {
   apt 'com.squareup.dagger:dagger-compiler:1.2.2'
 }
 {% endhighlight %}
+
+## Questions
+Almost all pages on this site provide a `disqus` section at the end of the page. Don't hesitate to ask question about the pages content directly in the disqus section. To report bugs, issues or start conceptional design discussions please use the [issue tracker on GitHub](https://github.com/sockeqwe/mosby/issues). The [changelog](https://github.com/sockeqwe/mosby/releases) can be found in the release section on Github.
 
 ## Contributing
 If you would like to contribute code you can do so through GitHub by forking the repository and sending a pull request. When submitting code, please make every effort to follow existing conventions and style in order to keep the code as readable as possible.

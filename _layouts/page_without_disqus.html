@@ -1,0 +1,12 @@
+---
+layout: default
+---
+<div class="post">
+  <article class="post-content">
+  {{ content }}
+  </article>
+</div>
+
+{% if site.show_sharing_icons %}
+  {% include share_buttons.html %}
+{% endif %}

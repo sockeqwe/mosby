@@ -66,3 +66,17 @@
 .highlight .vg { color: #8a2be2; } /* Name.Variable.Global */
 .highlight .vi { color: #8a2be2; } /* Name.Variable.Instance */
 .highlight .il { color: #00C226; } /* Literal.Number.Integer.Long */
+
+
+.codeSimple{
+  font-family: Inconsolata, Courier, monospace;
+  line-height: 1.6em;
+  outline: none;
+  background-color: #FAFAFA;
+  border: 1px solid rgb(192, 192, 192);
+  color: rgb(59, 59, 59);
+  padding: 0.4em 0.8em;
+  display: inline-block;
+  margin: 2px 0px;
+  font-size: 12px
+}

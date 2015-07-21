@@ -276,3 +276,40 @@ Another thing you may have noticed is `getLayoutRes()`, which is a shorthand int
 {% endhighlight %}
 
 So instead of overriding `onCreateView()` you can override `getLayoutRes()`.
+
+## ViewGroup
+If you want to avoid Fragments in general you can do that. Mosby offers the same MVP scaffold as for Activities and Fragments for ViewGroups. The API is the same as for Activity and Fragment. Some default implementation are already available like `MvpFrameLayout`, `MvpLinearLayout` and `MvpRelativeLayout`.
+
+## Delegation
+You may be wondering how Mosby can provide the same API for all kind of Views (Activity, Fragment and ViewGroup) without having code clones (copy & paste the same code). The answer is delegation.
+The methods of the delegates has been named to match the Activities or Fragments lifecycle method names (inspired by the latest AppCompatDelegate from appcompat support library) for better understanding  which delegate method should be called from which Activity or Fragment lifecycle method:
+
+  - `MvpDelegateCallback`: Is an interface every `MvpView` in Mosby has to implement. Basically it just provides some MVP related methods like `createPresenter()` etc. This methods are internally called by `ActivityMvpDelegate` or `FragmentMvpDelegate`.
+  - `ActivityMvpDelegate`: It's an interface. Usually you use `ActivityMvpDelegateImpl` which is the default implementation. All you have to do to bring Mosby MVP support to your custom Activity is to call the corresponding delegate method from Activities lifecycle method like `onCreate()`, `onPause()`, `onDestroy()` etc. and to implement `MvpDelegateCallback`:
+
+  {% highlight java %}
+  public abstract class MyActivity extends Activity implements MvpDelegateCallback<> {
+
+    protected ActivityMvpDelegate mvpDelegate = new ActivityMvpDelegateImpl(this);
+
+    @Override protected void onCreate(Bundle savedInstanceState) {
+      super.onCreate(savedInstanceState);
+      mvpDelegate.onCreate(savedInstanceState);
+    }
+
+    @Override protected void onDestroy() {
+      super.onDestroy();
+      mvpDelegate.onDestroy();
+    }
+
+    @Override protected void onSaveInstanceState(Bundle outState) {
+      super.onSaveInstanceState(outState);
+      mvpDelegate.onSaveInstanceState(outState);
+    }
+
+    ... // other lifecycle methods
+  }
+  {% endhighlight %}
+
+  - `FragmentMvpDelegate`: Same as `ActivityMvpDelegate` but for `Fragments`. To bring Mosby MVP support to your custom Fragment all you have to do is the same as shown above for Activities: Create a `FragmentMvpDelegate` and call the methods from the corresponding Fragment lifecycle method. Your Fragment has to implement `MvpDelegateCallback` as well. Usually you use the default delegate implementation `FragmentMvpDelegateImpl`
+  - `ViewGroupMvpDelegate`: This delegate is used for `ViewGroup` like `FrameLayout` etc. to bring Mosby MVP support to your custom `ViewGroup`. The lifecycle methods are simpler compared to Fragments ones: `onAttachedToWindow()` and `onDetachedFromWindow()`. The default implementation is `ViewGroupMvpDelegateImpl`.

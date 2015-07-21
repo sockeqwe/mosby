@@ -3,7 +3,10 @@ layout: page_without_disqus
 ---
 
 # Model-View-Presenter library for android
-The name of this library _Mosby_ has been chosen in honor of Ted Mosby, the architect of the famos tv series _How I Met Your Mother_. The aim of this library is to help you build modern android apps with a clean Model-View-Presenter architecture. Furthermore, Mosby helps you to handle screen orientation changes by introducing [ViewState]() and retaining Presenters.
+The name of this library _Mosby_ has been chosen in honor of Ted Mosby, the architect of the famous tv series _How I Met Your Mother_. The aim of this library is to help you build modern android apps with a clean Model-View-Presenter architecture. Furthermore, Mosby helps you to handle screen orientation changes by introducing [ViewState]() and retaining Presenters.
+
+## It's a library, not a framework
+At first glance Mosby looks a lot like a framework. There are some classes like `MvpFragment` you can extends from, but the point is that you don't have to if you don't want to. At it's core Mosby is a tiny library based on delegation. So you don't have to use `MvpFragment` if you don't want to. You can use delegation and composition to integrate Mosby in your own development stack.  
 
 ## Dependencies
 Mosby is divided in modules. You can pick those modules you need from the following list of dependencies:

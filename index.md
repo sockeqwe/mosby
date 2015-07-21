@@ -1,34 +1,78 @@
 ---
-#
-# Use the widgets beneath and the content will be
-# inserted automagically in the webpage. To make
-# this work, you have to use › layout: frontpage
-#
-layout: frontpage
-title: "Feeling Responsive – A Jekyll Theme Based On Foundation"
-header:
-   image_fullwidth: "header_unsplash_12.jpg"
-widget-1:
-    title: "Blog & Portfolio"
-    url: 'http://phlow.github.io/feeling-responsive/blog/'
-    text: 'Every good portfolio website has a blog with fresh news, thoughts and develop&shy;ments of your activities. <em>Feeling Responsive</em> offers you a fully functional blog with an archive page to give readers a quick overview of all your posts.'
-    image: unsplash_9-302x182.jpg
-widget-2:
-    title: "Why use this theme?"
-    url: 'http://phlow.github.io/feeling-responsive/info/'
-    text: '<em>Feeling Responsive</em> is heavily customizable.<br>1. Language-Support :)<br>2. Optimized for speed and it&#39;s responsive.<br>3. Built on <a href="http://foundation.zurb.com/">Foundation Framework</a>.<br>4. Seven different Headers.<br>5. Customizable navigation, footer,...'
-    video: '<a href="#" data-reveal-id="videoModal"><img src="http://phlow.github.io/feeling-responsive/images/start-video-feeling-responsive-302x182.jpg" width="302" height="182" alt=""></a>'
-widget-3:
-    title: "Download Theme"
-    url: 'https://github.com/Phlow/feeling-responsive'
-    text: '<em>Feeling Responsive</em> is totally free and licensed under the MIT License. Make it your own and do with it what you want. Grab your copy or clone it at GitHub and start your website with it. Then tell me via Twitter <a href="http://twitter.com/phlow">@phlow</a>.'
-    image: github-303x182.jpg
+layout: page
 ---
 
+# Model-View-Presenter library for android
+The name of this library _Mosby_ has been chosen in honor of Ted Mosby, the architect of the famos tv series _How I Met Your Mother_. The aim of this library is to help you build modern android apps with a clean Model-View-Presenter architecture. Furthermore, Mosby helps you to handle screen orientation changes by introducing [ViewState]() and retaining Presenters.
 
-<div id="videoModal" class="reveal-modal large" data-reveal="">
-  <div class="flex-video widescreen vimeo" style="display: block;">
-    <iframe width="1280" height="720" src="https://www.youtube.com/embed/3b5zCFSmVvU" frameborder="0" allowfullscreen></iframe>
-  </div>
-  <a class="close-reveal-modal">&#215;</a>
-</div>
+## Dependencies
+Mosby is divided in modules. You can pick those modules you need from the following list of dependencies:
+
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.hannesdorfmann.mosby/core/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.hannesdorfmann.mosby/core)
+{% highlight groovy %}
+dependencies {
+
+	compile 'com.hannesdorfmann.mosby:core:x.x.x'
+	compile 'com.hannesdorfmann.mosby:core-dagger1:x.x.x'
+	compile 'com.hannesdorfmann.mosby:mvp:x.x.x'
+	compile 'com.hannesdorfmann.mosby:mvp-dagger1:x.x.x'
+	compile 'com.hannesdorfmann.mosby:retrofit:x.x.x'
+	compile 'com.hannesdorfmann.mosby:rx:x.x.x'
+	compile 'com.hannesdorfmann.mosby:viewstate:x.x.x'
+	compile 'com.hannesdorfmann.mosby:viewstate-dagger1:x.x.x'
+
+}
+{% endhighlight %}
+
+You need to apply Hugo Visser's awesome [android-apt](https://bitbucket.org/hvisser/android-apt) gradle plugin to run annotation processing
+and you have to include the following dependencies:
+
+{% highlight groovy %}
+buildscript {
+  repositories {
+    jcenter()
+  }
+  dependencies {
+    classpath 'com.android.tools.build:gradle:1.1.3'
+    classpath 'com.neenbedankt.gradle.plugins:android-apt:1.6'
+  }
+}
+
+allprojects {
+  repositories {
+    jcenter()
+    maven {
+      // For icepick
+      url 'https://clojars.org/repo/'
+    }
+  }
+}
+
+dependencies {
+  apt 'frankiesardo:icepick-processor:3.0.2'
+  apt 'com.hannesdorfmann.fragmentargs:processor:2.1.0'
+
+  // If you want to use dagger1
+  apt 'com.squareup.dagger:dagger-compiler:1.2.2'
+}
+{% endhighlight %}
+
+## Contributing
+If you would like to contribute code you can do so through GitHub by forking the repository and sending a pull request. When submitting code, please make every effort to follow existing conventions and style in order to keep the code as readable as possible.
+
+## License
+{% highlight text %}
+ Copyright 2015 Hannes Dorfmann.
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+{% endhighlight %}

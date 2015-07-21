@@ -1,65 +1,33 @@
 ---
 layout: default
-format: post
 ---
-<div class="row t30">
-	<div class="medium-8 columns{% if page.sidebar == NULL %} medium-offset-2 end{% endif %}{% if page.sidebar == "left" %} medium-push-4{% endif %}">
-		<article itemscope itemtype="http://schema.org/Article">
-			<header>
-				{% if page.image.title %}
-				<figure>
-					<img src="{{ site.url }}/images/{{ page.image.title }}" width="970" alt="{{ page.title escape_once }}" itemprop="image">
+<div class="post">
+  <article class="post-content">
+  {{ content }}
+  </article>
+</div>
 
-					{% if page.image.caption_url && page.image.caption %}
-					<figcaption class="text-right">
-						<a href="{{ page.image.caption_url }}">{{ page.image.caption }}</a>
-					</figcaption>
-					{% elsif page.image.caption %}
-					<figcaption class="text-right">
-						{{ page.image.caption }}
-					</figcaption>
-					{% endif %}
-				</figure>
-				{% endif %}
+{% if site.show_sharing_icons %}
+  {% include share_buttons.html %}
+{% endif %}
 
-				<span itemprop="name">
-					{% if page.subheadline %}<p class="subheadline">{{ page.subheadline }}</p>{% endif %}
-					<h1>{{ page.title }}</h1>
-				</span>
-			</header>
+{% if site.show_post_footers %}
+  {% include post_footer.html %}
+{% endif %}
 
+{% if site.disqus_shortname %}
+<br /> <br />
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname  = '{{ site.disqus_shortname }}';
+    var disqus_identifier = '{{ page.id }}';
+    var disqus_title      = '{{ post.title }}';
 
-			{% if page.teaser %}
-			<p class="teaser" itemprop="description">
-				{{ page.teaser }}
-			</p>
-			{% endif %}
-
-			<span itemprop="articleSection">
-			{{ content }}
-			</span>
-
-			{% if page.show_meta == true %}
-			{% include meta_information.html %}
-			{% endif %}
-
-			{% if page.comments == true %}
-			{% include comments.html %}
-			{% endif %}
-		</article>
-	</div><!-- /.medium-8.columns -->
-
-
-	{% if page.sidebar == "left" %}
-	<div class="medium-4 columns medium-pull-8">
-		{% include sidebar.html %}
-	</div><!-- /.medium-4.columns -->
-	{% endif %}
-
-
-	{% if page.sidebar == "right" %}
-	<div class="medium-4 columns">
-		{% include sidebar.html %}
-	</div><!-- /.medium-4.columns -->
-	{% endif %}
-</div><!-- /.row -->
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+{% endif %}

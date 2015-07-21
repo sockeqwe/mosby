@@ -1,16 +1,17 @@
----
-layout: compress
----
+<!DOCTYPE html>
+<html>
 {% include head.html %}
-<body id="top-of-page" class="{{ page.format }}">
-	{% include navigation.html %}
+<body class="site{% if site.animated %} animated fade-in-down{% endif %}">
+  <div class="site-wrap">
+    {% include header.html %}
 
-	{% include masthead.html %}
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        {{ content }}
+      </div>
+    </div>
+  </div>
 
-	{{ content }}
-
-	{% include footer.html %}
-	
-	{% include footer_scripts.html %}
+  {% include footer.html %}
 </body>
 </html>

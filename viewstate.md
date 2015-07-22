@@ -176,7 +176,7 @@ Please note, that a `Bundle` is limited in size by 1MB roughly. That means that 
 Glad you asked. So what happens during a screen orientation change is that the MvpView (may be an Activity, Fragment or ViewGroup) gets destroyed. Per default the Presenter get's destroyed as well. So the solution of ViewState discussed so far is just to give the user of your app the impression that nothing has changed during orientation changes. What actually happens behind the scenes is that the View and Presenter gets destroyed, hence the Presenter should cancel running background tasks. In this example workflow we are taking an Activity as View, but it works pretty the same way for Fragments:
 
   1. We start our app in portrait
-  2. The Activity (View) gets instantiated and calls `onCreate()`, `createPresenter()` and attaches the View (the Activity itself) to the Presenter by calling `presenter.attachView()`.
+  2. The Activity (View) gets instantiated and calls `onCreate()`, `createPresenter()` and attaches the View (the Activity itself) to the Presenter by calling `presenter.attachView()`. Also `onNewViewState()` gets invoked. This basically means that the Activity is displayed for the first time. Usually you start loading data from this method.
   3. Next we rotate the device from portrait to landscape.
   4. `onDestroy()` gets called which calls `presenter.detachView(false)`. Presenter cancels background tasks.
   5. `onSaveInstanceState(Bundle)` gets called where the `ViewState` gets saved into the Bundle.
@@ -189,4 +189,16 @@ Glad you asked. So what happens during a screen orientation change is that the M
  You may be a little bit disappointed now you know that the Presenter gets destroyed and background work restarted. Understandable, but see it from the bright side: What you get with the solution discussed so far is a cleaner way to handle screen orientation changes like you don't have to save the views state by hand into a bundle and thing about canceling and restarting background tasks etc. but yes, you are still at the same point as without ViewState except the fact that we give the user the impression that everything has survived orientation changes. Don't be afraid, Mosby provides a real solution how Presenters can survive screen orientation changes described in the next chapter.
 
 ## Retaining Fragments - Retaining Presenter
-What are retaining Fragments?
+What is a retaining Fragments? If you set `Fragment.setRetainInstanceState(true)` then the Fragment will not be destroyed during screen rotations. Only the Fragment's GUI (the `android.view.View`  returned from `onCreateView()`) get's destroyed an newly created. That means all of your fragment class member variables are still there after screen rotation and so is the presenter still there after screen orientation has been changed. In that case we just detach the old view from presenter and attach the new view to presenter. Hence the presenter doesn't have to cancel any running background task, because the view gets reattached. Example:
+
+  1. We start our app in portrait.
+  2. The retaining Fragment gets instantiated and calls `onCreate()`, `onCreateView()`, `createPresenter()` and attach the view (the Fragment himself) to the Presenter by calling `presenter.attachView()`. Also `onNewViewState()` gets invoked. This basically means that the Fragment is displayed for the first time. Typically this is the right point to start loading the data.
+  3. Next we rotate our device from portrait to landscape.
+  4. `onDestroyView()` gets called which calls `presenter.detachView(true)`. Note that the parameter `true` informs the Presenter the Presenter will be retained and a new view will be attached afterwards (otherwise the parameter would be set to false). Therefore the Presenter knows that he doesn't have to cancel running background threads.
+  5. App is in landscape now. `onCreateView()` gets called, but **not** `createPresenter()` because  `presenter != null` since Presenter variable has survived orientation changes because of `setRetainInstanceState(true)`.
+  6. View gets reattached to Presenter by `presenter.attachView()`.
+  7. `ViewState` gets restored. Since no background thread has been canceled restarting background threads is not needed.
+
+The lifecycle diagram for **Fragments** looks like this:
+
+![Retaining Fragment lifecycle]({{ site.baseurl }}/images/mvp-fragment-lifecycle.png)

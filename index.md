@@ -3,10 +3,10 @@ layout: page_without_disqus
 ---
 
 # Model-View-Presenter library for android
-The name of this library _Mosby_ has been chosen in honor of Ted Mosby, the architect of the famous tv series _How I Met Your Mother_. The aim of this library is to help you build modern android apps with a clean Model-View-Presenter architecture. Furthermore, Mosby helps you to handle screen orientation changes by introducing [ViewState]() and retaining Presenters.
+_The name of this library, Mosby, has been chosen in honor of Ted Mosby, the architect of the famous tv series How I Met Your Mother. The aim of this library is to help you build modern android apps with a clean Model-View-Presenter architecture. Furthermore, Mosby helps you to handle screen orientation changes by introducing [ViewState]() and retaining Presenters._
 
 ## It's a library, not a framework
-At first glance Mosby looks a lot like a framework. There are some classes like `MvpFragment` you can extends from, but the point is that you don't have to if you don't want to. At it's core Mosby is a tiny library based on delegation. So you don't have to use `MvpFragment` if you don't want to. You can use delegation and composition to integrate Mosby in your own development stack.  
+At first glance Mosby looks a lot like a framework. There are some classes like `MvpFragment` you can extends from, but the point is that you don't have to if you don't want to. At it's core Mosby is a tiny library based on delegation. So you don't have to use `MvpFragment` if you don't want to. You can use delegation and composition to integrate Mosby in your own development stack. Hence you are not caught into a frameworks boundaries and limits.
 
 ## Dependencies
 Mosby is divided in modules. You can pick those modules you need from the following list of dependencies:
@@ -53,7 +53,7 @@ allprojects {
 
 dependencies {
   apt 'frankiesardo:icepick-processor:3.0.2'
-  apt 'com.hannesdorfmann.fragmentargs:processor:2.1.0'
+  apt 'com.hannesdorfmann.fragmentargs:processor:2.1.2'
 
   // If you want to use dagger1
   apt 'com.squareup.dagger:dagger-compiler:1.2.2'
@@ -61,7 +61,7 @@ dependencies {
 {% endhighlight %}
 
 ## Questions
-Almost all pages on this site provide a `disqus` section at the end of the page. Don't hesitate to ask question about the pages content directly in the disqus section. To report bugs, issues or start conceptional design discussions please use the [issue tracker on GitHub](https://github.com/sockeqwe/mosby/issues). The [changelog](https://github.com/sockeqwe/mosby/releases) can be found in the release section on Github.
+Almost all pages on this site provide a `Disqus` section at the end of the page. Don't hesitate to ask question about the pages content directly in the Disqus section. However, please use the [issue tracker on GitHub](https://github.com/sockeqwe/mosby/issues) to report bugs, issues or start conceptional design discussions. The [changelog](https://github.com/sockeqwe/mosby/releases) can be found in the release section on Github.
 
 ## Contributing
 If you would like to contribute code you can do so through GitHub by forking the repository and sending a pull request. When submitting code, please make every effort to follow existing conventions and style in order to keep the code as readable as possible.

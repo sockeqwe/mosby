@@ -5,606 +5,460 @@ permalink: /first-app/
 ---
 
 # Writing an App
-_In [Model-View-Presenter fundamentals]({{ site.baseurl }}/mvp/) we have discussed what MVP is and how Mosby implements that. Furthermore, we have explained how [Mosby's ViewState]({{ site.baseurl }}/mvp/) feature work. Now let's put that all together and lets write an App powered on Mosby_
+_In [Model-View-Presenter fundamentals]({{ site.baseurl }}/mvp/) we have discussed what MVP is and how you can use Mosby to implement an MVP based architecture. Furthermore, we have explained how [Mosby's ViewState]({{ site.baseurl }}/viewstate/) feature work. Now let's put that all together and lets write an App powered by Mosby_
 
-We will write a sample app which mimics a mail client. It's not a real mail client, it's not connected to a real POP3 or IMAP Server. All the data is randomly generated on app start. There is no persistent layer like local sqlite database. The APK file can be downloaded from [here](https://github.com/sockeqwe/mosby/releases/download/1.2.0/sample-mail-debug.apk).
+Usually such _"Getting started"_ sections just scratch on the surface with very simple examples. We think that sometimes such simple examples are to simple to demonstrate the power of a library. Therefore, we have decided to implement a complex app coming close to a real world app: a mail client. If you are looking for a very simple example then you should check out the [simple basics sample on Github](https://github.com/sockeqwe/mosby/tree/master/sample). The source code should be self explaining.
 
-This video shows the app:
+As already said on this page we want to show how to write a complex app powered by Mosby. We will write an app that mimics a mail client. The functional requirements are as follows:
+
+ - The app is not connected to a real POP3 or IMAP server. All the data is randomly generated in memory on app start. There is no persistent layer like local sqlite database.
+ - A `Mail` is linked to a `Person` as sender and another Person as receiver.
+ - Every mail is associated to exactly one `Label`. A Label is just something like a "folder". A mail can be assigned to one Label. One Label has arbitrary many mails assigned.
+ - A Label is basically just a String. In this sample app there are four labels: "Inbox", "Sent", "Spam" and "Trash". So deleting a mail form inbox is just reassigning the label of the mail from "Inbox" to "Trash".
+ - The app should be able to display a list of mails for a given label.
+ - A User has to be authenticated to use the app. If the user is not authenticated no data should be displayed. Furthermore, the user should be forced to login.
+ - The user of the app should be able to send a mail.
+ - The app provides a search mechanism to search for keywords. This should be implemented by using pagination (load more search results as the user has scrolled to the end of the list).
+ - By clicking on a Peson (i.e. the sender of a mail) a "profile overview" should be displayed with a list of all mails received from the given person and additional information about the person (curriculum vitae).
+ - The view's state should be retained across screen orientation changes.
+
+The final app looks like this:
 
 <p>
 <iframe width="640" height="480" src="https://www.youtube.com/embed/_dEYtXgoyBM?rel=0" frameborder="0" class="videoContainer" allowfullscreen></iframe>
 </p>
 
-Of course the whole app is based on Mosby and as you see in the video above everything keeps it's  state during orientation changes. Regarding the data structure: A `Mail` is linked to a `Person` as sender and another Person as receiver. Every mail is associated to exactly one `Label`. A Label is just something like a "folder". A mail can be assigned to one Label. One Label has arbitrary many mails assigned. A Label is basically just a String. In this sample app there are four labels: "Inbox", "Sent", "Spam" and "Trash". So deleting a mail form inbox is just reassigning the label of the mail from "Inbox" to "Trash".
-`MailProvider` is the central business logic element where we can query list of mails and so on. Furthermore, an `AccountManager` exists who is responsible to authenticate a user. As you see in the video on first app start you have to sign in to see the mails. Internally for the business logic (`MailProvider` and `AccountManager`) I use RxJava. If you are not familiar with RxJava, don't worry. All you have to know is, that RxJava offers an `Observable` to do some kind of query and as callback the methods `onData()`, `onCompleted()` or `onError()` gets called. If you are familiar with RxJava, please DON'T look at the code! It's pretty ugly as I changed mind several times during development and didn't refactored everything as I would do for a real app. Please note that this sample app is about Mosby and not how to write a clean business logic with RxJava. Note also that even if I have used Dagger2 for dependency injection this is not a reference app for Dagger2 nor for material design. For sure there is room for improvements and I would gladly accept pull requests for this sample app.
 
-As you see in the video I'm simulating network traffic by adding a delay of two seconds to every request (like loading a list of mails). I also simulate network problems: Every fifth request will fail (that's why you see the error view quite often in the video). Furthermore, I simulate authentication problems: After 15 requests the user has to sign in again (a login button will be dipslayed).
+The APK file can be downloaded from [here](https://github.com/sockeqwe/mosby/releases/download/1.2.0/sample-mail-debug.apk).
+Now let's step together through the source code (can be found on [Github](https://github.com/sockeqwe/mosby/tree/master/sample-mail/)) and discuss some implementation details. Of course the whole app is based on Mosby and as you have seen in the video above everything keeps it's state during orientation changes. So we use Mosby's `ViewState` feature as well.
 
+## Business logic
+`MailProvider` is the central business logic element where we can query list of mails, send mails and so on. Furthermore, an `AccountManager` exists who is responsible to authenticate a user. Internally for the business logic (`MailProvider` and `AccountManager`) we use RxJava. Usually you don't have to take a look inside the business logic implementation details. If you are not familiar with RxJava, don't worry. All you have to know is that RxJava offers an `Observable` to do some kind of query and as callback the methods `onData()`, `onCompleted()` or `onError()` gets called. If you are familiar with RxJava, please DON'T look at the code! It's pretty ugly as we changed mind several times during development and didn't refactored everything as we would do for a real app. Please note that this sample app is about Mosby and not how to write a clean business logic with RxJava. Note also that even if we have used Dagger2 for dependency injection this is not a reference app for Dagger2 nor for material design.
 
-This page describes how to use the `ViewState` feature of Mosby. In [MVP fundamentals]({{ site.baseurl }}/mvp/) we have shown how to implement a simple Fragment that displays a list of Countries loaded by using MVP.
+As you see in the video we are simulating network traffic by adding a delay of two seconds to every request (like loading a list of mails). We also simulate network problems: Every fifth request will fail (that's why you see the error view quite often in the video). Furthermore, I simulate authentication problems: After 15 requests we say that the user is not authenticated anymore (i.e. in a real world an access token or session has been expired). Thus the user has to sign in again (a login button will be dipslayed).
 
-**Question:** What happens if we rotate our device from portrait to landscape that runs our countries example app and already displays a list of countries?
-
-**Answer:** A new `CountriesFragment` gets instantiated and the app starts by showing the `ProgressBar` (and loads list of countries again) rather than displaying the list of countries in the `RecyclerView` (as it was before the screen rotation) as you can see in the video below:
-
-<p>
-<iframe width="640" height="480" class="videoContainer" src="https://www.youtube.com/embed/tSRoIwDXidQ?rel=0" frameborder="0" allowfullscreen></iframe>
-</p>
-Mosby introduces `ViewState` to solve this problem. The idea is that we track the methods the Presenter invokes on the attached `View`. For instance the Presenter calls `view.showContent()`. Once `showContent()` gets called the view knows that it's state is "showing content" and hence the view  stores this information into a `ViewState`. If the view gets destroyed during orientation changes, the ViewState gets stored into a bundle in `Activity.onSaveInstanceState(Bundle)` or `Fragment.onSaveInstanceState(Bundle)` and will be restored in `Activity.onCreate(Bundle)` or `Fragment.onActivityCreated(Bundle)`. There are already some base classes that support `ViewState` you can extend from like `MvpViewStateActivty`, `MvpViewStateFragment`, `MvpViewStateFrameLayout`, `MvpViewStateLinearLayout`, `MvpViewStateRelativeLayout` and also the _LCE_ (Loading-Content-Error) implementation like `MvpLceViewStateFragment` and `MvpLceViewStateActivity`. So let's change our `CountriesFragment` from [MVP fundamentals page]({{ site.baseurl }}/mvp/) to support `ViewState`:
+## Sign in
+`LoginActivity` is the activity we launch to show the login form. `LoginActivity` is basically just a container for a retaining `LoginFragment`. Mosby ships with `MvpLceViewStateFragment implements MvpLceView` which displays either the content (like a RecyclcerView to display a list of mails) or a  loading indicator (like a ProgressBar) or an error view (like a TextView displaying an error message). This might be handy, because you don't have to implement the switching of displaying content, displaying error, displaying loading by your own, but you shouldn't use it as base class for everything. Only use it if your view can reach all three view states (showing loading, content and error). Have a look at the sign in view:
 
 {% highlight java %}
-public class CountriesFragment
-    extends MvpLceViewStateFragment<SwipeRefreshLayout, List<Country>, CountriesView, CountriesPresenter>
-    implements CountriesView, SwipeRefreshLayout.OnRefreshListener {
+public interface LoginView extends MvpView {
 
-  @InjectView(R.id.recyclerView) RecyclerView recyclerView;
-  CountriesAdapter adapter;
+  // Shows the login form
+  public void showLoginForm();
 
+  // Called if username / password is incorrect
+  public void showError();
 
-  @Override public LceViewState<List<Country>, CountriesView> createViewState() {
-    return new CastedArrayListLceViewState<List<Country>, CountriesView>(this);
-  }
+  // Shows a loading animation while checking auth credentials
+  public void showLoading();
 
-  @Override public List<Country> getData() {
-    return adapter == null ? null : adapter.getCountries();
-  }
-
-   // The code below is the same as with on MVP fundamentals page (without ViewState)
-
-  @Override public void onViewCreated(View view, @Nullable Bundle savedInstance) {
-    super.onViewCreated(view, savedInstance);
-
-    // Setup contentView == SwipeRefreshView
-    contentView.setOnRefreshListener(this);
-
-    // Setup recycler view
-    adapter = new CountriesAdapter(getActivity());
-    recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-    recyclerView.setAdapter(adapter);
-    loadData(false);
-  }
-
-
-  public void loadData(boolean pullToRefresh) {
-    presenter.loadCountries(pullToRefresh);
-  }
-
-  @Override protected CountriesPresenter createPresenter() {
-    return new SimpleCountriesPresenter();
-  }
-
-  // Just a shorthand that will be called in onCreateView()
-  @Override protected int getLayoutRes() {
-    return R.layout.countries_list;
-  }
-
-  @Override public void setData(List<Country> data) {
-    adapter.setCountries(data);
-    adapter.notifyDataSetChanged();
-  }
-
-  @Override public void onRefresh() {
-    loadData(true);
-  }
+  // Called if sign in was successful. Finishes the activity. User is authenticated afterwards.
+  public void loginSuccessful();
 }
 {% endhighlight %}
 
-We don't have to change code of your presenter. All we have to do is to make `CountryFragment` extend from `MvpLceViewStateFragment` instead of `MvpLceFragment`. Here is a video of our CountriesFragment **with ViewState** support where you can see that now the view is still in the same "state" as before screen orientation changes: the view displays the list of Countries in portrait, then it also displays the list of Countries in landscape. The view shows the pull to refresh indicator in landscape and shows the pull to refresh indicator after changing to portrait as well.
-<p>
-<iframe width="640" height="480" src="https://www.youtube.com/embed/Ni7e5NhUEUw?rel=0"  class="videoContainer" frameborder="0" allowfullscreen></iframe>
-</p>
-
-So how does that works? Let's have a look at the actual `MvpLceViewStateFragment` implementation:
+At first glance you might assume that `LoginView` is a `MvpLceView` with just having `showContent()` renamed to `showLoginForm()`. Have a closer look at `MvpLceView` definition:
 
 {% highlight java %}
-public abstract class MvpLceViewStateFragment extends MvpLceFragment {
+public interface MvpLceView<M> extends MvpView {
 
-  protected ViewState<M, V> viewState;
+  public void showLoading(boolean pullToRefresh);
 
-  public abstract ViewState<M, V> createViewState();
+  public void showContent();
 
-  public abstract M getData();
+  public void showError(Throwable e, boolean pullToRefresh);
 
-  @Override public void showContent() {
-    super.showContent();
-    viewState.setStateShowContent(getData());
-  }
+  public void setData(M data);
 
-  @Override public void showError(Throwable e, boolean pullToRefresh) {
-    super.showError(e, pullToRefresh);
-    viewState.setStateShowError(e, pullToRefresh);
-  }
-
-  @Override public void showLoading(boolean pullToRefresh) {
-    super.showLoading(pullToRefresh);
-    viewState.setStateShowLoading(pullToRefresh);
-  }
-
+  public void loadData(boolean pullToRefresh);
 }
 {% endhighlight %}
 
-As already said before, we use a `ViewState` to keep track which in "state" the view is. With state we mean things like "showing loading spinner", "showing loaded content view", "showing error message". We simply do that by setting the ViewState's internal state as the `View` interface methods `showLoading()`, `showError()` and `showContent()` gets invoked. If the activity or Fragment get's destroyed during screen orientation changes we store the ViewState into the persistent Bundle in `onSaveInstanceState(Bundle)`. We also have to save the data the view is currently displaying. This is why you have to implement `getData()` method. Here you have to return the data that has been set previously with `setData()` (See [MVP fundamentals]({{ site.baseurl }}/mvp/) ) and finally displayed on screen by calling `showContent()`. In order to be able to put the data this View displays into the `Bundle` along with the `ViewState` the data **must** be `Parcelable`. `createViewState()` is the method that gets called internally to instantiate a new ViewState object. There are already some ViewState  implementations for the most use cases that you can use like `ArrayListLceViewState` (to be used when your data is `ArrayList<? extends Parcelable>`) or `CastedArrayListLceViewState` (to be used with `List<? extends Parcelable>`). Check the java docs for implementations.
+Methods like `loadData()` and `setData()` are not needed in `LoginView` nor make it sense to have pull-to-refresh support. You could simply use MvpLceView anyway and implement that methods with an empty implementation. But that is a bad idea, because defining an interface is like making a contract with other software components: Your interface promises that the method is "callable" (in the sense of does something useful), but doing nothing by invoking this method is a violation of that contract. Also your code gets harder to understand and maintain if you have plenty of methods that get called from some other components but are doing nothing. Furthermore, if you use `MvpLceView` usually you would use `MvpLcePresenter` as base class for `LoginPresenter`. The problem is that `MvpLcePresenter` is "optimized" for `MvpLceView`. So you may have to implement some workarounds in your Presenter which extends from MvpLcePresenter to achieve what you want to do. Simply avoid that kind of problems by not using LCE related classes if your view doesn't have full LCE support.
 
-`ViewState` is just an interface that provides an API to store itself into a Bundle and to restore itself from a Bundle with `ViewState.saveInstanceState(Bundle)` and `ViewState.restoreInstanceState(Bundle)` respectively. Please note that `restoreInstanceState(Bundle)` just means reading the previous state out of the bundle and not apply the last known state to the corresponding `MvpView`. That job is done in `ViewState.apply()`. Let's have a look at the default `LceViewState` implementation (simplified):
-
-{% highlight java %}
-public abstract class LceViewState<D, V extends MvpLceView<D>> implements LceViewState<D, V> {
-
-  /**
-    * Used to indicate that loading is currently displayed by the View
-    */
-   int STATE_SHOW_LOADING = 0;
-   /**
-    * Used to indicate that content is currently displayed by the View
-    */
-   int STATE_SHOW_CONTENT = 1;
-   /**
-    * Used to indicate that the error message is currently displayed by the view
-    */
-   int STATE_SHOW_ERROR = -1;
-
-  /**
-   * The current viewstate. Used to identify if the view is/was showing loading, error, or content.
-   */
-  protected int currentViewState;
-  protected boolean pullToRefresh;
-  protected Throwable exception;
-  protected D loadedData;
-
-  @Override public void setStateShowContent(D loadedData) {
-    currentViewState = STATE_SHOW_CONTENT;
-    this.loadedData = loadedData;
-  }
-
-  @Override public void setStateShowError(Throwable e, boolean pullToRefresh) {
-    currentViewState = STATE_SHOW_ERROR;
-    exception = e;
-    this.pullToRefresh = pullToRefresh;
-  }
-
-  @Override public void setStateShowLoading(boolean pullToRefresh) {
-    currentViewState = STATE_SHOW_LOADING;
-    this.pullToRefresh = pullToRefresh;
-    exception = null;
-  }
-
-  @Override public void apply(V view, boolean retained) {
-
-    if (currentViewState == STATE_SHOW_CONTENT) {
-      view.setData(loadedData);
-      view.showContent();
-    } else if (currentViewState == STATE_SHOW_LOADING) {
-      showLoading(pullToRefresh);
-    } else if (currentViewState == STATE_SHOW_ERROR) {
-      view.showError(exception, pullToRefresh);
-    }
-  }
-}
-{% endhighlight %}
-
-We hope you get the point: a `ViewState` is basically just an object that holds the current `MvpViews` internal state and persists that into a Bundle and retrieve the internal state out of that Bundle after screen orientation changes. `ViewState.apply()` gets called internally to actually apply the ViewState to the corresponding MvpView (see chapter Delegation below).
-
-Please note, that a `Bundle` is limited in size by 1MB roughly. That means that you can not put arbitrary big data (i.e. a very very very huge list of Countries) into the ViewState which at the end gets stored into the Bundle. Therefore `ViewState` is not a solution for all use cases, but it should cover the most use cases sufficiently. Another solution is to use retaining Fragments (discussed later).
-
-## What about the Presenter?
-Glad you asked. So what happens during a screen orientation change is that the MvpView (may be an Activity, Fragment or ViewGroup) gets destroyed. Per default the Presenter get's destroyed as well. So the solution of ViewState discussed so far is just to give the user of your app the impression that nothing has changed during orientation changes. What actually happens behind the scenes is that the View and Presenter gets destroyed, hence the Presenter should cancel running background tasks. In this example workflow we are taking an Activity as View, but it works pretty the same way for Fragments:
-
-  1. We start our app in portrait
-  2. The Activity (View) gets instantiated and calls `onCreate()`, `createPresenter()` and attaches the View (the Activity itself) to the Presenter by calling `presenter.attachView()`. Also `onNewViewState()` gets invoked. This basically means that the Activity is displayed for the first time. Usually you start loading data from this method.
-  3. Next we rotate the device from portrait to landscape.
-  4. `onDestroy()` gets called which calls `presenter.detachView(false)`. Presenter cancels background tasks.
-  5. `onSaveInstanceState(Bundle)` gets called where the `ViewState` gets saved into the Bundle.
-  6. App is in landscape now. A new Activity gets instantiated and calls `onCreate()` and `createPresenter()`, which creates a new Presenter instance and attaches the new View (Activity itself) to the new Presenter by calling `presenter.attachView()`.
-  7. `ViewState` gets restored from Bundle and restores the view's state by calling `ViewState.apply()`. If the `ViewState` was `showLoading()` then the presenter restarts  background threads.
-
- To sum it up here is a lifecycle diagram for **Activities** with ViewState support, but it's pretty the same for Fragments as well.
- ![Model-View-Presenter]({{ site.baseurl }}/images/mvp-activity-lifecycle.png)
-
- You may be a little bit disappointed now you know that the Presenter gets destroyed and background work restarted. Understandable, but see it from the bright side: What you get with the solution discussed so far is a cleaner way to handle screen orientation changes like you don't have to save the views state by hand into a bundle and thing about canceling and restarting background tasks etc. but yes, you are still at the same point as without ViewState except the fact that we give the user the impression that everything has survived orientation changes. Don't be afraid, Mosby provides a real solution how Presenters can survive screen orientation changes described in the next chapter.
-
-## Retaining Fragments - Retaining Presenter
-What is a retaining Fragments? If you set `Fragment.setRetainInstanceState(true)` then the Fragment will not be destroyed during screen rotations. Only the Fragment's GUI (the `android.view.View`  returned from `onCreateView()`) get's destroyed an newly created. That means all of your fragment class member variables are still there after screen rotation and so is the presenter still there after screen orientation has been changed. In that case we just detach the old view from presenter and attach the new view to presenter. Hence the presenter doesn't have to cancel any running background task, because the view gets reattached. Example:
-
-  1. We start our app in portrait.
-  2. The retaining Fragment gets instantiated and calls `onCreate()`, `onCreateView()`, `createPresenter()` and attach the view (the Fragment himself) to the Presenter by calling `presenter.attachView()`. Also `onNewViewState()` gets invoked. This basically means that the Fragment is displayed for the first time. Typically this is the right point to start loading the data.
-  3. Next we rotate our device from portrait to landscape.
-  4. `onDestroyView()` gets called which calls `presenter.detachView(true)`. Note that the parameter `true` informs the Presenter the Presenter will be retained and a new view will be attached afterwards (otherwise the parameter would be set to false). Therefore the Presenter knows that he doesn't have to cancel running background threads.
-  5. App is in landscape now. `onCreateView()` gets called, but **not** `createPresenter()` because  `presenter != null` since Presenter variable has survived orientation changes because of `setRetainInstanceState(true)`.
-  6. View gets reattached to Presenter by `presenter.attachView()`.
-  7. `ViewState` gets restored. Since no background thread has been canceled restarting background threads is not needed.
-
-The lifecycle diagram for **Fragments** looks like this:
-
-![Retaining Fragment lifecycle]({{ site.baseurl }}/images/mvp-fragment-lifecycle.png)
-
-By using retaining Fragments you are able to implement retaining Presenters. This also means that in this case the `ViewState` is not just "faking" that everything is still in the same state as before screen orientation changes, indeed the Presenter survives screen orientation changes and only the portrait View gets detached from Presenter and afterwards the landscape View get attached to the same Presenter instance as in portrait. By using retaining Fragments the data that the View is displays doesn't has to implement `Parcelable` since `ViewState` will be kept in memory (and not put into a `Bundle`) during screen orientation changes. Thus we also don't have to worry about the 1MB data limit as we have to with Activities. For retaining Fragments with an `MvpLceView` (Loading-Content-Error) you should use `RetainingFragmentLceViewState`.
-
-## Custom ViewState
-`ViewState` is a really powerful and flexible concept. So far you learned how easy it is to use one of the provided LCE (Loading-Content-Error) ViewsStates. Now lets write our own custom View and ViewState. Our View should only display two different kind of data objects `A` and `B`. The result should look like this:
-<p>
-<iframe width="640" height="480" src="https://www.youtube.com/embed/9iSBGEIZmUw?rel=0" frameborder="0" allowfullscreen class="videoContainer" ></iframe>
-</p>
-
-It's not that impressive. It should just give you an idea of how easy it is to create your own ViewState.
-
-The View interface and the data objects (model) looks like this:
-{% highlight java %}
-
-public class A implements Parcelable {
-  String name;
-
-  public A(String name) {
-    this.name = name;
-  }
-
-  public String getName() {
-    return name;
-  }
-}
-
-public class B implements Parcelable {
-  String foo;
-
-  public B(String foo) {
-    this.foo = foo;
-  }
-
-  public String getFoo() {
-    return foo;
-  }
-}
-
-public interface MyCustomView extends MvpView {
-
-  public void showA(A a);
-
-  public void showB(B b);
-}
-{% endhighlight %}
-
-We don't have any business logic in this simple sample. Let's assume that in a real world app there would be a complex operation in our business logic to generate `A` or `B`. Our presenter looks like this:
+Hence we don't use LCE related for the login and write our own `LoginView`(already shown above), `LoginPresenter` and `LoginViewState`. The `LoginPresenter` is nothing special. All it does is it takes the username and password from `LoginView` and passes it to `AccountManager`. If login was successful an `LoginSuccessfulEvent` will be posted along an EventBus. We use an EventBus to communicate such events amongst each Presenter (will be explained later).
 
 {% highlight java %}
-public class MyCustomPresenter extends MvpBasePresenter<MyCustomView> {
+public class LoginPresenter extends MvpBasePresenter<LoginView> {
 
-  Random random = new Random();
+  private AccountManager accountManager;
+  private EventBus eventBus;
 
-  public void doA() {
+  @Inject public LoginPresenter(AccountManager accountManager,
+      EventBus eventBus) {
+    this.accountManager = accountManager;
+    this.eventBus = eventBus;
+  }
 
-    A a = new A("My name is A "+random.nextInt(10));
+  public void doLogin(AuthCredentials credentials) {
 
     if (isViewAttached()) {
-      getView().showA(a);
+      getView().showLoading();
     }
-  }
 
-  public void doB() {
+    // Kind of "callback"
+    subscriber = new Subscriber<Account>() {
+      @Override public void onCompleted() {
+        if(isViewAttached()){
+          getView().loginSuccessful();
+        }
+      }
 
-    B b = new B("I am B "+random.nextInt(10));
+      @Override public void onError(Throwable e) {
+        if (isViewAttached()){
+          getView().showError();
+        }
+      }
 
-    if (isViewAttached()) {
-      getView().showB(b);
-    }
+      @Override public void onNext(Account account) {
+        eventBus.post(new LoginSuccessfulEvent(account));
+      }
+    };
+
+    // do the login
+    accountManager.doLogin(credentials).subscribe(subscriber);
   }
 }
 {% endhighlight %}
 
-We define `MyCustomActivity` which implements `MyCustomView`
-
+The `LoginFragment` is the View controlled by `LoginPresenter`.
 {% highlight java %}
-public class MyCustomActivity extends MvpViewStateActivity<MyCustomView, MyCustomPresenter>
-    implements MyCustomView {
+ public class LoginFragment extends MvpViewStateFragment<LoginView, LoginPresenter>
+    implements LoginView {
 
-  @InjectView(R.id.textViewA) TextView aView;
-  @InjectView(R.id.textViewB) TextView bView;
+  @InjectView(R.id.username) EditText username;
+  @InjectView(R.id.password) EditText password;
+  @InjectView(R.id.loginButton) ActionProcessButton loginButton;
+  @InjectView(R.id.errorView) TextView errorView;
+  @InjectView(R.id.loginForm) ViewGroup loginForm;
 
-  @Override protected void onCreate(Bundle savedInstanceState) {
+  @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.my_custom_view);
+    setRetainInstance(true);
   }
 
-  @Override public RestoreableViewState createViewState() {
-    return new MyCustomViewState(); // Our ViewState implementation
+  @Override protected int getLayoutRes() {
+    return R.layout.fragment_login;
   }
 
-  // Will be called when no view state exist yet,
-  // which is the case the first time MyCustomActivity starts
+  @Override public ViewState createViewState() {
+    return new LoginViewState();
+  }
+
+  @Override public LoginPresenter createPresenter() {
+    return new LoginPresenter();
+  }
+
+  @OnClick(R.id.loginButton) public void onLoginClicked() {
+
+    // Check for empty fields
+    String uname = username.getText().toString();
+    String pass = password.getText().toString();
+
+    loginForm.clearAnimation();
+
+    // Start login
+    presenter.doLogin(new AuthCredentials(uname, pass));
+  }
+
+  // Called first time the fragment starts
   @Override public void onNewViewStateInstance() {
-    presenter.doA();
+    showLoginForm();
   }
 
-  @Override protected MyCustomPresenter createPresenter() {
-    return new MyCustomPresenter();
+  @Override public void showLoginForm() {
+
+    LoginViewState vs = (LoginViewState) viewState;
+    vs.setShowLoginForm();
+
+    errorView.setVisibility(View.GONE);
+    setFormEnabled(true);
+    loginButton.setLoading(false);
   }
 
-  @Override public void showA(A a) {
-    MyCustomViewState vs = ((MyCustomViewState) viewState);
-    vs.setShowingA(true);
-    vs.setData(a);
-    aView.setText(a.getName());
-    aView.setVisibility(View.VISIBLE);
-    bView.setVisibility(View.GONE);
+  @Override public void showError() {
+
+    LoginViewState vs = (LoginViewState) viewState;
+    vs.setShowError();
+
+    loginButton.setLoading(false);
+
+    if (!isRestoringViewState()) {
+      // Enable animations only if not restoring view state
+      loginForm.clearAnimation();
+      Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake);
+      loginForm.startAnimation(shake);
+    }
+
+    errorView.setVisibility(View.VISIBLE);
   }
 
-  @Override public void showB(B b) {
-    MyCustomViewState vs = ((MyCustomViewState) viewState);
-    vs.setShowingA(false);
-    vs.setData(b);
-    bView.setText(b.getFoo());
-    aView.setVisibility(View.GONE);
-    bView.setVisibility(View.VISIBLE);
+  @Override public void showLoading() {
+
+    LoginViewState vs = (LoginViewState) viewState;
+    vs.setShowLoading();
+    errorView.setVisibility(View.GONE);
+    setFormEnabled(false);
+
+    loginButton.setLoading(true);
   }
 
-  @OnClick(R.id.loadA) public void onLoadAClicked() {
-    presenter.doA();
+  private void setFormEnabled(boolean enabled) {
+    username.setEnabled(enabled);
+    password.setEnabled(enabled);
+    loginButton.setEnabled(enabled);
   }
 
-  @OnClick(R.id.loadB) public void onLoadBClicked() {
-    presenter.doB();
+  // Called when login was successful
+  @Override public void loginSuccessful() {
+    getActivity().finish();
   }
+
 }
 {% endhighlight %}
 
-Since we are not having LCE (Loading-Content-Error) we are not using `MvpLceActivity` as base class. We use `MvpViewStateActivity` as base class which is the most general Activity implementation that supports `ViewState`. Basically our View simply displays `aView` or `bView`.
-In `onNewViewStateInstance() ` we have to specify what to do on first Activity start, because no previous `ViewState` instance exists to restore. In `showA(A a)` and `showB(B b)` we have to save the information that we are displays `A` or `B` into our `ViewState`. We are almost done, only  `MyCustomViewState` implementation is missing:
+As you can see `LoginFragment` now contains only code related to UI components. No business logic, no big Fragment with 1000+ lines of spaghetti code. With this clear separation of concerns between View (LoginFragment), Presenter (LoginPresenter) and business logic (AccountManager) you are able to write maintainable, loosly coupled and testable code. **That's what MVP is all about.**
+
+Last but not least we also want to handle screen orientation changes (rotating device from portrait to landscape and vice versa). Mosby provides a mechanism for that called [ViewState]({{ site.baseurl }}/viewstate/). ViewState implementations for `MvpLceView` are already provided by Mosby. However `LoginView` is not a `MvpLceView` (discussed above) and therefore needs its own ViewState implementation. Writing a custom ViewState is easy:
 
 {% highlight java %}
-public class MyCustomViewState implements RestoreableViewState<MyCustomView> {
+public class LoginViewState implements ViewState<LoginView> {
 
-  private final String KEY_STATE = "MyCustomViewState-flag";
-  private final String KEY_DATA = "MyCustomViewState-data";
+  final int STATE_SHOW_LOGIN_FORM = 0;
+  final int STATE_SHOW_LOADING = 1;
+  final int STATE_SHOW_ERROR = 2;
 
-  public boolean showingA = true; // if false, then show B
-  public Parcelable data; // Can be A or B
+  int state = STATE_SHOW_LOGIN_FORM;
 
-  @Override public void saveInstanceState(Bundle out) {
-    out.putBoolean(KEY_STATE, showingA);
-    out.putParcelable(KEY_DATA, data);
+  public void setShowLoginForm() {
+    state = STATE_SHOW_LOGIN_FORM;
   }
 
-  @Override public boolean restoreInstanceState(Bundle in) {
-    if (in == null) {
-      return false;
-    }
-
-    showingA = in.getBoolean(KEY_STATE, true);
-    data = in.getParcelable(KEY_DATA);
-    return true;
+  public void setShowError() {
+    state = STATE_SHOW_ERROR;
   }
 
-  @Override public void apply(MyCustomView view, boolean retained) {
-
-    if (showingA) {
-      view.showA((A) data);
-    } else {
-      view.showB((B) data);
-    }
+  public void setShowLoading() {
+    state = STATE_SHOW_LOADING;
   }
 
   /**
-   * @param a true if showing a, false if showing b
+   * Is called from Mosby to apply the view state to the view.
+   * We do that by calling the methods from the View interface (like the presenter does)
    */
-  public void setShowingA(boolean a) {
-    this.showingA = a;
+  @Override public void apply(LoginView view, boolean retained) {
+
+    switch (state) {
+      case STATE_SHOW_LOADING:
+        view.showLoading();
+        break;
+
+      case STATE_SHOW_ERROR:
+        view.showError();
+        break;
+
+      case STATE_SHOW_LOGIN_FORM:
+        view.showLoginForm();
+        break;
+    }
   }
 
-  public void setData(Parcelable data){
-    this.data = data;
+}
+{% endhighlight %}
+
+We simply store the current view state internally as an integer `state`. The method `apply()` gets called from Mosby internally and this is the point where we restore the view's state  by calling the same methods defined in `LoginView` interface as the Presenter does.
+You may wonder how the ViewState is connected to your Fragment or Activity. `MvpViewStateFragment` has a method `createViewState()` called by Mosby internally which you have to implement. You just have to return a `LoginViewState` instance. However, you have to set the LoginViewState's' internal state by hand. Typically you do that in the methods defined by `LoginView` interface as shown below:
+{% highlight java %}
+
+public class LoginFragment extends MvpViewStateFragment<LoginView, LoginPresenter>
+    implements LoginView {
+
+  @Override public void showLoginForm() {
+
+    // Set View state
+    LoginViewState vs = (LoginViewState) viewState;
+    vs.setShowLoginForm();
+
+    errorView.setVisibility(View.GONE);
+
+    ...
+  }
+
+  @Override public void showError() {
+
+    // Set the view state
+    LoginViewState vs = (LoginViewState) viewState;
+    vs.setShowError();
+
+    if (!isRestoringViewState()) {
+      // Enable animations only if not restoring view state
+      loginForm.clearAnimation();
+      Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake);
+      loginForm.startAnimation(shake);
+    }
+
+    errorView.setVisibility(View.VISIBLE);
+
+    ...
+  }
+
+  @Override public void showLoading() {
+
+    // Set the view state
+    LoginViewState vs = (LoginViewState) viewState;
+    vs.setShowLoading();
+
+    errorView.setVisibility(View.GONE);
+
+    ...
   }
 }
 {% endhighlight %}
 
-As you can see we have to save our `ViewState` in `saveInstanceState()` which will be called from `Activity.onSaveInstanceState()` and restore the viewstate's data in `restoreInstanceState()` which will be called from `Activity.onCreate()`. The `apply()` method will be called from Activity to restore the view state. We do that by calling the same View interface methods `showA()` or `showB()` like the presenter does.
+Sometimes you have to know if the method gets called from Presenter or because of restoring ViewState, typically when working with animations. You can check that with `isRestoringViewState()` like `showError()` does (see above).
 
-This external `ViewState` class pulls the complexity and responsibility of restoring the view's state out from the Activity code into an separated class. It's also easier to write unit tests for a `ViewState` class  than for an `Activity` class: Since you can assume that Mosby works correctly and saves and restores your ViewState properly you basically just have to test if `ViewState.apply()` works as expected and invokes the corresponding View methods correctly.
-
-## ViewState Delegate
-In the [introduction to MVP page]({{ site.baseurl }}/mvp/) we have already said that Mosby uses delegation and composition to allow you to include Mosbys MVP functionality into any Activity, Fragment or ViewGroup. There is also a delegate to include MVP + ViewState in any Activity, Fragment or ViewGroup.
-
-- `MvpViewStateDelegateCallback`: This interface extends from `MvpDelegateCallback` and defines the method you have to implement like `createViewState()`.
- - `ActivityMvpViewStateDelegateImpl`: This delegate is an extension of `ActivityMvpDelegateImpl` and works exactly the same way as shown in the previous code snippet: you have to call the delegates method from the corresponding activity lifecycle method. Like shown above your custom activity has to implement `MvpViewStateDelegateCallback` and use a `ActivityMvpViewStateDelegateImpl` instead of the non ViewState related ones:
- {% highlight java %}
- public abstract class MyViewStateActivity extends Activity implements MvpViewStateDelegateCallback<> {
-
-   protected ActivityMvpDelegate mvpDelegate = new ActivityMvpViewStateDelegateImpl(this);
-
-   // The rest is still the same as shown above without ViewState support
-
-   @Override protected void onCreate(Bundle savedInstanceState) {
-     super.onCreate(savedInstanceState);
-     mvpDelegate.onCreate(savedInstanceState);
-   }
-
-   @Override protected void onDestroy() {
-     super.onDestroy();
-     mvpDelegate.onDestroy();
-   }
-
-   @Override protected void onSaveInstanceState(Bundle outState) {
-     super.onSaveInstanceState(outState);
-     mvpDelegate.onSaveInstanceState(outState);
-   }
-
-   ... // other lifecycle methods
- }
- {% endhighlight %}
-
- - `FragmentMvpViewStateDelegateImpl`: Extension from `FragmentMvpDelegateImpl` to add ViewState support.
- - `ViewGroupMvpViewStateDelegateImpl`: The delegate for `ViewGroups` like FrameLayout to add ViewState support.
-
-The advantage of delegation is that you can add Mosby MVP and ViewState support to any other `Activity`, `Fragment` or `ViewGroup` not included in the Mosby library like `DialogFragment`. In the main menu of the mail example you see the "statistics" menu item. If you click on it a DialogFragment get's displayed. This is implemented like this:
+Since `LoginView` and `LoginViewState` are plain old java classes with no dependencies to the android framework you can write plain old java unit test for `LoginViewState`:
 
 {% highlight java %}
-public class StatisticsDialog extends DialogFragment
-   implements StatisticsView, MvpViewStateDelegateCallback<StatisticsView, StatisticsPresenter> {
+@Test
+public void testShowLoginForm(){
 
- @InjectView(R.id.contentView) RecyclerView contentView;
- @InjectView(R.id.loadingView) View loadingView;
- @InjectView(R.id.errorView) TextView errorView;
- @InjectView(R.id.authView) View authView;
+  final AtomicBoolean loginCalled = new AtomicBoolean(false);
+  LoginView view = new LoginView() {
 
- StatisticsPresenter presenter;
- ViewState<StatisticsView> viewState;
- MailStatistics data;
- StatisticsAdapter adapter;
+    @Override public void showLoginForm() {
+      loginCalled.set(true);
+    }
 
- // Delegate
- private FragmentMvpDelegate<StatisticsView, StatisticsPresenter> delegate =
-     new FragmentMvpViewStateDelegateImpl<>(this);
+    @Override public void showError() {
+      Assert.fail("showError() instead of showLoginForm()");
+    }
 
+    @Override public void showLoading() {
+      Assert.fail("showLoading() instead of showLoginForm()");
+    }
 
- @Override public void onCreate(Bundle savedInstanceState) {
-   super.onCreate(savedInstanceState);
-   delegate.onCreate(savedInstanceState);
- }
+    @Override public void loginSuccessful() {
+      Assert.fail("loginSuccessful() instead of showLoginForm()");
+    }
+  };
 
- @Override public void onDestroy() {
-   super.onDestroy();
-   delegate.onDestroy();
- }
-
- @Override public void onPause() {
-   super.onPause();
-   delegate.onPause();
- }
-
- @Override public void onResume() {
-   super.onResume();
-   delegate.onResume();
- }
-
- @Nullable @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
-     Bundle savedInstanceState) {
-   return inflater.inflate(R.layout.fragment_statistics, container, false);
- }
-
- @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-   super.onViewCreated(view, savedInstanceState);
-   delegate.onViewCreated(view, savedInstanceState);
-
-   ButterKnife.inject(this, view);
-   adapter = new StatisticsAdapter(getActivity());
-   contentView.setAdapter(adapter);
-   contentView.setLayoutManager(new LinearLayoutManager(getActivity()));
- }
-
- @Override public void onStart() {
-   super.onStart();
-   delegate.onStart();
- }
-
- @Override public void onStop() {
-   super.onStop();
-   delegate.onStop();
- }
-
- @Override public void onAttach(Activity activity) {
-   super.onAttach(activity);
-   delegate.onAttach(activity);
- }
-
- @Override public void onDetach() {
-   super.onDetach();
-   delegate.onDetach();
- }
-
- @Override public void onActivityCreated(Bundle savedInstanceState) {
-   super.onActivityCreated(savedInstanceState);
-   delegate.onActivityCreated(savedInstanceState);
- }
-
- @Override public void onSaveInstanceState(Bundle outState) {
-   super.onSaveInstanceState(outState);
-   delegate.onSaveInstanceState(outState);
- }
-
- ...
+  LoginViewState viewState = new LoginViewState();
+  viewState.setShowLoginForm();
+  viewState.apply(view, false);
+  Assert.assertTrue(loginCalled.get());
 
 }
 {% endhighlight %}
 
-Delegation allows you to add functionality to any class inclusive third party frameworks like [RoboGuice](https://github.com/roboguice/roboguice). Mosby's ships with support Fragment (Fragments from support library). With delegation as described above you can use "native" `android.app.Fragment` as well.
+To test if `LoginFragment implements LoginView` restores it's state correctly during screen orientation changes it's enough to test the `LoginViewState` because you can assume that Mosby's internals during screen orientation on your a real device are working correctly.
 
-Another advantage of delegation is that you can change Mosby's default behavior by implementing a custom Delegate. For example: Mosby's default implementation of how to handle Presenter during orientation changes is to recreate the presenter and to restart the requests (excepted retaining Fragments where the Presenter survives). You could write another `ActivityMvpDelegate` or `FragmentMvpDelegate` that internally uses a `HashMap<Integer, MvpPresenter>` to store an already existing Presenter and reuse it when the View gets recreated after orientation changes (instead of creating a new one and restart requests):
-
+So far we only have tested if restoring works correctly. We also have to test if we are setting the view state correctly. However, that is done in `LoginFragment`, so we have to test the Fragment rather than the `LoginViewState`. Thanks to [Robolectric](http://robolectric.org/) this is also straightforward:
 {% highlight java %}
-public interface IdBasedMvpView extends MvpView {
- public void setId(int id);
- public int getId();
+@Test
+public void testSetingState(){
+  LoginFragment fragment = new LoginFragment();
+  FragmentTestUtil.startFragment(fragment);
+  fragment.showLoginForm();
+
+  LoginViewState vs = (LoginViewState) fragment.getViewState();
+
+  Assert.assertEquals(vs.state, vs.STATE_SHOW_LOGIN_FORM);
 }
 {% endhighlight %}
 
+We simply call `showLoginForm()` and we check if the ViewState is `STATE_SHOW_LOGIN_FORM` after this call.
+
+You could also test if `LoginFragment` handles screen orientation changes correctly by writing instrumentation test (i.e. with espresso), but the point is that in Mosby you have this clear separation between view and view's state. Hence, you can test the view state independently.
+
+## Base classes
+If you have a closer look at the video you will see that the most of the views can switch between showing a login button and the usual Loading-Content-Error (LCE) things. Hence we define a Base view interface:
+
 {% highlight java %}
-public class IdBasedActivityMvpDelegate<V extends IdBasedMvpView, P extends MvpPresenter<V>>
-   implements ActivityMvpDelegate {
-
- // Every view gets an unique id
- private static int lastViewId = 0;
-
- // Map to store presenter
- private static Map<Integer, MvpPresenter> presenterMap = new HashMap<>();
-
- // The reference to the Activity
- private MvpDelegateCallback<V, P>  delegateCallback;
-
-
- public ActivityMvpDelegateImpl(MvpDelegateCallback<V, P> delegateCallback) {
-   this.delegateCallback = delegateCallback;
- }
-
-
- // Called from Activity.onCreate()
- @Override
- public void onCreate(Bundle bundle) {
-
-   // Returns 0 if no view id is assigned
-   int viewId = bundle.getInt("MvpViewId");
-
-   MvpPresenter presenter = presenterMap.get(viewId);
-
-   if (presenter == null){
-     // No presenter in Map --> View starting first time
-     // so create a new presenter and put it into presenterMap
-     presenter = delegateCallback.createPresenter();
-
-     viewId = ++lastViewId;
-     presenterMap.put(viewId, presenter);
-   }
-
-   V view = delegateCallback.getMvpView();
-
-   view.setViewId(viewId);
-   view.setPresenter(presenter);
-   presenter.attachView(view);
- }
-
- @Override
- public void onSaveInstanceState(Bundle outState) {
-   int viewId = delegateCallback.getMvpView().getViewId();
-   outState.putInt("MvpViewId", viewId);
- }
-
- @Override
- public void onDestroy() {
-   delegateCallback.getPresenter().detachView(true); // true == presenter retains instance state
- }
+// @param <M> The type of the model displayed by this view
+public interface AuthView<M> extends MvpLceView<M> {
+  public void showAuthenticationRequired();
 }
 {% endhighlight %}
 
+`AuthView` extends  `MvpLceView`. The method `showAuthenticationRequired` forces the view to show the login button. In the mail app we use retaining Fragments and Activities just as container for Fragments. Hence we can define a base Fragment that we can use to derive from to avoid to implement the `showAuthenticationRequired()` again and again.
+
 {% highlight java %}
-public MyActivity extends MvpActivity implements IdBasedMvpView {
+public abstract class AuthFragment<AV extends View, M, V extends AuthView<M>, P extends MvpPresenter<V>>
+    extends MvpLceViewStateFragment<AV, M, V, P> implements AuthView<M> {
 
- ActivityMvpDelegate mvpDelegate;
+  protected View authView;
 
- @Override
- protected ActivityMvpDelegate<V, P> getMvpDelegate() {
-   if (mvpDelegate == null) {
-     mvpDelegate = new IdBasedActivityMvpDelegate(this);
-   }
+  @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
+    authView = view.findViewById(R.id.authView);
+    authView.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        onAuthViewClicked(); // Starts the intent to show login form
+      }
+    });
+  }
 
-   return mvpDelegate;
- }
+  @Override public void showAuthenticationRequired() {
+    AuthViewState vs = (AuthViewState) viewState;
+    vs.setShowingAuthenticationRequired();
+
+    loadingView.setVisibility(View.GONE);
+    errorView.setVisibility(View.GONE);
+    contentView.setVisibility(View.GONE);
+    authView.setVisibility(View.VISIBLE);
+  }
 }
 {% endhighlight %}
 
-We assign each view a unique id. With this id we can find the presenter in `presenterMap`. If no presenter is available, then we create a new one and put it into the `presenterMap`. The view's unique id is stored into the views bundle. That way you would be able to have retaining presenters for Activities and non retaining Fragments as well. So why this is not the default implementation of Mosby? The problem with that approach is memory management. When does a Presenter gets removed from this map? If Presenter never gets removed does it cause memory leaks? Usually presenters are lightweight objects but most of the time they are a callback for an async running thread. To avoid memory leaks this is not the default strategy in Mosby. You could also implement an  `ActivityMvpDelegate` that stores the Presenters state in a `Bundle` (like Mortar does, in combination with dagger scopes). So you see: Mosby offers a flexible scaffold and a default implementation that match the most scenarios. However, Mosby is customizable for edge cases.
+To control a `AuthView` like an `AuthFragment` we need a Presenter. Let's define `BaseRxAuthPresenter`:
+
+{% highlight java %}
+public class BaseRxAuthPresenter<V extends AuthView<M>, M> extends MvpLceRxPresenter<V, M> {
+
+  protected EventBus eventBus;
+  protected MailProvider mailProvider;
+
+  public BaseRxAuthPresenter(MailProvider mailProvider, EventBus eventBus) {
+    this.eventBus = eventBus;
+    this.mailProvider = mailProvider;
+  }
+
+  @Override public void attachView(V view) {
+    super.attachView(view);
+    eventBus.register(this);
+  }
+
+  @Override public void detachView(boolean retainInstance) {
+    super.detachView(retainInstance);
+    eventBus.unregister(this);
+  }
+
+  // Called when an error has occurred while quering data from mailProvider
+  @Override protected void onError(Throwable e, boolean pullToRefresh) {
+    if (e instanceof NotAuthenticatedException) {
+      eventBus.post(new NotAuthenticatedEvent());
+    } else {
+      super.onError(e, pullToRefresh);
+    }
+  }
+
+  public void onEventMainThread(NotAuthenticatedEvent event) {
+    if (isViewAttached()) {
+      getView().showAuthenticationRequired();
+    }
+  }
+
+  public void onEventMainThread(LoginSuccessfulEvent event) {
+    if (isViewAttached()) {
+      getView().loadData(false);
+    }
+  }
+}
+{% endhighlight %}
+
+The idea is to use an `EventBus` to propagate that the user is not authenticated (`NotAuthenticatedException` will be thrown by `MailProvider`). To do so, we post `NotAuthenticatedEvent` to the EventBus to inform all subscribed Presenters that the login button should be displayed. You can see this behavior in the video. The main menu as well as inbox fragment displays the login button. We do pretty the same when the user has been signed in successfully: A `LoginSuccessfulEvent` will be propagated over the EventBus and the Presenter will start loading the data instead of displaying the login button:
+
+ ![Model-View-Presenter]({{ site.baseurl }}/images/login-eventbus.jpg)
+
+ 

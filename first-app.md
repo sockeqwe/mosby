@@ -7,7 +7,21 @@ permalink: /first-app/
 # Writing an App
 _In [Model-View-Presenter fundamentals]({{ site.baseurl }}/mvp/) we have discussed what MVP is and how Mosby implements that. Furthermore, we have explained how [Mosby's ViewState]({{ site.baseurl }}/mvp/) feature work. Now let's put that all together and lets write an App powered on Mosby_
 
-This page describes how to use the `ViewState` feature of Mosby. In the [MVP fundamentals]({{ site.baseurl }}/mvp/) we have shown how to implement a simple Fragment that displays a list of Countries loaded by using MVP.
+We will write a sample app which mimics a mail client. It's not a real mail client, it's not connected to a real POP3 or IMAP Server. All the data is randomly generated on app start. There is no persistent layer like local sqlite database. The APK file can be downloaded from [here](https://github.com/sockeqwe/mosby/releases/download/1.2.0/sample-mail-debug.apk).
+
+This video shows the app:
+
+<p>
+<iframe width="640" height="480" src="https://www.youtube.com/embed/_dEYtXgoyBM?rel=0" frameborder="0" class="videoContainer" allowfullscreen></iframe>
+</p>
+
+Of course the whole app is based on Mosby and as you see in the video above everything keeps it's  state during orientation changes. Regarding the data structure: A `Mail` is linked to a `Person` as sender and another Person as receiver. Every mail is associated to exactly one `Label`. A Label is just something like a "folder". A mail can be assigned to one Label. One Label has arbitrary many mails assigned. A Label is basically just a String. In this sample app there are four labels: "Inbox", "Sent", "Spam" and "Trash". So deleting a mail form inbox is just reassigning the label of the mail from "Inbox" to "Trash".
+`MailProvider` is the central business logic element where we can query list of mails and so on. Furthermore, an `AccountManager` exists who is responsible to authenticate a user. As you see in the video on first app start you have to sign in to see the mails. Internally for the business logic (`MailProvider` and `AccountManager`) I use RxJava. If you are not familiar with RxJava, don't worry. All you have to know is, that RxJava offers an `Observable` to do some kind of query and as callback the methods `onData()`, `onCompleted()` or `onError()` gets called. If you are familiar with RxJava, please DON'T look at the code! It's pretty ugly as I changed mind several times during development and didn't refactored everything as I would do for a real app. Please note that this sample app is about Mosby and not how to write a clean business logic with RxJava. Note also that even if I have used Dagger2 for dependency injection this is not a reference app for Dagger2 nor for material design. For sure there is room for improvements and I would gladly accept pull requests for this sample app.
+
+As you see in the video I'm simulating network traffic by adding a delay of two seconds to every request (like loading a list of mails). I also simulate network problems: Every fifth request will fail (that's why you see the error view quite often in the video). Furthermore, I simulate authentication problems: After 15 requests the user has to sign in again (a login button will be dipslayed).
+
+
+This page describes how to use the `ViewState` feature of Mosby. In [MVP fundamentals]({{ site.baseurl }}/mvp/) we have shown how to implement a simple Fragment that displays a list of Countries loaded by using MVP.
 
 **Question:** What happens if we rotate our device from portrait to landscape that runs our countries example app and already displays a list of countries?
 

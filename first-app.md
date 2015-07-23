@@ -1,11 +1,11 @@
 ---
 layout: page
-title: ViewState
-permalink: /viewstate/
+title: Writing an App
+permalink: /first-app/
 ---
 
-# ViewState
-_Before reading this page you should have read the [Model-View-Presenter fundamentals]({{ site.baseurl }}/mvp/)_
+# Writing an App
+_In [Model-View-Presenter fundamentals]({{ site.baseurl }}/mvp/) we have discussed what MVP is and how Mosby implements that. Furthermore, we have explained how [Mosby's ViewState]({{ site.baseurl }}/mvp/) feature work. Now let's put that all together and lets write an App powered on Mosby_
 
 This page describes how to use the `ViewState` feature of Mosby. In the [MVP fundamentals]({{ site.baseurl }}/mvp/) we have shown how to implement a simple Fragment that displays a list of Countries loaded by using MVP.
 
@@ -385,14 +385,16 @@ As you can see we have to save our `ViewState` in `saveInstanceState()` which wi
 This external `ViewState` class pulls the complexity and responsibility of restoring the view's state out from the Activity code into an separated class. It's also easier to write unit tests for a `ViewState` class  than for an `Activity` class: Since you can assume that Mosby works correctly and saves and restores your ViewState properly you basically just have to test if `ViewState.apply()` works as expected and invokes the corresponding View methods correctly.
 
 ## ViewState Delegate
-In the [MVP fundamentals page]({{ site.baseurl }}/mvp/) we have already said that Mosby uses delegation and composition to allow you to bring Mosbys MVP functionality into any Activity, Fragment or ViewGroup. Guess what, there is also a delegate to include MVP + ViewState in any Activity, Fragment or ViewGroup as well:
+In the [introduction to MVP page]({{ site.baseurl }}/mvp/) we have already said that Mosby uses delegation and composition to allow you to include Mosbys MVP functionality into any Activity, Fragment or ViewGroup. There is also a delegate to include MVP + ViewState in any Activity, Fragment or ViewGroup.
 
- - `MvpViewStateDelegateCallback`: This interface extends from `MvpDelegateCallback` and defines  ViewState related methods you have to implement like `createViewState()`.
- - `ActivityMvpViewStateDelegateImpl`: This delegate is an extension of `ActivityMvpDelegateImpl`. You have to call the delegates method from the corresponding activity lifecycle method. Furthermore your custom activit has to implement `MvpViewStateDelegateCallback` and use a `ActivityMvpViewStateDelegateImpl` like this:
+- `MvpViewStateDelegateCallback`: This interface extends from `MvpDelegateCallback` and defines the method you have to implement like `createViewState()`.
+ - `ActivityMvpViewStateDelegateImpl`: This delegate is an extension of `ActivityMvpDelegateImpl` and works exactly the same way as shown in the previous code snippet: you have to call the delegates method from the corresponding activity lifecycle method. Like shown above your custom activity has to implement `MvpViewStateDelegateCallback` and use a `ActivityMvpViewStateDelegateImpl` instead of the non ViewState related ones:
  {% highlight java %}
  public abstract class MyViewStateActivity extends Activity implements MvpViewStateDelegateCallback<> {
 
    protected ActivityMvpDelegate mvpDelegate = new ActivityMvpViewStateDelegateImpl(this);
+
+   // The rest is still the same as shown above without ViewState support
 
    @Override protected void onCreate(Bundle savedInstanceState) {
      super.onCreate(savedInstanceState);
@@ -416,9 +418,100 @@ In the [MVP fundamentals page]({{ site.baseurl }}/mvp/) we have already said tha
  - `FragmentMvpViewStateDelegateImpl`: Extension from `FragmentMvpDelegateImpl` to add ViewState support.
  - `ViewGroupMvpViewStateDelegateImpl`: The delegate for `ViewGroups` like FrameLayout to add ViewState support.
 
-As already said, by using the delegate you can support `Activity`, `Fragment` or `ViewGroup` not included in the Mosby library like `DialogFragment` or support third party frameworks like [RoboGuice](https://github.com/roboguice/roboguice). Mosby's ships with support Fragment (Fragments from support library). With delegation as described above you can use "native" `android.app.Fragment` as well.
+The advantage of delegation is that you can add Mosby MVP and ViewState support to any other `Activity`, `Fragment` or `ViewGroup` not included in the Mosby library like `DialogFragment`. In the main menu of the mail example you see the "statistics" menu item. If you click on it a DialogFragment get's displayed. This is implemented like this:
 
-Another advantage of delegation is that you can change Mosby's default behavior by implementing a custom Delegate. For example: Mosby's default implementation of how to handle Presenter during orientation changes is to recreate the presenter and to restart the requests (excepted retaining Fragments where the Presenter survives). You could write another `ActivityMvpDelegate` or `FragmentMvpDelegate` that internally uses a `HashMap<Integer, MvpPresenter>` to store an already existing Presenter and reuse it when the View gets recreated after orientation changes (instead of creating a new one and restart async. background work):
+{% highlight java %}
+public class StatisticsDialog extends DialogFragment
+   implements StatisticsView, MvpViewStateDelegateCallback<StatisticsView, StatisticsPresenter> {
+
+ @InjectView(R.id.contentView) RecyclerView contentView;
+ @InjectView(R.id.loadingView) View loadingView;
+ @InjectView(R.id.errorView) TextView errorView;
+ @InjectView(R.id.authView) View authView;
+
+ StatisticsPresenter presenter;
+ ViewState<StatisticsView> viewState;
+ MailStatistics data;
+ StatisticsAdapter adapter;
+
+ // Delegate
+ private FragmentMvpDelegate<StatisticsView, StatisticsPresenter> delegate =
+     new FragmentMvpViewStateDelegateImpl<>(this);
+
+
+ @Override public void onCreate(Bundle savedInstanceState) {
+   super.onCreate(savedInstanceState);
+   delegate.onCreate(savedInstanceState);
+ }
+
+ @Override public void onDestroy() {
+   super.onDestroy();
+   delegate.onDestroy();
+ }
+
+ @Override public void onPause() {
+   super.onPause();
+   delegate.onPause();
+ }
+
+ @Override public void onResume() {
+   super.onResume();
+   delegate.onResume();
+ }
+
+ @Nullable @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
+     Bundle savedInstanceState) {
+   return inflater.inflate(R.layout.fragment_statistics, container, false);
+ }
+
+ @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+   super.onViewCreated(view, savedInstanceState);
+   delegate.onViewCreated(view, savedInstanceState);
+
+   ButterKnife.inject(this, view);
+   adapter = new StatisticsAdapter(getActivity());
+   contentView.setAdapter(adapter);
+   contentView.setLayoutManager(new LinearLayoutManager(getActivity()));
+ }
+
+ @Override public void onStart() {
+   super.onStart();
+   delegate.onStart();
+ }
+
+ @Override public void onStop() {
+   super.onStop();
+   delegate.onStop();
+ }
+
+ @Override public void onAttach(Activity activity) {
+   super.onAttach(activity);
+   delegate.onAttach(activity);
+ }
+
+ @Override public void onDetach() {
+   super.onDetach();
+   delegate.onDetach();
+ }
+
+ @Override public void onActivityCreated(Bundle savedInstanceState) {
+   super.onActivityCreated(savedInstanceState);
+   delegate.onActivityCreated(savedInstanceState);
+ }
+
+ @Override public void onSaveInstanceState(Bundle outState) {
+   super.onSaveInstanceState(outState);
+   delegate.onSaveInstanceState(outState);
+ }
+
+ ...
+
+}
+{% endhighlight %}
+
+Delegation allows you to add functionality to any class inclusive third party frameworks like [RoboGuice](https://github.com/roboguice/roboguice). Mosby's ships with support Fragment (Fragments from support library). With delegation as described above you can use "native" `android.app.Fragment` as well.
+
+Another advantage of delegation is that you can change Mosby's default behavior by implementing a custom Delegate. For example: Mosby's default implementation of how to handle Presenter during orientation changes is to recreate the presenter and to restart the requests (excepted retaining Fragments where the Presenter survives). You could write another `ActivityMvpDelegate` or `FragmentMvpDelegate` that internally uses a `HashMap<Integer, MvpPresenter>` to store an already existing Presenter and reuse it when the View gets recreated after orientation changes (instead of creating a new one and restart requests):
 
 {% highlight java %}
 public interface IdBasedMvpView extends MvpView {
@@ -444,6 +537,7 @@ public class IdBasedActivityMvpDelegate<V extends IdBasedMvpView, P extends MvpP
  public ActivityMvpDelegateImpl(MvpDelegateCallback<V, P> delegateCallback) {
    this.delegateCallback = delegateCallback;
  }
+
 
  // Called from Activity.onCreate()
  @Override
@@ -478,7 +572,7 @@ public class IdBasedActivityMvpDelegate<V extends IdBasedMvpView, P extends MvpP
 
  @Override
  public void onDestroy() {
-   delegateCallback.getPresenter().detachView(true); // true = presenter retains instance state
+   delegateCallback.getPresenter().detachView(true); // true == presenter retains instance state
  }
 }
 {% endhighlight %}
@@ -499,4 +593,4 @@ public MyActivity extends MvpActivity implements IdBasedMvpView {
 }
 {% endhighlight %}
 
-The idea is that we assign each view a unique id. With this id we can find the corresponding Presenter in `presenterMap`. If no Presenter is available, then we create a new one and put it into the `presenterMap`. The view's unique id is stored into the views bundle. That way you would be able to have retaining Presenters for Activities and non retaining Fragments as well. So why this is not the default implementation of Mosby? The problem with that approach is memory management. When does a Presenter gets removed from this map? If Presenter never gets removed does it cause memory leaks? Usually presenters are lightweight objects but most of the time they are a callback for an async running thread. To avoid memory leaks this is not the default strategy in Mosby. You could also implement an  `ActivityMvpDelegate` that stores the Presenters state in a `Bundle` (like Mortar does, in combination with dagger scopes). So you see: Mosby offers a flexible scaffold and a default implementation that match the most scenarios. However, Mosby is customizable for edge cases.
+We assign each view a unique id. With this id we can find the presenter in `presenterMap`. If no presenter is available, then we create a new one and put it into the `presenterMap`. The view's unique id is stored into the views bundle. That way you would be able to have retaining presenters for Activities and non retaining Fragments as well. So why this is not the default implementation of Mosby? The problem with that approach is memory management. When does a Presenter gets removed from this map? If Presenter never gets removed does it cause memory leaks? Usually presenters are lightweight objects but most of the time they are a callback for an async running thread. To avoid memory leaks this is not the default strategy in Mosby. You could also implement an  `ActivityMvpDelegate` that stores the Presenters state in a `Bundle` (like Mortar does, in combination with dagger scopes). So you see: Mosby offers a flexible scaffold and a default implementation that match the most scenarios. However, Mosby is customizable for edge cases.

@@ -461,4 +461,64 @@ The idea is to use an `EventBus` to propagate that the user is not authenticated
 
  ![Model-View-Presenter]({{ site.baseurl }}/images/login-eventbus.jpg)
 
- 
+Since we are also going to display list of items (like a list of mails) through a `RecyclcerView`. We also implement pull-to-refresh support (by using `SwipeRefreshLayout`) and a view that is dipslayed when the list of items is empty.
+
+{% highlight java %}
+public abstract class AuthRefreshRecyclerFragment<M extends List<? extends Parcelable>, V extends AuthView<M>, P extends MvpPresenter<V>>
+    extends AuthRefreshFragment<M, V, P> {
+
+  protected View emptyView;
+  protected RecyclerView recyclerView;
+  protected Adapter<M> adapter;
+
+  protected abstract Adapter<M> createAdapter();
+
+  @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
+    emptyView = view.findViewById(R.id.emptyView);
+    recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+    adapter = createAdapter();
+    recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+    recyclerView.setAdapter(adapter);
+  }
+
+  @Override public void setData(M data) {
+    adapter.setItems(data);
+    adapter.notifyDataSetChanged();
+  }
+
+  @Override public AuthViewState<M, V> createViewState() {
+    return new AuthCastedArrayListViewState<>();
+  }
+
+  @Override public M getData() {
+    return adapter.getItems();
+  }
+
+  @Override public void showContent() {
+    if (adapter.getItemCount() == 0) {
+        emptyView.setVisibility(View.VISIBLE);
+    } else {
+      emptyView.setVisibility(View.GONE);
+    }
+
+    super.showContent();
+  }
+
+  @Override public void showLoading(boolean pullToRefresh) {
+    super.showLoading(pullToRefresh);
+    if (!pullToRefresh) {
+      emptyView.setVisibility(View.GONE);
+    }
+  }
+
+  @Override public void showError(Throwable e, boolean pullToRefresh) {
+    super.showError(e, pullToRefresh);
+    if (!pullToRefresh) {
+      emptyView.setVisibility(View.GONE);
+    }
+  }
+}
+{% endhighlight %}
+
+So at the end `AuthRefreshRecyclerFragment` has already implemented "showing login button", "pull-to-refresh", "empty view" (if list of items is empty), "ViewState" along with the othe LCE features (inherited from `MvpLceViewStateFragment`) like showing "loading view", "content view", and "errorView". So a fragment that wants to display items in a `RecyclerView` can extends from `AuthRefreshRecyclerFragment` and just have to provide a custom `RecyclerView.Adapter`. To set the Adapter for a fragment the subclass has to implement `createAdapter()` and the rest should work out of the box.

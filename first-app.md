@@ -35,7 +35,7 @@ Now let's step together through the source code (can be found on [Github](https:
 ## Business logic
 `MailProvider` is the central business logic element where we can query list of mails, send mails and so on. Furthermore, an `AccountManager` exists who is responsible to authenticate a user. Internally for the business logic (`MailProvider` and `AccountManager`) we use RxJava. Usually you don't have to take a look inside the business logic implementation details. If you are not familiar with RxJava, don't worry. All you have to know is that RxJava offers an `Observable` to do some kind of query and as callback the methods `onData()`, `onCompleted()` or `onError()` gets called. If you are familiar with RxJava, please DON'T look at the code! It's pretty ugly as we changed mind several times during development and didn't refactored everything as we would do for a real app. Please note that this sample app is about Mosby and not how to write a clean business logic with RxJava. Note also that even if we have used Dagger2 for dependency injection this is not a reference app for Dagger2 nor for material design.
 
-As you see in the video we are simulating network traffic by adding a delay of two seconds to every request (like loading a list of mails). We also simulate network problems: Every fifth request will fail (that's why you see the error view quite often in the video). Furthermore, I simulate authentication problems: After 15 requests we say that the user is not authenticated anymore (i.e. in a real world an access token or session has been expired). Thus the user has to sign in again (a login button will be dipslayed).
+As you see in the video we are simulating network traffic by adding a delay of two seconds to every request (like loading a list of mails). We also simulate network problems: Every fifth request will fail (that's why you see the error view quite often in the video). Furthermore, we simulate authentication problems: After 15 requests we say that the user is not authenticated anymore (i.e. in a real world an access token or session has been expired). Thus the user has to sign in again (a login button will be dipslayed).
 
 ## Sign in
 `LoginActivity` is the activity we launch to show the login form. `LoginActivity` is basically just a container for a retaining `LoginFragment`. Mosby ships with `MvpLceViewStateFragment implements MvpLceView` which displays either the content (like a RecyclcerView to display a list of mails) or a  loading indicator (like a ProgressBar) or an error view (like a TextView displaying an error message). This might be handy, because you don't have to implement the switching of displaying content, displaying error, displaying loading by your own, but you shouldn't use it as base class for everything. Only use it if your view can reach all three view states (showing loading, content and error). Have a look at the sign in view:
@@ -457,7 +457,13 @@ public class BaseRxAuthPresenter<V extends AuthView<M>, M> extends MvpLceRxPrese
 }
 {% endhighlight %}
 
-The idea is to use an `EventBus` to propagate that the user is not authenticated (`NotAuthenticatedException` will be thrown by `MailProvider`). To do so, we post `NotAuthenticatedEvent` to the EventBus to inform all subscribed Presenters that the login button should be displayed. You can see this behavior in the video. The main menu as well as inbox fragment displays the login button. We do pretty the same when the user has been signed in successfully: A `LoginSuccessfulEvent` will be propagated over the EventBus and the Presenter will start loading the data instead of displaying the login button:
+The idea is to use an `EventBus` to propagate that the user is not authenticated (`NotAuthenticatedException` will be thrown by `MailProvider`). To do so, we post `NotAuthenticatedEvent` to the EventBus to inform all subscribed Presenters that the login button should be displayed. You can see this behavior even better if we open the app on a tablet:
+
+<p>
+ <iframe width="640" height="480" src="https://www.youtube.com/embed/d898QONavBo?rel=0" frameborder="0" class="videoContainer" allowfullscreen></iframe>
+ </p>
+
+The main menu as well as inbox fragment displays the login button. We do pretty the same when the user has been signed in successfully: A `LoginSuccessfulEvent` will be propagated over the EventBus and the Presenter will start loading the data instead of displaying the login button:
 
  ![Model-View-Presenter]({{ site.baseurl }}/images/login-eventbus.jpg)
 
@@ -521,4 +527,213 @@ public abstract class AuthRefreshRecyclerFragment<M extends List<? extends Parce
 }
 {% endhighlight %}
 
-So at the end `AuthRefreshRecyclerFragment` has already implemented "showing login button", "pull-to-refresh", "empty view" (if list of items is empty), "ViewState" along with the othe LCE features (inherited from `MvpLceViewStateFragment`) like showing "loading view", "content view", and "errorView". So a fragment that wants to display items in a `RecyclerView` can extends from `AuthRefreshRecyclerFragment` and just have to provide a custom `RecyclerView.Adapter`. To set the Adapter for a fragment the subclass has to implement `createAdapter()` and the rest should work out of the box.
+So at the end `AuthRefreshRecyclerFragment` has already implemented "showing login button", "pull-to-refresh", "empty view" (if list of items is empty), "ViewState" along with the other LCE features (inherited from `MvpLceViewStateFragment`) like showing "loading view", "content view", and "errorView". So a fragment that wants to display items in a `RecyclerView` can extends from `AuthRefreshRecyclerFragment` and only has to provide a custom `RecyclerView.Adapter`. To set the Adapter for a fragment the subclass has to implement `createAdapter()` and the rest should work out of the box.
+
+## List of Mails
+Displaying a list of Mails is not that impressive. It's just `MailsFragment extends AuthRefreshRecyclerFragment` controlled by `MailsPresenter` that loads a `List<Mail>` from `MailProvider`. But that's a very good time to demonstrate that by having a clear separation of `View` and `Presenter` some complex things can be implemented easyily. In the sample app you can star and unstar mails. Have a look at the list of mails shown on a tablet.
+
+<p>
+ <iframe width="640" height="480" src="https://www.youtube.com/embed/7HPtTg35ZS0?rel=0" frameborder="0" class="videoContainer" allowfullscreen></iframe>
+</p>
+
+As you have seen in the video above the Tablet UI display a list of mails on the left and a details view of the selected mail on the right. If we star a mail in details view the view on the left displaying a list of mails marks the same mail as stared as well. At first glance you may think that this is too complex. It seems that you have to respect so many things for implementing that. Don't worry, with a clean architecture like MVP and an EventBus it's quite easy. `MailsPresenter` extends from `BaseRxMailPresenter` that implements listening for `MailStaredEvent` and `MailUnstaredEvent`:
+
+ {% highlight java %}
+ public class BaseRxMailPresenter<V extends BaseMailView<M>, M>
+     extends BaseRxAuthPresenter<V, M> {
+
+   @Inject public BaseRxMailPresenter(MailProvider mailProvider, EventBus eventBus) {
+     super(mailProvider, eventBus);
+   }
+
+   public void starMail(final Mail mail, final boolean star) {
+
+     // optimistic propagation
+     if (star) {
+       eventBus.post(new MailStaredEvent(mail.getId()));
+     } else {
+       eventBus.post(new MailUnstaredEvent(mail.getId()));
+     }
+
+     mailProvider.starMail(mail.getId(), star)
+         .subscribe(new Subscriber<Mail>() {
+           @Override public void onCompleted() {
+           }
+
+           @Override public void onError(Throwable e) {
+             // Oops, something went wrong, "undo"
+             if (star) {
+               eventBus.post(new MailUnstaredEvent(mail.getId()));
+             } else {
+               eventBus.post(new MailStaredEvent(mail.getId()));
+             }
+
+             if (isViewAttached()) {
+               if (star) {
+                 getView().showStaringFailed(mail);
+               } else {
+                 getView().showUnstaringFailed(mail);
+               }
+             }
+           }
+
+           @Override public void onNext(Mail mail) {
+           }
+         });
+
+     // Note: that we don't cancel this operation in detachView().
+     // We want to ensure that this operation finishes
+   }
+
+  ...
+
+ }
+{% endhighlight %}
+
+ If we star a Mail we fire `MailStaredEvent` and if we unstar a mail we fire a `MailUnstaredEvent`. As you seen in the video by staring a mail the left pane displaying the list of mails gets updated as well since the Presenter is registered on those events. The trick is that we fire the corresponding event before we make the corresponding business logic call and we use the counterpart event to "undo" it in case that that the business logic call fails. We call that **optimistic propagation**. Managing that logic in the Presenter is quite easy as you have seen in the code snipped above. But we also have to update the view. In MVP we have this clear separation between View and business logic, therefore the Presenter is responsible to update the view by calling the corresponding method defined in the view's interface. As you see with a clean MVP architecture and EventBus doing such "complex" things is extremely easy. Presenter is doing the business logic stuff and then the code in your View implementation is just a one-liner. Furthermore, we can use `BaseRxMailPresenter` for `MailsFragment implements BaseMailView` and for `DetailsFragment implements BaseMailView` (displays mail details, the right view of the splitpane view) since `BaseRxMailPresenter` is programs against `BaseMailView`. So no code clones, reuseable and decoupled components thanks to MVP. However, if you would do that all in MailsFragment directly (without MVP), then yes, it might be a little bit more complicated to maintain the correct state.
+
+ Please note that we are not canceling this business logic call in `presenter.detachView()` because we want to ensure that the star / unstar call finishes. You may ask yourself now if that doesn't result in memory leaks during orientation changes. The answer is "it depends on the definition of memory leak". View gets detached from presenter during screen orientation changes. So the huge memory consuming view objects like Activity or Fragment don't leak memory. However, the Presenter creates a new anonymous Subscriber object. Every anonymous object has a hard reference to the surrounding object. So yes, the Presenter can't be garbage collected as long as Subscriber gets unsubscribed (business logic call has finished). But we wouldn't call this a memory leak. It's kind of a temporarily and wanted memory leak and from our point of view completely fine since Presenter is a lightweight object and you know that the presenter can be garbage collected after the business call has finished.
+
+ Another sample where optimistic propagation improves the user experience of your app is when moving a mail from "Inbox" to "Spam":
+
+ <p>
+ <iframe width="640" height="480" src="https://www.youtube.com/embed/rA22tsGdeY4?rel=0" frameborder="0" class="videoContainer" allowfullscreen></iframe>
+ </p>
+
+## Assign Label - MVP for ViewGroup
+If you want to avoid Fragments in general you can do that. Mosby offers the same MVP scaffold as for Activities and Fragments for ViewGroups, inclusive ViewState support. The API is the same as for Activity and Fragment. Some default implementation are already available like `MvpViewStateFrameLayout`, `MvpViewStateLinearLayout` and `MvpViewStateRelativeLayout`.
+This ViewGroup implementation are also useful if you want to have subviews in a fragment (since you should avoid child fragment). The mail sample app uses that when you want to reassign the label of a mail:
+
+<p>
+<iframe width="640" height="480" src="https://www.youtube.com/embed/AWt-JhWi3lo?rel=0" frameborder="0" class="videoContainer" allowfullscreen></iframe>
+</p>
+
+This "Button" for assigning a Label is a `MvpViewStateLinearLayout`. It animates the ProgressBar (loadingView) in and out while loading, uses a `ListPopupWindow` (contentView) to display the list of labels and uses a Toast to inform about errors. If you have a closer look at the video shown above you see that the ViewState is retained during screen orientation changes. By the way: there is no LCE default implementation for ViewGroups (how would you implement that for LinearLayout?).
+
+## User profile - View in View
+Most of the time you have one View (and Presenter) filling the whole screen. But that doesn't has to be the case. Typically Fragments are a good candidate for splitting your screen into modular decoupled Views with his own Presenter. The sample mail client implements this as well when you open a profile by clicking on the senders image (avatar):
+
+<p>
+<iframe width="640" height="480" src="https://www.youtube.com/embed/4Mce1ljHJz0?rel=0" frameborder="0" class="videoContainer" allowfullscreen></iframe>
+</p>
+
+In that sample from the mail app shown in the video above the activity itself is a View having a ViewPager as content view. The Presenter loads a List of `ProfileScreen`. A ProfileScreen is just a POJO.
+
+ {% highlight java %}
+ public class ProfileScreen implements Parcelable {
+
+  public static final int TYPE_MAILS = 0;
+  public static final int TYPE_ABOUT = 1;
+
+  int type;
+  String name;
+
+  private ProfileScreen() {
+  }
+
+  public ProfileScreen(int type, String name) {
+    this.type = type;
+    this.name = name;
+  }
+
+  public int getType() {
+    return type;
+  }
+
+  public String getName() {
+    return name;
+  }
+}
+{% endhighlight %}
+
+ {% highlight java %}
+ public class ProfileScreensAdapter extends FragmentPagerAdapter {
+
+
+  @Override public Fragment getItem(int position) {
+
+    ProfileScreen screen = screens.get(position);
+    if (screen.getType() == ProfileScreen.TYPE_MAILS) {
+      return new ProfileMailsFragmentBuilder(person).build();
+    }
+    if (screen.getType() == ProfileScreen.TYPE_ABOUT) {
+      return new AboutFragmentBuilder(person).build();
+    }
+
+    throw new RuntimeException("Unknown Profile Screen (no fragment associated with this type");
+  }
+
+  @Override public CharSequence getPageTitle(int position) {
+    return screens.get(position).getName();
+  }
+}
+{% endhighlight %}
+
+
+Loading `List<ProfileScreen>` takes 2 seconds (simulates loading the information which screens should be displayed in ViewPager from backend). That's the reason why on activity start you first see a loading spinner in the middle of the screen and then it gets replaced by a ViewPager (and user image). So basically we have LCE (Loading-Content-Error) and therefore we can use Mosby's `MvpLceViewStateActivity`. Next every Fragment in the ViewPager is a MVP View and has it's own Presenter. You see that the Fragments in the ViewPager load data (a loading spinner gets displayed). We guess you get the overall picture: A MVP View can contain independent MVP Views.
+
+## Searching for Mails
+In our sample app we can search our inbox for keywords. This is implemented with _pagination_ (displaying a list of mails by loading the whole list in chunks, i.e. display 20 mails and if the user has scrolled to the end of the list then load the next 20 mails). We also want to support screen orientation changes properly. Hence we have to provide a custom `ViewState`.
+
+Basically `SearchView` displays a list of mails, loading and displaying an error view. Therefore we can use a LCE based view state implementation. The question is how do we add the additional state that we are loading more mails (if user has scrolled to the end of the list). In that case it depends a little bit on our implementation. What we did to display "loading more" is we have added an additional ViewType to `SearchResultAdapter` which displays the list of mails matching the search criteria in a RecyclerView (content view). So the last item the RecyclerView displays is a row displaying a `ProgressBar`. Since triggering a "load more action" requires to scroll the content view (RecyclerView) it feels natural to us to make "loading more" part of "showing content. Also is the "load more indicator" part of the RecyclerViews (content view) adapter. Hence we have simply added a boolean flag `loadingMore` as you can see in `SearchViewState`:
+
+{% highlight java %}
+// AuthCastedArrayListViewState is a LCE ViewState with an additional "not authenticated" state
+public class SearchViewState extends AuthCastedArrayListViewState<List<Mail>, SearchView> {
+
+  boolean loadingMore = false;
+
+  public void setLoadingMore(boolean loadingMore) {
+    this.loadingMore = loadingMore;
+  }
+
+  @Override public void apply(SearchView view, boolean retained) {
+
+    super.apply(view, retained);
+
+    if (currentViewState == STATE_SHOW_CONTENT) {
+      view.showLoadMore(loadingMore);
+    }
+
+  }
+}
+{% endhighlight %}
+
+## Write Mail - MVP & Android Service
+Android Services are a fundamental part of android app development. Services are clearly "business logic". Therefore it's obvious that the `Presenter` is responsible to communicate with the Service.
+In the mail app we have used an IntentService to send mails. This `SendMailService` is connected over EventBus to the `WritePresenter`:
+{% highlight java %}
+public class WritePresenter extends MvpBasePresenter<WriteView> {
+
+  private EventBus eventBus;
+  private IntentStarter intentStarter;
+
+  public void writeMail(Context context, Mail mail) {
+    getView().showLoading();
+    intentStarter.sendMailViaService(context, mail);
+  }
+
+  public void onEventMainThread(MailSentErrorEvent errorEvent){
+    if (isViewAttached()){
+      getView().showError(errorEvent.getException());
+    }
+  }
+
+  public void onEventMainThread(MailSentEvent event){
+    if (isViewAttached()){
+      getView().finishBecauseSuccessful();
+    }
+  }
+}
+{% endhighlight %}
+
+## Main menu - One Model per MVP View
+Mosby assumes that every MVP view displays exactly one model (note that displaying a list of items is still displaying one model, the list). Why? Because dealing with different models in the same view increases complexity dramatically and we clearly want to avoid spaghetti code. In the sample app we face that problem in the menu. We haven't refactored that yet to give you the possibility to understand the problem with a concrete code sample. Have a look at the screenshot of the menu:
+
+![Menu]({{ site.baseurl }}/images/mail-menu.png)
+
+The header displays the current authenticated user, represented as `Account`, while the clickable menu items are a `List<Label>` (just ignore statistics). So we have two Models displayed in the same MVP View namely `MenuFragment`. The problem is that it makes your code more complex and harder to maintain if you work with two Models in the same View. Things get even more complex if you decide to use Mosby's ViewState. Because, now you not only have to store the state showing labels, loading labels and error while loading labels, but you also have to store whether the user is authenticate or not.
+
+The solution to this problem is to split the one big MVP View into two views with its own Presenter and own ViewState:
+
+![Menu]({{ site.baseurl }}/images/menu-refactored.jpg)

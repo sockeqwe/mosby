@@ -737,3 +737,95 @@ The header displays the current authenticated user, represented as `Account`, wh
 The solution to this problem is to split the one big MVP View into two views with its own Presenter and own ViewState:
 
 ![Menu]({{ site.baseurl }}/images/menu-refactored.jpg)
+
+## Statistics Dialog
+Mosby support delegation. The advantage of delegation is that you can add Mosby MVP and ViewState support to any other `Activity`, `Fragment` or `ViewGroup` not included in the Mosby library like `DialogFragment`. In the main menu of the mail example you see the "statistics" menu item. If you click on it a DialogFragment get's displayed. This is implemented like this:
+
+{% highlight java %}
+public class StatisticsDialog extends DialogFragment
+    implements StatisticsView, MvpViewStateDelegateCallback<StatisticsView, StatisticsPresenter> {
+
+  @InjectView(R.id.contentView) RecyclerView contentView;
+  @InjectView(R.id.loadingView) View loadingView;
+  @InjectView(R.id.errorView) TextView errorView;
+  @InjectView(R.id.authView) View authView;
+
+  StatisticsPresenter presenter;
+  ViewState<StatisticsView> viewState;
+  MailStatistics data;
+  StatisticsAdapter adapter;
+
+  // Delegate
+  private FragmentMvpDelegate<StatisticsView, StatisticsPresenter> delegate =
+      new FragmentMvpViewStateDelegateImpl<>(this);
+
+
+  @Override public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    delegate.onCreate(savedInstanceState);
+  }
+
+  @Override public void onDestroy() {
+    super.onDestroy();
+    delegate.onDestroy();
+  }
+
+  @Override public void onPause() {
+    super.onPause();
+    delegate.onPause();
+  }
+
+  @Override public void onResume() {
+    super.onResume();
+    delegate.onResume();
+  }
+
+  @Nullable @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
+      Bundle savedInstanceState) {
+    return inflater.inflate(R.layout.fragment_statistics, container, false);
+  }
+
+  @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
+    delegate.onViewCreated(view, savedInstanceState);
+
+    ButterKnife.inject(this, view);
+    adapter = new StatisticsAdapter(getActivity());
+    contentView.setAdapter(adapter);
+    contentView.setLayoutManager(new LinearLayoutManager(getActivity()));
+  }
+
+  @Override public void onStart() {
+    super.onStart();
+    delegate.onStart();
+  }
+
+  @Override public void onStop() {
+    super.onStop();
+    delegate.onStop();
+  }
+
+  @Override public void onAttach(Activity activity) {
+    super.onAttach(activity);
+    delegate.onAttach(activity);
+  }
+
+  @Override public void onDetach() {
+    super.onDetach();
+    delegate.onDetach();
+  }
+
+  @Override public void onActivityCreated(Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
+    delegate.onActivityCreated(savedInstanceState);
+  }
+
+  @Override public void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    delegate.onSaveInstanceState(outState);
+  }
+
+  ...
+
+}
+{% endhighlight %}

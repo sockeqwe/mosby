@@ -315,3 +315,61 @@ The methods of the delegates has been named to match the Activities or Fragments
   - `ViewGroupMvpDelegate`: This delegate is used for `ViewGroup` like `FrameLayout` etc. to bring Mosby MVP support to your custom `ViewGroup`. The lifecycle methods are simpler compared to Fragments ones: `onAttachedToWindow()` and `onDetachedFromWindow()`. The default implementation is `ViewGroupMvpDelegateImpl`.
 
 Another advantage of delegation is that you can integrate Mosby in any other third party library or framework. Just implement `MvpDelegateCallback` and instantiate a delegate and call the corresponding delegate methods along lifecycle events.
+
+## Presentation Model
+In a perfect world we would get the data (Model) exactly the way optimized for displaying it in our GUI (View). Quite often we retrieve data from a backend over a public API that can't be changed to fit the needs of your UI. In fact, it's not a good idea that the backend provides an API depending on your UI because if you change your UI you may also have to change the backend. Therefore you have to transform the model into something your GUI can display easily. A typically example is to load a list of Items, let's say a List of Users, from a REST json API and display them in a `ListView`. In a perfect world with MVP this works like this:
+
+![Presentation Model - Simple Adapter]({{ site.baseurl }}/images/p-model1.png)
+
+Nothing new here. `List<User>` gets loaded and the GUI displays the Users in a `ListView` by using  `UserAdapter`. I'm pretty sure that you have used `ListView` and `Adapter` million times before, but have you ever thought about the idea behind `Adapter`? Adapter makes your model displayable through android UI widgets. This is the [adapter design pattern](https://sourcemaking.com/design_patterns/adapter), hence the name. What if we want to support phones and tablets but both display items in a different way? We implement two adapters: `PhoneUserAdapter` and `TabletUserAdapter` and we pick the right one at runtime.
+
+That is the "perfect world" scenario. What if we have to sort the user list or display some things that has to be calculated in a more complex (and CPU intensive) way? We can't do that in  `UserAdapter` because you will notice scroll performance issues because the hard work is done on the  main UI thread. Therefore, we do that in a separated thread. There are two questions: The first is how do we transform the data? Do we take our User class and add some additional fields to User class? Do we override values of the User class?
+
+{% highlight java %}
+public class User {
+  String firstname;
+  String lastname;
+}
+{% endhighlight %}
+
+Let's assume that our `UserView` wants to display the full name and calculates a ranking the list get sorted accordingly:
+
+{% highlight java %}
+public class User {
+  String firstname;
+  String lastname;
+  int ranking;
+
+  public String getFullname(){
+    return firstname +" "+lastname;
+  }
+}
+{% endhighlight %}
+
+While introducing a method `getFullname()` is ok adding a field `ranking` may cause problems, because we assume that `User` is retrieved from backend and has no `ranking` in it's json representation. So first it may cause confusion if you look at your json api feed and compare that to our `User` class and last but not least ranking will be zero as default value because we haven't computed the ranking yet. If we would have used an object instead of an integer then the default value would be _null_ and it's likely that we run into NullPointerException.
+
+The solution is to introduce a [Presentation Model](http://martinfowler.com/eaaDev/PresentationModel.html). This model is just a class optimized for our GUI:
+
+{% highlight java %}
+public class UserPresentationModel {
+  String fullname;
+  int ranking;
+
+  public UserPresentationModel(String fullname, int ranking) { ... }
+}
+{% endhighlight %}
+
+By doing so we are sure that `ranking` is always set to a concrete value and that fullname doesn't get computed while scrolling the ListView (PresentationModel gets instantiated in separated thread). UserView now displays `List<UserPresentationModel>` instead of `List<User>`.
+
+The second question is: Where to do that async transformation? View, Model or Presenter?
+It would be obvious that the View does that transformation because the View knows best how things get displayed on screen.
+
+
+![Presentation Model - View transform]({{ site.baseurl }}/images/p-model2.png)
+
+
+`PresentationModelTransformer` is the component that takes a `List<User>` and "transforms" that to `List<UserPresentationModel>` (adapter pattern, so we have two adapters: one to convert to presentation model and UserAdapter to display them in ListView). The advantage on integrating `PresentationModelTransformer` in the view is that the view knows how to display things and could easily internally change between phone and tablet optimized presentation models (maybe the tablet UI has other requirements then the phone UI). However, the big disadvantage is that now the view has to control the async thread and the view state (displaying ProgressBar while transformation is in progress?!?) which clearly is the job of the Presenter. Therefore, **it's not a good idea to let the transformation be part of the View**. Including the transformation in the Presenter is the way to go:
+
+![Presentation Model - Presenter transformer]({{ site.baseurl }}/images/p-model3.png)
+
+As we have already discussed before, the `Presenter` is responsible to coordinate the View and therefore the Presenter tells the view to display the ListView after `UserPresentationModel` transformation is finished. Also the presenter has control of all async threads (transformation runs async) and cancels them if needed. By the way: With RxJava you can use operations like `map()` or `flatMap()` to do this transformation painless (regarding threading). If we want to support phones and tablets we could define two Presenters `PhoneUserPresenter` and `TabletUserPresenter` with different `PresentationModelTransformer` implementations. In Mosby the View creates the Presenter. Since the View knows at runtime if the View is a phone or tablet it can choose at runtime Presenter to instantiate (`PhoneUserPresenter` or `TabletUserPresenter`). Alternatively you could use a single `UserPresenter` for phone and tablet and just replace `PresentationModelTransformer` implementation i.e. by using dependency injection.

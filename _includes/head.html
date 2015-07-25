@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="{% if page.summary %}{{ page.summary | xml_escape }}{% else %}{{ site.description | xml_escape }}{% endif %}">
     <meta name="author" content="{{ site.author }}">
-    {% if page.categories %}<meta name="keywords" content="{{ page.categories | join: ', ' }}">{% endif %}
+    {% if page.categories %}<meta name="keywords" content="{{ site.keywords }}{{ page.categories | join: ', ' }}">
+    {% else %}<meta name="keywords" content="{{ site.keywords }}">{% endif %}
+
     <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
     <link rel="alternate" type="application/rss+xml" title="RSS Feed for {{ site.title }}" href="{{ "/feed.xml" | prepend: site.baseurl }}" />
 

@@ -49,3 +49,15 @@ ViewState is a feature in mosby that allows you to retain the views state during
 	compile 'com.hannesdorfmann.mosby:viewstate-dagger1:x.x.x'
 {% endhighlight %}
 As the name already suggests, this module adds Dagger support to the ViewState module by introducing classes like `Dagger1MvpViewStateActivity` and `Dagger1MvpViewStateFragment`.
+
+### Retrofit
+{% highlight groovy %}
+	compile 'com.hannesdorfmann.mosby:retrofit:x.x.x'
+{% endhighlight %}
+This module contains only `LceRetrofitPresenter` which is a Presenter that communicates with your http backend by using [Retrofit](http://square.github.io/retrofit/). Making http requests with Retrofit and `LceRetrofitPresenter` is  a one-liner.
+
+### RxJava
+{% highlight groovy %}
+	compile 'com.hannesdorfmann.mosby:rx:x.x.x'
+{% endhighlight %}
+This module provides some base Presenter implementations that can be used to work with [RxJava](https://github.com/ReactiveX/RxJava)

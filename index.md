@@ -66,6 +66,10 @@ Almost all pages on this site provide a `Disqus` section at the end of the page.
 ## Contributing
 If you would like to contribute code you can do so through GitHub by forking the repository and sending a pull request. When submitting code, please make every effort to follow existing conventions and style in order to keep the code as readable as possible.
 
+## Proguard
+Mosby itself doesn't need any specific proguard rules.
+However, third party libraries that are integrated in Mosby like [Butterknife](http://jakewharton.github.io/butterknife/), [FragmentArgs](https://github.com/sockeqwe/fragmentargs), [Icepick](https://github.com/frankiesardo/icepick) and (optional) [dagger 1](http://square.github.io/dagger/) may have there own proguard rules. Please visit these projects site.
+
 ## License
 {% highlight text %}
  Copyright 2015 Hannes Dorfmann.

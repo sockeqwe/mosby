@@ -3,8 +3,8 @@ title:       Mosby
 email:
 author:      Hannes Dofrmann
 description: "Model-View-Presenter library for modern android apps"
-baseurl:     ""
-url:         ""
+baseurl:     "http://hannesdorfmann.com/mosby"
+url:         "http://hannesdorfmann.com/mosby"
 
 # Google analytics
 # google_analytics: UA-63278523-1

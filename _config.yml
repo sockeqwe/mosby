@@ -8,7 +8,7 @@ baseurl:     "http://hannesdorfmann.com/mosby"
 url:         "http://hannesdorfmann.com/mosby"
 
 # Google analytics
-# google_analytics: UA-63278523-1
+google_analytics: UA-63278523-1
 
 # Optional features
 animated:           false

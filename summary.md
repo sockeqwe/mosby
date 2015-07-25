@@ -7,11 +7,13 @@ permalink: /summary/
 # Summary
 _This page summarizes those things that are not discussed in detail on the other pages_
 
-{:toc}
+## Decision chart
+Mosby provides some modules and some classes that one can use as base class to extend from. Here is a little decision chart that you may find helpful to chose the correct base class:
 
+![Decision chart]({{ site.baseurl }}/images/decision.png)
 
 ## Modules
-Mosby is divided in separated modudules, so that one could include that modules he need.
+Mosby is divided in separated modules so that you can include only that modules you really need. Here is an overview which module provides which classes and what functionality.
 
 ### Core
 {% highlight groovy %}
@@ -54,10 +56,15 @@ As the name already suggests, this module adds Dagger support to the ViewState m
 {% highlight groovy %}
 	compile 'com.hannesdorfmann.mosby:retrofit:x.x.x'
 {% endhighlight %}
-This module contains only `LceRetrofitPresenter` which is a Presenter that communicates with your http backend by using [Retrofit](http://square.github.io/retrofit/). Making http requests with Retrofit and `LceRetrofitPresenter` is  a one-liner.
+This module contains `LceRetrofitPresenter` which is a Presenter that communicates with your http backend by using [Retrofit](http://square.github.io/retrofit/). Making http requests with Retrofit and `LceRetrofitPresenter` is  a one-liner.
 
 ### RxJava
 {% highlight groovy %}
 	compile 'com.hannesdorfmann.mosby:rx:x.x.x'
 {% endhighlight %}
 This module provides some base Presenter implementations that can be used to work with [RxJava](https://github.com/ReactiveX/RxJava)
+
+
+## Additional resources
+ - [Ted Mosby - Software Architect:](http://hannesdorfmann.com/android/mosby/) The original blog post where Mosby has been introduced.
+ - [Stinsons Playbook for Mosby:](http://hannesdorfmann.com/android/mosby-playbook/) A blog post providing some tips you may find useful while creating Mosby powered apps.

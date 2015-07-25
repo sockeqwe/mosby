@@ -78,6 +78,8 @@ Methods like `loadData()` and `setData()` are not needed in `LoginView` nor make
 
 Hence we don't use LCE related for the login and write our own `LoginView`(already shown above), `LoginPresenter` and `LoginViewState`. The `LoginPresenter` is nothing special. All it does is it takes the username and password from `LoginView` and passes it to `AccountManager`. If login was successful an `LoginSuccessfulEvent` will be posted along an EventBus. We use an EventBus to communicate such events amongst each Presenter (will be explained later).
 
+_Please note that we use an EventBus in this sample app since we believe that the most readers are familiar with the concept of EventBus. You could replace EventBus with any other push alike mechanism like RxJava Observables etc._
+
 {% highlight java %}
 public class LoginPresenter extends MvpBasePresenter<LoginView> {
 

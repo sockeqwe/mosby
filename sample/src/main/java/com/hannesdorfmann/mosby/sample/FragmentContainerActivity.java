@@ -24,6 +24,8 @@ import com.hannesdorfmann.mosby.sample.mvp.customviewstate.MyCustomFragment;
 import com.hannesdorfmann.mosby.sample.mvp.lce.fragment.CountriesFragment;
 import com.hannesdorfmann.mosby.sample.mvp.lce.viewstate.NotRetainingCountriesFragment;
 import com.hannesdorfmann.mosby.sample.mvp.lce.viewstate.RetainingCountriesFragment;
+import com.hannesdorfmann.mosby.sample.mvp.lce.viewstate.nested.NestedFragment;
+import com.hannesdorfmann.mosby.sample.mvp.lce.viewstate.nested.NestedViewPagerFragment;
 
 /**
  * @author Hannes Dorfmann
@@ -65,6 +67,14 @@ public class FragmentContainerActivity extends MosbyActivity {
 
     if ("CustomViewStateFragment".equals(fragmentName)){
       return new MyCustomFragment();
+    }
+
+    if ("NestedNotRetainingFragment".equals(fragmentName)){
+      return new NestedFragment();
+    }
+
+    if ("NestedNotRetainingViewPagerFragment".equals(fragmentName)){
+      return new NestedViewPagerFragment();
     }
 
     getSupportActionBar().setTitle(fragmentName);

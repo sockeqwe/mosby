@@ -64,7 +64,13 @@ public class MainActivity extends MosbyActivity implements AdapterView.OnItemCli
             new Intent(this, FragmentContainerActivity.class).putExtra("fragment",
                 "CustomViewStateFragment")),
 
-        new Demo("Custom ViewState Activity", new Intent(this, MyCustomActivity.class))
+        new Demo("Custom ViewState Activity", new Intent(this, MyCustomActivity.class)),
+        new Demo("Nested ViewState CountriesFragment",
+            new Intent(this, FragmentContainerActivity.class).putExtra("fragment",
+                "NestedNotRetainingFragment")),
+        new Demo("Nested ViewState CountriesFragment ViewPager",
+            new Intent(this, FragmentContainerActivity.class).putExtra("fragment",
+                "NestedNotRetainingViewPagerFragment")),
     };
   }
 

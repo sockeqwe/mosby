@@ -27,12 +27,12 @@ import org.mockito.Mockito;
 /**
  * @author Hannes Dorfmann
  */
-public class ActivityMvpDelegateImplTest {
+public class FragmentMvpDelegateImplTest {
 
   private MvpView view;
   private MvpPresenter<MvpView> presenter;
   private MvpDelegateCallback<MvpView, MvpPresenter<MvpView>> callback;
-  private ActivityMvpDelegateImpl<MvpView, MvpPresenter<MvpView>> delegate;
+  private FragmentMvpDelegateImpl<MvpView, MvpPresenter<MvpView>> delegate;
 
   @Before public void initComponents() {
     view = new MvpView() {
@@ -45,23 +45,24 @@ public class ActivityMvpDelegateImplTest {
 
     Mockito.when(callback.getMvpView()).thenReturn(view);
 
-    delegate = new ActivityMvpDelegateImpl<>(callback);
+    delegate = new FragmentMvpDelegateImpl<>(callback);
   }
 
-  @Test public void startActivityNullBundle() {
-    testActivityStart(null);
+  @Test public void startFragmentNullBundle() {
+    testStartFragment(null);
   }
 
-  @Test public void startActivityWithBundle() {
-    testActivityStart(new Bundle());
+  @Test public void startFragmentWithBundle() {
+    testStartFragment(new Bundle());
   }
 
-  private void testActivityStart(Bundle bundle) {
+  private void testStartFragment(Bundle bundle) {
     Mockito.when(callback.createPresenter()).thenReturn(presenter);
 
+    delegate.onAttach(null);
     delegate.onCreate(bundle);
-    delegate.onContentChanged();
-    delegate.onPostCreate(bundle);
+    delegate.onViewCreated(null, bundle);
+    delegate.onActivityCreated(bundle);
     delegate.onStart();
     delegate.onResume();
 
@@ -70,24 +71,27 @@ public class ActivityMvpDelegateImplTest {
     Mockito.verify(presenter, Mockito.times(1)).attachView(view);
   }
 
-  @Test public void finishActivityNotRetaining() {
-    testFinishActivity(false);
+  @Test public void finishFragmentNotRetaining() {
+    testFinishFragment(false);
   }
 
-  @Test public void finishActivityIsRetaining() {
-    testFinishActivity(true);
+  @Test public void finishFragmentIsRetaining() {
+    testFinishFragment(true);
   }
 
-  private void testFinishActivity(boolean retainingInstanceState) {
+  private void testFinishFragment(boolean retainingInstanceState) {
     Mockito.when(callback.getPresenter()).thenReturn(presenter);
     Mockito.when(callback.isRetainingInstance()).thenReturn(retainingInstanceState);
 
     delegate.onPause();
     delegate.onSaveInstanceState(new Bundle());
     delegate.onStop();
+    delegate.onDestroyView();
     delegate.onDestroy();
-    delegate.onRestart();
+    delegate.onDetach();
 
     Mockito.verify(presenter, Mockito.times(1)).detachView(retainingInstanceState);
   }
+
+
 }

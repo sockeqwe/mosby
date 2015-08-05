@@ -56,7 +56,7 @@ public class ActivityMvpDelegateImplTest {
     testActivityStart(new Bundle());
   }
 
-  private void testActivityStart(Bundle bundle){
+  private void testActivityStart(Bundle bundle) {
     Mockito.when(callback.createPresenter()).thenReturn(presenter);
 
     delegate.onCreate(bundle);
@@ -70,31 +70,25 @@ public class ActivityMvpDelegateImplTest {
     Mockito.verify(presenter, Mockito.times(1)).attachView(view);
   }
 
-
   @Test public void finishActivityNotRetaining() {
-
-    Mockito.when(callback.getPresenter()).thenReturn(presenter);
-    Mockito.when(callback.isRetainingInstance()).thenReturn(false);
-
-    delegate.onPause();
-    delegate.onSaveInstanceState(new Bundle());
-    delegate.onStop();
-    delegate.onDestroy();
-
-    Mockito.verify(presenter, Mockito.times(1)).detachView(false);
+    testFinishActivity(false);
   }
 
   @Test public void finishActivityIsRetaining() {
+    testFinishActivity(true);
+  }
 
+  private void testFinishActivity(boolean retainingInstanceState) {
     Mockito.when(callback.getPresenter()).thenReturn(presenter);
-    Mockito.when(callback.isRetainingInstance()).thenReturn(true);
+    Mockito.when(callback.isRetainingInstance()).thenReturn(retainingInstanceState);
 
     delegate.onPause();
     delegate.onSaveInstanceState(new Bundle());
     delegate.onStop();
     delegate.onDestroy();
+    delegate.onRestart();
 
-    Mockito.verify(presenter, Mockito.times(1)).detachView(true);
+    Mockito.verify(presenter, Mockito.times(1)).detachView(retainingInstanceState);
   }
 
   /**

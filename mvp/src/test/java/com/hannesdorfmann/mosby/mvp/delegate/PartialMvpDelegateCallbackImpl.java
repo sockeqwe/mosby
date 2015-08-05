@@ -23,7 +23,7 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
 /**
  * Used for partial mocking the delegate callback
  */
-public abstract class PartialDelegateCallbackImpl
+public abstract class PartialMvpDelegateCallbackImpl
     implements MvpDelegateCallback<MvpView, MvpPresenter<MvpView>> {
 
   MvpPresenter<MvpView> presenter;

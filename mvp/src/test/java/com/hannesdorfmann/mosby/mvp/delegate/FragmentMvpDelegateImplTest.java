@@ -39,7 +39,7 @@ public class FragmentMvpDelegateImplTest {
     };
 
     presenter = Mockito.mock(MvpPresenter.class);
-    callback = Mockito.mock(PartialDelegateCallbackImpl.class);
+    callback = Mockito.mock(PartialMvpDelegateCallbackImpl.class);
     Mockito.doCallRealMethod().when(callback).setPresenter(presenter);
     Mockito.doCallRealMethod().when(callback).getPresenter();
 
@@ -59,14 +59,30 @@ public class FragmentMvpDelegateImplTest {
   private void testStartFragment(Bundle bundle) {
     Mockito.when(callback.createPresenter()).thenReturn(presenter);
 
+    startFragment(bundle);
+
+    Mockito.verify(callback, Mockito.times(1)).createPresenter();
+    Mockito.verify(callback, Mockito.times(1)).setPresenter(presenter);
+    Mockito.verify(presenter, Mockito.times(1)).attachView(view);
+  }
+
+
+  private void startFragment(Bundle bundle){
     delegate.onAttach(null);
     delegate.onCreate(bundle);
     delegate.onViewCreated(null, bundle);
     delegate.onActivityCreated(bundle);
     delegate.onStart();
     delegate.onResume();
+  }
 
-    Mockito.verify(callback, Mockito.times(1)).createPresenter();
+  @Test
+  public void reuseRetainingPresenter(){
+    Mockito.when(callback.getPresenter()).thenReturn(presenter);
+
+    startFragment(null);
+
+    Mockito.verify(callback, Mockito.never()).createPresenter();
     Mockito.verify(callback, Mockito.times(1)).setPresenter(presenter);
     Mockito.verify(presenter, Mockito.times(1)).attachView(view);
   }

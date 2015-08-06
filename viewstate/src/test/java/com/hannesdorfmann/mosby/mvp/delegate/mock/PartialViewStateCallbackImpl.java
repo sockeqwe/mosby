@@ -29,6 +29,7 @@ public abstract class PartialViewStateCallbackImpl
     implements MvpViewStateDelegateCallback<SimpleView, MvpPresenter<SimpleView>> {
 
   private ViewState<SimpleView> viewState;
+  private MvpPresenter<SimpleView> presenter;
 
   @Override public void setViewState(ViewState<SimpleView> viewState) {
     this.viewState = viewState;
@@ -36,5 +37,13 @@ public abstract class PartialViewStateCallbackImpl
 
   @Override public ViewState<SimpleView> getViewState() {
     return viewState;
+  }
+
+  @Override public void setPresenter(MvpPresenter<SimpleView> presenter) {
+    this.presenter = presenter;
+  }
+
+  @Override public MvpPresenter<SimpleView> getPresenter() {
+    return presenter;
   }
 }

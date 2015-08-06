@@ -28,11 +28,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 /**
  * @author Hannes Dorfmann
  */
-@RunWith(RobolectricTestRunner.class) public class MvpViewStateInternalDelegateTest {
+@RunWith(RobolectricTestRunner.class)
+@Config(emulateSdk = 18) public class MvpViewStateInternalDelegateTest {
 
   private SimpleView view;
   private SimpleViewState viewState;
@@ -61,6 +63,7 @@ import org.robolectric.RobolectricTestRunner;
     Assert.assertFalse(viewStateRestored);
     Mockito.verify(callback, Mockito.times(1)).createViewState();
     Mockito.verify(callback, Mockito.times(1)).setViewState(viewState);
+    Mockito.verify(callback, Mockito.never()).setRestoringViewState(Mockito.anyBoolean());
   }
 
   @Test public void restoreViewStateFromBundle() {

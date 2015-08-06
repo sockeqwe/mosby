@@ -29,7 +29,7 @@ android {
 dependencies {
   compile project(':mvp')
 
-  testCompile 'org.robolectric:robolectric:2.4'
+  testCompile 'org.robolectric:robolectric:'+ rootProject.ext.robolectricVersion
   testCompile 'junit:junit:' + rootProject.ext.junitVersion
   testCompile 'org.mockito:mockito-core:1.9.5'
 }

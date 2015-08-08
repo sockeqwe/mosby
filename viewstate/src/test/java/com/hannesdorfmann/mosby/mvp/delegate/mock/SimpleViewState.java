@@ -18,13 +18,16 @@
 package com.hannesdorfmann.mosby.mvp.delegate.mock;
 
 import android.os.Bundle;
+import android.os.Parcel;
 import android.support.annotation.NonNull;
+import com.hannesdorfmann.mosby.mvp.viewstate.RestoreableParcelableViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.RestoreableViewState;
 
 /**
  * @author Hannes Dorfmann
  */
-public class SimpleViewState implements RestoreableViewState<SimpleView> {
+public class SimpleViewState implements RestoreableViewState<SimpleView>,
+    RestoreableParcelableViewState<SimpleView> {
 
   public static final String KEY_STATE = "SimpleViewState.State";
 
@@ -61,4 +64,14 @@ public class SimpleViewState implements RestoreableViewState<SimpleView> {
   public void setStateShowB(){
     state = STATE_B;
   }
+
+  @Override public int describeContents() {
+    return 0;
+  }
+
+  @Override public void writeToParcel(Parcel dest, int flags) {
+    dest.writeInt(state);
+  }
 }
+
+

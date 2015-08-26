@@ -17,6 +17,7 @@
 
 package com.hannesdorfmann.mosby.mvp;
 
+import android.support.annotation.NonNull;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -25,14 +26,56 @@ import org.junit.Test;
  */
 public class MvpNullObjectBasePresenterTest {
 
-  public  interface TestView extends MvpView {
+  public interface TestView extends MvpView {
     public void showFoo(TestData data);
 
     public void showThat();
   }
 
+  /**
+   * Just a stupid interface to check if the right interface will be picked
+   */
+  public interface FooInterface {
+
+    public void foo();
+  }
+
+  /**
+   * Just a stupid interface to check if the right interface will be picked
+   */
+  public interface BarInterface {
+    public void bar();
+  }
+
+  public interface OtherTestView extends MvpView {
+    public void showOtherMvpView();
+  }
+
   public static class TestData {
 
+  }
+
+  public static class ViewWithMulitpleInterfaces
+      implements FooInterface, BarInterface, OtherTestView, TestView {
+    @Override public void bar() {
+
+    }
+
+    @Override public void foo() {
+
+    }
+
+    @Override public void showFoo(TestData data) {
+
+    }
+
+    @Override public void showThat() {
+
+    }
+
+    @Override public void showOtherMvpView() {
+
+    }
   }
 
   public static class TestNullObjectPresenter
@@ -44,6 +87,10 @@ public class MvpNullObjectBasePresenterTest {
 
     public void viewShowThat() {
       getView().showThat();
+    }
+
+    @NonNull @Override public TestView getView() {
+      return super.getView();
     }
   }
 
@@ -87,4 +134,18 @@ public class MvpNullObjectBasePresenterTest {
     Assert.assertTrue(presenter.getView() != view); // Null Object view
   }
 
+  @Test public void pickingRightViewInterface() {
+
+    ViewWithMulitpleInterfaces view = new ViewWithMulitpleInterfaces();
+    TestNullObjectPresenter presenter = new TestNullObjectPresenter();
+
+    presenter.attachView(view);
+    Assert.assertNotNull(presenter.getView());
+    Assert.assertTrue(view == presenter.getView());
+
+    presenter.detachView(false);
+    Assert.assertNotNull(presenter.getView());
+    Assert.assertTrue(presenter.getView() instanceof TestView);
+    Assert.assertFalse(presenter.getView() == view);
+  }
 }

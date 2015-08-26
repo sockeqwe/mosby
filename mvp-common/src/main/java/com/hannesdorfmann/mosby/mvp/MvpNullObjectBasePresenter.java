@@ -1,6 +1,7 @@
 package com.hannesdorfmann.mosby.mvp;
 
 import android.support.annotation.NonNull;
+import java.lang.reflect.Type;
 
 /**
  * A {@link MvpPresenter} implmenetation that implements the <a href="https://en.wikipedia.org/wiki/Null_Object_pattern">null
@@ -33,8 +34,17 @@ public class MvpNullObjectBasePresenter<V extends MvpView> implements MvpPresent
   @Override public void detachView(boolean retainInstance) {
     if (view != null) {
       //noinspection unchecked
-      Class<V> viewClass = (Class<V>) view.getClass().getGenericInterfaces()[0];
-      view = NoOp.of(viewClass);
+      Type[] types = view.getClass().getGenericInterfaces();
+      for (int i = 0; i < types.length; i++) {
+        Type type = types[i];
+        try {
+          Class<V> viewClass = (Class<V>) type;
+          view = NoOp.of(viewClass);
+          return;
+        } catch (ClassCastException cce) {
+          continue; // move on to the next interface
+        }
+      }
     }
   }
 }

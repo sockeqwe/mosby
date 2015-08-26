@@ -136,7 +136,7 @@ public class MvpNullObjectBasePresenterTest {
 
   @Test public void pickingCorrectViewInterface() {
 
-    TestView view = new ViewWithMulitpleInterfaces();
+    ViewWithMulitpleInterfaces view = new ViewWithMulitpleInterfaces();
     TestNullObjectPresenter presenter = new TestNullObjectPresenter();
 
     presenter.attachView(view);
@@ -146,5 +146,9 @@ public class MvpNullObjectBasePresenterTest {
     presenter.detachView(false);
     Assert.assertNotNull(presenter.getView());
     Assert.assertFalse(presenter.getView() == view);
+
+    // Invoke methods on proxy
+    presenter.getView().showFoo(new TestData());
+    presenter.getView().showThat();
   }
 }

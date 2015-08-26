@@ -1,6 +1,7 @@
 package com.hannesdorfmann.mosby.mvp;
 
 import android.support.annotation.NonNull;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
 /**
@@ -33,18 +34,12 @@ public class MvpNullObjectBasePresenter<V extends MvpView> implements MvpPresent
 
   @Override public void detachView(boolean retainInstance) {
     if (view != null) {
-      //noinspection unchecked
-      Type[] types = view.getClass().getGenericInterfaces();
-      for (int i = 0; i < types.length; i++) {
-        Type type = types[i];
-        try {
-          Class<V> viewClass = (Class<V>) type;
-          view = NoOp.of(viewClass);
-          return;
-        } catch (ClassCastException cce) {
-          continue; // move on to the next interface
-        }
-      }
+
+      Type[] types =
+          ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments();
+
+      Class<V> viewClass = (Class<V>) types[0];
+      view = NoOp.of(viewClass);
     }
   }
 }

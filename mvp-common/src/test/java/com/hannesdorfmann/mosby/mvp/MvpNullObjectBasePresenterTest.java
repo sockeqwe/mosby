@@ -134,7 +134,7 @@ public class MvpNullObjectBasePresenterTest {
     Assert.assertTrue(presenter.getView() != view); // Null Object view
   }
 
-  @Test public void pickingRightViewInterface() {
+  @Test public void pickingCorrectViewInterface() {
 
     ViewWithMulitpleInterfaces view = new ViewWithMulitpleInterfaces();
     TestNullObjectPresenter presenter = new TestNullObjectPresenter();

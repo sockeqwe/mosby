@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import com.hannesdorfmann.mosby.MosbyFragment;
 import com.hannesdorfmann.mosby.mvp.delegate.FragmentMvpDelegateImpl;
@@ -82,7 +83,8 @@ public abstract class MvpFragment<V extends MvpView, P extends MvpPresenter<V>>
   }
 
   @Override public boolean isRetainingInstance() {
-    return getRetainInstance();
+    FragmentActivity activity = getActivity();
+    return getRetainInstance() && activity != null && activity.isChangingConfigurations();
   }
 
   @NonNull @Override public V getMvpView() {

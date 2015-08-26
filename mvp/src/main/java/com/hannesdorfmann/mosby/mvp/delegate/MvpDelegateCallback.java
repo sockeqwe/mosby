@@ -16,6 +16,7 @@
 
 package com.hannesdorfmann.mosby.mvp.delegate;
 
+import android.app.Activity;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 
@@ -64,7 +65,8 @@ public interface MvpDelegateCallback<V extends MvpView, P extends MvpPresenter<V
 
   /**
    * Is the view retaining? This boolean flag is used for {@link MvpPresenter#detachView(boolean)}
-   * as parameter.
+   * as parameter. Usually you should take {@link Activity#isChangingConfigurations()} into
+   * account.
    *
    * @return true if the view is retaining, hence the presenter should be retaining as well.
    */

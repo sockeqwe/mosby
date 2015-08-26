@@ -136,7 +136,7 @@ public class MvpNullObjectBasePresenterTest {
 
   @Test public void pickingCorrectViewInterface() {
 
-    ViewWithMulitpleInterfaces view = new ViewWithMulitpleInterfaces();
+    TestView view = new ViewWithMulitpleInterfaces();
     TestNullObjectPresenter presenter = new TestNullObjectPresenter();
 
     presenter.attachView(view);
@@ -145,7 +145,6 @@ public class MvpNullObjectBasePresenterTest {
 
     presenter.detachView(false);
     Assert.assertNotNull(presenter.getView());
-    Assert.assertTrue(presenter.getView() instanceof TestView);
     Assert.assertFalse(presenter.getView() == view);
   }
 }

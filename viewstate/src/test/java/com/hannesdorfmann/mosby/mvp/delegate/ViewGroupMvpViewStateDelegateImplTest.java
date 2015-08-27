@@ -23,20 +23,22 @@ import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.delegate.mock.PartialViewGroupViewStateCallbackImpl;
 import com.hannesdorfmann.mosby.mvp.delegate.mock.SimpleView;
 import com.hannesdorfmann.mosby.mvp.delegate.mock.SimpleViewState;
+import com.hannesdorfmann.mosby.mvp.viewstate.BuildConfig;
 import com.hannesdorfmann.mosby.mvp.viewstate.layout.ViewStateSavedState;
 import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
 /**
  * @author Hannes Dorfmann
  */
 
-@RunWith(RobolectricTestRunner.class) @Config(emulateSdk = 18, manifest = Config.NONE)
+@RunWith(RobolectricGradleTestRunner.class)
+@Config(constants = BuildConfig.class, sdk = 18, manifest = Config.NONE)
 public class ViewGroupMvpViewStateDelegateImplTest {
 
   private SimpleView view;
@@ -105,7 +107,6 @@ public class ViewGroupMvpViewStateDelegateImplTest {
     // Restore the state
     delegate.onRestoreInstanceState(parcelableState);
     delegate.onAttachedToWindow();
-
 
     Mockito.verify(callback, Mockito.times(1)).createPresenter();
     Mockito.verify(callback, Mockito.times(1)).setPresenter(presenter);

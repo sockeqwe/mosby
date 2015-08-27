@@ -22,20 +22,21 @@ import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.delegate.mock.PartialViewStateCallbackImpl;
 import com.hannesdorfmann.mosby.mvp.delegate.mock.SimpleView;
 import com.hannesdorfmann.mosby.mvp.delegate.mock.SimpleViewState;
+import com.hannesdorfmann.mosby.mvp.viewstate.BuildConfig;
 import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
 /**
  * @author Hannes Dorfmann
  */
 
-@RunWith(RobolectricTestRunner.class)
-@Config(emulateSdk=18)
+@RunWith(RobolectricGradleTestRunner.class)
+@Config(constants = BuildConfig.class, sdk = 18, manifest = Config.NONE)
 public class FragmentMvpViewStateDelegateImplTest {
 
   private SimpleView view;

@@ -1,5 +1,4 @@
 apply plugin: 'com.android.library'
-apply plugin: 'org.robolectric'
 apply from: '../maven-push.gradle'
 apply from: '../findbugs.gradle'
 

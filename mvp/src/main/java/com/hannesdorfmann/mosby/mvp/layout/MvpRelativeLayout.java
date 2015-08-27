@@ -20,14 +20,11 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
-
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 import com.hannesdorfmann.mosby.mvp.delegate.MvpDelegateCallback;
 import com.hannesdorfmann.mosby.mvp.delegate.ViewGroupMvpDelegate;
 import com.hannesdorfmann.mosby.mvp.delegate.ViewGroupMvpDelegateImpl;
-
-import butterknife.ButterKnife;
 
 /**
  * A RelativeLayout that can be used as view with an presenter.
@@ -57,12 +54,7 @@ public abstract class MvpRelativeLayout<V extends MvpView, P extends MvpPresente
   public MvpRelativeLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
     super(context, attrs, defStyleAttr, defStyleRes);
   }
-
-  @Override protected void onFinishInflate() {
-    super.onFinishInflate();
-    ButterKnife.bind(this);
-  }
-
+  
   /**
    * Get the mvp delegate. This is internally used for creating presenter, attaching and detaching
    * view from presenter etc.

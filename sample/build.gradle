@@ -31,7 +31,6 @@ def parcelablePlease = '1.0.1'
 
 dependencies {
   compile project(':mvp')
-  compile project(':core')
   compile project(':viewstate')
   compile project(':rx')
 

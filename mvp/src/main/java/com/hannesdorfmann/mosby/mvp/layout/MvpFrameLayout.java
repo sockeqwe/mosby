@@ -20,14 +20,11 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
-
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 import com.hannesdorfmann.mosby.mvp.delegate.MvpDelegateCallback;
 import com.hannesdorfmann.mosby.mvp.delegate.ViewGroupMvpDelegate;
 import com.hannesdorfmann.mosby.mvp.delegate.ViewGroupMvpDelegateImpl;
-
-import butterknife.ButterKnife;
 
 /**
  * A FrameLayout that can be used as View with an presenter
@@ -56,11 +53,6 @@ public abstract class MvpFrameLayout<V extends MvpView, P extends MvpPresenter<V
   @TargetApi(21)
   public MvpFrameLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
     super(context, attrs, defStyleAttr, defStyleRes);
-  }
-
-  @Override protected void onFinishInflate() {
-    super.onFinishInflate();
-    ButterKnife.bind(this);
   }
 
   /**

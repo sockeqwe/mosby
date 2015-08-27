@@ -18,20 +18,20 @@ package com.hannesdorfmann.mosby.mvp;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import com.hannesdorfmann.mosby.MosbyActivity;
+import android.support.v7.app.AppCompatActivity;
 import com.hannesdorfmann.mosby.mvp.delegate.ActivityMvpDelegate;
 import com.hannesdorfmann.mosby.mvp.delegate.ActivityMvpDelegateImpl;
 import com.hannesdorfmann.mosby.mvp.delegate.MvpDelegateCallback;
 
 /**
- * A {@link MosbyActivity} that uses an {@link MvpPresenter} to implement a Model-View-Presenter
- * Architecture.
+ * An Activity that uses an {@link MvpPresenter} to implement a Model-View-Presenter
+ * architecture.
  *
  * @author Hannes Dorfmann
  * @since 1.0.0
  */
 public abstract class MvpActivity<V extends MvpView, P extends MvpPresenter<V>>
-    extends MosbyActivity implements MvpDelegateCallback<V, P>, MvpView {
+    extends AppCompatActivity implements MvpDelegateCallback<V, P>, MvpView {
 
   protected ActivityMvpDelegate mvpDelegate;
   protected P presenter;

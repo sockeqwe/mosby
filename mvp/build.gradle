@@ -38,18 +38,19 @@ android {
 
 dependencies {
 
-  compile project(':core')
+  compile 'com.android.support:appcompat-v7:' + rootProject.ext.appcompat7Version
+
   compile project(':mvp-common')
 
   testCompile 'junit:junit:' + rootProject.ext.junitVersion
   testCompile 'org.mockito:mockito-core:' + rootProject.ext.mockitoVersion
 
 
-  testCompile ('org.powermock:powermock-api-mockito:'+rootProject.ext.powermockVersion) {
+  testCompile('org.powermock:powermock-api-mockito:' + rootProject.ext.powermockVersion) {
     exclude module: 'hamcrest-core'
     exclude module: 'objenesis'
   }
-  testCompile ('org.powermock:powermock-module-junit4:'+rootProject.ext.powermockVersion) {
+  testCompile('org.powermock:powermock-module-junit4:' + rootProject.ext.powermockVersion) {
     exclude module: 'hamcrest-core'
     exclude module: 'objenesis'
   }

@@ -15,6 +15,7 @@
  */
 package com.hannesdorfmann.mosby.mvp.viewstate.layout;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Parcelable;
@@ -66,10 +67,12 @@ public abstract class MvpViewStateFrameLayout<V extends MvpView, P extends MvpPr
     return mvpDelegate;
   }
 
+  @SuppressLint("MissingSuperCall")
   @Override protected Parcelable onSaveInstanceState() {
     return ((ViewGroupMvpViewStateDelegateImpl) getMvpDelegate()).onSaveInstanceState();
   }
 
+  @SuppressLint("MissingSuperCall")
   @Override protected void onRestoreInstanceState(Parcelable state) {
     ((ViewGroupMvpViewStateDelegateImpl) getMvpDelegate()).onRestoreInstanceState(state);
   }

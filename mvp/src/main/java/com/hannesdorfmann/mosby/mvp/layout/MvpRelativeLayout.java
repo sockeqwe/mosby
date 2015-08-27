@@ -54,7 +54,7 @@ public abstract class MvpRelativeLayout<V extends MvpView, P extends MvpPresente
   public MvpRelativeLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
     super(context, attrs, defStyleAttr, defStyleRes);
   }
-  
+
   /**
    * Get the mvp delegate. This is internally used for creating presenter, attaching and detaching
    * view from presenter etc.

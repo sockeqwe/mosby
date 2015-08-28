@@ -1,8 +1,6 @@
 package com.hannesdorfmann.mosby.sample.dagger2;
 
 import android.content.Context;
-import com.hannesdorfmann.mosby.mvp.rx.scheduler.AndroidSchedulerTransformer;
-import com.hannesdorfmann.mosby.mvp.rx.scheduler.SchedulerTransformer;
 import com.hannesdorfmann.mosby.sample.dagger2.model.ErrorMessageDeterminer;
 import com.hannesdorfmann.mosby.sample.dagger2.model.GithubApi;
 import com.squareup.okhttp.Cache;
@@ -35,9 +33,6 @@ public class SampleModule {
     return Picasso.with(context);
   }
 
-  @Provides @Singleton SchedulerTransformer providesSchedulerTransfomer(){
-    return new AndroidSchedulerTransformer();
-  }
 
   @Provides @Singleton public GithubApi providesGithubApi() {
 

@@ -1,4 +1,4 @@
 // include ':sample', ':viewstate', ':mvp', ':rx', ':retrofit', ':sample-dagger1', ':sample-dagger2-rx', ':sample-mail',
 //     ':testing', ':mvp-common'
 
-include ':mvp-common', ':mvp', ':viewstate', ':testing', ':rx', ':sample-dagger1'
+include ':mvp-common', ':mvp', ':viewstate', ':testing', ':rx', ':sample-dagger1', ':sample-dagger2-rx'

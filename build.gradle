@@ -41,9 +41,18 @@ ext {
   appcompat7Version = '23.0.0'
   supportAnnotations = '23.0.0'
   recyclerviewVersion = '23.0.0'
+
+  // Libraries for samples
   fragmentargsVersion = '2.1.0'
   butterknifeVersion = '7.0.1'
   icepickVersion = '3.0.2'
+  retrofitVersion = '1.9.0'
+  picassoVersion = '2.5.2'
+  okhttpVersion ='2.3.0'
+  parcelablepleaseVersion = '1.0.1'
+  annotatedadapterVersion = '1.0.0'
+  rxjavaVersion = '1.0.14'
+  rxandroidVersion = '1.0.1'
 
 
   // Test Libs

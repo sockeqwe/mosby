@@ -41,9 +41,6 @@ android {
   }
 }
 
-def annotatedAdapter = '1.0.0'
-def parcelablePlease = '1.0.1'
-
 dependencies {
 
   compile 'com.android.support:recyclerview-v7:' + rootProject.ext.appcompat7Version
@@ -52,23 +49,21 @@ dependencies {
   compile project(':viewstate')
 
   compile 'com.jakewharton:butterknife:' + rootProject.ext.butterknifeVersion
-  compile 'com.squareup.retrofit:retrofit:1.9.0'
+  compile 'com.squareup.retrofit:retrofit:'+rootProject.ext.retrofitVersion
 
 
+  apt 'com.hannesdorfmann.annotatedadapter:processor:' + rootProject.ext.annotatedadapterVersion
+  compile 'com.hannesdorfmann.annotatedadapter:annotation:' + rootProject.ext.annotatedadapterVersion
+  compile 'com.hannesdorfmann.annotatedadapter:support-recyclerview:' + rootProject.ext.annotatedadapterVersion
 
-
-  apt 'com.hannesdorfmann.annotatedadapter:processor:' + annotatedAdapter
-  compile 'com.hannesdorfmann.annotatedadapter:annotation:' + annotatedAdapter
-  compile 'com.hannesdorfmann.annotatedadapter:support-recyclerview:' + annotatedAdapter
-
-  compile 'com.hannesdorfmann.parcelableplease:annotation:' + parcelablePlease
-  apt 'com.hannesdorfmann.parcelableplease:processor:' + parcelablePlease
+  compile 'com.hannesdorfmann.parcelableplease:annotation:' + rootProject.ext.parcelablepleaseVersion
+  apt 'com.hannesdorfmann.parcelableplease:processor:' + rootProject.ext.parcelablepleaseVersion
 
 
   compile 'com.squareup.dagger:dagger:1.2.2'
   apt 'com.squareup.dagger:dagger-compiler:1.2.2'
 
-  compile 'com.squareup.okhttp:okhttp:2.3.0'
-  compile 'com.squareup.picasso:picasso:2.5.2'
+  compile 'com.squareup.okhttp:okhttp:'+rootProject.ext.okhttpVersion
+  compile 'com.squareup.picasso:picasso:'+rootProject.ext.picassoVersion
   compile 'com.makeramen:roundedimageview:2.0.1'
 }

@@ -17,7 +17,6 @@
 package com.hannesdorfmann.mosby.sample.dagger1;
 
 import android.app.Application;
-import com.hannesdorfmann.mosby.dagger1.Injector;
 import dagger.ObjectGraph;
 
 /**

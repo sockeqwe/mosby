@@ -18,10 +18,12 @@ package com.hannesdorfmann.mosby.sample.dagger1.members;
 
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.hannesdorfmann.mosby.viewstate.lce.Dagger1MvpLceViewStateActivity;
+import butterknife.ButterKnife;
+import com.hannesdorfmann.mosby.mvp.viewstate.lce.MvpLceViewStateActivity;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.ParcelableLceViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.CastedArrayListLceViewState;
 import com.hannesdorfmann.mosby.sample.dagger1.Injector;
@@ -39,8 +41,7 @@ import butterknife.Bind;
 /**
  * @author Hannes Dorfmann
  */
-public class MembersActivity extends
-    MvpLceViewStateActivity<SwipeRefreshLayout, List<User>, MembersView, MembersPresenter>
+public class MembersActivity extends MvpLceViewStateActivity<SwipeRefreshLayout, List<User>, MembersView, MembersPresenter>
     implements MembersView, SwipeRefreshLayout.OnRefreshListener, Injector {
 
   @Bind(R.id.recyclerView) RecyclerView recyclerView;
@@ -50,6 +51,8 @@ public class MembersActivity extends
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_members);
+    ButterKnife.bind(this);
+    injectDependencies();
 
     adapter = getObjectGraph().get(MembersAdapter.class);
     recyclerView.setAdapter(adapter);
@@ -62,7 +65,7 @@ public class MembersActivity extends
     return new CastedArrayListLceViewState<>();
   }
 
-  @Override protected void injectDependencies() {
+  protected void injectDependencies() {
     getObjectGraph().inject(this);
   }
 

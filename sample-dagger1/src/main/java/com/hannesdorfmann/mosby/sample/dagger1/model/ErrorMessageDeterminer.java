@@ -1,7 +1,5 @@
 package com.hannesdorfmann.mosby.sample.dagger1.model;
 
-import com.hannesdorfmann.mosby.retrofit.exception.NetworkException;
-
 /**
  * @author Hannes Dorfmann
  */

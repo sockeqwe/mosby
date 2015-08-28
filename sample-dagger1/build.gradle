@@ -46,14 +46,15 @@ def parcelablePlease = '1.0.1'
 
 dependencies {
 
-  compile project(':viewstate')
-  compile project(':retrofit')
-
-  compile 'com.jakewharton:butterknife:'+rootProject.ext.butterknifeVersion
-
-
-  compile 'com.android.support:recyclerview-v7:'+rootProject.ext.appcompat7Version
+  compile 'com.android.support:recyclerview-v7:' + rootProject.ext.appcompat7Version
   compile 'com.android.support:appcompat-v7:' + rootProject.ext.appcompat7Version
+
+  compile project(':viewstate')
+
+  compile 'com.jakewharton:butterknife:' + rootProject.ext.butterknifeVersion
+  compile 'com.squareup.retrofit:retrofit:1.9.0'
+
+
 
 
   apt 'com.hannesdorfmann.annotatedadapter:processor:' + annotatedAdapter

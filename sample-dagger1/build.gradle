@@ -39,11 +39,16 @@ android {
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
   }
+
+  lintOptions {
+    warning 'InvalidPackage' // okhttp uses nio which is not part of android
+    abortOnError false
+  }
 }
 
 dependencies {
 
-  compile 'com.android.support:recyclerview-v7:' + rootProject.ext.appcompat7Version
+  compile 'com.android.support:recyclerview-v7:' + rootProject.ext.recyclerviewVersion
   compile 'com.android.support:appcompat-v7:' + rootProject.ext.appcompat7Version
 
   compile project(':viewstate')

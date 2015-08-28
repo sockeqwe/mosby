@@ -43,6 +43,7 @@ android {
 
   lintOptions {
     warning 'InvalidPackage' // okhttp uses nio which is not part of android
+    abortOnError false
   }
 }
 
@@ -50,7 +51,7 @@ android {
 dependencies {
   compile project(':viewstate')
 
-  compile 'com.android.support:recyclerview-v7:' + rootProject.ext.appcompat7Version
+  compile 'com.android.support:recyclerview-v7:' + rootProject.ext.recyclerviewVersion
   compile 'com.android.support:appcompat-v7:' + rootProject.ext.appcompat7Version
 
   compile 'com.jakewharton:butterknife:' + rootProject.ext.butterknifeVersion
@@ -62,8 +63,8 @@ dependencies {
   compile 'com.hannesdorfmann.annotatedadapter:annotation:' + rootProject.ext.annotatedadapterVersion
   compile 'com.hannesdorfmann.annotatedadapter:support-recyclerview:' + rootProject.ext.annotatedadapterVersion
 
-  compile 'com.google.dagger:dagger:2.0'
-  apt 'com.google.dagger:dagger-compiler:2.0'
+  compile 'com.google.dagger:dagger:'+rootProject.ext.dagger2Version
+  apt 'com.google.dagger:dagger-compiler:'+rootProject.ext.dagger2Version
   compile 'javax.annotation:javax.annotation-api:1.2'
 
   compile 'com.squareup.okhttp:okhttp:'+ rootProject.ext.okhttpVersion
@@ -74,7 +75,7 @@ dependencies {
   // testing
   testCompile project(':testing')
   testCompile 'com.squareup.retrofit:retrofit-mock:'+ rootProject.ext.retrofitVersion
-  testCompile 'com.google.dagger:dagger:2.0'
-  testCompile 'com.google.dagger:dagger-compiler:2.0'
+  testCompile 'com.google.dagger:dagger:'+rootProject.ext.dagger2Version
+  testCompile 'com.google.dagger:dagger-compiler:'+rootProject.ext.dagger2Version
   testCompile 'javax.annotation:javax.annotation-api:1.2'
 }

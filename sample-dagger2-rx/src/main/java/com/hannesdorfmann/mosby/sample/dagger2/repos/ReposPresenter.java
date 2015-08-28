@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.List;
 import javax.inject.Inject;
 import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 
 /**
@@ -28,7 +27,7 @@ public class ReposPresenter extends MvpLceRxPresenter<ReposView, List<Repo>> {
             Collections.shuffle(repos);
             return Observable.just(repos);
           }
-        }).observeOn(AndroidSchedulers.mainThread());
+        });
 
     subscribe(observable, pullToRefresh);
   }

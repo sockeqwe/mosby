@@ -53,6 +53,7 @@ ext {
   annotatedadapterVersion = '1.0.0'
   rxjavaVersion = '1.0.14'
   rxandroidVersion = '1.0.1'
+  dagger2Version = '2.0'
 
 
   // Test Libs

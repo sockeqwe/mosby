@@ -20,6 +20,8 @@ package com.hannesdorfmann.mosby.sample.dagger2.repos;
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
 import rx.Observable;
 import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * A presenter for RxJava, that assumes that only one Observable is subscribed by this presenter.
@@ -79,7 +81,9 @@ public abstract class MvpLceRxPresenter<V extends MvpLceView<M>, M>
       }
     };
 
-    observable.subscribe(subscriber);
+    observable.subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(subscriber);
   }
 
   protected void onCompleted() {

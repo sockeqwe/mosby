@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
-apply plugin: 'org.robolectric'
 apply from: '../findbugs.gradle'
 
 
@@ -29,13 +28,10 @@ android {
 }
 
 
-def annotatedAdapter = '1.0.0'
-def parcelablePlease = '1.0.1'
-
 dependencies {
   compile fileTree(dir: 'libs', include: ['*.jar'])
   compile 'com.android.support:appcompat-v7:' + rootProject.ext.appcompat7Version
-  compile 'com.android.support:recyclerview-v7:22.1.1'
+  compile 'com.android.support:recyclerview-v7:' + rootProject.ext.recyclerviewVersion
 
   compile project(':viewstate')
   compile project(':rx')
@@ -53,21 +49,22 @@ dependencies {
   compile 'com.jpardogo.materialtabstrip:library:1.0.9'
   compile 'com.github.chenupt:DragTopLayout:1.2.1'
 
+  compile 'io.reactivex:rxjava:' + rootProject.ext.rxjavaVersion
+  compile 'io.reactivex:rxandroid:' + rootProject.ext.rxandroidVersion
+
+  apt 'com.hannesdorfmann.annotatedadapter:processor:' + rootProject.ext.annotatedadapterVersion
+  compile 'com.hannesdorfmann.annotatedadapter:annotation:' + rootProject.ext.annotatedadapterVersion
+  compile 'com.hannesdorfmann.annotatedadapter:support-recyclerview:' + rootProject.ext.annotatedadapterVersion
 
 
-  apt 'com.hannesdorfmann.annotatedadapter:processor:' + annotatedAdapter
-  compile 'com.hannesdorfmann.annotatedadapter:annotation:' + annotatedAdapter
-  compile 'com.hannesdorfmann.annotatedadapter:support-recyclerview:' + annotatedAdapter
+  compile 'com.hannesdorfmann.parcelableplease:annotation:' + rootProject.ext.parcelablepleaseVersion
+  apt 'com.hannesdorfmann.parcelableplease:processor:' + rootProject.ext.parcelablepleaseVersion
 
 
-  compile 'com.hannesdorfmann.parcelableplease:annotation:' + parcelablePlease
-  apt 'com.hannesdorfmann.parcelableplease:processor:' + parcelablePlease
-
-
-  apt 'frankiesardo:icepick-processor:3.0.3-SNAPSHOT'
-  apt 'com.hannesdorfmann.fragmentargs:processor:2.0.1'
-  compile 'com.google.dagger:dagger:2.0'
-  apt 'com.google.dagger:dagger-compiler:2.0'
+  apt 'frankiesardo:icepick-processor:' + rootProject.ext.icepickVersion
+  apt 'com.hannesdorfmann.fragmentargs:processor:' + rootProject.ext.fragmentargsVersion
+  compile 'com.google.dagger:dagger:' + rootProject.ext.dagger2Version
+  apt 'com.google.dagger:dagger-compiler:' + rootProject.ext.dagger2Version
   compile 'javax.annotation:javax.annotation-api:1.2'
 
 

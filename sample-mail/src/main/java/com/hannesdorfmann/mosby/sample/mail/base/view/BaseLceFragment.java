@@ -68,6 +68,7 @@ public abstract class BaseLceFragment<CV extends View, M, V extends MvpLceView<M
     ButterKnife.unbind(this);
   }
 
+
   /**
    * Inject the dependencies
    */

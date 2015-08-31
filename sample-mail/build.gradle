@@ -59,15 +59,18 @@ dependencies {
   compile 'com.hannesdorfmann.parcelableplease:annotation:' + rootProject.ext.parcelablepleaseVersion
   apt 'com.hannesdorfmann.parcelableplease:processor:' + rootProject.ext.parcelablepleaseVersion
 
-  compile 'com.jakewharton:butterknife:'+rootProject.ext.butterknifeVersion
+  compile 'com.jakewharton:butterknife:' + rootProject.ext.butterknifeVersion
 
-  compile 'frankiesardo:icepick:'+rootProject.ext.icepickVersion
+  compile 'frankiesardo:icepick:' + rootProject.ext.icepickVersion
   apt 'frankiesardo:icepick-processor:' + rootProject.ext.icepickVersion
   compile 'com.hannesdorfmann.fragmentargs:annotation:' + rootProject.ext.fragmentargsVersion
   apt 'com.hannesdorfmann.fragmentargs:processor:' + rootProject.ext.fragmentargsVersion
   compile 'com.google.dagger:dagger:' + rootProject.ext.dagger2Version
   apt 'com.google.dagger:dagger-compiler:' + rootProject.ext.dagger2Version
   compile 'javax.annotation:javax.annotation-api:1.2'
+
+
+  compile 'com.squareup.leakcanary:leakcanary-android:' + rootProject.ext.leakcanaryVersion
 
 
   testCompile 'junit:junit:4.12'

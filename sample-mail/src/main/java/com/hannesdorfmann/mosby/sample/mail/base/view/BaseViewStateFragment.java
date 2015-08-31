@@ -66,6 +66,7 @@ public abstract class BaseViewStateFragment<V extends MvpView, P extends MvpPres
     ButterKnife.unbind(this);
   }
 
+
   /**
    * Inject the dependencies
    */

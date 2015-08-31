@@ -159,4 +159,11 @@ public abstract class MvpLceFragment<CV extends View, M, V extends MvpLceView<M>
   protected void animateErrorViewIn() {
     LceAnimator.showErrorView(loadingView, contentView, errorView);
   }
+
+  @Override public void onDestroyView() {
+    super.onDestroyView();
+    loadingView = null;
+    contentView = null;
+    errorView = null;
+  }
 }

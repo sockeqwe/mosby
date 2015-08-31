@@ -1,6 +1,6 @@
 package com.hannesdorfmann.mosby.sample.mail.profile;
 
-import com.hannesdorfmann.mosby.mvp.rx.lce.MvpLceRxPresenter;
+import com.hannesdorfmann.mosby.sample.mail.base.presenter.BaseRxLcePresenter;
 import com.hannesdorfmann.mosby.sample.mail.model.contact.ContactsManager;
 import com.hannesdorfmann.mosby.sample.mail.model.contact.Person;
 import com.hannesdorfmann.mosby.sample.mail.model.contact.ProfileScreen;
@@ -10,7 +10,7 @@ import javax.inject.Inject;
 /**
  * @author Hannes Dorfmann
  */
-public class ProfilePresenter extends MvpLceRxPresenter<ProfileView, List<ProfileScreen>> {
+public class ProfilePresenter extends BaseRxLcePresenter<ProfileView, List<ProfileScreen>> {
 
   private ContactsManager contactsManager;
 

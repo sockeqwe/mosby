@@ -16,7 +16,6 @@
 
 package com.hannesdorfmann.mosby.sample.mail.base.presenter;
 
-import com.hannesdorfmann.mosby.mvp.rx.scheduler.AndroidSchedulerTransformer;
 import com.hannesdorfmann.mosby.sample.mail.base.view.BaseMailView;
 import com.hannesdorfmann.mosby.sample.mail.model.event.MailReadEvent;
 import com.hannesdorfmann.mosby.sample.mail.model.event.MailStaredEvent;
@@ -26,6 +25,8 @@ import com.hannesdorfmann.mosby.sample.mail.model.mail.MailProvider;
 import de.greenrobot.event.EventBus;
 import javax.inject.Inject;
 import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Base Presenter implementation that already handles and listen
@@ -53,7 +54,8 @@ public class BaseRxMailPresenter<V extends BaseMailView<M>, M>
     }
 
     mailProvider.starMail(mail.getId(), star)
-        .compose(new AndroidSchedulerTransformer<Mail>())
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
         .subscribe(new Subscriber<Mail>() {
           @Override public void onCompleted() {
           }

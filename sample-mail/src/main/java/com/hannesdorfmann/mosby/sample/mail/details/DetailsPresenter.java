@@ -1,12 +1,13 @@
 package com.hannesdorfmann.mosby.sample.mail.details;
 
-import com.hannesdorfmann.mosby.mvp.rx.scheduler.AndroidSchedulerTransformer;
 import com.hannesdorfmann.mosby.sample.mail.base.presenter.BaseRxMailPresenter;
 import com.hannesdorfmann.mosby.sample.mail.model.event.MailReadEvent;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.MailProvider;
 import de.greenrobot.event.EventBus;
 import javax.inject.Inject;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * @author Hannes Dorfmann
@@ -33,7 +34,8 @@ public class DetailsPresenter extends BaseRxMailPresenter<DetailsView, Mail> {
     // We assume that this call could never fail
     eventBus.post(new MailReadEvent(mail, true));
     mailProvider.markAsRead(mail, true)
-        .compose(new AndroidSchedulerTransformer<Mail>())
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
         .subscribe();
   }
 }

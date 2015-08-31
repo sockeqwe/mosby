@@ -17,7 +17,6 @@
 package com.hannesdorfmann.mosby.sample.mail.login;
 
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
-import com.hannesdorfmann.mosby.mvp.rx.scheduler.SchedulerTransformer;
 import com.hannesdorfmann.mosby.sample.mail.model.account.Account;
 import com.hannesdorfmann.mosby.sample.mail.model.account.AccountManager;
 import com.hannesdorfmann.mosby.sample.mail.model.account.AuthCredentials;
@@ -25,6 +24,8 @@ import com.hannesdorfmann.mosby.sample.mail.model.event.LoginSuccessfulEvent;
 import de.greenrobot.event.EventBus;
 import javax.inject.Inject;
 import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * @author Hannes Dorfmann
@@ -33,13 +34,10 @@ public class LoginPresenter extends MvpBasePresenter<LoginView> {
 
   private AccountManager accountManager;
   private Subscriber<Account> subscriber;
-  private SchedulerTransformer schedulerTransformer;
   private EventBus eventBus;
 
-  @Inject public LoginPresenter(AccountManager accountManager, SchedulerTransformer transformer,
-      EventBus eventBus) {
+  @Inject public LoginPresenter(AccountManager accountManager, EventBus eventBus) {
     this.accountManager = accountManager;
-    this.schedulerTransformer = transformer;
     this.eventBus = eventBus;
   }
 
@@ -53,13 +51,13 @@ public class LoginPresenter extends MvpBasePresenter<LoginView> {
     cancelSubscription();
     subscriber = new Subscriber<Account>() {
       @Override public void onCompleted() {
-        if(isViewAttached()){
+        if (isViewAttached()) {
           getView().loginSuccessful();
         }
       }
 
       @Override public void onError(Throwable e) {
-        if (isViewAttached()){
+        if (isViewAttached()) {
           getView().showError();
         }
       }
@@ -70,7 +68,10 @@ public class LoginPresenter extends MvpBasePresenter<LoginView> {
     };
 
     // do the login
-    accountManager.doLogin(credentials).compose(schedulerTransformer).subscribe(subscriber);
+    accountManager.doLogin(credentials)
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(subscriber);
   }
 
   /**

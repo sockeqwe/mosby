@@ -1,7 +1,6 @@
 package com.hannesdorfmann.mosby.sample.mail.label;
 
-import com.hannesdorfmann.mosby.mvp.rx.lce.MvpLceRxPresenter;
-import com.hannesdorfmann.mosby.mvp.rx.scheduler.SchedulerTransformer;
+import com.hannesdorfmann.mosby.sample.mail.base.presenter.BaseRxLcePresenter;
 import com.hannesdorfmann.mosby.sample.mail.model.event.MailLabelChangedEvent;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Label;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
@@ -10,21 +9,20 @@ import de.greenrobot.event.EventBus;
 import java.util.List;
 import javax.inject.Inject;
 import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * @author Hannes Dorfmann
  */
-public class LabelPresenter extends MvpLceRxPresenter<LabelView, List<Label>> {
+public class LabelPresenter extends BaseRxLcePresenter<LabelView, List<Label>> {
 
   private EventBus eventBus;
   private MailProvider mailProvider;
-  private SchedulerTransformer schedulerTransformer;
 
-  @Inject public LabelPresenter(EventBus eventBus, MailProvider mailProvider,
-      SchedulerTransformer transformer) {
+  @Inject public LabelPresenter(EventBus eventBus, MailProvider mailProvider) {
     this.eventBus = eventBus;
     this.mailProvider = mailProvider;
-    this.schedulerTransformer = transformer;
   }
 
   @Override public void attachView(LabelView view) {
@@ -48,7 +46,8 @@ public class LabelPresenter extends MvpLceRxPresenter<LabelView, List<Label>> {
     eventBus.post(new MailLabelChangedEvent(mail, newLabel));
 
     mailProvider.setLabel(mail, newLabel)
-        .compose(schedulerTransformer)
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
         .subscribe(new Subscriber<Mail>() {
           @Override public void onCompleted() {
           }

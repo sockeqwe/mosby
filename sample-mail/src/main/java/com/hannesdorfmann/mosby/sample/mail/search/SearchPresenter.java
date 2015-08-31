@@ -1,7 +1,6 @@
 package com.hannesdorfmann.mosby.sample.mail.search;
 
 import android.text.TextUtils;
-import com.hannesdorfmann.mosby.mvp.rx.scheduler.AndroidSchedulerTransformer;
 import com.hannesdorfmann.mosby.sample.mail.base.presenter.BaseRxMailPresenter;
 import com.hannesdorfmann.mosby.sample.mail.model.event.LoginSuccessfulEvent;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
@@ -11,6 +10,8 @@ import java.util.List;
 import javax.inject.Inject;
 import rx.Observable;
 import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * @author Hannes Dorfmann
@@ -55,7 +56,9 @@ public class SearchPresenter extends BaseRxMailPresenter<SearchView, List<Mail>>
     };
 
     // start
-    older.compose(new AndroidSchedulerTransformer<List<Mail>>()).subscribe(olderSubscriber);
+    older.subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(olderSubscriber);
   }
 
   public void searchFor(String query, boolean pullToRefresh) {
@@ -82,11 +85,9 @@ public class SearchPresenter extends BaseRxMailPresenter<SearchView, List<Mail>>
     }
   }
 
-
   public void onEventMainThread(LoginSuccessfulEvent event) {
     if (isViewAttached()) {
       getView().showSearchNotStartedYet();
     }
   }
-
 }

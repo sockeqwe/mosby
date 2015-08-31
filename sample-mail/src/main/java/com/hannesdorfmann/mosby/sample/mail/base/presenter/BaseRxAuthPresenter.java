@@ -16,18 +16,17 @@
 
 package com.hannesdorfmann.mosby.sample.mail.base.presenter;
 
-import com.hannesdorfmann.mosby.mvp.rx.lce.MvpLceRxPresenter;
 import com.hannesdorfmann.mosby.sample.mail.base.view.AuthView;
 import com.hannesdorfmann.mosby.sample.mail.model.account.NotAuthenticatedException;
-import com.hannesdorfmann.mosby.sample.mail.model.mail.MailProvider;
 import com.hannesdorfmann.mosby.sample.mail.model.event.LoginSuccessfulEvent;
 import com.hannesdorfmann.mosby.sample.mail.model.event.NotAuthenticatedEvent;
+import com.hannesdorfmann.mosby.sample.mail.model.mail.MailProvider;
 import de.greenrobot.event.EventBus;
 
 /**
  * @author Hannes Dorfmann
  */
-public class BaseRxAuthPresenter<V extends AuthView<M>, M> extends MvpLceRxPresenter<V, M> {
+public class BaseRxAuthPresenter<V extends AuthView<M>, M> extends BaseRxLcePresenter<V, M> {
 
   protected EventBus eventBus;
   protected MailProvider mailProvider;

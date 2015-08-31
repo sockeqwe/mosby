@@ -34,7 +34,6 @@ dependencies {
   compile 'com.android.support:recyclerview-v7:' + rootProject.ext.recyclerviewVersion
 
   compile project(':viewstate')
-  compile project(':rx')
 
 
   compile 'de.greenrobot:eventbus:2.4.0'

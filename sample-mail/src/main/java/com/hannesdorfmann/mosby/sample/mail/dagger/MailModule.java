@@ -16,8 +16,6 @@
 
 package com.hannesdorfmann.mosby.sample.mail.dagger;
 
-import com.hannesdorfmann.mosby.mvp.rx.scheduler.AndroidSchedulerTransformer;
-import com.hannesdorfmann.mosby.mvp.rx.scheduler.SchedulerTransformer;
 import com.hannesdorfmann.mosby.sample.mail.model.account.AccountManager;
 import com.hannesdorfmann.mosby.sample.mail.model.account.DefaultAccountManager;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.MailGenerator;
@@ -40,10 +38,6 @@ import javax.inject.Singleton;
 
   @Singleton @Provides public AccountManager providesAccountManager() {
     return accountManager;
-  }
-
-  @Singleton @Provides public SchedulerTransformer providesSchedulerTransformer() {
-    return new AndroidSchedulerTransformer();
   }
 
   @Singleton @Provides public EventBus providesEventBus() {

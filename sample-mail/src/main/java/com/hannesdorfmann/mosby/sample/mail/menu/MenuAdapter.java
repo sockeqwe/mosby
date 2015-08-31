@@ -21,7 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.hannesdorfmann.annotatedadapter.annotation.Field;
+import com.hannesdorfmann.annotatedadapter.annotation.ViewField;
 import com.hannesdorfmann.annotatedadapter.annotation.ViewType;
 import com.hannesdorfmann.mosby.sample.mail.R;
 import com.hannesdorfmann.mosby.sample.mail.base.view.ListAdapter;
@@ -41,15 +41,15 @@ public class MenuAdapter extends ListAdapter<List<Label>> implements MenuAdapter
 
   @ViewType(layout = R.layout.list_menu_item,
       initMethod = true,
-      fields = {
-          @Field(id = R.id.icon, name = "icon", type = ImageView.class),
-          @Field(id = R.id.name, name = "name", type = TextView.class),
-          @Field(id = R.id.unreadCount, name = "unread", type = TextView.class)
+      views = {
+          @ViewField(id = R.id.icon, name = "icon", type = ImageView.class),
+          @ViewField(id = R.id.name, name = "name", type = TextView.class),
+          @ViewField(id = R.id.unreadCount, name = "unread", type = TextView.class)
       }) public final int menuItem = 0;
 
   @ViewType(layout = R.layout.list_menu_statistics,
       initMethod = true,
-      fields = @Field(id = R.id.icon, name = "icon", type = ImageView.class)) public final int
+      views = @ViewField(id = R.id.icon, name = "icon", type = ImageView.class)) public final int
       statisticsItem = 1;
 
   private Context context;

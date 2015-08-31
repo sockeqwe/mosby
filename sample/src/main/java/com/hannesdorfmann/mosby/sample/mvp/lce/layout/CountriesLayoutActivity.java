@@ -1,13 +1,13 @@
 package com.hannesdorfmann.mosby.sample.mvp.lce.layout;
 
 import android.os.Bundle;
-import com.hannesdorfmann.mosby.MosbyActivity;
+import android.support.v7.app.AppCompatActivity;
 import com.hannesdorfmann.mosby.sample.R;
 
 /**
  * @author Hannes Dorfmann
  */
-public class CountriesLayoutActivity extends MosbyActivity {
+public class CountriesLayoutActivity extends AppCompatActivity {
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);

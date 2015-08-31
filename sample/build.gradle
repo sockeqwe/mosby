@@ -26,24 +26,21 @@ android {
   }
 }
 
-def annotatedAdapter = '1.0.0'
-def parcelablePlease = '1.0.1'
 
 dependencies {
-  compile project(':mvp')
   compile project(':viewstate')
-  compile project(':rx')
 
-
-  compile 'com.android.support:design:22.2.+'
-
-  compile 'com.android.support:recyclerview-v7:22.1.1'
+  compile 'com.android.support:design:'+ rootProject.ext.appcompat7Version
+  compile 'com.android.support:recyclerview-v7:'+ rootProject.ext.recyclerviewVersion
   compile 'com.android.support:appcompat-v7:' + rootProject.ext.appcompat7Version
 
-  apt 'com.hannesdorfmann.annotatedadapter:processor:' + annotatedAdapter
-  compile 'com.hannesdorfmann.annotatedadapter:annotation:' + annotatedAdapter
-  compile 'com.hannesdorfmann.annotatedadapter:support-recyclerview:' + annotatedAdapter
 
-  compile 'com.hannesdorfmann.parcelableplease:annotation:' + parcelablePlease
-  apt 'com.hannesdorfmann.parcelableplease:processor:' + parcelablePlease
+  compile 'com.jakewharton:butterknife:'+rootProject.ext.butterknifeVersion
+
+  apt 'com.hannesdorfmann.annotatedadapter:processor:' + rootProject.ext.annotatedadapterVersion
+  compile 'com.hannesdorfmann.annotatedadapter:annotation:' + rootProject.ext.annotatedadapterVersion
+  compile 'com.hannesdorfmann.annotatedadapter:support-recyclerview:' + rootProject.ext.annotatedadapterVersion
+
+  compile 'com.hannesdorfmann.parcelableplease:annotation:' + rootProject.ext.parcelablepleaseVersion
+  apt 'com.hannesdorfmann.parcelableplease:processor:' + rootProject.ext.parcelablepleaseVersion
 }

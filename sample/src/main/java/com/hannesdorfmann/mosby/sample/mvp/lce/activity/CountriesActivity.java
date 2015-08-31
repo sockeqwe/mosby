@@ -21,6 +21,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import butterknife.ButterKnife;
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceActivity;
 import com.hannesdorfmann.mosby.sample.R;
 import com.hannesdorfmann.mosby.sample.mvp.CountriesAdapter;
@@ -45,6 +46,7 @@ public class CountriesActivity
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.countries_list);
+    ButterKnife.bind(this);
 
     // Setup contentView == SwipeRefreshView
     contentView.setOnRefreshListener(this);

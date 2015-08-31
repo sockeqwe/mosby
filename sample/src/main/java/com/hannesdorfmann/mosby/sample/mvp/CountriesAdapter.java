@@ -18,7 +18,7 @@ package com.hannesdorfmann.mosby.sample.mvp;
 
 import android.content.Context;
 import android.widget.TextView;
-import com.hannesdorfmann.annotatedadapter.annotation.Field;
+import com.hannesdorfmann.annotatedadapter.annotation.ViewField;
 import com.hannesdorfmann.annotatedadapter.annotation.ViewType;
 import com.hannesdorfmann.annotatedadapter.support.recyclerview.SupportAnnotatedAdapter;
 import com.hannesdorfmann.mosby.sample.R;
@@ -32,8 +32,8 @@ public class CountriesAdapter extends SupportAnnotatedAdapter implements Countri
 
   @ViewType(
       layout = R.layout.row_text,
-      fields = {
-          @Field(
+      views = {
+          @ViewField(
               id = R.id.textView,
               name = "name",
               type = TextView.class)

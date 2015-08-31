@@ -16,9 +16,14 @@
 
 package com.hannesdorfmann.mosby.sample.mvp.customviewstate;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
+import butterknife.ButterKnife;
 import com.hannesdorfmann.mosby.mvp.viewstate.MvpViewStateFragment;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 import com.hannesdorfmann.mosby.sample.R;
@@ -37,8 +42,19 @@ public class MyCustomFragment extends MvpViewStateFragment<MyCustomView, MyCusto
   @Bind(R.id.textViewA) TextView aView;
   @Bind(R.id.textViewB) TextView bView;
 
-  @Override protected int getLayoutRes() {
-    return R.layout.my_custom_view;
+  @Nullable @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
+      Bundle savedInstanceState) {
+    return inflater.inflate(R.layout.my_custom_view, container, false);
+  }
+
+  @Override public void onDestroyView() {
+    super.onDestroyView();
+    ButterKnife.unbind(this);
+  }
+
+  @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
+    ButterKnife.bind(this, view);
   }
 
   @Override public ViewState createViewState() {

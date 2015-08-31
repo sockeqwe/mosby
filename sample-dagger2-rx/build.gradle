@@ -43,7 +43,6 @@ android {
 
   lintOptions {
     warning 'InvalidPackage' // okhttp uses nio which is not part of android
-    abortOnError false
   }
 }
 

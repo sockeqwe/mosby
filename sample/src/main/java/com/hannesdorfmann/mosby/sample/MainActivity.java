@@ -18,20 +18,19 @@ package com.hannesdorfmann.mosby.sample;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
-import com.hannesdorfmann.mosby.MosbyActivity;
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import com.hannesdorfmann.mosby.sample.mvp.customviewstate.MyCustomActivity;
 import com.hannesdorfmann.mosby.sample.mvp.lce.activity.CountriesActivity;
 import com.hannesdorfmann.mosby.sample.mvp.lce.layout.CountriesLayoutActivity;
 import com.hannesdorfmann.mosby.sample.mvp.lce.viewstate.CountriesViewStateActivity;
 
-import butterknife.Bind;
-
-public class MainActivity extends MosbyActivity implements AdapterView.OnItemClickListener {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
   Demo[] demos;
 
@@ -40,6 +39,7 @@ public class MainActivity extends MosbyActivity implements AdapterView.OnItemCli
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
+    ButterKnife.bind(this);
     demos = createDemos();
     listView.setAdapter(new ArrayAdapter<Demo>(this, android.R.layout.simple_list_item_1, demos));
     listView.setOnItemClickListener(this);

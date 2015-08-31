@@ -20,20 +20,24 @@ package com.hannesdorfmann.mosby.sample.mvp.lce.viewstate.nested;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
-import com.hannesdorfmann.mosby.MosbyFragment;
+import android.view.ViewGroup;
 import com.hannesdorfmann.mosby.sample.R;
 import com.hannesdorfmann.mosby.sample.mvp.lce.viewstate.NotRetainingCountriesFragment;
 
 /**
  * @author Hannes Dorfmann
  */
-public class NestedFragment extends MosbyFragment {
+public class NestedFragment extends Fragment {
 
   private final String NESTED_TAG = "nestedFrag";
 
-  @Override protected int getLayoutRes() {
-    return R.layout.fragment_nested_container;
+
+  @Nullable @Override
+  public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+      @Nullable Bundle savedInstanceState) {
+    return inflater.inflate(R.layout.fragment_nested_container, container, false);
   }
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {

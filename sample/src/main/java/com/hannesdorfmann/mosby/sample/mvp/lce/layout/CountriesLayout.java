@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import butterknife.ButterKnife;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.layout.MvpViewStateFrameLayout;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.CastedArrayListLceViewState;
@@ -58,6 +59,7 @@ public class CountriesLayout extends MvpViewStateFrameLayout<CountriesView, Coun
 
   @Override protected void onFinishInflate() {
     super.onFinishInflate();
+    ButterKnife.bind(this, this);
 
     contentView.setOnRefreshListener(this);
 
@@ -145,5 +147,4 @@ public class CountriesLayout extends MvpViewStateFrameLayout<CountriesView, Coun
   @OnClick(R.id.errorView) public void onErrorViewClicked() {
     loadData(false);
   }
-
 }

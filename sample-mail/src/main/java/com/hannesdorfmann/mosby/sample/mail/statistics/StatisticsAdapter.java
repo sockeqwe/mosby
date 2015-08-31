@@ -2,7 +2,7 @@ package com.hannesdorfmann.mosby.sample.mail.statistics;
 
 import android.content.Context;
 import android.widget.TextView;
-import com.hannesdorfmann.annotatedadapter.annotation.Field;
+import com.hannesdorfmann.annotatedadapter.annotation.ViewField;
 import com.hannesdorfmann.annotatedadapter.annotation.ViewType;
 import com.hannesdorfmann.mosby.sample.mail.R;
 import com.hannesdorfmann.mosby.sample.mail.base.view.ListAdapter;
@@ -17,7 +17,7 @@ public class StatisticsAdapter extends ListAdapter<List<MailsCount>>
 
   @ViewType(
       layout = R.layout.list_statistics,
-      fields = @Field(id = R.id.text, name = "text", type = TextView.class)) public final int
+      views = @ViewField(id = R.id.text, name = "text", type = TextView.class)) public final int
       statisticItem = 0;
 
   public StatisticsAdapter(Context context) {

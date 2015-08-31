@@ -21,8 +21,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 
+import android.view.ViewGroup;
+import butterknife.ButterKnife;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.MvpLceViewStateFragment;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.CastedArrayListLceViewState;
@@ -53,8 +56,20 @@ public class NotRetainingCountriesFragment extends
     return new CastedArrayListLceViewState<>();
   }
 
+  @Override public void onDestroyView() {
+    super.onDestroyView();
+    ButterKnife.unbind(this);
+  }
+
+  @Nullable @Override
+  public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+      @Nullable Bundle savedInstanceState) {
+    return inflater.inflate(R.layout.countries_list, container, false);
+  }
+
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstance) {
     super.onViewCreated(view, savedInstance);
+    ButterKnife.bind(this, view);
 
     // Setup contentView == SwipeRefreshView
     contentView.setOnRefreshListener(this);
@@ -76,10 +91,6 @@ public class NotRetainingCountriesFragment extends
 
   @Override public CountriesPresenter createPresenter() {
     return new SimpleCountriesPresenter();
-  }
-
-  @Override protected int getLayoutRes() {
-    return R.layout.countries_list;
   }
 
   @Override public void setData(List<Country> data) {

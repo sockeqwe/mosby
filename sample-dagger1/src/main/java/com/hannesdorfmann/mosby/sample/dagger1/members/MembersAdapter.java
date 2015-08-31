@@ -20,7 +20,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.hannesdorfmann.annotatedadapter.annotation.Field;
+import com.hannesdorfmann.annotatedadapter.annotation.ViewField;
 import com.hannesdorfmann.annotatedadapter.annotation.ViewType;
 import com.hannesdorfmann.annotatedadapter.support.recyclerview.SupportAnnotatedAdapter;
 import com.hannesdorfmann.mosby.sample.dagger1.R;
@@ -39,9 +39,9 @@ public class MembersAdapter
 
   @ViewType(
       layout = R.layout.list_member,
-      fields = {
-          @Field(id = R.id.avatar, type = ImageView.class, name = "avatar"),
-          @Field(id = R.id.username, type = TextView.class, name = "username")
+      views = {
+          @ViewField(id = R.id.avatar, type = ImageView.class, name = "avatar"),
+          @ViewField(id = R.id.username, type = TextView.class, name = "username")
 
       }
   )

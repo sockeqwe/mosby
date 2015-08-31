@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import butterknife.ButterKnife;
 import com.hannesdorfmann.mosby.mvp.viewstate.MvpViewStateActivity;
 import com.hannesdorfmann.mosby.mvp.viewstate.RestoreableViewState;
 import com.hannesdorfmann.mosby.sample.R;
@@ -41,6 +42,7 @@ public class MyCustomActivity extends MvpViewStateActivity<MyCustomView, MyCusto
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.my_custom_view);
+    ButterKnife.bind(this);
   }
 
   @Override public RestoreableViewState createViewState() {

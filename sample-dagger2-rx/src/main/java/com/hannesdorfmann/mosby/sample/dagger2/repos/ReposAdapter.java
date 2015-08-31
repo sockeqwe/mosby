@@ -3,7 +3,7 @@ package com.hannesdorfmann.mosby.sample.dagger2.repos;
 import android.content.Context;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.hannesdorfmann.annotatedadapter.annotation.Field;
+import com.hannesdorfmann.annotatedadapter.annotation.ViewField;
 import com.hannesdorfmann.annotatedadapter.annotation.ViewType;
 import com.hannesdorfmann.annotatedadapter.support.recyclerview.SupportAnnotatedAdapter;
 import com.hannesdorfmann.mosby.sample.dagger2.R;
@@ -19,10 +19,10 @@ public class ReposAdapter extends SupportAnnotatedAdapter implements ReposAdapte
 
   @ViewType(
       layout = R.layout.list_repo,
-      fields = {
-          @Field(id = R.id.avatar, type = ImageView.class, name = "avatar"),
-          @Field(id = R.id.name, type = TextView.class, name = "name"),
-          @Field(id = R.id.description, type = TextView.class, name = "description")
+      views = {
+          @ViewField(id = R.id.avatar, type = ImageView.class, name = "avatar"),
+          @ViewField(id = R.id.name, type = TextView.class, name = "name"),
+          @ViewField(id = R.id.description, type = TextView.class, name = "description")
       }) public final int repo = 0;
 
   List<Repo> repos;

@@ -22,13 +22,13 @@ import android.text.Html;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.hannesdorfmann.annotatedadapter.annotation.Field;
+import com.hannesdorfmann.annotatedadapter.annotation.ViewField;
 import com.hannesdorfmann.annotatedadapter.annotation.ViewType;
 import com.hannesdorfmann.mosby.sample.mail.R;
 import com.hannesdorfmann.mosby.sample.mail.base.view.ListAdapter;
+import com.hannesdorfmann.mosby.sample.mail.model.contact.Person;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.MailComparator;
-import com.hannesdorfmann.mosby.sample.mail.model.contact.Person;
 import com.hannesdorfmann.mosby.sample.mail.ui.view.StarView;
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -55,12 +55,12 @@ public class MailsAdapter extends ListAdapter<List<Mail>> implements MailsAdapte
 
   @ViewType(
       layout = R.layout.list_mail_item,
-      fields = {
-          @Field(id = R.id.senderPic, name = "senderPic", type = ImageView.class),
-          @Field(id = R.id.subject, name = "subject", type = TextView.class),
-          @Field(id = R.id.message, name = "message", type = TextView.class),
-          @Field(id = R.id.date, name = "date", type = TextView.class),
-          @Field(id = R.id.starButton, name = "star", type = StarView.class)
+      views = {
+          @ViewField(id = R.id.senderPic, name = "senderPic", type = ImageView.class),
+          @ViewField(id = R.id.subject, name = "subject", type = TextView.class),
+          @ViewField(id = R.id.message, name = "message", type = TextView.class),
+          @ViewField(id = R.id.date, name = "date", type = TextView.class),
+          @ViewField(id = R.id.starButton, name = "star", type = StarView.class)
       }) public final int mail = 0;
 
   private MailClickedListener clickListener;

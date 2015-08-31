@@ -28,7 +28,7 @@ import android.view.ViewGroup;
 import butterknife.ButterKnife;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.MvpLceViewStateFragment;
-import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.RetainingFragmentLceViewState;
+import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.RetainingLceViewState;
 import com.hannesdorfmann.mosby.sample.R;
 import com.hannesdorfmann.mosby.sample.SampleApplication;
 import com.hannesdorfmann.mosby.sample.mvp.CountriesAdapter;
@@ -54,7 +54,7 @@ public class RetainingCountriesFragment extends
   CountriesAdapter adapter;
 
   @Override public LceViewState<List<Country>, CountriesView> createViewState() {
-    return new RetainingFragmentLceViewState<List<Country>, CountriesView>(this);
+    return new RetainingLceViewState<List<Country>, CountriesView>();
   }
 
   @Nullable @Override

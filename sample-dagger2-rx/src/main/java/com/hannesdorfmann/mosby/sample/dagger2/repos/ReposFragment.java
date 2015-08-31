@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import butterknife.ButterKnife;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.MvpLceViewStateFragment;
-import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.RetainingFragmentLceViewState;
+import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.RetainingLceViewState;
 import com.hannesdorfmann.mosby.sample.dagger2.R;
 import com.hannesdorfmann.mosby.sample.dagger2.SampleModule;
 import com.hannesdorfmann.mosby.sample.dagger2.model.ErrorMessageDeterminer;
@@ -68,7 +68,7 @@ public class ReposFragment
   }
 
   @Override public LceViewState<List<Repo>, ReposView> createViewState() {
-    return new RetainingFragmentLceViewState<>(this);
+    return new RetainingLceViewState<>();
   }
 
   @Override public List<Repo> getData() {

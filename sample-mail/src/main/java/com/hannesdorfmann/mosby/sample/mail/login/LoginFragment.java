@@ -26,22 +26,20 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import com.hannesdorfmann.mosby.mvp.viewstate.MvpViewStateFragment;
+import butterknife.Bind;
+import butterknife.OnClick;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 import com.hannesdorfmann.mosby.sample.mail.MailApplication;
 import com.hannesdorfmann.mosby.sample.mail.R;
+import com.hannesdorfmann.mosby.sample.mail.base.view.BaseViewStateFragment;
 import com.hannesdorfmann.mosby.sample.mail.model.account.AuthCredentials;
 import com.hannesdorfmann.mosby.sample.mail.utils.KeyboardUtils;
 import com.hkm.ui.processbutton.iml.ActionProcessButton;
 
-import butterknife.Bind;
-import butterknife.OnClick;
-
 /**
  * @author Hannes Dorfmann
  */
-public class LoginFragment extends MvpViewStateFragment<LoginView, LoginPresenter>
+public class LoginFragment extends BaseViewStateFragment<LoginView, LoginPresenter>
     implements LoginView {
 
   @Bind(R.id.username) EditText username;
@@ -167,7 +165,8 @@ public class LoginFragment extends MvpViewStateFragment<LoginView, LoginPresente
   }
 
   @Override protected void injectDependencies() {
-    loginComponent = DaggerLoginComponent.builder().mailAppComponent(MailApplication.getMailComponents()).build();
+    loginComponent = DaggerLoginComponent.builder()
+        .mailAppComponent(MailApplication.getMailComponents())
+        .build();
   }
-
 }

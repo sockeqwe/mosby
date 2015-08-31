@@ -12,28 +12,25 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import butterknife.Bind;
 import com.astuetz.PagerSlidingTabStrip;
-import com.hannesdorfmann.mosby.mvp.viewstate.lce.MvpLceViewStateActivity;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.ParcelableLceViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.CastedArrayListLceViewState;
 import com.hannesdorfmann.mosby.sample.mail.MailApplication;
 import com.hannesdorfmann.mosby.sample.mail.R;
+import com.hannesdorfmann.mosby.sample.mail.base.view.BaseLceActivity;
 import com.hannesdorfmann.mosby.sample.mail.model.contact.Person;
 import com.hannesdorfmann.mosby.sample.mail.model.contact.ProfileScreen;
 import com.hannesdorfmann.mosby.sample.mail.utils.BuildUtils;
 import com.hannesdorfmann.mosby.sample.mail.utils.MathUtils;
-
-import java.util.List;
-
-import butterknife.Bind;
 import github.chenupt.dragtoplayout.DragTopLayout;
+import java.util.List;
 
 /**
  * @author Hannes Dorfmann
  */
-public class ProfileActivity extends
-    MvpLceViewStateActivity<DragTopLayout, List<ProfileScreen>, ProfileView, ProfilePresenter>
+public class ProfileActivity
+    extends BaseLceActivity<DragTopLayout, List<ProfileScreen>, ProfileView, ProfilePresenter>
     implements ProfileView {
 
   public static final String KEY_PERSON =
@@ -136,8 +133,6 @@ public class ProfileActivity extends
       headerImage.setAlpha(1f);
     }
   }
-
-
 
   @Override protected void injectDependencies() {
     profileComponent = DaggerProfileComponent.builder()

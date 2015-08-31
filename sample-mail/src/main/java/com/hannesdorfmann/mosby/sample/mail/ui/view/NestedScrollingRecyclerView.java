@@ -9,6 +9,7 @@ import android.util.AttributeSet;
 /**
  * @author Hannes Dorfmann
  */
+// TODO to delete
 public class NestedScrollingRecyclerView extends RecyclerView implements NestedScrollingChild {
 
   private final NestedScrollingChildHelper scrollingChildHelper =

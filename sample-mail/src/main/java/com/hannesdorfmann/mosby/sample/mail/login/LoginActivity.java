@@ -17,11 +17,10 @@
 package com.hannesdorfmann.mosby.sample.mail.login;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-
 import com.hannesdorfmann.mosby.sample.mail.R;
+import com.hannesdorfmann.mosby.sample.mail.base.view.BaseActivity;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

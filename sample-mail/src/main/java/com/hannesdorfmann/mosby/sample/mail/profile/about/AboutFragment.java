@@ -5,21 +5,18 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
-
+import butterknife.Bind;
 import com.hannesdorfmann.fragmentargs.annotation.Arg;
-import com.hannesdorfmann.mosby.MosbyFragment;
 import com.hannesdorfmann.mosby.sample.mail.R;
+import com.hannesdorfmann.mosby.sample.mail.base.view.BaseFragment;
 import com.hannesdorfmann.mosby.sample.mail.model.contact.Person;
-
 import java.text.SimpleDateFormat;
 import java.util.Locale;
-
-import butterknife.Bind;
 
 /**
  * @author Hannes Dorfmann
  */
-public class AboutFragment extends MosbyFragment {
+public class AboutFragment extends BaseFragment {
 
   @Arg Person person;
 

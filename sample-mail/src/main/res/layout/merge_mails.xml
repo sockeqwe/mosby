@@ -1,44 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
 
 
+  <include layout="@layout/view_loading"/>
+  <include layout="@layout/view_error"/>
+  <include layout="@layout/view_authentication_required"/>
 
-    <include layout="@layout/view_loading"/>
-    <include layout="@layout/view_error"/>
-    <include layout="@layout/view_authentication_required"/>
+  <android.support.v4.widget.SwipeRefreshLayout
+      android:id="@+id/contentView"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      >
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/contentView"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        >
-
-        <com.hannesdorfmann.mosby.sample.mail.ui.view.NestedScrollingRecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingTop="@dimen/mail_item_padding_top_bottom"
-            android:paddingBottom="@dimen/mail_item_padding_top_bottom"
-            android:clipToPadding="false"
-            />
-    </android.support.v4.widget.SwipeRefreshLayout>
-
-
-    <TextView
-        android:id="@+id/emptyView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:padding="16dp"
-        android:drawableTop="@drawable/ic_all_done"
-        android:drawablePadding="20dp"
-        android:textColor="@color/secondary_text"
-        android:text="@string/empty_emails"
-        android:textSize="16sp"
-        android:visibility="gone"
-
+        android:paddingTop="@dimen/mail_item_padding_top_bottom"
+        android:paddingBottom="@dimen/mail_item_padding_top_bottom"
+        android:clipToPadding="false"
         />
+
+  </android.support.v4.widget.SwipeRefreshLayout>
+
+
+  <TextView
+      android:id="@+id/emptyView"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:padding="16dp"
+      android:drawableTop="@drawable/ic_all_done"
+      android:drawablePadding="20dp"
+      android:textColor="@color/secondary_text"
+      android:text="@string/empty_emails"
+      android:textSize="16sp"
+      android:visibility="gone"
+
+      />
 
 </merge>

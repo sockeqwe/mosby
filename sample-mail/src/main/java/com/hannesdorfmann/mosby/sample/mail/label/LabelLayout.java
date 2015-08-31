@@ -11,6 +11,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import butterknife.ButterKnife;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.layout.MvpViewStateLinearLayout;
 import com.hannesdorfmann.mosby.sample.mail.MailApplication;
@@ -56,6 +57,11 @@ public class LabelLayout extends MvpViewStateLinearLayout<LabelView, LabelPresen
   public LabelLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
     super(context, attrs, defStyleAttr, defStyleRes);
     init();
+  }
+
+  @Override protected void onFinishInflate() {
+    super.onFinishInflate();
+    ButterKnife.bind(this, this);
   }
 
   private void init() {

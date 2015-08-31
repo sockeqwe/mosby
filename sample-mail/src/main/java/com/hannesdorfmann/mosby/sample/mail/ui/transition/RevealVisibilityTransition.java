@@ -23,7 +23,6 @@ import android.transition.TransitionValues;
 import android.transition.Visibility;
 import android.util.ArrayMap;
 import android.util.AttributeSet;
-import android.util.FloatMath;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
@@ -67,10 +66,10 @@ public class RevealVisibilityTransition extends Visibility {
         return new NoPauseAnimator(reveal);
     }
 
-    static float calculateMaxRadius(View view) {
-        float widthSquared = view.getWidth() * view.getWidth();
-        float heightSquared = view.getHeight() * view.getHeight();
-        float radius = FloatMath.sqrt(widthSquared + heightSquared) / 2;
+    static double calculateMaxRadius(View view) {
+        double widthSquared = view.getWidth() * view.getWidth();
+        double heightSquared = view.getHeight() * view.getHeight();
+        double radius = Math.sqrt(widthSquared + heightSquared) / 2;
         return radius;
     }
 

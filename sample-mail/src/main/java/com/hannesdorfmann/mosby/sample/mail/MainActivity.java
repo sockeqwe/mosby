@@ -6,15 +6,15 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.hannesdorfmann.mosby.MosbyActivity;
+import butterknife.Bind;
+import com.hannesdorfmann.mosby.sample.mail.base.view.BaseActivity;
 import com.hannesdorfmann.mosby.sample.mail.details.DetailsFragment;
 import com.hannesdorfmann.mosby.sample.mail.details.DetailsFragmentBuilder;
 import com.hannesdorfmann.mosby.sample.mail.mails.MailsFragment;
@@ -23,13 +23,11 @@ import com.hannesdorfmann.mosby.sample.mail.model.contact.Person;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Label;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.MailProvider;
-
+import icepick.Icepick;
+import icepick.Icicle;
 import javax.inject.Inject;
 
-import butterknife.Bind;
-import icepick.Icicle;
-
-public class MainActivity extends MosbyActivity {
+public class MainActivity extends BaseActivity {
 
   public static final String KEY_SHOW_ACTION =
       "com.hannesdorfmann.mosby.sample.mail.MainActivity.SHOW_ACTION";
@@ -59,8 +57,7 @@ public class MainActivity extends MosbyActivity {
   @Bind(R.id.leftPane) ViewGroup leftPane;
   @Nullable @Bind(R.id.rightPane) ViewGroup rightPane;
   // contains leftPane + rightPane
-  @Nullable
-  @Bind(R.id.paneContainer) ViewGroup paneContainer;
+  @Nullable @Bind(R.id.paneContainer) ViewGroup paneContainer;
 
   ActionBarDrawerToggle drawerToggle;
   private MainActivityComponent mainActivityComponent;
@@ -110,6 +107,11 @@ public class MainActivity extends MosbyActivity {
     }
   }
 
+  @Override protected void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    Icepick.saveInstanceState(this, outState);
+  }
+
   @Override protected void onNewIntent(Intent intent) {
     super.onNewIntent(intent);
     setIntent(intent);
@@ -138,8 +140,8 @@ public class MainActivity extends MosbyActivity {
   private void showMails(Label label, boolean removeDetailsFragment) {
     toolbarTitle = label.getName();
     toolbar.setTitle(toolbarTitle);
-    if (drawerLayout.isDrawerOpen(Gravity.START)) {
-      drawerLayout.closeDrawer(Gravity.START);
+    if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+      drawerLayout.closeDrawer(GravityCompat.START);
     }
 
     getSupportFragmentManager().beginTransaction()
@@ -190,7 +192,7 @@ public class MainActivity extends MosbyActivity {
     }
   }
 
-  @Override protected void injectDependencies() {
+  protected void injectDependencies() {
     mainActivityComponent = DaggerMainActivityComponent.create();
     mainActivityComponent.inject(this);
   }

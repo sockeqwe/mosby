@@ -5,15 +5,16 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatDialog;
+import android.support.v7.app.AppCompatDialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import com.hannesdorfmann.mosby.mvp.delegate.FragmentMvpDelegate;
 import com.hannesdorfmann.mosby.mvp.delegate.FragmentMvpViewStateDelegateImpl;
 import com.hannesdorfmann.mosby.mvp.delegate.MvpViewStateDelegateCallback;
@@ -23,13 +24,10 @@ import com.hannesdorfmann.mosby.sample.mail.R;
 import com.hannesdorfmann.mosby.sample.mail.base.view.viewstate.AuthParcelableDataViewState;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.statistics.MailStatistics;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-
 /**
  * @author Hannes Dorfmann
  */
-public class StatisticsDialog extends DialogFragment
+public class StatisticsDialog extends AppCompatDialogFragment
     implements StatisticsView, MvpViewStateDelegateCallback<StatisticsView, StatisticsPresenter> {
 
   @Bind(R.id.contentView) RecyclerView contentView;

@@ -5,19 +5,17 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-
-import com.hannesdorfmann.mosby.MosbyActivity;
+import butterknife.Bind;
 import com.hannesdorfmann.mosby.sample.mail.R;
+import com.hannesdorfmann.mosby.sample.mail.base.view.BaseActivity;
 import com.hannesdorfmann.mosby.sample.mail.model.contact.Person;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
 import com.hannesdorfmann.mosby.sample.mail.utils.BuildUtils;
 
-import butterknife.Bind;
-
 /**
  * @author Hannes Dorfmann
  */
-public class DetailsActivity extends MosbyActivity {
+public class DetailsActivity extends BaseActivity {
 
   public static final String KEY_MAIL = "com.hannesdorfmann.mosby.MosbyActivity.MAIL";
 

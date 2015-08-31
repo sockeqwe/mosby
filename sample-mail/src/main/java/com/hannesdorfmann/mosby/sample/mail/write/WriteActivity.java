@@ -10,30 +10,26 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import com.hannesdorfmann.mosby.mvp.viewstate.MvpViewStateActivity;
+import butterknife.Bind;
+import butterknife.OnClick;
 import com.hannesdorfmann.mosby.mvp.viewstate.RestoreableViewState;
 import com.hannesdorfmann.mosby.sample.mail.IntentStarter;
 import com.hannesdorfmann.mosby.sample.mail.MailApplication;
 import com.hannesdorfmann.mosby.sample.mail.R;
+import com.hannesdorfmann.mosby.sample.mail.base.view.BaseViewStateActivity;
 import com.hannesdorfmann.mosby.sample.mail.dagger.NavigationModule;
 import com.hannesdorfmann.mosby.sample.mail.model.contact.Person;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Label;
 import com.hannesdorfmann.mosby.sample.mail.model.mail.Mail;
 import com.hannesdorfmann.mosby.sample.mail.utils.BuildUtils;
-
 import java.util.Date;
 import java.util.regex.Pattern;
-
 import javax.inject.Inject;
-
-import butterknife.Bind;
-import butterknife.OnClick;
 
 /**
  * @author Hannes Dorfmann
  */
-@TargetApi(21) public class WriteActivity extends MvpViewStateActivity<WriteView, WritePresenter>
+@TargetApi(21) public class WriteActivity extends BaseViewStateActivity<WriteView, WritePresenter>
     implements WriteView {
 
   public static final String KEY_REPLAY_MAIL =
@@ -193,7 +189,7 @@ import butterknife.OnClick;
     }
   }
 
-  @Override protected void injectDependencies() {
+  protected void injectDependencies() {
     writeComponent = DaggerWriteComponent.builder()
         .mailAppComponent(MailApplication.getMailComponents())
         .navigationModule(new NavigationModule())

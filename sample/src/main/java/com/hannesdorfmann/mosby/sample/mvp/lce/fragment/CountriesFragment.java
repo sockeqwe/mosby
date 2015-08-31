@@ -23,21 +23,19 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
-
 import android.view.ViewGroup;
+import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceFragment;
 import com.hannesdorfmann.mosby.sample.R;
+import com.hannesdorfmann.mosby.sample.SampleApplication;
 import com.hannesdorfmann.mosby.sample.mvp.CountriesAdapter;
 import com.hannesdorfmann.mosby.sample.mvp.CountriesErrorMessage;
 import com.hannesdorfmann.mosby.sample.mvp.CountriesPresenter;
 import com.hannesdorfmann.mosby.sample.mvp.CountriesView;
 import com.hannesdorfmann.mosby.sample.mvp.lce.SimpleCountriesPresenter;
 import com.hannesdorfmann.mosby.sample.mvp.model.Country;
-
 import java.util.List;
-
-import butterknife.Bind;
 
 /**
  * @author Hannes Dorfmann
@@ -53,6 +51,11 @@ public class CountriesFragment
   @Override public void onDestroyView() {
     super.onDestroyView();
     ButterKnife.unbind(this);
+  }
+
+  @Override public void onDestroy() {
+    super.onDestroy();
+    SampleApplication.getRefWatcher(getActivity()).watch(this);
   }
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstance) {

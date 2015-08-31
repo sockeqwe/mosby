@@ -30,6 +30,7 @@ import android.view.ViewGroup;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.hannesdorfmann.mosby.sample.R;
+import com.hannesdorfmann.mosby.sample.SampleApplication;
 import com.hannesdorfmann.mosby.sample.mvp.lce.viewstate.NotRetainingCountriesFragment;
 
 /**
@@ -46,7 +47,6 @@ public class NestedViewPagerFragment extends Fragment {
     return inflater.inflate(R.layout.fragment_nested_viewpager, container, false);
   }
 
-
   @Override public void onDestroyView() {
     super.onDestroyView();
     ButterKnife.unbind(this);
@@ -58,6 +58,11 @@ public class NestedViewPagerFragment extends Fragment {
 
     viewPager.setAdapter(new NestedPagerAdapter(getChildFragmentManager()));
     tabLayout.setupWithViewPager(viewPager);
+  }
+
+  @Override public void onDestroy() {
+    super.onDestroy();
+    SampleApplication.getRefWatcher(getActivity()).watch(this);
   }
 
   private class NestedPagerAdapter extends FragmentPagerAdapter {

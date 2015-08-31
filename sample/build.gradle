@@ -43,4 +43,7 @@ dependencies {
 
   compile 'com.hannesdorfmann.parcelableplease:annotation:' + rootProject.ext.parcelablepleaseVersion
   apt 'com.hannesdorfmann.parcelableplease:processor:' + rootProject.ext.parcelablepleaseVersion
+
+
+  compile 'com.squareup.leakcanary:leakcanary-android:'+ rootProject.ext.leakcanaryVersion
 }

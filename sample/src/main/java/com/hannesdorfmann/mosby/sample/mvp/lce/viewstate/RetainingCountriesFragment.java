@@ -30,6 +30,7 @@ import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.MvpLceViewStateFragment;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.RetainingFragmentLceViewState;
 import com.hannesdorfmann.mosby.sample.R;
+import com.hannesdorfmann.mosby.sample.SampleApplication;
 import com.hannesdorfmann.mosby.sample.mvp.CountriesAdapter;
 import com.hannesdorfmann.mosby.sample.mvp.CountriesErrorMessage;
 import com.hannesdorfmann.mosby.sample.mvp.CountriesPresenter;
@@ -129,5 +130,10 @@ public class RetainingCountriesFragment extends
 
   @Override public List<Country> getData() {
     return adapter == null ? null : adapter.getCountries();
+  }
+
+  @Override public void onDestroy() {
+    super.onDestroy();
+    SampleApplication.getRefWatcher(getActivity()).watch(this);
   }
 }

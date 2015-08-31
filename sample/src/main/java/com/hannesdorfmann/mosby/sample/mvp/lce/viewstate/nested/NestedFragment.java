@@ -24,6 +24,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.hannesdorfmann.mosby.sample.R;
+import com.hannesdorfmann.mosby.sample.SampleApplication;
 import com.hannesdorfmann.mosby.sample.mvp.lce.viewstate.NotRetainingCountriesFragment;
 
 /**
@@ -49,5 +50,10 @@ public class NestedFragment extends Fragment {
           .replace(R.id.nestedFragmentContainer, new NotRetainingCountriesFragment(), NESTED_TAG)
           .commit();
     }
+  }
+
+  @Override public void onDestroy() {
+    super.onDestroy();
+    SampleApplication.getRefWatcher(getActivity()).watch(this);
   }
 }

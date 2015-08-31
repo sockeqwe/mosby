@@ -15,6 +15,7 @@ import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.layout.MvpViewStateFrameLayout;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.CastedArrayListLceViewState;
 import com.hannesdorfmann.mosby.sample.R;
+import com.hannesdorfmann.mosby.sample.SampleApplication;
 import com.hannesdorfmann.mosby.sample.mvp.CountriesAdapter;
 import com.hannesdorfmann.mosby.sample.mvp.CountriesErrorMessage;
 import com.hannesdorfmann.mosby.sample.mvp.CountriesPresenter;
@@ -146,5 +147,10 @@ public class CountriesLayout extends MvpViewStateFrameLayout<CountriesView, Coun
 
   @OnClick(R.id.errorView) public void onErrorViewClicked() {
     loadData(false);
+  }
+
+  @Override protected void onDetachedFromWindow() {
+    super.onDetachedFromWindow();
+    SampleApplication.getRefWatcher(getContext()).watch(this);
   }
 }

@@ -44,7 +44,6 @@ public class CountriesAsyncLoader extends AsyncTask<Void, Void, List<Country>> {
     try {
       Thread.sleep(3000);
     } catch (InterruptedException e) {
-      e.printStackTrace();
       return null;
     }
 

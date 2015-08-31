@@ -27,16 +27,15 @@ import java.util.List;
 /**
  * @author Hannes Dorfmann
  */
-public class SimpleCountriesPresenter extends MvpBasePresenter<CountriesView> implements
-    CountriesPresenter {
+public class SimpleCountriesPresenter extends MvpBasePresenter<CountriesView>
+    implements CountriesPresenter {
 
   private static final String TAG = "CountriesPresenter";
 
   private int failingCounter = 0;
   private CountriesAsyncLoader countriesLoader;
 
-  @Override
-  public void loadCountries(final boolean pullToRefresh) {
+  @Override public void loadCountries(final boolean pullToRefresh) {
 
     Log.d(TAG, "loadCountries(" + pullToRefresh + ")");
 
@@ -66,7 +65,7 @@ public class SimpleCountriesPresenter extends MvpBasePresenter<CountriesView> im
 
             if (isViewAttached()) {
 
-              Log.d(TAG, "showError("+e.getClass().getSimpleName()+" , " + pullToRefresh + ")");
+              Log.d(TAG, "showError(" + e.getClass().getSimpleName() + " , " + pullToRefresh + ")");
               getView().showError(e, pullToRefresh);
             }
           }
@@ -77,10 +76,14 @@ public class SimpleCountriesPresenter extends MvpBasePresenter<CountriesView> im
   @Override public void detachView(boolean retainInstance) {
     super.detachView(retainInstance);
 
-    Log.d(TAG, "detachView("+retainInstance+")");
-    if (!retainInstance && countriesLoader != null) {
-      countriesLoader.cancel(true);
-      Log.d(TAG, "    --> cancel Loader");
+    StringBuilder builder = new StringBuilder("detachView(" + retainInstance + ")");
+    if (!retainInstance) {
+      if (countriesLoader != null) {
+        countriesLoader.cancel(true);
+      }
+      builder.append(" --> cancel Loader");
     }
+
+    Log.d(TAG, builder.toString());
   }
 }

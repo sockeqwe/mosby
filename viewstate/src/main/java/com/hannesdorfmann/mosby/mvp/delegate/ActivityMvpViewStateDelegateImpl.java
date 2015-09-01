@@ -30,7 +30,8 @@ import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 public class ActivityMvpViewStateDelegateImpl<V extends MvpView, P extends MvpPresenter<V>>
     extends ActivityMvpDelegateImpl<V, P> {
 
-  public ActivityMvpViewStateDelegateImpl(ActivityMvpViewStateDelegateCallback<V, P> delegateCallback) {
+  public ActivityMvpViewStateDelegateImpl(
+      ActivityMvpViewStateDelegateCallback<V, P> delegateCallback) {
     super(delegateCallback);
   }
 
@@ -45,6 +46,18 @@ public class ActivityMvpViewStateDelegateImpl<V extends MvpView, P extends MvpPr
 
   @Override public void onPostCreate(Bundle savedInstanceState) {
     super.onPostCreate(savedInstanceState);
+
+    ActivityMvpViewStateDelegateCallback<V, P> viewStateDelegateCallback =
+        (ActivityMvpViewStateDelegateCallback<V, P>) delegateCallback;
+
+    ActivityMvpViewStateNonConfigurationInstances<V, P> nci =
+        (ActivityMvpViewStateNonConfigurationInstances<V, P>) delegateCallback.getLastCustomNonConfigurationInstance();
+
+    // Set the retaining view state
+    if (nci != null && nci.viewState != null) {
+      viewStateDelegateCallback.setViewState(nci.viewState);
+    }
+
     MvpViewStateInternalDelegate internal = (MvpViewStateInternalDelegate) getInternalDelegate();
     internal.createOrRestoreViewState(savedInstanceState);
     internal.applyViewState();
@@ -53,5 +66,28 @@ public class ActivityMvpViewStateDelegateImpl<V extends MvpView, P extends MvpPr
   @Override public void onSaveInstanceState(Bundle outState) {
     super.onSaveInstanceState(outState);
     ((MvpViewStateInternalDelegate) getInternalDelegate()).saveViewState(outState);
+  }
+
+  @Override public Object onRetainCustomNonConfigurationInstance() {
+
+    ActivityMvpViewStateDelegateCallback<V, P> viewStateDelegateCallback =
+        (ActivityMvpViewStateDelegateCallback<V, P>) delegateCallback;
+
+    P presenter =
+        viewStateDelegateCallback.isRetainingInstance() ? viewStateDelegateCallback.getPresenter()
+            : null;
+    ViewState<V> viewState =
+        viewStateDelegateCallback.isRetainingInstance() ? viewStateDelegateCallback.getViewState()
+            : null;
+
+    Object nonMosbyConfiguraionInstance =
+        delegateCallback.onRetainNonMosbyCustomNonConfigurationInstance();
+
+    if (presenter == null && nonMosbyConfiguraionInstance == null && viewState == null) {
+      return null;
+    }
+
+    return new ActivityMvpViewStateNonConfigurationInstances<>(presenter, viewState,
+        nonMosbyConfiguraionInstance);
   }
 }

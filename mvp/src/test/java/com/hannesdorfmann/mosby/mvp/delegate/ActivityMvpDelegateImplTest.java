@@ -75,7 +75,7 @@ public class ActivityMvpDelegateImplTest {
     delegate.onResume();
   }
 
-  @Test public void respectRetaininngInstanceFlag() {
+  @Test public void respectRetainingInstanceFlag() {
     // Retaining instance
     Mockito.when(callback.isRetainingInstance()).thenReturn(true);
     Mockito.when(callback.getPresenter()).thenReturn(presenter);
@@ -99,7 +99,7 @@ public class ActivityMvpDelegateImplTest {
     Assert.assertNull(nci.presenter);
     Assert.assertTrue(nci.nonMosbyCustomConfigurationInstance == customNonConfig);
 
-    // Should be null
+    // Nothing to retain --> should be null
     Mockito.when(callback.isRetainingInstance()).thenReturn(false);
     Mockito.when(callback.onRetainNonMosbyCustomNonConfigurationInstance()).thenReturn(null);
 

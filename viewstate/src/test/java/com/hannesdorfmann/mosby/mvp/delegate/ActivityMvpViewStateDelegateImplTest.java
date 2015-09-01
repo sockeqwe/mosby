@@ -124,9 +124,11 @@ public class ActivityMvpViewStateDelegateImplTest {
 
   @Test public void restoreFromRetainingViewState() {
 
+    ActivityMvpViewStateNonConfigurationInstances nci =
+        new ActivityMvpViewStateNonConfigurationInstances(presenter, viewState, null);
+
     boolean retaining = true;
-    Mockito.when(callback.getPresenter()).thenReturn(presenter);
-    Mockito.when(callback.getViewState()).thenReturn(viewState);
+    Mockito.when(callback.getLastCustomNonConfigurationInstance()).thenReturn(nci);
     Mockito.when(callback.isRetainingInstance()).thenReturn(retaining);
 
     viewState.setStateShowB();
@@ -157,7 +159,6 @@ public class ActivityMvpViewStateDelegateImplTest {
     Mockito.verify(viewState, Mockito.times(1)).saveInstanceState(bundle);
   }
 
-
   @Test public void finishActivityRetaining() {
 
     boolean retaining = true;
@@ -170,5 +171,44 @@ public class ActivityMvpViewStateDelegateImplTest {
 
     Mockito.verify(callback, Mockito.never()).createPresenter();
     Mockito.verify(presenter, Mockito.times(1)).detachView(retaining);
+  }
+
+  @Test public void respectRetainingInstanceFlag() {
+    // Retaining instance
+    Mockito.when(callback.isRetainingInstance()).thenReturn(true);
+    Mockito.when(callback.getPresenter()).thenReturn(presenter);
+    Mockito.when(callback.getViewState()).thenReturn(viewState);
+
+    Assert.assertTrue(presenter == callback.getPresenter());
+    Assert.assertTrue(viewState == callback.getViewState());
+
+    ActivityMvpViewStateNonConfigurationInstances nci =
+        (ActivityMvpViewStateNonConfigurationInstances) delegate.onRetainCustomNonConfigurationInstance();
+
+    Assert.assertNotNull(nci);
+    Assert.assertTrue(nci.presenter == presenter);
+    Assert.assertTrue(nci.viewState == viewState);
+
+    // Not retaining instance
+    Object customNonConfig = new Object();
+    Mockito.when(callback.isRetainingInstance()).thenReturn(false);
+    Mockito.when(callback.onRetainNonMosbyCustomNonConfigurationInstance())
+        .thenReturn(customNonConfig);
+
+    nci =
+        (ActivityMvpViewStateNonConfigurationInstances) delegate.onRetainCustomNonConfigurationInstance();
+
+    Assert.assertNotNull(nci);
+    Assert.assertNull(nci.presenter);
+    Assert.assertNull(nci.viewState);
+    Assert.assertTrue(nci.nonMosbyCustomConfigurationInstance == customNonConfig);
+
+    // Nothing to retain --> should be null
+    Mockito.when(callback.isRetainingInstance()).thenReturn(false);
+    Mockito.when(callback.onRetainNonMosbyCustomNonConfigurationInstance()).thenReturn(null);
+
+    nci =
+        (ActivityMvpViewStateNonConfigurationInstances) delegate.onRetainCustomNonConfigurationInstance();
+    Assert.assertNull(nci);
   }
 }

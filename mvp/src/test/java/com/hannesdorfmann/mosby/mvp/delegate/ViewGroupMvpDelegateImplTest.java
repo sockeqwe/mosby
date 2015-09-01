@@ -67,15 +67,14 @@ public class ViewGroupMvpDelegateImplTest {
 
   private void testFinishViewGroup(boolean retainingInstanceState) {
     Mockito.when(callback.getPresenter()).thenReturn(presenter);
-    Mockito.when(callback.isRetainInstance()).thenReturn(retainingInstanceState);
+    Mockito.when(callback.shouldInstanceBeRetained()).thenReturn(retainingInstanceState);
 
     delegate.onDetachedFromWindow();
 
     Mockito.verify(presenter, Mockito.times(1)).detachView(retainingInstanceState);
   }
 
-  @Test
-  public void reuseRetainingPresenter(){
+  @Test public void reuseRetainingPresenter() {
     Mockito.when(callback.getPresenter()).thenReturn(presenter);
     delegate.onAttachedToWindow();
 

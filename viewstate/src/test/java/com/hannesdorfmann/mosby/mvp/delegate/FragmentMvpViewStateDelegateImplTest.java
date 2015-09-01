@@ -148,7 +148,7 @@ public class FragmentMvpViewStateDelegateImplTest {
     boolean retaining = false;
     Mockito.when(callback.getPresenter()).thenReturn(presenter);
     Mockito.when(callback.getViewState()).thenReturn(viewState);
-    Mockito.when(callback.isRetainInstance()).thenReturn(retaining);
+    Mockito.when(callback.shouldInstanceBeRetained()).thenReturn(retaining);
 
     Bundle bundle = new Bundle();
     finishFragment(bundle);
@@ -164,7 +164,7 @@ public class FragmentMvpViewStateDelegateImplTest {
     boolean retaining = true;
     Mockito.when(callback.getPresenter()).thenReturn(presenter);
     Mockito.when(callback.getViewState()).thenReturn(viewState);
-    Mockito.when(callback.isRetainInstance()).thenReturn(retaining);
+    Mockito.when(callback.shouldInstanceBeRetained()).thenReturn(retaining);
 
     Bundle bundle = new Bundle();
     finishFragment(bundle);

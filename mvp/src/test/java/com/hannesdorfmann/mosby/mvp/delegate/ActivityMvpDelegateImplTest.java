@@ -75,10 +75,43 @@ public class ActivityMvpDelegateImplTest {
     delegate.onResume();
   }
 
+  @Test public void respectRetaininngInstanceFlag() {
+    // Retaining instance
+    Mockito.when(callback.isRetainingInstance()).thenReturn(true);
+    Mockito.when(callback.getPresenter()).thenReturn(presenter);
+
+    Assert.assertTrue(presenter == callback.getPresenter());
+    ActivityMvpNonConfigurationInstances nci =
+        (ActivityMvpNonConfigurationInstances) delegate.onRetainCustomNonConfigurationInstance();
+
+    Assert.assertNotNull(nci);
+    Assert.assertTrue(nci.presenter == presenter);
+
+    // Not retaining instance
+    Object customNonConfig = new Object();
+    Mockito.when(callback.isRetainingInstance()).thenReturn(false);
+    Mockito.when(callback.onRetainNonMosbyCustomNonConfigurationInstance())
+        .thenReturn(customNonConfig);
+
+    nci = (ActivityMvpNonConfigurationInstances) delegate.onRetainCustomNonConfigurationInstance();
+
+    Assert.assertNotNull(nci);
+    Assert.assertNull(nci.presenter);
+    Assert.assertTrue(nci.nonMosbyCustomConfigurationInstance == customNonConfig);
+
+    // Should be null
+    Mockito.when(callback.isRetainingInstance()).thenReturn(false);
+    Mockito.when(callback.onRetainNonMosbyCustomNonConfigurationInstance()).thenReturn(null);
+
+    nci = (ActivityMvpNonConfigurationInstances) delegate.onRetainCustomNonConfigurationInstance();
+    Assert.assertNull(nci);
+  }
+
   @Test public void reuseRetainingPresenter() {
 
     ActivityMvpNonConfigurationInstances nci =
         new ActivityMvpNonConfigurationInstances(presenter, null);
+    Mockito.when(callback.isRetainingInstance()).thenReturn(true);
     Mockito.when(callback.getLastCustomNonConfigurationInstance()).thenReturn(nci);
 
     startActivity(null);
@@ -90,6 +123,7 @@ public class ActivityMvpDelegateImplTest {
 
   @Test public void onRetainCustomNonConfigurationInstance() {
     Object nonMosbyLastNci = new Object();
+    Mockito.when(callback.isRetainingInstance()).thenReturn(true);
     Mockito.when(callback.getPresenter()).thenReturn(presenter);
     Mockito.when(callback.onRetainNonMosbyCustomNonConfigurationInstance())
         .thenReturn(nonMosbyLastNci);
@@ -104,7 +138,7 @@ public class ActivityMvpDelegateImplTest {
   @Test public void retainCustomNonMosbyNonConfigInstanceMatchesGetNonMosbyConfigInstance() {
 
     Object nonMosbyLastNci = new Object();
-    Mockito.when(callback.getPresenter()).thenReturn(null);
+    Mockito.when(callback.isRetainingInstance()).thenReturn(false);
     Mockito.when(callback.onRetainNonMosbyCustomNonConfigurationInstance())
         .thenReturn(nonMosbyLastNci);
 

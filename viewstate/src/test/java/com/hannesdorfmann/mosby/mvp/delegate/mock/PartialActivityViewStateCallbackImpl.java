@@ -18,15 +18,15 @@
 package com.hannesdorfmann.mosby.mvp.delegate.mock;
 
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
-import com.hannesdorfmann.mosby.mvp.delegate.BaseMvpViewStateDelegateCallback;
+import com.hannesdorfmann.mosby.mvp.delegate.ActivityMvpViewStateDelegateCallback;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 
 /**
  * A class for partial mocking
  * @author Hannes Dorfmann
  */
-public abstract class PartialViewStateCallbackImpl
-    implements BaseMvpViewStateDelegateCallback<SimpleView, MvpPresenter<SimpleView>> {
+public abstract class PartialActivityViewStateCallbackImpl
+    implements ActivityMvpViewStateDelegateCallback<SimpleView, MvpPresenter<SimpleView>> {
 
   private ViewState<SimpleView> viewState;
   private MvpPresenter<SimpleView> presenter;

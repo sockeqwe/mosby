@@ -23,7 +23,7 @@ import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 import com.hannesdorfmann.mosby.mvp.delegate.FragmentMvpViewStateDelegateImpl;
 import com.hannesdorfmann.mosby.mvp.delegate.FragmentMvpDelegate;
-import com.hannesdorfmann.mosby.mvp.delegate.MvpViewStateDelegateCallback;
+import com.hannesdorfmann.mosby.mvp.delegate.BaseMvpViewStateDelegateCallback;
 
 /**
  * This is a enhancement of {@link com.hannesdorfmann.mosby.mvp.MvpFragment} that introduces the
@@ -38,7 +38,7 @@ import com.hannesdorfmann.mosby.mvp.delegate.MvpViewStateDelegateCallback;
  * @since 1.0.0
  */
 public abstract class MvpViewStateFragment<V extends MvpView, P extends MvpPresenter<V>>
-    extends MvpFragment<V, P> implements MvpViewStateDelegateCallback<V, P> {
+    extends MvpFragment<V, P> implements BaseMvpViewStateDelegateCallback<V, P> {
 
   /**
    * The viewstate will be instantiated by calling {@link #createViewState()} in {@link

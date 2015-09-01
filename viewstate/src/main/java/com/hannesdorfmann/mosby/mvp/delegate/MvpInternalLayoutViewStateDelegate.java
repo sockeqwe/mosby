@@ -28,7 +28,7 @@ import com.hannesdorfmann.mosby.mvp.viewstate.layout.ViewStateSavedState;
 /**
  * This class
  * is used to save, restore and apply a {@link ViewState} by using {@link
- * MvpViewStateDelegateCallback}. It's
+ * BaseMvpViewStateDelegateCallback}. It's
  * just a little helper / utils class that avoids to many copy & paste code clones.
  * This class is designed to be for custom Layouts like {@link MvpViewStateFrameLayout} etc.
  *
@@ -51,9 +51,9 @@ class MvpInternalLayoutViewStateDelegate<V extends MvpView, P extends MvpPresent
    *
    * @return true, if the viewstate has been restored (in other words restored from parcelable)
    * (calls {@link
-   * MvpViewStateDelegateCallback#onViewStateInstanceRestored(boolean) after having restored the
+   * BaseMvpViewStateDelegateCallback#onViewStateInstanceRestored(boolean) after having restored the
    * viewstate}.
-   * Otherwise returns false and calls {@link MvpViewStateDelegateCallback#onNewViewStateInstance()}
+   * Otherwise returns false and calls {@link BaseMvpViewStateDelegateCallback#onNewViewStateInstance()}
    */
   public boolean createOrRestoreViewState(ViewStateSavedState savedState) {
 

@@ -20,8 +20,8 @@ import com.hannesdorfmann.mosby.mvp.MvpActivity;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 import com.hannesdorfmann.mosby.mvp.delegate.ActivityMvpDelegate;
+import com.hannesdorfmann.mosby.mvp.delegate.ActivityMvpViewStateDelegateCallback;
 import com.hannesdorfmann.mosby.mvp.delegate.ActivityMvpViewStateDelegateImpl;
-import com.hannesdorfmann.mosby.mvp.delegate.MvpViewStateDelegateCallback;
 
 /**
  * This is a enhancement of {@link com.hannesdorfmann.mosby.mvp.MvpActivity} that introduces the
@@ -36,7 +36,7 @@ import com.hannesdorfmann.mosby.mvp.delegate.MvpViewStateDelegateCallback;
  * @since 1.0.0
  */
 public abstract class MvpViewStateActivity<V extends MvpView, P extends MvpPresenter<V>>
-    extends MvpActivity<V, P> implements MvpViewStateDelegateCallback<V, P> {
+    extends MvpActivity<V, P> implements ActivityMvpViewStateDelegateCallback<V, P> {
 
   protected RestoreableViewState<V> viewState;
 

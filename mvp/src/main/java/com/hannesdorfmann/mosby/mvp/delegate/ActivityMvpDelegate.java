@@ -18,6 +18,7 @@ package com.hannesdorfmann.mosby.mvp.delegate;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 
@@ -99,4 +100,16 @@ public interface ActivityMvpDelegate<V extends MvpView, P extends MvpPresenter<V
    * This method must be called from {@link Activity#onPostCreate(Bundle)}
    */
   void onPostCreate(Bundle savedInstanceState);
+
+  /**
+   * This method must be called from {@link FragmentActivity#onRetainCustomNonConfigurationInstance()}
+   *
+   * @return Don't forget to return the value returned by this delegate method
+   */
+  Object onRetainCustomNonConfigurationInstance();
+
+  /**
+   * @return the value returned from {@link ActivityMvpDelegateCallback#onRetainNonMosbyCustomNonConfigurationInstance()}
+   */
+  Object getNonMosbyLastCustomNonConfigurationInstance();
 }

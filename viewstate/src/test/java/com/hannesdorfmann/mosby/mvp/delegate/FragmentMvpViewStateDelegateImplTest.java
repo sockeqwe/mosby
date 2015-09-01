@@ -41,7 +41,7 @@ public class FragmentMvpViewStateDelegateImplTest {
 
   private SimpleView view;
   private SimpleViewState viewState;
-  private MvpViewStateDelegateCallback<SimpleView, MvpPresenter<SimpleView>> callback;
+  private BaseMvpViewStateDelegateCallback<SimpleView, MvpPresenter<SimpleView>> callback;
   private FragmentMvpDelegateImpl<SimpleView, MvpPresenter<SimpleView>> delegate;
   private MvpPresenter<SimpleView> presenter;
 

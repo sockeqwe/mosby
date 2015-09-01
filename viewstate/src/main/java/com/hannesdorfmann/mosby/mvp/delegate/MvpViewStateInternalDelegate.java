@@ -25,7 +25,7 @@ import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 /**
  * This class
  * is used to save, restore and apply a {@link ViewState} by using {@link
- * MvpViewStateDelegateCallback}. It's
+ * BaseMvpViewStateDelegateCallback}. It's
  * just a little helper / utils class that avoids to many copy & paste code clones.
  * However, you have to hook in the corresponding methods correctly in your Fragment, Activity or
  * android.widget.View
@@ -38,7 +38,7 @@ public class MvpViewStateInternalDelegate<V extends MvpView, P extends MvpPresen
 
   private boolean applyViewState = false;
 
-  public MvpViewStateInternalDelegate(MvpViewStateDelegateCallback<V, P> delegateCallback) {
+  public MvpViewStateInternalDelegate(BaseMvpViewStateDelegateCallback<V, P> delegateCallback) {
     super(delegateCallback);
   }
 
@@ -48,14 +48,14 @@ public class MvpViewStateInternalDelegate<V extends MvpView, P extends MvpPresen
    *
    * @return true, if the viewstate has been restored (in other words {@link
    * ViewState#apply(MvpView, boolean)} has been invoked) (calls {@link
-   * MvpViewStateDelegateCallback#onViewStateInstanceRestored(boolean) after having restored the
+   * BaseMvpViewStateDelegateCallback#onViewStateInstanceRestored(boolean) after having restored the
    * viewstate}.
-   * Otherwise returns false and calls {@link MvpViewStateDelegateCallback#onNewViewStateInstance()}
+   * Otherwise returns false and calls {@link BaseMvpViewStateDelegateCallback#onNewViewStateInstance()}
    */
   public boolean createOrRestoreViewState(Bundle savedInstanceState) {
 
-    MvpViewStateDelegateCallback<V, P> viewStateSupport =
-        (MvpViewStateDelegateCallback<V, P>) delegateCallback;
+    BaseMvpViewStateDelegateCallback<V, P> viewStateSupport =
+        (BaseMvpViewStateDelegateCallback<V, P>) delegateCallback;
 
     // ViewState already exists (Fragment retainsInstanceState == true)
     if (viewStateSupport.getViewState() != null) {
@@ -100,8 +100,8 @@ public class MvpViewStateInternalDelegate<V extends MvpView, P extends MvpPresen
    */
   public boolean applyViewState() {
 
-    MvpViewStateDelegateCallback<V, P> delegate =
-        (MvpViewStateDelegateCallback<V, P>) delegateCallback;
+    BaseMvpViewStateDelegateCallback<V, P> delegate =
+        (BaseMvpViewStateDelegateCallback<V, P>) delegateCallback;
 
     if (applyViewState) {
       boolean retainingInstance = delegateCallback.isRetainingInstance();
@@ -123,8 +123,8 @@ public class MvpViewStateInternalDelegate<V extends MvpView, P extends MvpPresen
    */
   public void saveViewState(Bundle outState) {
 
-    MvpViewStateDelegateCallback<V, P> delegate =
-        (MvpViewStateDelegateCallback<V, P>) delegateCallback;
+    BaseMvpViewStateDelegateCallback<V, P> delegate =
+        (BaseMvpViewStateDelegateCallback<V, P>) delegateCallback;
 
     boolean retainingInstanceState = delegate.isRetainingInstance();
 

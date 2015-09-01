@@ -33,10 +33,10 @@ public class ActivityMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<V
     implements ActivityMvpDelegate {
 
   protected MvpInternalDelegate<V, P> internalDelegate;
-  protected MvpDelegateCallback<V, P> delegateCallback;
+  protected ActivityMvpDelegateCallback<V, P> delegateCallback;
 
-  public ActivityMvpDelegateImpl(MvpDelegateCallback<V, P> delegateCallback) {
-    if (delegateCallback == null){
+  public ActivityMvpDelegateImpl(ActivityMvpDelegateCallback<V, P> delegateCallback) {
+    if (delegateCallback == null) {
       throw new NullPointerException("MvpDelegateCallback is null!");
     }
     this.delegateCallback = delegateCallback;
@@ -54,7 +54,16 @@ public class ActivityMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<V
   }
 
   @Override public void onCreate(Bundle bundle) {
-    getInternalDelegate().createPresenter();
+
+    ActivityMvpNonConfigurationInstances<V, P> nci =
+        (ActivityMvpNonConfigurationInstances<V, P>) delegateCallback.getLastCustomNonConfigurationInstance();
+
+    if (nci != null && nci.presenter != null) {
+      delegateCallback.setPresenter(nci.presenter);
+    } else {
+      getInternalDelegate().createPresenter();
+    }
+
     getInternalDelegate().attachView();
   }
 
@@ -92,5 +101,17 @@ public class ActivityMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<V
 
   @Override public void onPostCreate(Bundle savedInstanceState) {
 
+  }
+
+  @Override public Object onRetainCustomNonConfigurationInstance() {
+
+    return new ActivityMvpNonConfigurationInstances<>(delegateCallback.getPresenter(),
+        delegateCallback.onRetainNonMosbyCustomNonConfigurationInstance());
+  }
+
+  @Override public Object getNonMosbyLastCustomNonConfigurationInstance() {
+    ActivityMvpNonConfigurationInstances last =
+        (ActivityMvpNonConfigurationInstances) delegateCallback.getLastCustomNonConfigurationInstance();
+    return last == null ? null : last.nonMosbyCustomConfigurationInstance;
   }
 }

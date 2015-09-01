@@ -21,18 +21,31 @@ import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 
 /**
- * Used for partial mocking the delegate callback
+ * This kind of class is used in Activities to save the presenter in retaining activities
+ *
+ * @author Hannes Dorfmann
+ * @since 2.0.0
  */
-public abstract class PartialMvpDelegateCallbackImpl
-    implements BaseMvpDelegateCallback<MvpView, MvpPresenter<MvpView>> {
+class ActivityMvpNonConfigurationInstances<V extends MvpView, P extends MvpPresenter<V>> {
 
-  MvpPresenter<MvpView> presenter;
+  /**
+   * The reference to the presenter
+   */
+  P presenter;
 
-  @Override public MvpPresenter<MvpView> getPresenter() {
-    return presenter;
-  }
+  /**
+   * The reference to the custom non configuration.
+   */
+  Object nonMosbyCustomConfigurationInstance;
 
-  @Override public void setPresenter(MvpPresenter<MvpView> presenter) {
+  /**
+   * Constructor
+   *
+   * @param presenter The retaining presenter
+   * @param nonMosbyCustomConfigurationInstance the other custom object
+   */
+  ActivityMvpNonConfigurationInstances(P presenter, Object nonMosbyCustomConfigurationInstance) {
     this.presenter = presenter;
+    this.nonMosbyCustomConfigurationInstance = nonMosbyCustomConfigurationInstance;
   }
 }

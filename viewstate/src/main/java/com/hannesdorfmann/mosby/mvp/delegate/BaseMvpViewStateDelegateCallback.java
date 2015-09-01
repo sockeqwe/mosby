@@ -22,7 +22,7 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 
 /**
- * An enhanced version of {@link MvpDelegateCallback} that adds {@link ViewState} support.
+ * An enhanced version of {@link BaseMvpDelegateCallback} that adds {@link ViewState} support.
  * This interface must be implemented by all (subclasses of) Activity, Fragmen or android.view.View
  * that want to support {@link
  * ViewState} and mvo.
@@ -30,8 +30,8 @@ import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
  * @author Hannes Dorfmann
  * @since 1.0.0
  */
-public interface MvpViewStateDelegateCallback<V extends MvpView, P extends MvpPresenter<V>>
-    extends MvpDelegateCallback<V, P> {
+public interface BaseMvpViewStateDelegateCallback<V extends MvpView, P extends MvpPresenter<V>>
+    extends BaseMvpDelegateCallback<V, P> {
 
   /**
    * Get the viewState

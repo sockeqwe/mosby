@@ -21,17 +21,17 @@ import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 
 /**
- * The MvpDelegate callback that will be called from {@link ActivityMvpDelegate} or {@link
+ * The MvpDelegate callback that will be called from  {@link
  * FragmentMvpDelegate} or {@link ViewGroupMvpDelegate}. This interface must be implemented by all
- * Activity,
- * Fragment or android.view.View that you want to support mosbys mvp.y
+ * Fragment or android.view.View that you want to support mosbys mvp. Please note that Activties need a special callback {@link ActivityMvpDelegateCallback}
  *
  * @param <V> The type of {@link MvpView}
  * @param <P> The type of {@link MvpPresenter}
  * @author Hannes Dorfmann
  * @since 1.1.0
+ * @see ActivityMvpDelegateCallback
  */
-public interface MvpDelegateCallback<V extends MvpView, P extends MvpPresenter<V>> {
+public interface BaseMvpDelegateCallback<V extends MvpView, P extends MvpPresenter<V>> {
 
   /**
    * Creates the presenter instance

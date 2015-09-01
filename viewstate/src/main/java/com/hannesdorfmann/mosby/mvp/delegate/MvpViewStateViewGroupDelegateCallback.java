@@ -22,14 +22,14 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 
 /**
- * An enhanced version of {@link MvpViewStateDelegateCallback} that adds {@link ViewState} support for
+ * An enhanced version of {@link BaseMvpViewStateDelegateCallback} that adds {@link ViewState} support for
  * android.view.View like FrameLayout etc.
  *
  * @author Hannes Dorfmann
  * @since 1.1.0
  */
 public interface MvpViewStateViewGroupDelegateCallback<V extends MvpView, P extends MvpPresenter<V>>
-    extends MvpViewStateDelegateCallback<V, P> {
+    extends BaseMvpViewStateDelegateCallback<V, P> {
 
   /**
    * This method must call super.onSaveInstanceState() within any view

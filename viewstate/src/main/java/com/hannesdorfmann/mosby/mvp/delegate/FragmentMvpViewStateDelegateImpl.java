@@ -30,14 +30,14 @@ import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 public class FragmentMvpViewStateDelegateImpl<V extends MvpView, P extends MvpPresenter<V>>
     extends FragmentMvpDelegateImpl<V, P> {
 
-  public FragmentMvpViewStateDelegateImpl(MvpViewStateDelegateCallback<V, P> delegateCallback) {
+  public FragmentMvpViewStateDelegateImpl(BaseMvpViewStateDelegateCallback<V, P> delegateCallback) {
     super(delegateCallback);
   }
 
   @Override protected MvpInternalDelegate<V, P> getInternalDelegate() {
     if (internalDelegate == null) {
       internalDelegate =
-          new MvpViewStateInternalDelegate<V, P>((MvpViewStateDelegateCallback) delegateCallback);
+          new MvpViewStateInternalDelegate<V, P>((BaseMvpViewStateDelegateCallback) delegateCallback);
     }
 
     return internalDelegate;

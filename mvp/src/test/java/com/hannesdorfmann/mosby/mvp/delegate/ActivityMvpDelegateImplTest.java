@@ -20,6 +20,7 @@ package com.hannesdorfmann.mosby.mvp.delegate;
 import android.os.Bundle;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
+import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -31,7 +32,7 @@ public class ActivityMvpDelegateImplTest {
 
   private MvpView view;
   private MvpPresenter<MvpView> presenter;
-  private MvpDelegateCallback<MvpView, MvpPresenter<MvpView>> callback;
+  private PartialActivityMvpDelegateCallbackImpl callback;
   private ActivityMvpDelegateImpl<MvpView, MvpPresenter<MvpView>> delegate;
 
   @Before public void initComponents() {
@@ -39,7 +40,7 @@ public class ActivityMvpDelegateImplTest {
     };
 
     presenter = Mockito.mock(MvpPresenter.class);
-    callback = Mockito.mock(PartialMvpDelegateCallbackImpl.class);
+    callback = Mockito.mock(PartialActivityMvpDelegateCallbackImpl.class);
     Mockito.doCallRealMethod().when(callback).setPresenter(presenter);
     Mockito.doCallRealMethod().when(callback).getPresenter();
 
@@ -66,7 +67,7 @@ public class ActivityMvpDelegateImplTest {
     Mockito.verify(presenter, Mockito.times(1)).attachView(view);
   }
 
-  private void startActivity(Bundle bundle){
+  private void startActivity(Bundle bundle) {
     delegate.onCreate(bundle);
     delegate.onContentChanged();
     delegate.onPostCreate(bundle);
@@ -74,15 +75,47 @@ public class ActivityMvpDelegateImplTest {
     delegate.onResume();
   }
 
-  @Test
-  public void reuseRetainingPresenter(){
-    Mockito.when(callback.getPresenter()).thenReturn(presenter);
+  @Test public void reuseRetainingPresenter() {
+
+    ActivityMvpNonConfigurationInstances nci =
+        new ActivityMvpNonConfigurationInstances(presenter, null);
+    Mockito.when(callback.getLastCustomNonConfigurationInstance()).thenReturn(nci);
 
     startActivity(null);
 
     Mockito.verify(callback, Mockito.never()).createPresenter();
     Mockito.verify(callback, Mockito.times(1)).setPresenter(presenter);
     Mockito.verify(presenter, Mockito.times(1)).attachView(view);
+  }
+
+  @Test public void onRetainCustomNonConfigurationInstance() {
+    Object nonMosbyLastNci = new Object();
+    Mockito.when(callback.getPresenter()).thenReturn(presenter);
+    Mockito.when(callback.onRetainNonMosbyCustomNonConfigurationInstance())
+        .thenReturn(nonMosbyLastNci);
+
+    ActivityMvpNonConfigurationInstances nci =
+        (ActivityMvpNonConfigurationInstances) delegate.onRetainCustomNonConfigurationInstance();
+    Assert.assertNotNull(nci);
+    Assert.assertTrue(nci.presenter == presenter);
+    Assert.assertTrue(nci.nonMosbyCustomConfigurationInstance == nonMosbyLastNci);
+  }
+
+  @Test public void retainCustomNonMosbyNonConfigInstanceMatchesGetNonMosbyConfigInstance() {
+
+    Object nonMosbyLastNci = new Object();
+    Mockito.when(callback.getPresenter()).thenReturn(null);
+    Mockito.when(callback.onRetainNonMosbyCustomNonConfigurationInstance())
+        .thenReturn(nonMosbyLastNci);
+
+    ActivityMvpNonConfigurationInstances nci =
+        (ActivityMvpNonConfigurationInstances) delegate.onRetainCustomNonConfigurationInstance();
+
+    Mockito.when(callback.getLastCustomNonConfigurationInstance()).thenReturn(nci);
+
+    Object quriedNci = delegate.getNonMosbyLastCustomNonConfigurationInstance();
+
+    Assert.assertTrue(quriedNci == nonMosbyLastNci);
   }
 
   @Test public void finishActivityNotRetaining() {

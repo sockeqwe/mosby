@@ -18,21 +18,23 @@
 package com.hannesdorfmann.mosby.mvp.delegate;
 
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
-import com.hannesdorfmann.mosby.mvp.MvpView;
+import junit.framework.Assert;
+import org.junit.Test;
+import org.mockito.Mockito;
 
 /**
- * Used for partial mocking the delegate callback
+ * @author Hannes Dorfmann
  */
-public abstract class PartialMvpDelegateCallbackImpl
-    implements BaseMvpDelegateCallback<MvpView, MvpPresenter<MvpView>> {
+public class ActivityMvpNonConfigurationInstancesTest {
 
-  MvpPresenter<MvpView> presenter;
+  @Test public void constructor() {
 
-  @Override public MvpPresenter<MvpView> getPresenter() {
-    return presenter;
-  }
+    MvpPresenter p = Mockito.mock(MvpPresenter.class);
+    Object customData = new Object();
+    ActivityMvpNonConfigurationInstances i =
+        new ActivityMvpNonConfigurationInstances(p, customData);
 
-  @Override public void setPresenter(MvpPresenter<MvpView> presenter) {
-    this.presenter = presenter;
+    Assert.assertTrue(i.presenter == p);
+    Assert.assertTrue(i.nonMosbyCustomConfigurationInstance == customData);
   }
 }

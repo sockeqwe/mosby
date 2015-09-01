@@ -19,20 +19,18 @@ package com.hannesdorfmann.mosby.mvp.delegate;
 
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
+import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 
 /**
- * Used for partial mocking the delegate callback
+ * An enhanced version of {@link BaseMvpDelegateCallback} that adds {@link ViewState} support.
+ * This interface must be implemented by all (subclasses of) Activity
+ * that want to support {@link
+ * ViewState} and mvp.
+ *
+ * @author Hannes Dorfmann
+ * @since 2.0.0
  */
-public abstract class PartialMvpDelegateCallbackImpl
-    implements BaseMvpDelegateCallback<MvpView, MvpPresenter<MvpView>> {
+public interface ActivityMvpViewStateDelegateCallback<V extends MvpView, P extends MvpPresenter<V>>
+    extends BaseMvpViewStateDelegateCallback<V, P>, ActivityMvpDelegateCallback<V, P> {
 
-  MvpPresenter<MvpView> presenter;
-
-  @Override public MvpPresenter<MvpView> getPresenter() {
-    return presenter;
-  }
-
-  @Override public void setPresenter(MvpPresenter<MvpView> presenter) {
-    this.presenter = presenter;
-  }
 }

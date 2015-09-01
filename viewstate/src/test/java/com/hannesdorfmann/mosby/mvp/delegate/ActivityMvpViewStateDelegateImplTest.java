@@ -19,7 +19,7 @@ package com.hannesdorfmann.mosby.mvp.delegate;
 
 import android.os.Bundle;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
-import com.hannesdorfmann.mosby.mvp.delegate.mock.PartialViewStateCallbackImpl;
+import com.hannesdorfmann.mosby.mvp.delegate.mock.PartialActivityViewStateCallbackImpl;
 import com.hannesdorfmann.mosby.mvp.delegate.mock.SimpleView;
 import com.hannesdorfmann.mosby.mvp.delegate.mock.SimpleViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.BuildConfig;
@@ -41,7 +41,7 @@ public class ActivityMvpViewStateDelegateImplTest {
 
   private SimpleView view;
   private SimpleViewState viewState;
-  private MvpViewStateDelegateCallback<SimpleView, MvpPresenter<SimpleView>> callback;
+  private ActivityMvpViewStateDelegateCallback<SimpleView, MvpPresenter<SimpleView>> callback;
   private ActivityMvpDelegateImpl<SimpleView, MvpPresenter<SimpleView>> delegate;
   private MvpPresenter<SimpleView> presenter;
 
@@ -52,7 +52,7 @@ public class ActivityMvpViewStateDelegateImplTest {
     viewState.setStateShowA();
     Assert.assertEquals(SimpleViewState.STATE_A, viewState.state);
 
-    callback = Mockito.mock(PartialViewStateCallbackImpl.class);
+    callback = Mockito.mock(PartialActivityViewStateCallbackImpl.class);
     presenter = Mockito.mock(MvpPresenter.class);
 
     Mockito.doCallRealMethod().when(callback).getViewState();

@@ -22,7 +22,7 @@ import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
-import com.hannesdorfmann.mosby.mvp.delegate.MvpDelegateCallback;
+import com.hannesdorfmann.mosby.mvp.delegate.BaseMvpDelegateCallback;
 import com.hannesdorfmann.mosby.mvp.delegate.ViewGroupMvpDelegate;
 import com.hannesdorfmann.mosby.mvp.delegate.ViewGroupMvpDelegateImpl;
 
@@ -33,7 +33,7 @@ import com.hannesdorfmann.mosby.mvp.delegate.ViewGroupMvpDelegateImpl;
  * @since 1.1
  */
 public abstract class MvpRelativeLayout<V extends MvpView, P extends MvpPresenter<V>>
-    extends RelativeLayout implements MvpView, MvpDelegateCallback<V, P> {
+    extends RelativeLayout implements MvpView, BaseMvpDelegateCallback<V, P> {
 
   protected P presenter;
   protected ViewGroupMvpDelegate<V, P> mvpDelegate;

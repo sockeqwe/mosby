@@ -68,7 +68,7 @@ import org.robolectric.annotation.Config;
 
   @Test public void restoreViewStateFromBundle() {
 
-    Mockito.when(callback.isRetainingInstance()).thenReturn(false);
+    Mockito.when(callback.isRetainInstance()).thenReturn(false);
     Mockito.when(callback.createViewState()).thenReturn(viewState);
 
     Assert.assertEquals(SimpleViewState.STATE_A, viewState.state);
@@ -84,7 +84,7 @@ import org.robolectric.annotation.Config;
     Mockito.verify(callback, Mockito.atLeast(1)).setViewState(viewState);
     Mockito.verify(callback, Mockito.times(1)).setRestoringViewState(true);
     Mockito.verify(callback, Mockito.times(1)).setRestoringViewState(false);
-    Mockito.verify(viewState, Mockito.times(1)).apply(view, callback.isRetainingInstance());
+    Mockito.verify(viewState, Mockito.times(1)).apply(view, callback.isRetainInstance());
     Mockito.verify(view, Mockito.times(1)).showB();
   }
 
@@ -97,7 +97,7 @@ import org.robolectric.annotation.Config;
 
     // Restore a retaining view state i.e. retaining fragment (not from bundle)
 
-    Mockito.when(callback.isRetainingInstance()).thenReturn(true);
+    Mockito.when(callback.isRetainInstance()).thenReturn(true);
     Mockito.when(callback.getViewState()).thenReturn(viewState);
 
     Assert.assertEquals(SimpleViewState.STATE_A, viewState.state);
@@ -113,7 +113,7 @@ import org.robolectric.annotation.Config;
     Mockito.verify(callback, Mockito.never()).setViewState(viewState);
     Mockito.verify(callback, Mockito.times(1)).setRestoringViewState(true);
     Mockito.verify(callback, Mockito.times(1)).setRestoringViewState(false);
-    Mockito.verify(viewState, Mockito.times(1)).apply(view, callback.isRetainingInstance());
+    Mockito.verify(viewState, Mockito.times(1)).apply(view, callback.isRetainInstance());
     Mockito.verify(view, Mockito.times(1)).showB();
   }
 
@@ -126,7 +126,7 @@ import org.robolectric.annotation.Config;
 
     // Restore a retaining view state i.e. retaining fragment (not from bundle)
 
-    Mockito.when(callback.isRetainingInstance()).thenReturn(true);
+    Mockito.when(callback.isRetainInstance()).thenReturn(true);
     Mockito.when(callback.getViewState()).thenReturn(viewState);
 
     Assert.assertEquals(SimpleViewState.STATE_A, viewState.state);
@@ -142,7 +142,7 @@ import org.robolectric.annotation.Config;
     Mockito.verify(callback, Mockito.never()).setViewState(viewState);
     Mockito.verify(callback, Mockito.times(1)).setRestoringViewState(true);
     Mockito.verify(callback, Mockito.times(1)).setRestoringViewState(false);
-    Mockito.verify(viewState, Mockito.times(1)).apply(view, callback.isRetainingInstance());
+    Mockito.verify(viewState, Mockito.times(1)).apply(view, callback.isRetainInstance());
     Mockito.verify(view, Mockito.times(1)).showB();
   }
 

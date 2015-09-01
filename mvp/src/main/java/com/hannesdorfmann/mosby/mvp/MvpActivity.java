@@ -127,7 +127,11 @@ public abstract class MvpActivity<V extends MvpView, P extends MvpPresenter<V>>
     return (V) this;
   }
 
-  @Override public boolean isRetainingInstance() {
+  @Override public boolean isRetainInstance() {
+    return false;
+  }
+
+  @Override public boolean shouldInstanceBeRetained() {
     return false;
   }
 }

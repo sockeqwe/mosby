@@ -64,11 +64,23 @@ public interface MvpDelegateCallback<V extends MvpView, P extends MvpPresenter<V
   public V getMvpView();
 
   /**
-   * Is the view retaining? This boolean flag is used for {@link MvpPresenter#detachView(boolean)}
-   * as parameter. Usually you should take {@link Activity#isChangingConfigurations()} into
-   * account.
+   * Indicate whether this retain instance feature is enabled by this view or not
    *
-   * @return true if the view is retaining, hence the presenter should be retaining as well.
+   * @return true if the view is retaining,otherwise false.
    */
-  public boolean isRetainingInstance();
+  public boolean isRetainInstance();
+
+  /**
+   * Indicates whether or not the the view will be retained during next screen orientation change.
+   * This boolean flag is used for {@link MvpPresenter#detachView(boolean)}
+   * as parameter. Usually you should take {@link Activity#isChangingConfigurations()} into
+   * account. The difference between {@link #shouldInstanceBeRetained()} and {@link
+   * #isRetainInstance()} is that {@link #isRetainInstance()} indicates that retain instance
+   * feature
+   * is enabled or disabled, while {@link #shouldInstanceBeRetained()} indicates whether the view
+   * is going to be destroyed permanently and hence need no more to be retained
+   *
+   * @return true if the instance should be retained, otherwise false
+   */
+  public boolean shouldInstanceBeRetained();
 }

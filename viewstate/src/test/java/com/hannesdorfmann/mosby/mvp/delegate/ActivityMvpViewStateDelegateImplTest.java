@@ -91,7 +91,7 @@ public class ActivityMvpViewStateDelegateImplTest {
     Mockito.verify(presenter, Mockito.times(1)).attachView(view);
     Mockito.verify(callback, Mockito.never()).setRestoringViewState(Mockito.anyBoolean());
     Mockito.verify(callback, Mockito.times(1)).setViewState(viewState);
-    Mockito.verify(viewState, Mockito.never()).apply(view, callback.isRetainingInstance());
+    Mockito.verify(viewState, Mockito.never()).apply(view, callback.isRetainInstance());
     Mockito.verify(callback, Mockito.times(1)).onNewViewStateInstance();
   }
 
@@ -100,7 +100,7 @@ public class ActivityMvpViewStateDelegateImplTest {
     boolean retaining = false;
     Mockito.when(callback.createPresenter()).thenReturn(presenter);
     Mockito.when(callback.createViewState()).thenReturn(viewState);
-    Mockito.when(callback.isRetainingInstance()).thenReturn(retaining);
+    Mockito.when(callback.isRetainInstance()).thenReturn(retaining);
 
     Bundle bundle = new Bundle();
     viewState.setStateShowB();
@@ -126,7 +126,7 @@ public class ActivityMvpViewStateDelegateImplTest {
     boolean retaining = true;
     Mockito.when(callback.getPresenter()).thenReturn(presenter);
     Mockito.when(callback.getViewState()).thenReturn(viewState);
-    Mockito.when(callback.isRetainingInstance()).thenReturn(retaining);
+    Mockito.when(callback.isRetainInstance()).thenReturn(retaining);
 
     viewState.setStateShowB();
     startActivity(null);
@@ -146,7 +146,7 @@ public class ActivityMvpViewStateDelegateImplTest {
     boolean retaining = false;
     Mockito.when(callback.getPresenter()).thenReturn(presenter);
     Mockito.when(callback.getViewState()).thenReturn(viewState);
-    Mockito.when(callback.isRetainingInstance()).thenReturn(retaining);
+    Mockito.when(callback.isRetainInstance()).thenReturn(retaining);
 
     Bundle bundle = new Bundle();
     finishActivity(bundle);
@@ -162,7 +162,7 @@ public class ActivityMvpViewStateDelegateImplTest {
     boolean retaining = true;
     Mockito.when(callback.getPresenter()).thenReturn(presenter);
     Mockito.when(callback.getViewState()).thenReturn(viewState);
-    Mockito.when(callback.isRetainingInstance()).thenReturn(retaining);
+    Mockito.when(callback.isRetainInstance()).thenReturn(retaining);
 
     Bundle bundle = new Bundle();
     finishActivity(bundle);

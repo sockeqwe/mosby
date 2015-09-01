@@ -104,7 +104,7 @@ public class MvpViewStateInternalDelegate<V extends MvpView, P extends MvpPresen
         (MvpViewStateDelegateCallback<V, P>) delegateCallback;
 
     if (applyViewState) {
-      boolean retainingInstance = delegateCallback.isRetainingInstance();
+      boolean retainingInstance = delegateCallback.isRetainInstance();
       delegate.setRestoringViewState(true);
       delegate.getViewState().apply(delegate.getMvpView(), retainingInstance);
       delegate.setRestoringViewState(false);
@@ -126,7 +126,7 @@ public class MvpViewStateInternalDelegate<V extends MvpView, P extends MvpPresen
     MvpViewStateDelegateCallback<V, P> delegate =
         (MvpViewStateDelegateCallback<V, P>) delegateCallback;
 
-    boolean retainingInstanceState = delegate.isRetainingInstance();
+    boolean retainingInstanceState = delegate.isRetainInstance();
 
     if (delegate == null) {
       throw new NullPointerException("ViewStateSupport can not be null");

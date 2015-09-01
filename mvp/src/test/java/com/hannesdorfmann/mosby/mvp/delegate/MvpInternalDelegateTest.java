@@ -75,7 +75,7 @@ public class MvpInternalDelegateTest {
   @Test public void detachViewFromPresenterNotRetaining() {
 
     Mockito.when(callback.getPresenter()).thenReturn(presenter);
-    Mockito.when(callback.isRetainingInstance()).thenReturn(false);
+    Mockito.when(callback.isRetainInstance()).thenReturn(false);
 
 
     delegate.detachView();
@@ -85,7 +85,7 @@ public class MvpInternalDelegateTest {
   @Test public void detachViewFromPresenterIsRetaining() {
 
     Mockito.when(callback.getPresenter()).thenReturn(presenter);
-    Mockito.when(callback.isRetainingInstance()).thenReturn(true);
+    Mockito.when(callback.isRetainInstance()).thenReturn(true);
 
     delegate.detachView();
     Mockito.verify(presenter, Mockito.times(1)).detachView(true);

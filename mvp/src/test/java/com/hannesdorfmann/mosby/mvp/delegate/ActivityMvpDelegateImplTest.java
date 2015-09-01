@@ -95,7 +95,7 @@ public class ActivityMvpDelegateImplTest {
 
   private void testFinishActivity(boolean retainingInstanceState) {
     Mockito.when(callback.getPresenter()).thenReturn(presenter);
-    Mockito.when(callback.isRetainingInstance()).thenReturn(retainingInstanceState);
+    Mockito.when(callback.isRetainInstance()).thenReturn(retainingInstanceState);
 
     delegate.onPause();
     delegate.onSaveInstanceState(new Bundle());

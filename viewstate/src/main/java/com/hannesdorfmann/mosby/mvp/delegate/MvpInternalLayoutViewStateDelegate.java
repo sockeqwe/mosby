@@ -105,9 +105,9 @@ class MvpInternalLayoutViewStateDelegate<V extends MvpView, P extends MvpPresent
 
     if (applyViewState) {
       delegate.setRestoringViewState(true);
-      delegate.getViewState().apply(delegate.getMvpView(), delegate.isRetainingInstance());
+      delegate.getViewState().apply(delegate.getMvpView(), delegate.isRetainInstance());
       delegate.setRestoringViewState(false);
-      delegate.onViewStateInstanceRestored(delegate.isRetainingInstance());
+      delegate.onViewStateInstanceRestored(delegate.isRetainInstance());
       return true;
     }
 
@@ -123,7 +123,7 @@ class MvpInternalLayoutViewStateDelegate<V extends MvpView, P extends MvpPresent
 
     MvpViewStateViewGroupDelegateCallback delegate = (MvpViewStateViewGroupDelegateCallback) delegateCallback;
 
-    boolean retainingInstanceState = delegate.isRetainingInstance();
+    boolean retainingInstanceState = delegate.isRetainInstance();
 
     ViewState viewState = delegate.getViewState();
     if (viewState == null) {

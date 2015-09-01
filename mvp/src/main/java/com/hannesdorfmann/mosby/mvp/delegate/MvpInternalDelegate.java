@@ -67,7 +67,7 @@ class MvpInternalDelegate<V extends MvpView, P extends MvpPresenter<V>> {
    * Called to detach the view from presenter
    */
   void detachView() {
-    getPresenter().detachView(delegateCallback.isRetainingInstance());
+    getPresenter().detachView(delegateCallback.shouldInstanceBeRetained());
   }
 
   private P getPresenter() {

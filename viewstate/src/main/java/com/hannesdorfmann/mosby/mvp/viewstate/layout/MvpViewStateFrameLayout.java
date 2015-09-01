@@ -101,4 +101,6 @@ public abstract class MvpViewStateFrameLayout<V extends MvpView, P extends MvpPr
   @Override public void superOnRestoreInstanceState(Parcelable state) {
     super.onRestoreInstanceState(state);
   }
+
+
 }

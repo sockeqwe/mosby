@@ -43,6 +43,9 @@ import java.util.List;
 import butterknife.Bind;
 
 /**
+ * This is an example of a NOT retaining fragment. It serializes and deserializes the viewstate
+ * into a bundle
+ *
  * @author Hannes Dorfmann
  */
 public class NotRetainingCountriesFragment extends
@@ -88,7 +91,6 @@ public class NotRetainingCountriesFragment extends
   @Override protected String getErrorMessage(Throwable e, boolean pullToRefresh) {
     return CountriesErrorMessage.get(e, pullToRefresh, getActivity());
   }
-
 
   @Override public CountriesPresenter createPresenter() {
     return new SimpleCountriesPresenter();

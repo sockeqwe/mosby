@@ -43,6 +43,9 @@ import java.util.List;
 import butterknife.Bind;
 
 /**
+ * This is an example of a RETAINING Fragment. The viewstate will be kept in memory during screen
+ * orientation changes.
+ *
  * @author Hannes Dorfmann
  */
 public class RetainingCountriesFragment extends
@@ -54,7 +57,8 @@ public class RetainingCountriesFragment extends
   CountriesAdapter adapter;
 
   @Override public LceViewState<List<Country>, CountriesView> createViewState() {
-    return new RetainingLceViewState<List<Country>, CountriesView>();
+    setRetainInstance(true);
+    return new RetainingLceViewState<>();
   }
 
   @Nullable @Override
@@ -135,5 +139,9 @@ public class RetainingCountriesFragment extends
   @Override public void onDestroy() {
     super.onDestroy();
     SampleApplication.getRefWatcher(getActivity()).watch(this);
+  }
+
+  @Override public boolean isRetainingInstance() {
+    return super.isRetainingInstance();
   }
 }

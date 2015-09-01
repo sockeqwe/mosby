@@ -28,7 +28,7 @@ import butterknife.ButterKnife;
 import com.hannesdorfmann.mosby.sample.mvp.customviewstate.MyCustomActivity;
 import com.hannesdorfmann.mosby.sample.mvp.lce.activity.CountriesActivity;
 import com.hannesdorfmann.mosby.sample.mvp.lce.layout.CountriesLayoutActivity;
-import com.hannesdorfmann.mosby.sample.mvp.lce.viewstate.CountriesViewStateActivity;
+import com.hannesdorfmann.mosby.sample.mvp.lce.viewstate.NotRetainingCountriesViewStateActivity;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
@@ -56,7 +56,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         new Demo("Retaining by using Parcelable ViewsState LceFragment",
             new Intent(this, FragmentContainerActivity.class).putExtra("fragment",
                 "NotRetainingCountriesFragment")),
-        new Demo("ViewsState LceActivity", new Intent(this, CountriesViewStateActivity.class)),
+        new Demo("Retaining by using Parcelable ViewsState LceActivity",
+            new Intent(this, NotRetainingCountriesViewStateActivity.class)),
 
         new Demo("MVP FrameLayout", new Intent(this, CountriesLayoutActivity.class)),
 

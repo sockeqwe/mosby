@@ -38,9 +38,12 @@ import java.util.List;
 import butterknife.Bind;
 
 /**
+ * This is an example of a NOT retaining activity. It serializes and deserializes the viewstate into
+ * a bundle
+ *
  * @author Hannes Dorfmann
  */
-public class CountriesViewStateActivity extends
+public class NotRetainingCountriesViewStateActivity extends
     MvpLceViewStateActivity<SwipeRefreshLayout, List<Country>, CountriesView, CountriesPresenter>
     implements CountriesView, SwipeRefreshLayout.OnRefreshListener {
 

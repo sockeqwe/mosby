@@ -34,8 +34,8 @@ import com.hannesdorfmann.mosby.mvp.delegate.BaseMvpDelegateCallback;
  * @author Hannes Dorfmann
  * @since 1.0.0
  */
-public abstract class MvpFragment<V extends MvpView, P extends MvpPresenter<V>>
-    extends Fragment implements BaseMvpDelegateCallback<V, P>, MvpView {
+public abstract class MvpFragment<V extends MvpView, P extends MvpPresenter<V>> extends Fragment
+    implements BaseMvpDelegateCallback<V, P>, MvpView {
 
   protected FragmentMvpDelegate<V, P> mvpDelegate;
 
@@ -84,7 +84,8 @@ public abstract class MvpFragment<V extends MvpView, P extends MvpPresenter<V>>
 
   @Override public boolean isRetainingInstance() {
     FragmentActivity activity = getActivity();
-    return getRetainInstance() && activity != null && activity.isChangingConfigurations();
+    boolean changingConfig = activity != null && activity.isChangingConfigurations();
+    return getRetainInstance() && changingConfig;
   }
 
   @NonNull @Override public V getMvpView() {

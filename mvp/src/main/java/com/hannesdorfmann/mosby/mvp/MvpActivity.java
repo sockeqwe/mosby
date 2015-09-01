@@ -35,6 +35,7 @@ public abstract class MvpActivity<V extends MvpView, P extends MvpPresenter<V>>
 
   protected ActivityMvpDelegate mvpDelegate;
   protected P presenter;
+  protected boolean retainInstance;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -128,7 +129,11 @@ public abstract class MvpActivity<V extends MvpView, P extends MvpPresenter<V>>
   }
 
   @Override public boolean isRetainingInstance() {
-    return false;
+    return retainInstance && isChangingConfigurations();
+  }
+
+  @Override public void setRetainInstance(boolean retainInstance) {
+    this.retainInstance = retainInstance;
   }
 
   @Override public Object onRetainNonMosbyCustomNonConfigurationInstance() {

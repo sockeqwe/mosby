@@ -109,4 +109,8 @@ public abstract class MvpFrameLayout<V extends MvpView, P extends MvpPresenter<V
   @Override public boolean isRetainingInstance() {
     return false;
   }
+
+  @Override public void setRetainInstance(boolean retainingInstance) {
+    throw new UnsupportedOperationException("Retainining Instance is not supported / implemented yet");
+  }
 }

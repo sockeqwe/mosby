@@ -48,7 +48,8 @@ public class MvpViewStateInternalDelegate<V extends MvpView, P extends MvpPresen
    *
    * @return true, if the viewstate has been restored (in other words {@link
    * ViewState#apply(MvpView, boolean)} has been invoked) (calls {@link
-   * BaseMvpViewStateDelegateCallback#onViewStateInstanceRestored(boolean) after having restored the
+   * BaseMvpViewStateDelegateCallback#onViewStateInstanceRestored(boolean) after having restored
+   * the
    * viewstate}.
    * Otherwise returns false and calls {@link BaseMvpViewStateDelegateCallback#onNewViewStateInstance()}
    */
@@ -126,7 +127,6 @@ public class MvpViewStateInternalDelegate<V extends MvpView, P extends MvpPresen
     BaseMvpViewStateDelegateCallback<V, P> delegate =
         (BaseMvpViewStateDelegateCallback<V, P>) delegateCallback;
 
-
     if (delegate == null) {
       throw new NullPointerException("ViewStateDelegateCallback can not be null");
     }
@@ -138,6 +138,19 @@ public class MvpViewStateInternalDelegate<V extends MvpView, P extends MvpPresen
 
     boolean retainingInstanceState = delegate.isRetainInstance();
 
+    if (viewState != null && !retainingInstanceState
+        && !(viewState instanceof RestoreableViewState)) {
+      throw new IllegalStateException(
+          "ViewState " + viewState.getClass().getSimpleName() + " of " + delegateCallback.getMvpView()
+              + " is not Restorable (can not be serialized in bundle, must implement "
+              + RestoreableViewState.class.getSimpleName()
+              + ") nor is retaining (in memory) ViewState feature enabled. "
+              + "That means that the ViewState can not survive orientation changes and ViewState "
+              + "will always be lost. Hence using Mosby's ViewState feature makes no sense. "
+              + "Either fix your ViewState settings (make ViewState restorable or "
+              + "turn retaining feature on) or if you don't need the ViewState feature you "
+              + "should use the classes without viewstate from Mosby's mvp module");
+    }
 
     // Save the viewstate
     if (viewState != null && viewState instanceof RestoreableViewState) {

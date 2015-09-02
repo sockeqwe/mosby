@@ -19,10 +19,12 @@ package com.hannesdorfmann.mosby.mvp.delegate;
 
 import android.os.Bundle;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
+import com.hannesdorfmann.mosby.mvp.MvpView;
 import com.hannesdorfmann.mosby.mvp.delegate.mock.PartialViewStateCallbackImpl;
 import com.hannesdorfmann.mosby.mvp.delegate.mock.SimpleView;
 import com.hannesdorfmann.mosby.mvp.delegate.mock.SimpleViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.BuildConfig;
+import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -156,5 +158,33 @@ public class MvpViewStateInternalDelegateTest {
     delegate.saveViewState(bundle);
 
     Mockito.verify(viewState, Mockito.times(1)).saveInstanceState(bundle);
+  }
+
+  @Test public void throwsExceptionIfViewStateFeatureIsSenseless() {
+
+    ViewState vs = new ViewState() {
+      @Override public void apply(MvpView view, boolean retained) {
+
+      }
+    };
+
+    Mockito.when(callback.getViewState()).thenReturn(vs);
+    Mockito.when(callback.isRetainInstance()).thenReturn(false);
+
+    // Test without bundle
+    try {
+      delegate.saveViewState(null);
+      Assert.fail("An exception should be thrown");
+    } catch (IllegalStateException e) {
+      // Exception is expected
+    }
+
+    // Test with bundle
+    try {
+      delegate.saveViewState(new Bundle());
+      Assert.fail("An exception should be thrown");
+    } catch (IllegalStateException e) {
+      // Exception is expected
+    }
   }
 }

@@ -19,12 +19,12 @@ package com.hannesdorfmann.mosby.mvp.viewstate.lce.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
-import com.hannesdorfmann.mosby.mvp.viewstate.RestoreableViewState;
+import com.hannesdorfmann.mosby.mvp.viewstate.RestorableViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.AbsParcelableLceViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
 
 /**
- * A {@link LceViewState} and {@link RestoreableViewState} that uses Parcelable as content data.
+ * A {@link LceViewState} and {@link RestorableViewState} that uses Parcelable as content data.
  * Internally it uses {@link Parcel#writeParcelable(Parcelable, int)} and {@link
  * Parcel#readParcelable(ClassLoader)} for serialisation. It uses the default class loader. You can
  * override {@link #getClassLoader()} for provide your own ClassLoader.

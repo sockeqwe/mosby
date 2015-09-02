@@ -19,14 +19,14 @@ package com.hannesdorfmann.mosby.mvp.viewstate.lce.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
-import com.hannesdorfmann.mosby.mvp.viewstate.RestoreableViewState;
+import com.hannesdorfmann.mosby.mvp.viewstate.RestorableViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.AbsParcelableLceViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A {@link LceViewState} and {@link RestoreableViewState} that uses ArrayList containing
+ * A {@link LceViewState} and {@link RestorableViewState} that uses ArrayList containing
  * Parcelables as content data. It uses the default class loader (you could override {@link
  * #getClassLoader()}. It uses {@link Parcel#writeList(List)}
  * and {@link Parcel#readArrayList(ClassLoader)} for serialisation.

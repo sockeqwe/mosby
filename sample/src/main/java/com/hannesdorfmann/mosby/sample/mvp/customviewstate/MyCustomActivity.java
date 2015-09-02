@@ -22,7 +22,7 @@ import android.widget.TextView;
 
 import butterknife.ButterKnife;
 import com.hannesdorfmann.mosby.mvp.viewstate.MvpViewStateActivity;
-import com.hannesdorfmann.mosby.mvp.viewstate.RestoreableViewState;
+import com.hannesdorfmann.mosby.mvp.viewstate.RestorableViewState;
 import com.hannesdorfmann.mosby.sample.R;
 import com.hannesdorfmann.mosby.sample.mvp.model.custom.A;
 import com.hannesdorfmann.mosby.sample.mvp.model.custom.B;
@@ -45,7 +45,7 @@ public class MyCustomActivity extends MvpViewStateActivity<MyCustomView, MyCusto
     ButterKnife.bind(this);
   }
 
-  @Override public RestoreableViewState createViewState() {
+  @Override public RestorableViewState createViewState() {
     return new MyCustomViewState();
   }
 

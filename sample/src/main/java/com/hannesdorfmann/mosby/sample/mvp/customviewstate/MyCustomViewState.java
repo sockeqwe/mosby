@@ -18,14 +18,14 @@ package com.hannesdorfmann.mosby.sample.mvp.customviewstate;
 
 import android.os.Bundle;
 import android.os.Parcelable;
-import com.hannesdorfmann.mosby.mvp.viewstate.RestoreableViewState;
+import com.hannesdorfmann.mosby.mvp.viewstate.RestorableViewState;
 import com.hannesdorfmann.mosby.sample.mvp.model.custom.A;
 import com.hannesdorfmann.mosby.sample.mvp.model.custom.B;
 
 /**
  * @author Hannes Dorfmann
  */
-public class MyCustomViewState implements RestoreableViewState<MyCustomView> {
+public class MyCustomViewState implements RestorableViewState<MyCustomView> {
 
   private final String KEY_STATE = "MyCustomViewState-flag";
   private final String KEY_DATA = "MyCustomViewState-data";
@@ -38,7 +38,7 @@ public class MyCustomViewState implements RestoreableViewState<MyCustomView> {
     out.putParcelable(KEY_DATA, data);
   }
 
-  @Override public RestoreableViewState restoreInstanceState(Bundle in) {
+  @Override public RestorableViewState restoreInstanceState(Bundle in) {
     if (in == null) {
       return null;
     }

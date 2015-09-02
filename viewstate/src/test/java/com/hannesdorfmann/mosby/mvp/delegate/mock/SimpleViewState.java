@@ -20,14 +20,14 @@ package com.hannesdorfmann.mosby.mvp.delegate.mock;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.support.annotation.NonNull;
-import com.hannesdorfmann.mosby.mvp.viewstate.RestoreableParcelableViewState;
-import com.hannesdorfmann.mosby.mvp.viewstate.RestoreableViewState;
+import com.hannesdorfmann.mosby.mvp.viewstate.RestorableParcelableViewState;
+import com.hannesdorfmann.mosby.mvp.viewstate.RestorableViewState;
 
 /**
  * @author Hannes Dorfmann
  */
-public class SimpleViewState implements RestoreableViewState<SimpleView>,
-    RestoreableParcelableViewState<SimpleView> {
+public class SimpleViewState implements RestorableViewState<SimpleView>,
+    RestorableParcelableViewState<SimpleView> {
 
   public static final String KEY_STATE = "SimpleViewState.State";
 
@@ -40,7 +40,7 @@ public class SimpleViewState implements RestoreableViewState<SimpleView>,
     out.putInt(KEY_STATE, state);
   }
 
-  @Override public RestoreableViewState<SimpleView> restoreInstanceState(Bundle in) {
+  @Override public RestorableViewState<SimpleView> restoreInstanceState(Bundle in) {
 
     this.state = in.getInt(KEY_STATE);
 

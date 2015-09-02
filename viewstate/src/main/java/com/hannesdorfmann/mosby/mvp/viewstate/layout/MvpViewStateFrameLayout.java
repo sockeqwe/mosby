@@ -26,7 +26,7 @@ import com.hannesdorfmann.mosby.mvp.delegate.ViewGroupMvpViewStateDelegateImpl;
 import com.hannesdorfmann.mosby.mvp.delegate.ViewGroupMvpDelegate;
 import com.hannesdorfmann.mosby.mvp.delegate.MvpViewStateViewGroupDelegateCallback;
 import com.hannesdorfmann.mosby.mvp.layout.MvpFrameLayout;
-import com.hannesdorfmann.mosby.mvp.viewstate.RestoreableParcelableViewState;
+import com.hannesdorfmann.mosby.mvp.viewstate.RestorableParcelableViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 
 /**
@@ -39,7 +39,7 @@ public abstract class MvpViewStateFrameLayout<V extends MvpView, P extends MvpPr
     extends MvpFrameLayout<V, P> implements MvpViewStateViewGroupDelegateCallback<V, P> {
 
   private boolean restoringViewState = false;
-  protected RestoreableParcelableViewState viewState;
+  protected RestorableParcelableViewState viewState;
 
   public MvpViewStateFrameLayout(Context context) {
     super(context);
@@ -77,12 +77,12 @@ public abstract class MvpViewStateFrameLayout<V extends MvpView, P extends MvpPr
     ((ViewGroupMvpViewStateDelegateImpl) getMvpDelegate()).onRestoreInstanceState(state);
   }
 
-  @Override public RestoreableParcelableViewState getViewState() {
+  @Override public RestorableParcelableViewState getViewState() {
     return viewState;
   }
 
   @Override public void setViewState(ViewState viewState) {
-    this.viewState = (RestoreableParcelableViewState) viewState;
+    this.viewState = (RestorableParcelableViewState) viewState;
   }
 
   @Override public void setRestoringViewState(boolean retstoringViewState) {

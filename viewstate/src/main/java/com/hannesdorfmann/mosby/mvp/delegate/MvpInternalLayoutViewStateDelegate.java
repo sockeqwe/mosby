@@ -19,8 +19,8 @@ package com.hannesdorfmann.mosby.mvp.delegate;
 import android.os.Parcelable;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
-import com.hannesdorfmann.mosby.mvp.viewstate.RestoreableParcelableViewState;
-import com.hannesdorfmann.mosby.mvp.viewstate.RestoreableViewState;
+import com.hannesdorfmann.mosby.mvp.viewstate.RestorableParcelableViewState;
+import com.hannesdorfmann.mosby.mvp.viewstate.RestorableViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.layout.MvpViewStateFrameLayout;
 import com.hannesdorfmann.mosby.mvp.viewstate.layout.ViewStateSavedState;
@@ -47,7 +47,7 @@ class MvpInternalLayoutViewStateDelegate<V extends MvpView, P extends MvpPresent
 
   /**
    * Like the name already suggests. Creates a new viewstate or tries to restore the old one (must
-   * be subclass of {@link RestoreableViewState}) by reading the bundle
+   * be subclass of {@link RestorableViewState}) by reading the bundle
    *
    * @return true, if the viewstate has been restored (in other words restored from parcelable)
    * (calls {@link
@@ -116,7 +116,7 @@ class MvpInternalLayoutViewStateDelegate<V extends MvpView, P extends MvpPresent
   }
 
   /**
-   * Saves {@link RestoreableViewState} in a bundle. <b>Should be called from View
+   * Saves {@link RestorableViewState} in a bundle. <b>Should be called from View
    * onSaveInstanceState(Parcelable) method</b>
    */
   public Parcelable saveViewState(Parcelable superState) {
@@ -136,7 +136,7 @@ class MvpInternalLayoutViewStateDelegate<V extends MvpView, P extends MvpPresent
       return null;
     } else {
       ViewStateSavedState state = new ViewStateSavedState(superState);
-      state.setMosbyViewState((RestoreableParcelableViewState) delegate.getViewState());
+      state.setMosbyViewState((RestorableParcelableViewState) delegate.getViewState());
       return state;
     }
   }

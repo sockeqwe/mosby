@@ -29,7 +29,7 @@ import com.hannesdorfmann.mosby.mvp.viewstate.lce.AbsParcelableLceViewState;
  * @author Hannes Dorfmann
  * @since 1.0.0
  */
-public interface RestoreableViewState<V extends MvpView> extends ViewState<V> {
+public interface RestorableViewState<V extends MvpView> extends ViewState<V> {
 
   /**
    * Saves this ViewState to the outgoing bundle.
@@ -48,5 +48,5 @@ public interface RestoreableViewState<V extends MvpView> extends ViewState<V> {
    * this method will return <code>this</code>. {@link AbsParcelableLceViewState} will return a
    * copy, which is also ok.
    */
-  public RestoreableViewState<V> restoreInstanceState(Bundle in);
+  public RestorableViewState<V> restoreInstanceState(Bundle in);
 }

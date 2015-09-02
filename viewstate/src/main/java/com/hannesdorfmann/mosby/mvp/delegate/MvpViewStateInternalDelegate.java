@@ -19,7 +19,7 @@ package com.hannesdorfmann.mosby.mvp.delegate;
 import android.os.Bundle;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
-import com.hannesdorfmann.mosby.mvp.viewstate.RestoreableViewState;
+import com.hannesdorfmann.mosby.mvp.viewstate.RestorableViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 
 /**
@@ -44,7 +44,7 @@ public class MvpViewStateInternalDelegate<V extends MvpView, P extends MvpPresen
 
   /**
    * Like the name already suggests. Creates a new viewstate or tries to restore the old one (must
-   * be subclass of {@link RestoreableViewState}) by reading the bundle
+   * be subclass of {@link RestorableViewState}) by reading the bundle
    *
    * @return true, if the viewstate has been restored (in other words {@link
    * ViewState#apply(MvpView, boolean)} has been invoked) (calls {@link
@@ -73,10 +73,10 @@ public class MvpViewStateInternalDelegate<V extends MvpView, P extends MvpPresen
 
     // Try to restore data from bundle (savedInstanceState)
     if (savedInstanceState != null
-        && viewStateSupport.getViewState() instanceof RestoreableViewState) {
+        && viewStateSupport.getViewState() instanceof RestorableViewState) {
 
       ViewState restoredViewState =
-          ((RestoreableViewState) viewStateSupport.getViewState()).restoreInstanceState(
+          ((RestorableViewState) viewStateSupport.getViewState()).restoreInstanceState(
               savedInstanceState);
 
       boolean restoredFromBundle = restoredViewState != null;
@@ -118,7 +118,7 @@ public class MvpViewStateInternalDelegate<V extends MvpView, P extends MvpPresen
   }
 
   /**
-   * Saves {@link RestoreableViewState} in a bundle. <b>Should be calld from activities or
+   * Saves {@link RestorableViewState} in a bundle. <b>Should be calld from activities or
    * fragments
    * onSaveInstanceState(Bundle) method</b>
    */
@@ -139,11 +139,11 @@ public class MvpViewStateInternalDelegate<V extends MvpView, P extends MvpPresen
     boolean retainingInstanceState = delegate.isRetainInstance();
 
     if (viewState != null && !retainingInstanceState
-        && !(viewState instanceof RestoreableViewState)) {
+        && !(viewState instanceof RestorableViewState)) {
       throw new IllegalStateException(
           "ViewState " + viewState.getClass().getSimpleName() + " of " + delegateCallback.getMvpView()
               + " is not Restorable (can not be serialized in bundle, must implement "
-              + RestoreableViewState.class.getSimpleName()
+              + RestorableViewState.class.getSimpleName()
               + ") nor is retaining (in memory) ViewState feature enabled. "
               + "That means that the ViewState can not survive orientation changes and ViewState "
               + "will always be lost. Hence using Mosby's ViewState feature makes no sense. "
@@ -153,8 +153,8 @@ public class MvpViewStateInternalDelegate<V extends MvpView, P extends MvpPresen
     }
 
     // Save the viewstate
-    if (viewState != null && viewState instanceof RestoreableViewState) {
-      ((RestoreableViewState) viewState).saveInstanceState(outState);
+    if (viewState != null && viewState instanceof RestorableViewState) {
+      ((RestorableViewState) viewState).saveInstanceState(outState);
     }
 
     if (retainingInstanceState) {

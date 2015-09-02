@@ -18,7 +18,7 @@ package com.hannesdorfmann.mosby.mvp.viewstate.layout;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.view.View;
-import com.hannesdorfmann.mosby.mvp.viewstate.RestoreableParcelableViewState;
+import com.hannesdorfmann.mosby.mvp.viewstate.RestorableParcelableViewState;
 
 /**
  * The SavedState implementation to store the view state in layouts
@@ -39,7 +39,7 @@ public class ViewStateSavedState extends View.BaseSavedState {
         }
       };
 
-  private RestoreableParcelableViewState mosbyViewState;
+  private RestorableParcelableViewState mosbyViewState;
 
   public ViewStateSavedState(Parcelable superState) {
     super(superState);
@@ -47,7 +47,7 @@ public class ViewStateSavedState extends View.BaseSavedState {
 
   private ViewStateSavedState(Parcel in) {
     super(in);
-    this.mosbyViewState = in.readParcelable(RestoreableParcelableViewState.class.getClassLoader());
+    this.mosbyViewState = in.readParcelable(RestorableParcelableViewState.class.getClassLoader());
   }
 
   @Override public void writeToParcel(Parcel out, int flags) {
@@ -55,11 +55,11 @@ public class ViewStateSavedState extends View.BaseSavedState {
     out.writeParcelable(mosbyViewState, flags);
   }
 
-  public RestoreableParcelableViewState getMosbyViewState() {
+  public RestorableParcelableViewState getMosbyViewState() {
     return mosbyViewState;
   }
 
-  public void setMosbyViewState(RestoreableParcelableViewState mosbyViewState) {
+  public void setMosbyViewState(RestorableParcelableViewState mosbyViewState) {
     this.mosbyViewState = mosbyViewState;
   }
 }

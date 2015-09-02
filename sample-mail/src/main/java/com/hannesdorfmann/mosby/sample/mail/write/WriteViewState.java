@@ -1,12 +1,12 @@
 package com.hannesdorfmann.mosby.sample.mail.write;
 
 import android.os.Bundle;
-import com.hannesdorfmann.mosby.mvp.viewstate.RestoreableViewState;
+import com.hannesdorfmann.mosby.mvp.viewstate.RestorableViewState;
 
 /**
  * @author Hannes Dorfmann
  */
-public class WriteViewState implements RestoreableViewState<WriteView> {
+public class WriteViewState implements RestorableViewState<WriteView> {
 
   private final String KEY_STATE =
       "com.hannesdorfmann.mosby.sample.mail.write.WriteViewState.current_State";
@@ -21,7 +21,7 @@ public class WriteViewState implements RestoreableViewState<WriteView> {
     out.putInt(KEY_STATE, currentState);
   }
 
-  @Override public RestoreableViewState<WriteView> restoreInstanceState(Bundle in) {
+  @Override public RestorableViewState<WriteView> restoreInstanceState(Bundle in) {
     currentState = in.getInt(KEY_STATE);
     return this;
   }

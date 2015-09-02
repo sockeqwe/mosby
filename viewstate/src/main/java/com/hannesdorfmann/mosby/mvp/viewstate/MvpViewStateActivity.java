@@ -25,7 +25,7 @@ import com.hannesdorfmann.mosby.mvp.delegate.ActivityMvpViewStateDelegateImpl;
 
 /**
  * This is a enhancement of {@link com.hannesdorfmann.mosby.mvp.MvpActivity} that introduces the
- * support of {@link RestoreableViewState}.
+ * support of {@link RestorableViewState}.
  * <p>
  * You can change the behaviour of what to do if the viewstate is empty (usually if the activity
  * creates the viewState for the very first time and therefore has no state / data to restore) by

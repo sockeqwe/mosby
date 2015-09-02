@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.OnClick;
-import com.hannesdorfmann.mosby.mvp.viewstate.RestoreableViewState;
+import com.hannesdorfmann.mosby.mvp.viewstate.RestorableViewState;
 import com.hannesdorfmann.mosby.sample.mail.IntentStarter;
 import com.hannesdorfmann.mosby.sample.mail.MailApplication;
 import com.hannesdorfmann.mosby.sample.mail.R;
@@ -92,7 +92,7 @@ import javax.inject.Inject;
     }
   }
 
-  @Override public RestoreableViewState createViewState() {
+  @Override public RestorableViewState createViewState() {
     return new WriteViewState();
   }
 

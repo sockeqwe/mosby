@@ -19,11 +19,11 @@ package com.hannesdorfmann.mosby.mvp.viewstate.lce;
 import android.os.Bundle;
 import android.os.Parcel;
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
-import com.hannesdorfmann.mosby.mvp.viewstate.RestoreableViewState;
+import com.hannesdorfmann.mosby.mvp.viewstate.RestorableViewState;
 
 /**
  * Extends {@link AbsLceViewState} by implementing {@link
- * RestoreableViewState}. This class can be saved and restored in a bundle. Therefore it can be
+ * RestorableViewState}. This class can be saved and restored in a bundle. Therefore it can be
  * used
  * for Activities and Fragments.
  *

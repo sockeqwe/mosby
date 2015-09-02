@@ -78,7 +78,7 @@ public class ViewGroupMvpViewStateDelegateImplTest {
     Mockito.verify(presenter, Mockito.times(1)).attachView(view);
     Mockito.verify(callback, Mockito.never()).setRestoringViewState(Mockito.anyBoolean());
     Mockito.verify(callback, Mockito.times(1)).setViewState(viewState);
-    Mockito.verify(viewState, Mockito.never()).apply(view, callback.isRetainingInstance());
+    Mockito.verify(viewState, Mockito.never()).apply(view, callback.shouldInstanceBeRetained());
     Mockito.verify(callback, Mockito.times(1)).onNewViewStateInstance();
   }
 
@@ -88,7 +88,7 @@ public class ViewGroupMvpViewStateDelegateImplTest {
     Mockito.when(callback.createPresenter()).thenReturn(presenter);
     Mockito.when(callback.createViewState()).thenReturn(viewState);
     Mockito.when(callback.getViewState()).thenReturn(viewState);
-    Mockito.when(callback.isRetainingInstance()).thenReturn(retaining);
+    Mockito.when(callback.shouldInstanceBeRetained()).thenReturn(retaining);
 
     Mockito.when(callback.superOnSaveInstanceState()).thenReturn(new Parcelable() {
       @Override public int describeContents() {
@@ -125,7 +125,7 @@ public class ViewGroupMvpViewStateDelegateImplTest {
     boolean retaining = true;
     Mockito.when(callback.getPresenter()).thenReturn(presenter);
     Mockito.when(callback.getViewState()).thenReturn(viewState);
-    Mockito.when(callback.isRetainingInstance()).thenReturn(retaining);
+    Mockito.when(callback.isRetainInstance()).thenReturn(retaining);
 
     viewState.setStateShowB();
     delegate.onAttachedToWindow();
@@ -146,7 +146,7 @@ public class ViewGroupMvpViewStateDelegateImplTest {
     callback.setViewState(viewState);
 
     Mockito.when(callback.getPresenter()).thenReturn(presenter);
-    Mockito.when(callback.isRetainingInstance()).thenReturn(retaining);
+    Mockito.when(callback.shouldInstanceBeRetained()).thenReturn(retaining);
     Mockito.when(callback.superOnSaveInstanceState()).thenReturn(new Parcelable() {
       @Override public int describeContents() {
         return 0;
@@ -171,7 +171,7 @@ public class ViewGroupMvpViewStateDelegateImplTest {
     boolean retaining = true;
     Mockito.when(callback.getPresenter()).thenReturn(presenter);
     Mockito.when(callback.getViewState()).thenReturn(viewState);
-    Mockito.when(callback.isRetainingInstance()).thenReturn(retaining);
+    Mockito.when(callback.shouldInstanceBeRetained()).thenReturn(retaining);
 
     delegate.onDetachedFromWindow();
 

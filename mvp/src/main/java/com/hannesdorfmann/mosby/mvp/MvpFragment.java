@@ -82,7 +82,11 @@ public abstract class MvpFragment<V extends MvpView, P extends MvpPresenter<V>> 
     this.presenter = presenter;
   }
 
-  @Override public boolean isRetainingInstance() {
+  @Override public boolean isRetainInstance() {
+    return getRetainInstance();
+  }
+
+  @Override public boolean shouldInstanceBeRetained() {
     FragmentActivity activity = getActivity();
     boolean changingConfig = activity != null && activity.isChangingConfigurations();
     return getRetainInstance() && changingConfig;

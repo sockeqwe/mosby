@@ -51,21 +51,21 @@ public class MvpFragmentTest {
     PowerMockito.when(fragment.getRetainInstance()).thenReturn(true);
     PowerMockito.when(fragment.getActivity()).thenReturn(null);
 
-    Assert.assertFalse(fragment.isRetainingInstance());
+    Assert.assertFalse(fragment.shouldInstanceBeRetained());
   }
 
   @Test public void notRetainingAndActivityNull() {
     PowerMockito.when(fragment.getRetainInstance()).thenReturn(false);
     PowerMockito.when(fragment.getActivity()).thenReturn(null);
 
-    Assert.assertFalse(fragment.isRetainingInstance());
+    Assert.assertFalse(fragment.shouldInstanceBeRetained());
   }
 
   @Test public void retainingAndNotChangingConfig() {
     PowerMockito.when(fragment.getRetainInstance()).thenReturn(true);
     PowerMockito.when(activity.isChangingConfigurations()).thenReturn(false);
 
-    Assert.assertFalse(fragment.isRetainingInstance());
+    Assert.assertFalse(fragment.shouldInstanceBeRetained());
   }
 
   @Test public void retainingAndChangingConfig() {
@@ -74,6 +74,6 @@ public class MvpFragmentTest {
     PowerMockito.when(fragment.getRetainInstance()).thenReturn(true);
     PowerMockito.when(activity.isChangingConfigurations()).thenReturn(true);
 
-    Assert.assertTrue(fragment.isRetainingInstance());
+    Assert.assertTrue(fragment.shouldInstanceBeRetained());
   }
 }

@@ -74,10 +74,10 @@ public class ActivityMvpViewStateDelegateImpl<V extends MvpView, P extends MvpPr
         (ActivityMvpViewStateDelegateCallback<V, P>) delegateCallback;
 
     P presenter =
-        viewStateDelegateCallback.isRetainingInstance() ? viewStateDelegateCallback.getPresenter()
+        viewStateDelegateCallback.shouldInstanceBeRetained() ? viewStateDelegateCallback.getPresenter()
             : null;
     ViewState<V> viewState =
-        viewStateDelegateCallback.isRetainingInstance() ? viewStateDelegateCallback.getViewState()
+        viewStateDelegateCallback.shouldInstanceBeRetained() ? viewStateDelegateCallback.getViewState()
             : null;
 
     Object nonMosbyConfiguraionInstance =

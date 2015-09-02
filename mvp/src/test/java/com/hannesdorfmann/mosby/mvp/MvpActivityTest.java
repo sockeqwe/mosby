@@ -32,30 +32,31 @@ public class MvpActivityTest {
   @Before public void init() {
     activity = Mockito.mock(MvpActivity.class);
     Mockito.doCallRealMethod().when(activity).setRetainInstance(Mockito.anyBoolean());
-    Mockito.doCallRealMethod().when(activity).isRetainingInstance();
+    Mockito.doCallRealMethod().when(activity).isRetainInstance();
+    Mockito.doCallRealMethod().when(activity).shouldInstanceBeRetained();
   }
 
   @Test public void retainingAndNotChangingConfig() {
     activity.setRetainInstance(true);
     Mockito.when(activity.isChangingConfigurations()).thenReturn(false);
-    Assert.assertFalse(activity.isRetainingInstance());
+    Assert.assertFalse(activity.shouldInstanceBeRetained());
   }
 
   @Test public void retainingAndChangingConfig() {
     activity.setRetainInstance(true);
     Mockito.when(activity.isChangingConfigurations()).thenReturn(true);
-    Assert.assertTrue(activity.isRetainingInstance());
+    Assert.assertTrue(activity.shouldInstanceBeRetained());
   }
 
   @Test public void notRetainingAndNotChangingConfig() {
     activity.setRetainInstance(false);
     Mockito.when(activity.isChangingConfigurations()).thenReturn(false);
-    Assert.assertFalse(activity.isRetainingInstance());
+    Assert.assertFalse(activity.shouldInstanceBeRetained());
   }
 
   @Test public void notRetainingAndChangingConfig() {
     activity.setRetainInstance(false);
     Mockito.when(activity.isChangingConfigurations()).thenReturn(true);
-    Assert.assertFalse(activity.isRetainingInstance());
+    Assert.assertFalse(activity.shouldInstanceBeRetained());
   }
 }

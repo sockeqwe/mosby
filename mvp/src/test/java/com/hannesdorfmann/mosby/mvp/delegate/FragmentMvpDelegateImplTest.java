@@ -97,7 +97,7 @@ public class FragmentMvpDelegateImplTest {
 
   private void testFinishFragment(boolean retainingInstanceState) {
     Mockito.when(callback.getPresenter()).thenReturn(presenter);
-    Mockito.when(callback.isRetainingInstance()).thenReturn(retainingInstanceState);
+    Mockito.when(callback.shouldInstanceBeRetained()).thenReturn(retainingInstanceState);
 
     delegate.onPause();
     delegate.onSaveInstanceState(new Bundle());

@@ -141,7 +141,7 @@ public class RetainingCountriesFragment extends
     SampleApplication.getRefWatcher(getActivity()).watch(this);
   }
 
-  @Override public boolean isRetainingInstance() {
-    return super.isRetainingInstance();
+  @Override public boolean isRetainInstance() {
+    return super.isRetainInstance();
   }
 }

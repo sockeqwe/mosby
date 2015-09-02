@@ -70,7 +70,7 @@ public class MvpViewStateInternalDelegateTest {
 
   @Test public void restoreViewStateFromBundle() {
 
-    Mockito.when(callback.isRetainingInstance()).thenReturn(false);
+    Mockito.when(callback.shouldInstanceBeRetained()).thenReturn(false);
     Mockito.when(callback.createViewState()).thenReturn(viewState);
 
     Assert.assertEquals(SimpleViewState.STATE_A, viewState.state);
@@ -86,7 +86,7 @@ public class MvpViewStateInternalDelegateTest {
     Mockito.verify(callback, Mockito.atLeast(1)).setViewState(viewState);
     Mockito.verify(callback, Mockito.times(1)).setRestoringViewState(true);
     Mockito.verify(callback, Mockito.times(1)).setRestoringViewState(false);
-    Mockito.verify(viewState, Mockito.times(1)).apply(view, callback.isRetainingInstance());
+    Mockito.verify(viewState, Mockito.times(1)).apply(view, callback.shouldInstanceBeRetained());
     Mockito.verify(view, Mockito.times(1)).showB();
   }
 
@@ -99,7 +99,7 @@ public class MvpViewStateInternalDelegateTest {
 
     // Restore a retaining view state i.e. retaining fragment (not from bundle)
 
-    Mockito.when(callback.isRetainingInstance()).thenReturn(true);
+    Mockito.when(callback.isRetainInstance()).thenReturn(true);
     Mockito.when(callback.getViewState()).thenReturn(viewState);
 
     Assert.assertEquals(SimpleViewState.STATE_A, viewState.state);
@@ -115,7 +115,7 @@ public class MvpViewStateInternalDelegateTest {
     Mockito.verify(callback, Mockito.never()).setViewState(viewState);
     Mockito.verify(callback, Mockito.times(1)).setRestoringViewState(true);
     Mockito.verify(callback, Mockito.times(1)).setRestoringViewState(false);
-    Mockito.verify(viewState, Mockito.times(1)).apply(view, callback.isRetainingInstance());
+    Mockito.verify(viewState, Mockito.times(1)).apply(view, true);
     Mockito.verify(view, Mockito.times(1)).showB();
   }
 
@@ -128,7 +128,7 @@ public class MvpViewStateInternalDelegateTest {
 
     // Restore a retaining view state i.e. retaining fragment (not from bundle)
 
-    Mockito.when(callback.isRetainingInstance()).thenReturn(true);
+    Mockito.when(callback.isRetainInstance()).thenReturn(true);
     Mockito.when(callback.getViewState()).thenReturn(viewState);
 
     Assert.assertEquals(SimpleViewState.STATE_A, viewState.state);
@@ -144,7 +144,7 @@ public class MvpViewStateInternalDelegateTest {
     Mockito.verify(callback, Mockito.never()).setViewState(viewState);
     Mockito.verify(callback, Mockito.times(1)).setRestoringViewState(true);
     Mockito.verify(callback, Mockito.times(1)).setRestoringViewState(false);
-    Mockito.verify(viewState, Mockito.times(1)).apply(view, callback.isRetainingInstance());
+    Mockito.verify(viewState, Mockito.times(1)).apply(view, true);
     Mockito.verify(view, Mockito.times(1)).showB();
   }
 

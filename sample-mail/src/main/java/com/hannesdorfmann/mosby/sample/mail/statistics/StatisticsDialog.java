@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatDialog;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -27,8 +28,7 @@ import com.hannesdorfmann.mosby.sample.mail.model.mail.statistics.MailStatistics
 /**
  * @author Hannes Dorfmann
  */
-public class StatisticsDialog extends AppCompatDialogFragment
-    implements StatisticsView,
+public class StatisticsDialog extends AppCompatDialogFragment implements StatisticsView,
     BaseMvpViewStateDelegateCallback<StatisticsView, StatisticsPresenter> {
 
   @Bind(R.id.contentView) RecyclerView contentView;
@@ -119,7 +119,7 @@ public class StatisticsDialog extends AppCompatDialogFragment
 
   @NonNull @Override public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-    AppCompatDialog dialog = new AppCompatDialog(getActivity(),  getTheme());
+    AppCompatDialog dialog = new AppCompatDialog(getActivity(), getTheme());
     dialog.setTitle(R.string.menu_statistics);
     return dialog;
   }
@@ -220,7 +220,13 @@ public class StatisticsDialog extends AppCompatDialogFragment
     return this;
   }
 
-  @Override public boolean isRetainingInstance() {
+  @Override public boolean isRetainInstance() {
     return getRetainInstance();
+  }
+
+  @Override public boolean shouldInstanceBeRetained() {
+    FragmentActivity activity = getActivity();
+    boolean changingConfig = activity != null && activity.isChangingConfigurations();
+    return getRetainInstance() && changingConfig;
   }
 }

@@ -23,7 +23,6 @@ import com.hannesdorfmann.mosby.mvp.delegate.ActivityMvpViewStateDelegateCallbac
 import com.hannesdorfmann.mosby.mvp.delegate.ActivityMvpViewStateDelegateImpl;
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceActivity;
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
-import com.hannesdorfmann.mosby.mvp.viewstate.RestoreableViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 
 /**
@@ -33,13 +32,11 @@ import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
  * @since 1.0.0
  */
 public abstract class MvpLceViewStateActivity<CV extends View, M, V extends MvpLceView<M>, P extends MvpPresenter<V>>
-    extends MvpLceActivity<CV, M, V, P> implements MvpLceView<M>,
-    ActivityMvpViewStateDelegateCallback<V, P> {
+    extends MvpLceActivity<CV, M, V, P>
+    implements MvpLceView<M>, ActivityMvpViewStateDelegateCallback<V, P> {
 
-
-  protected ParcelableLceViewState<M, V> viewState;
+  protected LceViewState<M, V> viewState;
   protected boolean restoringViewState = false;
-
 
   @Override protected ActivityMvpDelegate<V, P> getMvpDelegate() {
     if (mvpDelegate == null) {
@@ -49,17 +46,17 @@ public abstract class MvpLceViewStateActivity<CV extends View, M, V extends MvpL
     return mvpDelegate;
   }
 
-  @Override public RestoreableViewState<V> getViewState() {
+  @Override public ViewState<V> getViewState() {
     return viewState;
   }
 
   @Override public void setViewState(ViewState<V> viewState) {
-    if (!(viewState instanceof ParcelableLceViewState)) {
+    if (!(viewState instanceof LceViewState)) {
       throw new IllegalArgumentException(
-          "Only " + RestoreableViewState.class.getSimpleName() + " are allowed");
+          "Only " + LceViewState.class.getSimpleName() + " are allowed as view state");
     }
 
-    this.viewState = (ParcelableLceViewState<M, V>) viewState;
+    this.viewState = (LceViewState<M, V>) viewState;
   }
 
   @Override public void setRestoringViewState(boolean restoringViewState) {
@@ -103,9 +100,10 @@ public abstract class MvpLceViewStateActivity<CV extends View, M, V extends MvpL
 
   /**
    * Creates the viewstate
+   *
    * @return a new ViewState
    */
-  public abstract ParcelableLceViewState<M, V> createViewState();
+  public abstract LceViewState<M, V> createViewState();
 
   /**
    * Get the data that has been set before in {@link #setData(Object)}

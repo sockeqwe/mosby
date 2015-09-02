@@ -35,6 +35,10 @@ public class SimpleCountriesPresenter extends MvpBasePresenter<CountriesView>
   private int failingCounter = 0;
   private CountriesAsyncLoader countriesLoader;
 
+  public SimpleCountriesPresenter() {
+    Log.d(TAG, "constructor " + toString());
+  }
+
   @Override public void loadCountries(final boolean pullToRefresh) {
 
     Log.d(TAG, "loadCountries(" + pullToRefresh + ")");

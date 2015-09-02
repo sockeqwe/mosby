@@ -38,7 +38,7 @@ import com.hannesdorfmann.mosby.mvp.delegate.ActivityMvpViewStateDelegateImpl;
 public abstract class MvpViewStateActivity<V extends MvpView, P extends MvpPresenter<V>>
     extends MvpActivity<V, P> implements ActivityMvpViewStateDelegateCallback<V, P> {
 
-  protected RestoreableViewState<V> viewState;
+  protected ViewState<V> viewState;
 
   /**
    * A simple flag that indicates if the restoring ViewState  is in progress right now.
@@ -53,17 +53,13 @@ public abstract class MvpViewStateActivity<V extends MvpView, P extends MvpPrese
     return mvpDelegate;
   }
 
-  @Override public RestoreableViewState getViewState() {
+  @Override public ViewState<V> getViewState() {
     return viewState;
   }
 
   @Override public void setViewState(ViewState<V> viewState) {
-    if (!(viewState instanceof RestoreableViewState)) {
-      throw new IllegalArgumentException(
-          "Only " + RestoreableViewState.class.getSimpleName() + " are allowed");
-    }
 
-    this.viewState = (RestoreableViewState<V>) viewState;
+    this.viewState = viewState;
   }
 
   @Override public void setRestoringViewState(boolean restoringViewState) {
@@ -81,5 +77,5 @@ public abstract class MvpViewStateActivity<V extends MvpView, P extends MvpPrese
   /**
    * Creates the ViewState instance
    */
-  public abstract RestoreableViewState createViewState();
+  public abstract ViewState<V> createViewState();
 }

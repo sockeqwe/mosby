@@ -22,6 +22,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import butterknife.ButterKnife;
+import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.MvpLceViewStateActivity;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.ParcelableLceViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.CastedArrayListLceViewState;
@@ -43,7 +44,7 @@ import butterknife.Bind;
  *
  * @author Hannes Dorfmann
  */
-public class NotRetainingCountriesViewStateActivity extends
+public class NotRetainingCountriesActivity extends
     MvpLceViewStateActivity<SwipeRefreshLayout, List<Country>, CountriesView, CountriesPresenter>
     implements CountriesView, SwipeRefreshLayout.OnRefreshListener {
 
@@ -65,7 +66,7 @@ public class NotRetainingCountriesViewStateActivity extends
     recyclerView.setAdapter(adapter);
   }
 
-  @Override public ParcelableLceViewState<List<Country>, CountriesView> createViewState() {
+  @Override public LceViewState<List<Country>, CountriesView> createViewState() {
     return new CastedArrayListLceViewState<>();
   }
 

@@ -28,9 +28,12 @@
         android:label="@string/title_activity_lce">
     </activity>
 
-    <activity android:name=".mvp.lce.viewstate.NotRetainingCountriesViewStateActivity"
-        android:label="LceViewStateActivity"
+    <activity android:name=".mvp.lce.viewstate.NotRetainingCountriesActivity"
+        android:label="NotRetainingCountriesActivity"
         />
+
+    <activity android:name=".mvp.lce.viewstate.RetainingCountriesActivity"
+      android:label="RetainingCountriesActivity" />
 
     <activity android:name=".mvp.customviewstate.MyCustomActivity"
         android:label="Custom ViewState Activity"/>

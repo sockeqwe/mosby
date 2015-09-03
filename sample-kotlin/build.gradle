@@ -37,14 +37,10 @@ dependencies {
   compile 'com.android.support:recyclerview-v7:' + rootProject.ext.recyclerviewVersion
   compile 'com.android.support:appcompat-v7:' + rootProject.ext.appcompat7Version
 
-  //apt 'com.hannesdorfmann.annotatedadapter:processor:' + rootProject.ext.annotatedadapterVersion
-  //compile 'com.hannesdorfmann.annotatedadapter:annotation:' + rootProject.ext.annotatedadapterVersion
-  //compile 'com.hannesdorfmann.annotatedadapter:support-recyclerview:' + rootProject.ext.annotatedadapterVersion
-
-  // compile 'com.hannesdorfmann.parcelableplease:annotation:' + rootProject.ext.parcelablepleaseVersion
-  // apt 'com.hannesdorfmann.parcelableplease:processor:' + rootProject.ext.parcelablepleaseVersion
+  compile 'com.squareup.picasso:picasso:' + rootProject.ext.picassoVersion
 
   compile 'com.squareup.leakcanary:leakcanary-android:' + rootProject.ext.leakcanaryVersion
+  compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
   compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 }
 

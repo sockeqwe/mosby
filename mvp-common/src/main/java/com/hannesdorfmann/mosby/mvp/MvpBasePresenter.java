@@ -47,7 +47,7 @@ public class MvpBasePresenter<V extends MvpView> implements MvpPresenter<V> {
    *
    * @return <code>null</code>, if view is not attached, otherwise the concrete view instance
    */
-  @Nullable protected V getView() {
+  @Nullable public V getView() {
     return viewRef == null ? null : viewRef.get();
   }
 
@@ -55,7 +55,7 @@ public class MvpBasePresenter<V extends MvpView> implements MvpPresenter<V> {
    * Checks if a view is attached to this presenter. You should always call this method before
    * calling {@link #getView()} to get the view instance.
    */
-  protected boolean isViewAttached() {
+  public boolean isViewAttached() {
     return viewRef != null && viewRef.get() != null;
   }
 

@@ -25,7 +25,7 @@ public class MvpNullObjectBasePresenter<V extends MvpView> implements MvpPresent
     this.view = view;
   }
 
-  @NonNull protected V getView() {
+  @NonNull public V getView() {
     if (view == null) {
       throw new NullPointerException("MvpView reference is null. Have you called attachView()?");
     }

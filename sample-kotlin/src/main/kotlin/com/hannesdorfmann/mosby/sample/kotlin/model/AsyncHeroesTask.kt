@@ -1,7 +1,7 @@
 package com.hannesdorfmann.mosby.sample.kotlin.model
 
 import android.os.AsyncTask
-import android.util.Log
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
 import java.util.Collections
 
 /**
@@ -9,6 +9,7 @@ import java.util.Collections
  *
  * @author Hannes Dorfmann
  */
+@SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD", "I know what I'm doing")
 public class AsyncHeroesTask(val pullToRefresh: Boolean,
                              val successful: (List<Hero>, Boolean) -> Unit,
                              val error: (Exception, Boolean) -> Unit) : AsyncTask<Void, Void, List<Hero>>() {

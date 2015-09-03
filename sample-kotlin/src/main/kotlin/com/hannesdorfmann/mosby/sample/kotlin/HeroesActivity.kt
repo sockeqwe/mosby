@@ -32,11 +32,11 @@ public class HeroesActivity : HeroesView, MvpLceViewStateActivity<SwipeRefreshLa
         else return "Error while loading. Click here to retry."
     }
 
-    override fun createPresenter(): HeroesPresenter? {
+    override fun createPresenter(): HeroesPresenter {
         return HeroesPresenter()
     }
 
-    override fun createViewState(): LceViewState<List<Hero>, HeroesView>? {
+    override fun createViewState(): LceViewState<List<Hero>, HeroesView> {
         return RetainingLceViewState()
     }
 

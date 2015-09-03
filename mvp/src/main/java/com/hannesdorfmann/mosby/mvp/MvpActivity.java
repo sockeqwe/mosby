@@ -144,11 +144,15 @@ public abstract class MvpActivity<V extends MvpView, P extends MvpPresenter<V>>
     return null;
   }
 
-  @Override public Object onRetainCustomNonConfigurationInstance() {
+  /**
+   * Internally used by Mosby. Use {@link #onRetainNonMosbyCustomNonConfigurationInstance()} and
+   * {@link #getNonMosbyLastCustomNonConfigurationInstance()}
+   */
+  @Override public final Object onRetainCustomNonConfigurationInstance() {
     return getMvpDelegate().onRetainCustomNonConfigurationInstance();
   }
 
-  @Override public Object getNonMosbyLastCustomNonConfigurationInstance() {
+  @Override public final Object getNonMosbyLastCustomNonConfigurationInstance() {
     return getMvpDelegate().getNonMosbyLastCustomNonConfigurationInstance();
   }
 }

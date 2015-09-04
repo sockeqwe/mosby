@@ -16,19 +16,25 @@ This page describes how to use the `ViewState` feature of Mosby. In the [MVP fun
 <p>
 <iframe width="640" height="480" class="videoContainer" src="https://www.youtube.com/embed/tSRoIwDXidQ?rel=0" frameborder="0" allowfullscreen></iframe>
 </p>
-Mosby introduces `ViewState` to solve this problem. The idea is that we track the methods the Presenter invokes on the attached `View`. For instance the Presenter calls `view.showContent()`. Once `showContent()` gets called the view knows that it's state is "showing content" and hence the view  stores this information into a `ViewState`. If the view gets destroyed during orientation changes, the ViewState gets stored into a bundle in `Activity.onSaveInstanceState(Bundle)` or `Fragment.onSaveInstanceState(Bundle)` and will be restored in `Activity.onCreate(Bundle)` or `Fragment.onActivityCreated(Bundle)`. There are already some base classes that support `ViewState` you can extend from like `MvpViewStateActivty`, `MvpViewStateFragment`, `MvpViewStateFrameLayout`, `MvpViewStateLinearLayout`, `MvpViewStateRelativeLayout` and also the _LCE_ (Loading-Content-Error) implementation like `MvpLceViewStateFragment` and `MvpLceViewStateActivity`. So let's change our `CountriesFragment` from [MVP fundamentals page]({{ site.baseurl }}/mvp/) to support `ViewState`:
+Mosby introduces `ViewState` to solve this problem. The idea is that we track the methods the Presenter invokes on the attached `View`. For instance the Presenter calls `view.showContent()`. Once `showContent()` gets called the view knows that it's state is "showing content" and hence the view  stores this information into a `ViewState`.
+
+There are already some base classes that support `ViewState` you can extend from like `MvpViewStateActivty`, `MvpViewStateFragment`, `MvpViewStateFrameLayout`, `MvpViewStateLinearLayout`, `MvpViewStateRelativeLayout` and also the _LCE_ (Loading-Content-Error) implementation like `MvpLceViewStateFragment` and `MvpLceViewStateActivity`. So let's change our `CountriesFragment` from [MVP fundamentals page]({{ site.baseurl }}/mvp/) to support `ViewState`:
 
 {% highlight java %}
 public class CountriesFragment
     extends MvpLceViewStateFragment<SwipeRefreshLayout, List<Country>, CountriesView, CountriesPresenter>
     implements CountriesView, SwipeRefreshLayout.OnRefreshListener {
 
-  @InjectView(R.id.recyclerView) RecyclerView recyclerView;
+  @Bind(R.id.recyclerView) RecyclerView recyclerView;
   CountriesAdapter adapter;
 
+  @Override public void onCreate(Bundle savedState){
+    super.onCreate(savedState);
+    setRetainInstance(true);
+  }
 
   @Override public LceViewState<List<Country>, CountriesView> createViewState() {
-    return new CastedArrayListLceViewState<List<Country>, CountriesView>(this);
+    return new RetainingLceViewState<List<Country>, CountriesView>(this);
   }
 
   @Override public List<Country> getData() {
@@ -36,6 +42,10 @@ public class CountriesFragment
   }
 
    // The code below is the same as with on MVP fundamentals page (without ViewState)
+
+   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+     return inflater.inflate(R.layout.countries_list, container, false);
+   }
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstance) {
     super.onViewCreated(view, savedInstance);
@@ -50,18 +60,12 @@ public class CountriesFragment
     loadData(false);
   }
 
-
   public void loadData(boolean pullToRefresh) {
     presenter.loadCountries(pullToRefresh);
   }
 
   @Override protected CountriesPresenter createPresenter() {
     return new SimpleCountriesPresenter();
-  }
-
-  // Just a shorthand that will be called in onCreateView()
-  @Override protected int getLayoutRes() {
-    return R.layout.countries_list;
   }
 
   @Override public void setData(List<Country> data) {
@@ -75,7 +79,7 @@ public class CountriesFragment
 }
 {% endhighlight %}
 
-We don't have to change code of your presenter. All we have to do is to make `CountryFragment` extend from `MvpLceViewStateFragment` instead of `MvpLceFragment`. Here is a video of our CountriesFragment **with ViewState** support where you can see that now the view is still in the same "state" as before screen orientation changes: the view displays the list of Countries in portrait, then it also displays the list of Countries in landscape. The view shows the pull to refresh indicator in landscape and shows the pull to refresh indicator after changing to portrait as well.
+We don't have to change code of your presenter or model (business logic). All we have to do is to make `CountryFragment` extend from `MvpLceViewStateFragment` instead of `MvpLceFragment`. Here is a video of our CountriesFragment **with ViewState** support where you can see that now the view is still in the same "state" as before screen orientation changes: the view displays the list of Countries in portrait, then it also displays the list of Countries in landscape. The view shows the pull to refresh indicator in landscape and shows the pull to refresh indicator after changing to portrait as well.
 <p>
 <iframe width="640" height="480" src="https://www.youtube.com/embed/Ni7e5NhUEUw?rel=0"  class="videoContainer" frameborder="0" allowfullscreen></iframe>
 </p>
@@ -109,9 +113,9 @@ public abstract class MvpLceViewStateFragment extends MvpLceFragment {
 }
 {% endhighlight %}
 
-As already said before, we use a `ViewState` to keep track which in "state" the view is. With state we mean things like "showing loading spinner", "showing loaded content view", "showing error message". We simply do that by setting the ViewState's internal state as the `View` interface methods `showLoading()`, `showError()` and `showContent()` gets invoked. If the activity or Fragment get's destroyed during screen orientation changes we store the ViewState into the persistent Bundle in `onSaveInstanceState(Bundle)`. We also have to save the data the view is currently displaying. This is why you have to implement `getData()` method. Here you have to return the data that has been set previously with `setData()` (See [MVP fundamentals]({{ site.baseurl }}/mvp/) ) and finally displayed on screen by calling `showContent()`. In order to be able to put the data this View displays into the `Bundle` along with the `ViewState` the data **must** be `Parcelable`. `createViewState()` is the method that gets called internally to instantiate a new ViewState object. There are already some ViewState  implementations for the most use cases that you can use like `ArrayListLceViewState` (to be used when your data is `ArrayList<? extends Parcelable>`) or `CastedArrayListLceViewState` (to be used with `List<? extends Parcelable>`). Check the java docs for implementations.
+As already said before, we use a `ViewState` to keep track which in "state" the view is. With state we mean things like "showing loading spinner", "showing loaded content view", "showing error message". We simply do that by setting the ViewState's internal state as the `View` interface methods `showLoading()`, `showError()` and `showContent()` gets invoked.
 
-`ViewState` is just an interface that provides an API to store itself into a Bundle and to restore itself from a Bundle with `ViewState.saveInstanceState(Bundle)` and `ViewState.restoreInstanceState(Bundle)` respectively. Please note that `restoreInstanceState(Bundle)` just means reading the previous state out of the bundle and not apply the last known state to the corresponding `MvpView`. That job is done in `ViewState.apply()`. Let's have a look at the default `LceViewState` implementation (simplified):
+`ViewState` is just an interface that providing one method: `ViewState.apply()`. Let's have a look at the default `LceViewState` implementation (simplified):
 
 {% highlight java %}
 public abstract class LceViewState<D, V extends MvpLceView<D>> implements LceViewState<D, V> {
@@ -168,28 +172,39 @@ public abstract class LceViewState<D, V extends MvpLceView<D>> implements LceVie
 }
 {% endhighlight %}
 
-We hope you get the point: a `ViewState` is basically just an object that holds the current `MvpViews` internal state and persists that into a Bundle and retrieve the internal state out of that Bundle after screen orientation changes. `ViewState.apply()` gets called internally to actually apply the ViewState to the corresponding MvpView (see chapter Delegation below).
+`ViewState` is basically just an object that holds the current `MvpView's` internal state and data required to display the current state.
 
-Please note, that a `Bundle` is limited in size by 1MB roughly. That means that you can not put arbitrary big data (i.e. a very very very huge list of Countries) into the ViewState which at the end gets stored into the Bundle. Therefore `ViewState` is not a solution for all use cases, but it should cover the most use cases sufficiently. Another solution is to use retaining Fragments (discussed later).
+## How does the ViewState survive screen orientation changes?
+What happens with an Fragment (or Activity or ViewGroup) when the user rotates the device from landscape to portrait? The Fragment (or Activity or ViewGroup) gets destroyed and an entirely new Fragment object gets created. What does that mean for the ViewState? For simplicity let's say that there are two Fragments: `PortraitFragment` and `LandscapeFragment`. Let's assume that we start our app in `PortraitFragment` and when the user rotates his device the `PortraitFragment` gets destroyed and the `LandscapeFragment` gets created. A ViewState object was created and referenced from `PortraitFragment`. When `PortraitFragment` gets destroyed all the objects referenced by `PortraitFragment` will be destroyed as well. However, we have to ensure that the ViewState object (refrence) will be kept during screen orientation and be reattached to `LandscapeFragment`.
+
+Doing that with Fragments is easy because Fragments offer a method to turn retaining instance state on: `Fragment.setRetainInstance(true)`. This transforms a Fragment into a "RetainingFragment" which means only the Fragment's GUI (the `android.view.View`  returned from `onCreateView()`) get's destroyed an newly created but all referenced objects (like ViewState) will still be there after screen orientation changes. Mosby offers a similar approach for Activities (by using `onRetainNonConfigurationInstance()`). So the ViewState instance can be moved from `PortraitFragment` to `LandscapeFragment` and `PortraitActivity` to `LandscapeActivity` painlessly because the ViewState object will be kept in memory.
+
+As android is a real multitasking operating system Activities (and containing Fragments and ViewGroups) can be destroyed in background, i.e. when the user starts another activity because of low memory. What does that actually mean for referenced objects? Everything in memeory gets destroyed incl. ViewState. So how do you deal with that in Android? You have to persist your state into a `Bundle` in `Activity.onSaveInstanceState(Bundle bundle)` and restore the state in `Activity.onCreate(Bundle savedState)` (same for Fragments). Hence Mosby offers two kind of ViewState. ViewState itself is a interface and is meant to be kept in memory during screen orientation changes. `RestorableViewState extends ViewState` is a special ViewState that offers you the possibility to serialize and deserialize your ViewState into or from a Bundle. So `RestorableViewState` can be used to "survive" these scenarios when activty gets destroyed in background. But that also means, that the data required for the given view state must be serializeable as well usually by implementing `Parcelable` interface. In our previous example Countries-List example we have to make `Country` class `Parcelable` to put it into a `RestorableViewState`. There are already some RestorableViewState implementations available like ArrayListLceViewState (to be used when your data is ArrayList<? extends Parcelable>) or CastedArrayListLceViewState (to be used with List<? extends Parcelable>). Check the java docs for implementations.
+
+Please note, that a `Bundle` is limited in size by 1MB roughly. That means that you can not put arbitrary big data (i.e. a very very very huge list of Countries) into the ViewState which at the end gets stored into the Bundle. Therefore `RestorableViewState` is not a solution for all use cases, but it should cover the most use cases sufficiently.
+
+Please note also that `setRetainInstance()` is not available for ViewGroups. Hence you have to use `RestorableViewState` in combination with ViewGroups (like MvpViewStateLinearLayout).
 
 ## What about the Presenter?
-Glad you asked. So what happens during a screen orientation change is that the MvpView (may be an Activity, Fragment or ViewGroup) gets destroyed. Per default the Presenter get's destroyed as well. So the solution of ViewState discussed so far is just to give the user of your app the impression that nothing has changed during orientation changes. What actually happens behind the scenes is that the View and Presenter gets destroyed, hence the Presenter should cancel running background tasks. In this example workflow we are taking an Activity as View, but it works pretty the same way for Fragments:
+Glad you ask! Presenter faces the same problem as ViewState: Can be kept in memory during screen orientation changes by using `setRetainInstance(true)` but will be destroyed when the activity gets destroyed in background. RestorableViewStates can be serialized into a bundle but Presenter are most of the time connected to the business logic that does something in a background thread. So when the Presenter get's destroyed it will loose the reference to the background thread as well. So the only thing we can do is restart that background thread by re-invoking the corresponding presenter method. To know in which state the presenter was we also use the ViewState. Mosby offers two methods `MvpViewStateActivity.onNewViewState()`, which is called when the Activity start for the first time, and `onViewStateInstanceRestored(boolean retainingInstance)`, when the view state has been restored (true as parameter if it was restored in memory by using `setRetainInstance()`).
+
+In this example workflow we are taking an Activity as View (it works pretty the same way for Fragments) to demonstrate how `isRetainInstance(false)` and `RestorableViewState` work together with the Presenter:
 
   1. We start our app in portrait
   2. The Activity (View) gets instantiated and calls `onCreate()`, `createPresenter()` and attaches the View (the Activity itself) to the Presenter by calling `presenter.attachView()`. Also `onNewViewState()` gets invoked. This basically means that the Activity is displayed for the first time. Usually you start loading data from this method.
   3. Next we rotate the device from portrait to landscape.
   4. `onDestroy()` gets called which calls `presenter.detachView(false)`. Presenter cancels background tasks.
-  5. `onSaveInstanceState(Bundle)` gets called where the `ViewState` gets saved into the Bundle.
-  6. App is in landscape now. A new Activity gets instantiated and calls `onCreate()` and `createPresenter()`, which creates a new Presenter instance and attaches the new View (Activity itself) to the new Presenter by calling `presenter.attachView()`.
-  7. `ViewState` gets restored from Bundle and restores the view's state by calling `ViewState.apply()`. If the `ViewState` was `showLoading()` then the presenter restarts  background threads.
+  5. `onSaveInstanceState(Bundle)` gets called where the `RestorableViewState` gets saved into the Bundle.
+  6. App is in landscape now. Instead of switching between portrait and landscape we could also say that the original portrait activity has been destroyed in background (the workflow is the same).  A new Activity gets instantiated and calls `onCreate()` and `createPresenter()`, which creates a new Presenter instance and attaches the new View (Activity itself) to the new Presenter by calling `presenter.attachView()`.
+  7. `ViewState` gets restored from Bundle and restores the view's state by calling `ViewState.apply()`. If the `ViewState` was `showLoading()` then the presenter's loading method will be called as well to restart the background business logic thread.
 
  To sum it up here is a lifecycle diagram for **Activities** with ViewState support, but it's pretty the same for Fragments as well.
  ![Model-View-Presenter]({{ site.baseurl }}/images/mvp-activity-lifecycle.png)
 
- You may be a little bit disappointed now you know that the Presenter gets destroyed and background work restarted. Understandable, but see it from the bright side: What you get with the solution discussed so far is a cleaner way to handle screen orientation changes like you don't have to save the views state by hand into a bundle and thing about canceling and restarting background tasks etc. but yes, you are still at the same point as without ViewState except the fact that we give the user the impression that everything has survived orientation changes. Don't be afraid, Mosby provides a real solution how Presenters can survive screen orientation changes described in the next chapter.
+ You may be a little bit disappointed now you know that the Presenter gets destroyed and background work restarted. This might also be critical in certain apps i.e. if you have a sign up view to register a new user you certainly don't want that the registration will be submitted twice to your apps backend. That is not a specific Mosby problem. It's an android problem! How would you deal with such a problem without Mosby? We would recommend to start an android service for submitting the registration. You could attach and reattach your Presenter to that service (business logic). Unlikely with another background thread or AsyncTask you can get a reference to an android service. Hence it's not problematic if the presenter instance gets recreated since presenter can retrieve a reference to the android service.
 
-## Retaining Fragments - Retaining Presenter
-What is a retaining Fragments? If you set `Fragment.setRetainInstanceState(true)` then the Fragment will not be destroyed during screen rotations. Only the Fragment's GUI (the `android.view.View`  returned from `onCreateView()`) get's destroyed an newly created. That means all of your fragment class member variables are still there after screen rotation and so is the presenter still there after screen orientation has been changed. In that case we just detach the old view from presenter and attach the new view to presenter. Hence the presenter doesn't have to cancel any running background task, because the view gets reattached. Example:
+
+Now let's have a look at the workflow for simple screen orientaion changes when we use `setRetainInstance(true)`. In that case we just detach the old view from presenter and attach the new view to presenter. As already discussed above by using `setRetainInstance(true)` the presenter and the ViewState will be kept in memory and will not be newly instantiated. Hence the presenter doesn't have to cancel any running background task, because only the view (GUI) gets recreated and  reattached to the presenter. Example:
 
   1. We start our app in portrait.
   2. The retaining Fragment gets instantiated and calls `onCreate()`, `onCreateView()`, `createPresenter()` and attach the view (the Fragment himself) to the Presenter by calling `presenter.attachView()`. Also `onNewViewState()` gets invoked. This basically means that the Fragment is displayed for the first time. Typically this is the right point to start loading the data.
@@ -197,13 +212,13 @@ What is a retaining Fragments? If you set `Fragment.setRetainInstanceState(true)
   4. `onDestroyView()` gets called which calls `presenter.detachView(true)`. Note that the parameter `true` informs the Presenter the Presenter will be retained and a new view will be attached afterwards (otherwise the parameter would be set to false). Therefore the Presenter knows that he doesn't have to cancel running background threads.
   5. App is in landscape now. `onCreateView()` gets called, but **not** `createPresenter()` because  `presenter != null` since Presenter variable has survived orientation changes because of `setRetainInstanceState(true)`.
   6. View gets reattached to Presenter by `presenter.attachView()`.
-  7. `ViewState` gets restored. Since no background thread has been canceled restarting background threads is not needed.
+  7. `ViewState` gets restored. Since no background thread has been canceled re-invoking presenters load method to restart background thread is not needed.
 
 The lifecycle diagram for **Fragments** looks like this:
 
 ![Retaining Fragment lifecycle]({{ site.baseurl }}/images/mvp-fragment-lifecycle.png)
 
-By using retaining Fragments you are able to implement retaining Presenters. This also means that in this case the `ViewState` is not just "faking" that everything is still in the same state as before screen orientation changes, indeed the Presenter survives screen orientation changes and only the portrait View gets detached from Presenter and afterwards the landscape View get attached to the same Presenter instance as in portrait. By using retaining Fragments the data that the View is displays doesn't has to implement `Parcelable` since `ViewState` will be kept in memory (and not put into a `Bundle`) during screen orientation changes. Thus we also don't have to worry about the 1MB data limit as we have to with Activities. For retaining Fragments with an `MvpLceView` (Loading-Content-Error) you should use `RetainingFragmentLceViewState`.
+You could also mix both scenarios and solitions: You can `setRetainInstance(true)` and use a `RestorableViewState`. That means that during simple orientation changes ViewState and Presenter will be kept in memory, but when the Activity gets destroyed in background i.e. low memory the ViewState will be stored into the bundle and deserialized when coming back to the destroyed activity, which then will force the presenter to restart his work. This sounds like the perfect solution for all the problems, doesn't it? The problem is that you have to respect all the limitations of `RestoreabelViewState` like data must be `Parcelable`, Bundle limit of 1MB and so on. So it's up to you to decide which solution to implement in your app (RestorableViewState or not). Maybe you don't need the ViewState feature anyway?
 
 ## Custom ViewState
 `ViewState` is a really powerful and flexible concept. So far you learned how easy it is to use one of the provided LCE (Loading-Content-Error) ViewsStates. Now lets write our own custom View and ViewState. Our View should only display two different kind of data objects `A` and `B`. The result should look like this:
@@ -289,11 +304,11 @@ public class MyCustomActivity extends MvpViewStateActivity<MyCustomView, MyCusto
     setContentView(R.layout.my_custom_view);
   }
 
-  @Override public RestoreableViewState createViewState() {
+  @Override public ViewState<MyCustomView> createViewState() {
     return new MyCustomViewState(); // Our ViewState implementation
   }
 
-  // Will be called when no view state exist yet,
+  // Will be called when no view state exists yet,
   // which is the case the first time MyCustomActivity starts
   @Override public void onNewViewStateInstance() {
     presenter.doA();
@@ -335,7 +350,7 @@ Since we are not having LCE (Loading-Content-Error) we are not using `MvpLceActi
 In `onNewViewStateInstance() ` we have to specify what to do on first Activity start, because no previous `ViewState` instance exists to restore. In `showA(A a)` and `showB(B b)` we have to save the information that we are displays `A` or `B` into our `ViewState`. We are almost done, only  `MyCustomViewState` implementation is missing:
 
 {% highlight java %}
-public class MyCustomViewState implements RestoreableViewState<MyCustomView> {
+public class MyCustomViewState implements RestorableViewState<MyCustomView> {
 
   private final String KEY_STATE = "MyCustomViewState-flag";
   private final String KEY_DATA = "MyCustomViewState-data";
@@ -380,7 +395,7 @@ public class MyCustomViewState implements RestoreableViewState<MyCustomView> {
 }
 {% endhighlight %}
 
-As you can see we have to save our `ViewState` in `saveInstanceState()` which will be called from `Activity.onSaveInstanceState()` and restore the viewstate's data in `restoreInstanceState()` which will be called from `Activity.onCreate()`. The `apply()` method will be called from Activity to restore the view state. We do that by calling the same View interface methods `showA()` or `showB()` like the presenter does.
+As you can see we have to save our `ViewState` in `saveInstanceState()` which will be called from `Activity.onSaveInstanceState()` and restore the ViewState's data in `restoreInstanceState()` which will be called from `Activity.onCreate()`. The `apply()` method will be called from Activity to restore the view state. We do that by calling the same View interface methods `showA()` or `showB()` like the presenter does.
 
 This external `ViewState` class pulls the complexity and responsibility of restoring the view's state out from the Activity code into an separated class. It's also easier to write unit tests for a `ViewState` class  than for an `Activity` class: Since you can assume that Mosby works correctly and saves and restores your ViewState properly you basically just have to test if `ViewState.apply()` works as expected and invokes the corresponding View methods correctly.
 
@@ -418,7 +433,7 @@ In the [MVP fundamentals page]({{ site.baseurl }}/mvp/) we have already said tha
 
 As already said, by using the delegate you can support `Activity`, `Fragment` or `ViewGroup` not included in the Mosby library like `DialogFragment` or support third party frameworks like [RoboGuice](https://github.com/roboguice/roboguice). Mosby's ships with support Fragment (Fragments from support library). With delegation as described above you can use "native" `android.app.Fragment` as well.
 
-Another advantage of delegation is that you can change Mosby's default behavior by implementing a custom Delegate. For example: Mosby's default implementation of how to handle Presenter during orientation changes is to recreate the presenter and to restart the requests (excepted retaining Fragments where the Presenter survives). You could write another `ActivityMvpDelegate` or `FragmentMvpDelegate` that internally uses a `HashMap<Integer, MvpPresenter>` to store an already existing Presenter and reuse it when the View gets recreated after orientation changes (instead of creating a new one and restart async. background work):
+Another advantage of delegation is that you can change Mosby's default behavior by implementing a custom Delegate. For example: Mosby's default implementation of how to handle Presenter during orientation changes is to recreate the presenter and to restart the requests (excepted `setRetainInstance(true)`). You could write another `ActivityMvpDelegate` or `FragmentMvpDelegate` that internally uses a `HashMap<Integer, MvpPresenter>` to store an already existing Presenter and reuse it when the View gets recreated after orientation changes (instead of creating a new one and restart async. background work):
 
 {% highlight java %}
 public interface IdBasedMvpView extends MvpView {

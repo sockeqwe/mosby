@@ -7,7 +7,7 @@ permalink: /first-app/
 # Writing an App
 _In [Model-View-Presenter fundamentals]({{ site.baseurl }}/mvp/) we have discussed what MVP is and how you can use Mosby to implement an MVP based architecture. Furthermore, we have explained how [Mosby's ViewState]({{ site.baseurl }}/viewstate/) feature work. Now let's put that all together and lets write an App powered by Mosby_
 
-Usually such _"Getting started"_ sections just scratch on the surface with very simple examples. We think that sometimes such simple examples are to simple to demonstrate the power of a library. Therefore, we have decided to implement a complex app coming close to a real world app: a mail client. If you are looking for a very simple example then you should check out the [simple basics sample on Github](https://github.com/sockeqwe/mosby/tree/master/sample). The source code should be self explaining.
+Usually [getting started sections]({{ site.baseurl }}/getting-started/) just scratch on the surface with very simple examples. We think that sometimes such simple examples are to simple to demonstrate the power of a library. Therefore, we have decided to implement a complex app coming close to a real world app: a mail client. If you are looking for a very simple example then you should check out the [simple basics sample on Github](https://github.com/sockeqwe/mosby/tree/master/sample). The source code should be self explaining.
 
 As already said on this page we want to show how to write a complex app powered by Mosby. We will write an app that mimics a mail client. The functional requirements are as follows:
 
@@ -139,9 +139,11 @@ The `LoginFragment` is the View controlled by `LoginPresenter`.
     setRetainInstance(true);
   }
 
-  @Override protected int getLayoutRes() {
-    return R.layout.fragment_login;
-  }
+  @Override
+  public View onCreateView(LayoutInflater inflater, ViewGroup container,
+        Bundle savedInstanceState) {
+      return inflater.inflate(R.layout.fragment_login, container, false);
+    }
 
   @Override public ViewState createViewState() {
     return new LoginViewState();
@@ -219,7 +221,7 @@ The `LoginFragment` is the View controlled by `LoginPresenter`.
 }
 {% endhighlight %}
 
-As you can see `LoginFragment` now contains only code related to UI components. No business logic, no big Fragment with 1000+ lines of spaghetti code. With this clear separation of concerns between View (LoginFragment), Presenter (LoginPresenter) and business logic (AccountManager) you are able to write maintainable, loosly coupled and testable code. **That's what MVP is all about.**
+As you can see `LoginFragment` now contains only code related to UI components. No business logic, no big Fragment with 1000+ lines of spaghetti code. With this clear separation of concerns between View (LoginFragment), Presenter (LoginPresenter) and business logic (AccountManager) you are able to write maintainable, loosely coupled and testable code. **That's what MVP is all about.**
 
 Last but not least we also want to handle screen orientation changes (rotating device from portrait to landscape and vice versa). Mosby provides a mechanism for that called [ViewState]({{ site.baseurl }}/viewstate/). ViewState implementations for `MvpLceView` are already provided by Mosby. However `LoginView` is not a `MvpLceView` (discussed above) and therefore needs its own ViewState implementation. Writing a custom ViewState is easy:
 
@@ -469,7 +471,7 @@ The main menu as well as inbox fragment displays the login button. We do pretty 
 
  ![Model-View-Presenter]({{ site.baseurl }}/images/login-eventbus.jpg)
 
-Since we are also going to display list of items (like a list of mails) through a `RecyclcerView`. We also implement pull-to-refresh support (by using `SwipeRefreshLayout`) and a view that is dipslayed when the list of items is empty.
+Since we are also going to display list of items (like a list of mails) through a `RecyclcerView`. We also implement pull-to-refresh support (by using `SwipeRefreshLayout`) and a view that is displayed when the list of items is empty.
 
 {% highlight java %}
 public abstract class AuthRefreshRecyclerFragment<M extends List<? extends Parcelable>, V extends AuthView<M>, P extends MvpPresenter<V>>

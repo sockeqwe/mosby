@@ -53,10 +53,6 @@ Let's have a look at a concrete example: The example app displays a list of user
 
  In our opinion the **Presenter does not replace the Controller.** Rather the Presenter coordinates  or supervises the View which the Controller is part of. The Controller is the component that handles the click events and calls the corresponding Presenter methods. The Controller is the responsible component to control animations like hiding ProgressBar and displaying ListView instead. The Controller is listening for scroll events on the ListView i.e. to do some parallax item animations or scroll the toolbar in and out while scrolling the ListView. So all that UI related stuff still gets controlled by a Controller and **not by a Presenter** (i.e. Presenter should not be an OnClickListener). The Presenter is responsible to coordinate the overall state of the view layer (composed of UI widgets and Controller). So it's the job of the Presenter to tell the view layer that the loading animation should be displayed now or that the ListView should be displayed because the data is ready to be displayed.
 
-## MosbyActivity and MosbyFragment
-`MosbyActivity` and `MosbyFragment` are the base classes (the fundament) for all other activity or fragment subclasses. Both use well known [annotation processors](http://hannesdorfmann.com/annotation-processing/annotationprocessing101/) to reduce writing boilerplate code. _MosbyActivity_ and _MosbyFragment_ use [Butterknife](http://jakewharton.github.io/butterknife/) for view "binding", [Icepick](https://github.com/frankiesardo/icepick) for saving and restoring instance state to a bundle and [FragmentArgs](https://github.com/sockeqwe/fragmentargs) for injecting Fragment arguments. You don't have to call the binding methods like `Butterknife.bind(this)`. This kind of code is already included in _MosbyActivity_ and _MosbyFragment_. It just works out of the box. The only thing you have to do is to use the corresponding annotations in your subclasses.
-
-
 ## MvpView and MvpPresenter
 The base class for all views is `MvpView`. Basically it's just an empty interface. Later on this page you will see that you define methods for your custom view in your own interface that extends from `MvpView`. The interface provides a public API for the Presenter to invoke View related methods. The base class for Presenters is `MvpPresenter`:
 
@@ -72,10 +68,10 @@ public interface MvpPresenter<V extends MvpView> {
 }
 {% endhighlight %}
 
-The idea is that a `MvpView` (i.e. Fragment or Activity) gets attached to and detached from his `MvpPresenter`. Mosby takes Activities and Fragments lifecycle for doing so (more about that below in "Delegate" section). So initializing and cleaning up things (like canceling async running tasks) should be done in `presenter.onAttach()` and `presenter.onDetach()`.
+The idea is that a `MvpView` (i.e. Fragment or Activity) gets attached to and detached from his `MvpPresenter`. Mosby takes Activities and Fragments lifecycle for doing so (more about that below in "Delegate" section). So initializing and cleaning up things (like canceling async running tasks) should be done in `presenter.attachView()` and `presenter.detachView()`.
 
 Mosby provides `MvpBasePresenter`, a Presenter implementation which uses `WeakReference` to hold the reference to the view (which is a Fragment or Activity) to avoid memory leaks. Therefore when your Presenter wants to invoke a method of the view you always have to check if the view is attached to the Presenter by checking `isViewAttached()` and using `getView()` to get the reference.  
-Alternatively, you could use `MvpNullObjectBasePresenter` class that implements [Null Object Pattern](https://en.wikipedia.org/wiki/Null_Object_pattern) for the `MvpView`. So whenever `MvpNullObjectBasePresenter.onDetach()` gets called the View will not be set to `null` (as `MvpBasePresenter` does. Instead an empty View gets created dynamically by using reflections and gets attached as view to the Presenter. This avoids `view != null` checks since either the real View is attached or the null object pattern view is attached that simply does nothing on method invocation.
+Alternatively, you could use `MvpNullObjectBasePresenter` class that implements [Null Object Pattern](https://en.wikipedia.org/wiki/Null_Object_pattern) for the `MvpView`. So whenever `MvpNullObjectBasePresenter.onDetach()` gets called the View will not be set to `null` (as `MvpBasePresenter` does. Instead an empty View gets created dynamically by using reflections and gets attached as view to the Presenter. This avoids `view != null` checks since either the real view is attached or the null object pattern view is attached that simply does nothing on method invocation.
 
 ## MvpActivity and MvpFragment
 As already mentioned before we treat Activities and Fragments as Views. `MvpActivity` and `MvpFragment` implements `MvpView` can be used as base classes in your application if you simply want an Activity or Fragment that gets controlled by an Presenter. To ensure type safety generics are used: `MvpActivity<V extends MvpView, P extends MvpPresenter>` and `MvpFragment<V extends MvpView, P extends MvpPresenter>`  
@@ -226,8 +222,12 @@ public class CountriesFragment
     extends MvpLceFragment<SwipeRefreshLayout, List<Country>, CountriesView, CountriesPresenter>
     implements CountriesView, SwipeRefreshLayout.OnRefreshListener {
 
-  @InjectView(R.id.recyclerView) RecyclerView recyclerView;
+  @Bind(R.id.recyclerView) RecyclerView recyclerView;
   CountriesAdapter adapter;
+
+  @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    return inflater.inflate(R.layout.countries_list, container, false);
+  }
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstance) {
     super.onViewCreated(view, savedInstance);
@@ -250,11 +250,6 @@ public class CountriesFragment
     return new SimpleCountriesPresenter();
   }
 
-  // Just a shorthand that will be called in onCreateView()
-  @Override protected int getLayoutRes() {
-    return R.layout.countries_list;
-  }
-
   @Override public void setData(List<Country> data) {
     adapter.setCountries(data);
     adapter.notifyDataSetChanged();
@@ -266,16 +261,7 @@ public class CountriesFragment
 }
 {% endhighlight %}
 
-Not that much code to write, right? It's because the base class `MvpLceFragment` already implements the switching from loading view to content view or error view  for us. At first glance the list of generics parameter of `MvpLceFragment` may discourage you. Let me explain that: The first generics parameter is the type of the content view. The second is the Model that is displayed with this fragment. The third one is the View interface and the last one is the type of the Presenter. To summarize: `MvpLceFragment<AndroidView, Model, View, Presenter>`
-
-Another thing you may have noticed is `getLayoutRes()`, which is a shorthand introduced in `MosbyFragment` for inflating a xml view layout:
-{% highlight java %}
-@Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-    return inflater.inflate(getLayoutRes(), container, false);
-}
-{% endhighlight %}
-
-So instead of overriding `onCreateView()` you can override `getLayoutRes()`.
+Not that much code to write, right? It's because the base class `MvpLceFragment` already implements the switching from loading view to content view or error view  for us. At first glance the list of generics parameter of `MvpLceFragment` may discourage you. Let me explain that: The first generics parameter is the type of the content view (something extending from android.view.View). The second is the Model that is displayed with this fragment. The third one is the View interface and the last one is the type of the Presenter. To summarize: `MvpLceFragment<AndroidView, Model, View, Presenter>`
 
 ## ViewGroup
 If you want to avoid Fragments in general you can do that. Mosby offers the same MVP scaffold as for Activities and Fragments for ViewGroups. The API is the same as for Activity and Fragment. Some default implementation are already available like `MvpFrameLayout`, `MvpLinearLayout` and `MvpRelativeLayout`.

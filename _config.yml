@@ -4,8 +4,8 @@ email:
 author:      Hannes Dofrmann
 description: "Model-View-Presenter (MVP) library for modern android apps"
 keywords:    "Model-View-Presenter, MVP, mvp, mosby, android, architecture, software, clean architecture, mvc"
-baseurl:     "http://hannesdorfmann.com/mosby"
-url:         "http://hannesdorfmann.com/mosby"
+baseurl:     ""
+url:         ""
 
 # Google analytics
 google_analytics: UA-63278523-1

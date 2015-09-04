@@ -16,6 +16,7 @@
 
 package com.hannesdorfmann.mosby.mvp.delegate;
 
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
@@ -46,10 +47,11 @@ public interface BaseMvpViewStateDelegateCallback<V extends MvpView, P extends M
   /**
    * Create the viewstate. Will be called by the {@link MvpViewStateInternalDelegate}.
    */
-  public ViewState<V> createViewState();
+  @NonNull public ViewState<V> createViewState();
 
   /**
-   * This method will be called by {@link MvpViewStateInternalDelegate} to inform that restoring the view state
+   * This method will be called by {@link MvpViewStateInternalDelegate} to inform that restoring the
+   * view state
    * is in progress.
    *
    * @param restoringViewState true, if restoring viewstate is in progress, otherwise false

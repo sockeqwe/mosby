@@ -17,6 +17,7 @@
 package com.hannesdorfmann.mosby.mvp.delegate;
 
 import android.app.Activity;
+import android.support.annotation.NonNull;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 
@@ -39,7 +40,7 @@ public interface BaseMvpDelegateCallback<V extends MvpView, P extends MvpPresent
    *
    * @return the created presenter instance
    */
-  public P createPresenter();
+  @NonNull public P createPresenter();
 
   /**
    * Get the presenter. If null is returned, then a internally a new presenter instance gets

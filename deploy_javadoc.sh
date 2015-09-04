@@ -2,15 +2,10 @@
 
 REPO="git@github.com:sockeqwe/mosby.git"
 
-MODULES[0]=core
-MODULES[1]=core-dagger1
-MODULES[2]=mvp
-MODULES[3]=mvp-common
-MODULES[4]=mvp-dagger1
-MODULES[5]=retrofit
-MODULES[6]=rx
-MODULES[7]=viewstate
-MODULES[8]=viewstate-dagger1
+MODULES[0]=mvp
+MODULES[1]=mvp-common
+MODULES[2]=viewstate
+MODULES[3]=testing
 
 DIR=/tmp/temp-clone
 

@@ -2,10 +2,15 @@
 
 REPO="git@github.com:sockeqwe/mosby.git"
 
-MODULES[0]=mvp
-MODULES[1]=mvp-common
-MODULES[2]=viewstate
-MODULES[3]=testing
+MODULES[0]=core
+MODULES[1]=core-dagger1
+MODULES[2]=mvp
+MODULES[3]=mvp-common
+MODULES[4]=mvp-dagger1
+MODULES[5]=retrofit
+MODULES[6]=rx
+MODULES[7]=viewstate
+MODULES[8]=viewstate-dagger1
 
 DIR=/tmp/temp-clone
 
@@ -35,6 +40,8 @@ rm -rf merged_source
 
 # Checkout and track the gh-pages branch
 git checkout -t origin/gh-pages
+rm -rf ./static/javadoc
+mkdir ./static
 cp -rf ../static/javadoc ./static/javadoc
 rm -rf ../static/javadoc
 
@@ -50,3 +57,4 @@ git push origin gh-pages
 # Delete our temp folder
 cd ..
 rm -rf $DIR
+

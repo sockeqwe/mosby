@@ -123,8 +123,8 @@ public class HelloWorldActivity extends MvpActivity<HelloWorldView, HelloWorldPr
   }
 
   @OnClick(R.id.goodbyeButtonClicked)
-  public void onHelloButtonClicked(){
-    presenter.greetHello();
+  public void onGoodbyeButtonClicked(){
+    presenter.greetGoodbye();
   }
 
   @Override

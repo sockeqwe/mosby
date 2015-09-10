@@ -157,7 +157,7 @@ interface CountriesApi {
 
 {% highlight java %}
 // View interface
-interface Countries extends MvpLceView<List<Country>> {
+interface CountriesView extends MvpLceView<List<Country>> {
   // MvpLceView already defines LCE methods:
   //
   // void showLoading(boolean pullToRefresh)

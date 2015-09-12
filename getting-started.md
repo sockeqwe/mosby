@@ -78,6 +78,7 @@ class HelloWorldPresenter extends MvpBasePresenter<HelloWorldView> {
           getView.showHello(greetingText);
       }
     });
+    greetingTask.execute();
   }
 
   public void greetGoodbye(){
@@ -89,6 +90,7 @@ class HelloWorldPresenter extends MvpBasePresenter<HelloWorldView> {
           getView.showGoodbye(greetingText);
       }
     });
+    greetingTask.execute();
   }
 
   // Called when Activity gets destroyed, so cancel running background task

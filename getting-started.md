@@ -31,7 +31,7 @@ class GreetingGeneratorTask extends AsyncTask<Void, Void, Integer> {
   @Override
   protected Integer doInBackground(Void... params) {
     try {
-      Thread.sleep(3000); // Simulate computing
+      Thread.sleep(2000); // Simulate computing
     } catch (InterruptedException e) { }
 
     return (int) (Math.random() * 100);

@@ -12,6 +12,17 @@ Mosby provides some modules and some classes that one can use as base class to e
 
 ![Decision chart]({{ site.baseurl }}/images/decision.png)
 
+## Which Presenter implementation should I extend from to create my own Presenter?
+`MvpPresenter` is on top of the inheritance hierarchy. It's an interface, hence you can write your own Presenter easily. However, there are already two implementation of `MvpPresenter` you can extend from:
+ - `MvpBasePresenter`: Internally uses a `WeakReference` to the attached View to avoid memory leaks. However, that leads to another problem: possible null reference to the view if the view is not attached. Hence you always have to check with `isViewAttached()` (or check `getView() != null` which is equivalent) if a view is attached to the Presenter before invoking a view's method.
+ - `MvpNullObjectBasePresenter`: To avoid all this `isViewAttached()` checks one could use this Presenter class which implements the [Null Object Pattern](https://en.wikipedia.org/wiki/Null_Object_pattern). That means that there is always a view attached to this kind of Presenter. The attached view is either the "real" view (like an Activity or Fragment) or a fake view (null object) constructed by using reflections that simply does nothing if you invoke an method on it.
+
+## Where do I get more information about "PresentationModel" mentioned in the "MVP basics" section?
+Have a look [here](https://github.com/sockeqwe/mosby/issues/85)
+
+## Can the Presenter and its view be out of sync during a screen orientation change?
+Excellent question. Mosby assumes that all interaction from Presenter with the View happens on android's main UI thread. Hence the answer is **no** that cannot happen since screen orientation changes are executed on the main UI thread as well. So either is a screen orientation executed completely (view reattached) or the presenter invokes the views method after view is reattached since both run on main UI thread or the presenter invokes the views methods before starting screen orientation change.
+
 ## Modules
 Mosby is divided in separated modules so that you can include only that modules you really need. Here is an overview which module provides which classes and what functionality.
 

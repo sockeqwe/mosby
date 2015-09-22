@@ -9,7 +9,7 @@ _The name of this library, Mosby, has been chosen in honor of Ted Mosby, the arc
 At first glance Mosby looks a lot like a framework. There are some classes like `MvpFragment` you can extends from, but the point is that you don't have to if you don't want to. At it's core Mosby is a tiny library based on delegation. So you don't have to use `MvpFragment` if you don't want to. You can use delegation and composition to integrate Mosby in your own development stack. Hence you are not caught into a frameworks boundaries and limits.
 
 ## Getting started
-In the [getting started]() section you will find some simple examples how to use Mosby to build MVP based screens. Mosby also supports Kotlin and you will find there a simple Kotlin example as well.
+In the [getting started](http://hannesdorfmann.com/mosby/getting-started/) section you will find some simple examples how to use Mosby to build MVP based screens. Mosby also supports Kotlin and you will find there a simple Kotlin example as well.
 If you are looking for a real app powered by Mosby, you should have a look at the [First App section](http://hannesdorfmann.com/mosby/first-app/) where you will find a complex E-Mail client app.
 
 ## Dependencies

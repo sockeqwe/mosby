@@ -257,7 +257,7 @@ public class CountriesFragment
 {% endhighlight %}
 
 ## LCE ViewState example
-What happens in the previous LCE example if the user rotates the screen? A new Fragment gets created that an the UI starts again with showing the `ProgressBar` even if before the screen orientation change we already were displaying data (list of countries). Mosby offers a feature called **ViewState** to handle screen orientation changes. Check the [ViewState section] for details and how it works. Here in this "Getting Started" section we just want to show how to add ViewState support to the previous LCE example so that your app will still be in the state as before screen orientation changes i.e. showing list of countries in portrait and still displaying list of countries in landscape. All we have to do is to extend from `MvpLceViewStateFragment` instead of `MvpLceFragment` and implement `createViewState()`:
+What happens in the previous LCE example if the user rotates the screen? A new Fragment gets created that an the UI starts again with showing the `ProgressBar` even if before the screen orientation change we already were displaying data (list of countries). Mosby offers a feature called **ViewState** to handle screen orientation changes. Check the [ViewState section](http://hannesdorfmann.com/mosby/viewstate/) for details and how it works. Here in this "Getting Started" section we just want to show how to add ViewState support to the previous LCE example so that your app will still be in the state as before screen orientation changes i.e. showing list of countries in portrait and still displaying list of countries in landscape. All we have to do is to extend from `MvpLceViewStateFragment` instead of `MvpLceFragment` and implement `createViewState()` and `getData()`:
 {% highlight java %}
 public class CountriesFragment
     extends MvpLceViewStateFragment<SwipeRefreshLayout, List<Country>, CountriesView, CountriesPresenter>
@@ -272,9 +272,12 @@ public class CountriesFragment
     setRetainInstance(true); // Enable retaining presenter / viewstate
   }
 
-  @Override
-  public ViewState<CountriesView> createViewState(){
-    return RetainingLceViewState();
+  @Override public LceViewState<List<Country>, CountriesView> createViewState() {
+    return new RetainingLceViewState<List<Country>, CountriesView>(this);
+  }
+
+  @Override public List<Country> getData() {
+    return adapter == null ? null : adapter.getCountries();
   }
 
   ...

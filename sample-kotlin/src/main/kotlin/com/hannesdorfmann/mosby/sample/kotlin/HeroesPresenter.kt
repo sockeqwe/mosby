@@ -22,17 +22,17 @@ public class HeroesPresenter : MvpBasePresenter<HeroesView> () {
         cancelIfRunning();
 
         // Show Loading
-        getView()?.showLoading(pullToRefresh)
+        view?.showLoading(pullToRefresh)
 
         // execute loading
         loaderTask = AsyncHeroesTask(
                 pullToRefresh,
                 { heroes, pullToRefresh ->
-                    getView()?.setData(heroes)
-                    getView()?.showContent()
+                    view?.setData(heroes)
+                    view?.showContent()
                 },
                 { exception, pullToRefresh ->
-                    getView()?.showError(exception, pullToRefresh)
+                    view?.showError(exception, pullToRefresh)
                 }
         )
 

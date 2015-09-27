@@ -41,8 +41,8 @@ dependencies {
 
   compile 'com.squareup.leakcanary:leakcanary-android:' + rootProject.ext.leakcanaryVersion
   compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
-  compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 
   provided 'com.google.code.findbugs:annotations:3.0.0'
 }
+
 

@@ -74,8 +74,7 @@ public class HeroesActivity : HeroesView, MvpLceViewStateActivity<SwipeRefreshLa
         }
     }
 
-
-    class RefreshRunnable (val swipeRefreshLayout : SwipeRefreshLayout) : Runnable {
+    class RefreshRunnable(val swipeRefreshLayout: SwipeRefreshLayout) : Runnable {
 
         override fun run() {
             swipeRefreshLayout.setRefreshing(true)

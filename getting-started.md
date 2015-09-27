@@ -347,17 +347,17 @@ public class HeroesPresenter : MvpBasePresenter<HeroesView> () {
         cancelIfRunning();
 
         // Show Loading
-        getView()?.showLoading(pullToRefresh)
+        view?.showLoading(pullToRefresh)
 
         // execute loading
         loaderTask = AsyncHeroesTask(
                 pullToRefresh,
                 { heroes, pullToRefresh ->  // successful lambda / callback
-                    getView()?.setData(heroes) // no isViewAttached() check needed because kotlin offers null safety as language feature
-                    getView()?.showContent()
+                    view?.setData(heroes) // no isViewAttached() check needed because kotlin offers null safety as language feature
+                    view?.showContent()
                 },
                 { exception, pullToRefresh ->  // error lambda / callback
-                    getView()?.showError(exception, pullToRefresh)
+                    view?.showError(exception, pullToRefresh)
                 }
         )
 

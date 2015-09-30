@@ -88,10 +88,6 @@ public abstract class MvpLceActivity<CV extends View, M, V extends MvpLceView<M>
    * Called if the error view has been clicked. To disable clicking on the errorView use
    * <code>errorView.setClickable(false)</code>
    */
-  /**
-   * Called if the error view has been clicked. To disable clicking on the errorView use
-   * <code>errorView.setClickable(false)</code>
-   */
   protected void onErrorViewClicked() {
     loadData(false);
   }

@@ -36,10 +36,6 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
  * #showContent()} to display the data</li>
  * </ul>
  *
- * <p>
- * To make everything work automatically the concre
- * </p>
- *
  * @param <M> The underlying data model
  * @author Hannes Dorfmann
  * @since 1.0.0

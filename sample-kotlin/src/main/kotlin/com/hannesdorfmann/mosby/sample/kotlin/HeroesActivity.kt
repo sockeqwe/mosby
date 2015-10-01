@@ -15,16 +15,16 @@ public class HeroesActivity : HeroesView, MvpLceViewStateActivity<SwipeRefreshLa
     var adapter: HeroesAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super<MvpLceViewStateActivity>.onCreate(savedInstanceState)
+        super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_heroes)
-        setRetainInstance(true)
+        retainInstance = true
         contentView.setOnRefreshListener(this)
 
         val recyclerView = findViewById(R.id.recyclerView) as RecyclerView
 
         adapter = HeroesAdapter(this, LayoutInflater.from(this))
-        recyclerView.setAdapter(adapter)
-        recyclerView.setLayoutManager(GridLayoutManager(this, 2))
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = GridLayoutManager(this, 2)
     }
 
     override fun getErrorMessage(e: Throwable?, pullToRefresh: Boolean): String? {
@@ -58,26 +58,27 @@ public class HeroesActivity : HeroesView, MvpLceViewStateActivity<SwipeRefreshLa
     }
 
     override fun showContent() {
-        super<MvpLceViewStateActivity>.showContent()
-        contentView.setRefreshing(false)
+        super.showContent()
+        contentView.isRefreshing = false
     }
 
     override fun showError(t: Throwable, pullToRefresh: Boolean) {
-        super<MvpLceViewStateActivity>.showError(t, pullToRefresh)
-        contentView.setRefreshing(false)
+        super.showError(t, pullToRefresh)
+        contentView.isRefreshing = false
     }
 
     override fun showLoading(pullToRefresh: Boolean) {
-        super<MvpLceViewStateActivity>.showLoading(pullToRefresh)
-        if (pullToRefresh && !contentView.isRefreshing()) {
+        super.showLoading(pullToRefresh)
+        if (pullToRefresh && !contentView.isRefreshing) {
             contentView.post(RefreshRunnable(contentView))
         }
     }
 
+    // Don't do that in production, could lead to memory leaks
     class RefreshRunnable(val swipeRefreshLayout: SwipeRefreshLayout) : Runnable {
 
         override fun run() {
-            swipeRefreshLayout.setRefreshing(true)
+            swipeRefreshLayout.isRefreshing = true
         }
     }
 

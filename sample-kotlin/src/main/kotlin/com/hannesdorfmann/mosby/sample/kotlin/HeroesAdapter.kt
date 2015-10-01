@@ -36,6 +36,6 @@ class HeroesAdapter(val context: Context, val inflater: LayoutInflater) : Recycl
                 .error(R.color.loading_placeholder)
                 .into(holder.image)
 
-        holder.name?.setText(hero.name)
+        holder.name?.text = hero.name
     }
 }

@@ -51,6 +51,7 @@ public class ReposFragment
 
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    setRetainInstance(true);
   }
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {

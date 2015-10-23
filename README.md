@@ -6,7 +6,7 @@ Check the [project website](http://hannesdorfmann.com/mosby/) for more informati
 [![Build Status](https://travis-ci.org/sockeqwe/mosby.svg?branch=master)](https://travis-ci.org/sockeqwe/mosby)
 
 # Sample APK
-You can find the smaple apk files in the [release section](https://github.com/sockeqwe/mosby/releases)
+You can find the sample apk files in the [release section](https://github.com/sockeqwe/mosby/releases)
 
 # Changelog
 The changelog can be found in the [release section](https://github.com/sockeqwe/mosby/releases)

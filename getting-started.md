@@ -75,7 +75,7 @@ class HelloWorldPresenter extends MvpBasePresenter<HelloWorldView> {
     greetingTask = new GreetingGeneratorTask("Hello", new GreetingTaskListener(){
       public void onGreetingGenerated(String greetingText){
         if (isViewAttached())
-          getView.showHello(greetingText);
+          getView().showHello(greetingText);
       }
     });
     greetingTask.execute();
@@ -87,7 +87,7 @@ class HelloWorldPresenter extends MvpBasePresenter<HelloWorldView> {
     greetingTask = new GreetingGeneratorTask("Goodbye", new GreetingTaskListener(){
       public void onGreetingGenerated(String greetingText){
         if (isViewAttached())
-          getView.showGoodbye(greetingText);
+          getView().showGoodbye(greetingText);
       }
     });
     greetingTask.execute();

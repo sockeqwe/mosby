@@ -15,7 +15,7 @@ In this very simple example we assume that the view displays a `TextView` displa
 class GreetingGeneratorTask extends AsyncTask<Void, Void, Integer> {
 
   // Callback - Listener
-  interface GreetingTaskListener{
+  public interface GreetingTaskListener{
     public void onGreetingGenerated(String greetingText);
   }
 

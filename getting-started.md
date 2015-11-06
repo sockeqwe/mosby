@@ -96,7 +96,9 @@ class HelloWorldPresenter extends MvpBasePresenter<HelloWorldView> {
   // Called when Activity gets destroyed, so cancel running background task
   public void detachView(boolean retainPresenterInstance){
     super.detachView(retainPresenterInstance);
-    cancelGreetingTaskIfRunning();
+    if (!retainPresenterInstance){
+        cancelGreetingTaskIfRunning();
+    }
   }
 }
 {% endhighlight %}

@@ -42,9 +42,9 @@ ext {
   javaTargetCompatibility = JavaVersion.VERSION_1_7
 
   // Libraries
-  appcompat7Version = '23.0.1'
-  supportAnnotations = '23.0.1'
-  recyclerviewVersion = '23.0.1'
+  appcompat7Version = '23.1.1'
+  supportAnnotations = '23.1.1'
+  recyclerviewVersion = '23.1.1'
 
   // Libraries for samples
   fragmentargsVersion = '2.1.0'
@@ -55,7 +55,7 @@ ext {
   okhttpVersion ='2.3.0'
   parcelablepleaseVersion = '1.0.1'
   annotatedadapterVersion = '1.1.1.1-SNAPSHOT'
-  rxjavaVersion = '1.0.14'
+  rxjavaVersion = '1.0.16'
   rxandroidVersion = '1.0.1'
   dagger2Version = '2.0'
 

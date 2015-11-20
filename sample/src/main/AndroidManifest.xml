@@ -40,6 +40,11 @@
 
     <activity android:name=".mvp.lce.layout.CountriesLayoutActivity"
         android:label="MVP Framelayout"/>
+
+    <activity android:name=".mvp.lce.viewstate.RetainingCountriesFragmentEmbededInXmlActivity"
+      android:label="Embeded ViewState Fragment"
+      />
   </application>
+
 
 </manifest>

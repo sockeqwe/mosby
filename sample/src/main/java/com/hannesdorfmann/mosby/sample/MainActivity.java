@@ -30,6 +30,7 @@ import com.hannesdorfmann.mosby.sample.mvp.lce.activity.CountriesActivity;
 import com.hannesdorfmann.mosby.sample.mvp.lce.layout.CountriesLayoutActivity;
 import com.hannesdorfmann.mosby.sample.mvp.lce.viewstate.NotRetainingCountriesActivity;
 import com.hannesdorfmann.mosby.sample.mvp.lce.viewstate.RetainingCountriesActivity;
+import com.hannesdorfmann.mosby.sample.mvp.lce.viewstate.RetainingCountriesFragmentEmbededInXmlActivity;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
@@ -76,6 +77,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         new Demo("Nested ViewState CountriesFragment ViewPager",
             new Intent(this, FragmentContainerActivity.class).putExtra("fragment",
                 "NestedNotRetainingViewPagerFragment")),
+        new Demo("Retaining ViewState Fragment embededed in activities xml layout ",
+            new Intent(this, RetainingCountriesFragmentEmbededInXmlActivity.class))
     };
   }
 

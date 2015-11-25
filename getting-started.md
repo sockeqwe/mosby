@@ -275,7 +275,7 @@ public class CountriesFragment
   }
 
   @Override public LceViewState<List<Country>, CountriesView> createViewState() {
-    return new RetainingLceViewState<List<Country>, CountriesView>(this);
+    return new RetainingLceViewState<List<Country>, CountriesView>();
   }
 
   @Override public List<Country> getData() {

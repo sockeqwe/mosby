@@ -28,6 +28,7 @@ import butterknife.ButterKnife;
 import com.hannesdorfmann.mosby.sample.mvp.customviewstate.MyCustomActivity;
 import com.hannesdorfmann.mosby.sample.mvp.lce.activity.CountriesActivity;
 import com.hannesdorfmann.mosby.sample.mvp.lce.layout.CountriesLayoutActivity;
+import com.hannesdorfmann.mosby.sample.mvp.lce.viewpager.ViewPagerActivity;
 import com.hannesdorfmann.mosby.sample.mvp.lce.viewstate.NotRetainingCountriesActivity;
 import com.hannesdorfmann.mosby.sample.mvp.lce.viewstate.RetainingCountriesActivity;
 import com.hannesdorfmann.mosby.sample.mvp.lce.viewstate.RetainingCountriesFragmentEmbededInXmlActivity;
@@ -78,7 +79,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             new Intent(this, FragmentContainerActivity.class).putExtra("fragment",
                 "NestedNotRetainingViewPagerFragment")),
         new Demo("Retaining ViewState Fragment embededed in activities xml layout ",
-            new Intent(this, RetainingCountriesFragmentEmbededInXmlActivity.class))
+            new Intent(this, RetainingCountriesFragmentEmbededInXmlActivity.class)),
+
+        new Demo("ViewPager", new Intent(this, ViewPagerActivity.class)),
+
+        new Demo("ViewPager with FragmentSTATEPagerAdapter",
+            new Intent(this, ViewPagerActivity.class).putExtra(ViewPagerActivity.KEY_STATEPAGER,
+                true))
     };
   }
 

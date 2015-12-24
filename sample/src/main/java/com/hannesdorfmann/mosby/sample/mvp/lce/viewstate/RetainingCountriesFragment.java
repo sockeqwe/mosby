@@ -69,6 +69,7 @@ public class RetainingCountriesFragment extends
 
   @Override public void onDestroyView() {
     super.onDestroyView();
+    adapter = null;
     ButterKnife.unbind(this);
   }
 
@@ -144,4 +145,5 @@ public class RetainingCountriesFragment extends
   @Override public boolean isRetainInstance() {
     return super.isRetainInstance();
   }
+
 }

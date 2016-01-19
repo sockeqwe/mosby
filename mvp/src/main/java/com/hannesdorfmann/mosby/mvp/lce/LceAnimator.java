@@ -24,7 +24,6 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
 import android.view.View;
-import android.widget.TextView;
 
 /**
  * Little helper class for animating content, error and loading view
@@ -50,7 +49,7 @@ public class LceAnimator {
    * Shows the error view instead of the loading view
    */
   public static void showErrorView(@NonNull final View loadingView, @NonNull final View contentView,
-      final TextView errorView) {
+      final View errorView) {
 
     contentView.setVisibility(View.GONE);
 

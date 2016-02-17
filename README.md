@@ -5,6 +5,14 @@ Check the [project website](http://hannesdorfmann.com/mosby/) for more informati
 
 [![Build Status](https://travis-ci.org/sockeqwe/mosby.svg?branch=master)](https://travis-ci.org/sockeqwe/mosby)
 
+# Dependency
+```groovy
+dependencies {
+	compile 'com.hannesdorfmann.mosby:mvp:2.0.0'
+	compile 'com.hannesdorfmann.mosby:viewstate:2.0.0' // only if you want to use the viewstate feature
+}
+```
+
 # Sample APK
 You can find the sample apk files in the [release section](https://github.com/sockeqwe/mosby/releases)
 

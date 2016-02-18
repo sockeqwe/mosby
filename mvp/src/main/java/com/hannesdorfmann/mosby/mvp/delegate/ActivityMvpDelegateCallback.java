@@ -46,12 +46,12 @@ public interface ActivityMvpDelegateCallback<V extends MvpView, P extends MvpPre
    *
    * @return Object holding state.
    */
-  Object onRetainNonMosbyCustomNonConfigurationInstance();
+  public Object onRetainNonMosbyCustomNonConfigurationInstance();
 
   /**
    * @return Return the value previously returned from {@link FragmentActivity#onRetainCustomNonConfigurationInstance()}.
    */
-  Object getLastCustomNonConfigurationInstance();
+  public Object getLastCustomNonConfigurationInstance();
 
   /**
    * This method should invoke {@link
@@ -63,5 +63,5 @@ public interface ActivityMvpDelegateCallback<V extends MvpView, P extends MvpPre
    * method since this method is the counterpart to {@link #onRetainNonMosbyCustomNonConfigurationInstance()}
    * </p>
    */
-  Object getNonMosbyLastCustomNonConfigurationInstance();
+  public Object getNonMosbyLastCustomNonConfigurationInstance();
 }

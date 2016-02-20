@@ -8,8 +8,8 @@ Check the [project website](http://hannesdorfmann.com/mosby/) for more informati
 # Dependency
 ```groovy
 dependencies {
-	compile 'com.hannesdorfmann.mosby:mvp:2.0.0'
-	compile 'com.hannesdorfmann.mosby:viewstate:2.0.0' // only if you want to use the viewstate feature
+	compile 'com.hannesdorfmann.mosby:mvp:2.0.1'
+	compile 'com.hannesdorfmann.mosby:viewstate:2.0.1' // optional viewstate feature
 }
 ```
 

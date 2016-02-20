@@ -17,8 +17,8 @@ Mosby is divided in modules. You can pick those modules you need from the follow
 
 
 <div class="highlight"><pre><code class="groovy"><span class="n">dependencies</span> <span class="o">{</span>
-	<span class="n">compile</span> <span class="s1">'com.hannesdorfmann.mosby:mvp:<span class="mosbyVersion">2.0.0</span>'</span>
-	<span class="n">compile</span> <span class="s1">'com.hannesdorfmann.mosby:viewstate:<span class="mosbyVersion">2.0.0</span>'</span>
+	<span class="n">compile</span> <span class="s1">'com.hannesdorfmann.mosby:mvp:<span class="mosbyVersion">2.0.1</span>'</span>
+	<span class="n">compile</span> <span class="s1">'com.hannesdorfmann.mosby:viewstate:<span class="mosbyVersion">2.0.1</span>'</span>
 <span class="o">}</span></code></pre></div>
 
 ## Migration to Mosby 2.0

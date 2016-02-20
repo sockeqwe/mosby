@@ -9,7 +9,7 @@ import com.hannesdorfmann.mosby.sample.kotlin.model.AsyncHeroesTask
  *
  * @author Hannes Dorfmann
  */
-public class HeroesPresenter : MvpBasePresenter<HeroesView> () {
+class HeroesPresenter : MvpBasePresenter<HeroesView> () {
 
     val TAG = "HeroesPresenter"
 

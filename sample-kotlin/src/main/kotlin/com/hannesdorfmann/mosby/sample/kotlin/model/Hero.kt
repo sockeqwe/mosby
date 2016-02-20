@@ -5,4 +5,4 @@ package com.hannesdorfmann.mosby.sample.kotlin.model
  *
  * @author Hannes Dorfmann
  */
-public data class Hero(val name: String, val imageUrl: String)
+data class Hero(val name: String, val imageUrl: String)

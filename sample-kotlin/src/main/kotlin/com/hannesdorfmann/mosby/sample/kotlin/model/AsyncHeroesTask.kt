@@ -9,8 +9,7 @@ import java.util.Collections
  *
  * @author Hannes Dorfmann
  */
-@SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD", "I know what I'm doing")
-public class AsyncHeroesTask(val pullToRefresh: Boolean,
+@SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD", "I know what I'm doing") class AsyncHeroesTask(val pullToRefresh: Boolean,
                              val successful: (List<Hero>, Boolean) -> Unit,
                              val error: (Exception, Boolean) -> Unit) : AsyncTask<Void, Void, List<Hero>>() {
 

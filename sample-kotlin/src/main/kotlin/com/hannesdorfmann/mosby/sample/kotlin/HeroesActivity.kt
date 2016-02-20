@@ -10,7 +10,7 @@ import com.hannesdorfmann.mosby.mvp.viewstate.lce.MvpLceViewStateActivity
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.RetainingLceViewState
 import com.hannesdorfmann.mosby.sample.kotlin.model.Hero
 
-public class HeroesActivity : HeroesView, MvpLceViewStateActivity<SwipeRefreshLayout, List<Hero>, HeroesView, HeroesPresenter>(), SwipeRefreshLayout.OnRefreshListener {
+class HeroesActivity : HeroesView, MvpLceViewStateActivity<SwipeRefreshLayout, List<Hero>, HeroesView, HeroesPresenter>(), SwipeRefreshLayout.OnRefreshListener {
 
     var adapter: HeroesAdapter? = null
 

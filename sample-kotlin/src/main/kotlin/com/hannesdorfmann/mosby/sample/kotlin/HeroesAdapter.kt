@@ -19,7 +19,7 @@ class HeroesAdapter(val context: Context, val inflater: LayoutInflater) : Recycl
     override fun getItemCount(): Int {
         return when (items) {
             null -> 0
-            else -> items!!.size()
+            else -> items!!.size
         }
     }
 

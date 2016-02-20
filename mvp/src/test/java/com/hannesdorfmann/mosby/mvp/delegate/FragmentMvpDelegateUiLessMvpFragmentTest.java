@@ -49,7 +49,7 @@ public class FragmentMvpDelegateUiLessMvpFragmentTest {
       Assert.fail("Exception expected");
     } catch (IllegalStateException e) {
       Assert.assertEquals(
-          "It seems that you are using com.hannesdorfmann.mosby.mvp.UiLessMvpFragmentTest.UiLessFragment as headless (UI less) fragment (because onViewCreated() has not been called or maybe delegation misses that part). Having a Presenter without a View (UI) doesn't make sense. Simply use an usual fragment instead of an MvpFragment if you want to use a UI less Fragment",
+          "It seems that you are using "+UiLessFragment.class.getCanonicalName()+" as headless (UI less) fragment (because onViewCreated() has not been called or maybe delegation misses that part). Having a Presenter without a View (UI) doesn't make sense. Simply use an usual fragment instead of an MvpFragment if you want to use a UI less Fragment",
           e.getMessage());
     }
   }

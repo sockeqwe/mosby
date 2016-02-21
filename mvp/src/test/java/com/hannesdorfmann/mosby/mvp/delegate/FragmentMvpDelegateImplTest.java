@@ -31,7 +31,7 @@ public class FragmentMvpDelegateImplTest {
 
   private MvpView view;
   private MvpPresenter<MvpView> presenter;
-  private BaseMvpDelegateCallback<MvpView, MvpPresenter<MvpView>> callback;
+  private MvpDelegateCallback<MvpView, MvpPresenter<MvpView>> callback;
   private FragmentMvpDelegateImpl<MvpView, MvpPresenter<MvpView>> delegate;
 
   @Before public void initComponents() {

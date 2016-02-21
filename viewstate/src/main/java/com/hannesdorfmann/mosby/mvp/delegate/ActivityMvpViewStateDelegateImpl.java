@@ -38,7 +38,7 @@ public class ActivityMvpViewStateDelegateImpl<V extends MvpView, P extends MvpPr
   @Override protected MvpInternalDelegate<V, P> getInternalDelegate() {
     if (internalDelegate == null) {
       internalDelegate =
-          new MvpViewStateInternalDelegate<>((BaseMvpViewStateDelegateCallback) delegateCallback);
+          new MvpViewStateInternalDelegate<>((MvpViewStateDelegateCallback) delegateCallback);
     }
 
     return internalDelegate;

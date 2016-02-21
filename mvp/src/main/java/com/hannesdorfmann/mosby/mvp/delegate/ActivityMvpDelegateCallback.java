@@ -27,11 +27,11 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
  * Activities that you want to support mosby's mvp.
  *
  * @author Hannes Dorfmann
- * @see BaseMvpDelegateCallback
+ * @see MvpDelegateCallback
  * @since 2.0.0
  */
 public interface ActivityMvpDelegateCallback<V extends MvpView, P extends MvpPresenter<V>>
-    extends BaseMvpDelegateCallback<V, P> {
+    extends MvpDelegateCallback<V, P> {
 
   /**
    * Return any Object holding the desired state to propagate to the next activity instance. Please

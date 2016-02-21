@@ -30,7 +30,7 @@ public class ViewGroupMvpDelegateImplTest {
 
   private MvpView view;
   private MvpPresenter<MvpView> presenter;
-  private BaseMvpDelegateCallback<MvpView, MvpPresenter<MvpView>> callback;
+  private MvpDelegateCallback<MvpView, MvpPresenter<MvpView>> callback;
   private ViewGroupMvpDelegateImpl<MvpView, MvpPresenter<MvpView>> delegate;
 
   @Before public void initComponents() {

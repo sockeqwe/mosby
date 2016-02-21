@@ -18,7 +18,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.hannesdorfmann.mosby.mvp.delegate.FragmentMvpDelegate;
 import com.hannesdorfmann.mosby.mvp.delegate.FragmentMvpViewStateDelegateImpl;
-import com.hannesdorfmann.mosby.mvp.delegate.BaseMvpViewStateDelegateCallback;
+import com.hannesdorfmann.mosby.mvp.delegate.MvpViewStateDelegateCallback;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 import com.hannesdorfmann.mosby.sample.mail.MailApplication;
 import com.hannesdorfmann.mosby.sample.mail.R;
@@ -29,7 +29,7 @@ import com.hannesdorfmann.mosby.sample.mail.model.mail.statistics.MailStatistics
  * @author Hannes Dorfmann
  */
 public class StatisticsDialog extends AppCompatDialogFragment implements StatisticsView,
-    BaseMvpViewStateDelegateCallback<StatisticsView, StatisticsPresenter> {
+    MvpViewStateDelegateCallback<StatisticsView, StatisticsPresenter> {
 
   @Bind(R.id.contentView) RecyclerView contentView;
   @Bind(R.id.loadingView) View loadingView;

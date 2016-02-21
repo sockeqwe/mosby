@@ -30,7 +30,7 @@ public class MvpInternalDelegateTest {
 
   private MvpView view;
   private MvpPresenter<MvpView> presenter;
-  private BaseMvpDelegateCallback<MvpView, MvpPresenter<MvpView>> callback;
+  private MvpDelegateCallback<MvpView, MvpPresenter<MvpView>> callback;
   private MvpInternalDelegate<MvpView, MvpPresenter<MvpView>> delegate;
 
   @Before public void initComponents() {
@@ -38,7 +38,7 @@ public class MvpInternalDelegateTest {
     };
 
     presenter = Mockito.mock(MvpPresenter.class);
-    callback = Mockito.mock(BaseMvpDelegateCallback.class);
+    callback = Mockito.mock(MvpDelegateCallback.class);
 
     Mockito.when(callback.getMvpView()).thenReturn(view);
 

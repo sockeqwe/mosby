@@ -35,11 +35,11 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
 public class FragmentMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<V>>
     implements FragmentMvpDelegate<V, P> {
 
-  protected BaseMvpDelegateCallback<V, P> delegateCallback;
+  protected MvpDelegateCallback<V, P> delegateCallback;
   protected MvpInternalDelegate<V, P> internalDelegate;
   private boolean onViewCreatedCalled = false;
 
-  public FragmentMvpDelegateImpl(BaseMvpDelegateCallback<V, P> delegateCallback) {
+  public FragmentMvpDelegateImpl(MvpDelegateCallback<V, P> delegateCallback) {
     if (delegateCallback == null) {
       throw new NullPointerException("MvpDelegateCallback is null!");
     }

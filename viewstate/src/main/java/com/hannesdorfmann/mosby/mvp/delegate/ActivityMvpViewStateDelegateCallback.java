@@ -22,7 +22,7 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 
 /**
- * An enhanced version of {@link BaseMvpDelegateCallback} that adds {@link ViewState} support.
+ * An enhanced version of {@link MvpDelegateCallback} that adds {@link ViewState} support.
  * This interface must be implemented by all (subclasses of) Activity
  * that want to support {@link
  * ViewState} and mvp.
@@ -31,6 +31,6 @@ import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
  * @since 2.0.0
  */
 public interface ActivityMvpViewStateDelegateCallback<V extends MvpView, P extends MvpPresenter<V>>
-    extends BaseMvpViewStateDelegateCallback<V, P>, ActivityMvpDelegateCallback<V, P> {
+    extends MvpViewStateDelegateCallback<V, P>, ActivityMvpDelegateCallback<V, P> {
 
 }

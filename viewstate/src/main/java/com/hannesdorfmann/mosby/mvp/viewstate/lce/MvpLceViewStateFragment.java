@@ -21,7 +21,7 @@ import android.view.View;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.delegate.FragmentMvpViewStateDelegateImpl;
 import com.hannesdorfmann.mosby.mvp.delegate.FragmentMvpDelegate;
-import com.hannesdorfmann.mosby.mvp.delegate.BaseMvpViewStateDelegateCallback;
+import com.hannesdorfmann.mosby.mvp.delegate.MvpViewStateDelegateCallback;
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceFragment;
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
@@ -34,7 +34,7 @@ import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
  */
 public abstract class MvpLceViewStateFragment<CV extends View, M, V extends MvpLceView<M>, P extends MvpPresenter<V>>
     extends MvpLceFragment<CV, M, V, P> implements MvpLceView<M>,
-    BaseMvpViewStateDelegateCallback<V, P> {
+    MvpViewStateDelegateCallback<V, P> {
 
   /**
    * The viewstate will be instantiated by calling {@link #createViewState()} in {@link

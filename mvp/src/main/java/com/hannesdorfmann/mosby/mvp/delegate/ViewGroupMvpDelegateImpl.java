@@ -29,10 +29,10 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
 public class ViewGroupMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<V>>
     implements ViewGroupMvpDelegate<V, P> {
 
-  protected BaseMvpDelegateCallback<V, P> delegateCallback;
+  protected MvpDelegateCallback<V, P> delegateCallback;
   protected MvpInternalDelegate<V, P> internalDelegate;
 
-  public ViewGroupMvpDelegateImpl(BaseMvpDelegateCallback<V, P> delegateCallback) {
+  public ViewGroupMvpDelegateImpl(MvpDelegateCallback<V, P> delegateCallback) {
     if (delegateCallback == null) {
       throw new NullPointerException("MvpDelegateCallback is null!");
     }

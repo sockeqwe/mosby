@@ -42,7 +42,7 @@ public class MvpViewStateInternalDelegateTest {
 
   private SimpleView view;
   private SimpleViewState viewState;
-  private BaseMvpViewStateDelegateCallback<SimpleView, MvpPresenter<SimpleView>> callback;
+  private MvpViewStateDelegateCallback<SimpleView, MvpPresenter<SimpleView>> callback;
   private MvpViewStateInternalDelegate<SimpleView, MvpPresenter<SimpleView>> delegate;
 
   @Before public void initComponents() {

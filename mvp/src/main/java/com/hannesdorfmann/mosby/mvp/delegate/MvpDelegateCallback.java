@@ -33,7 +33,7 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
  * @see ActivityMvpDelegateCallback
  * @since 1.1.0
  */
-public interface BaseMvpDelegateCallback<V extends MvpView, P extends MvpPresenter<V>> {
+public interface MvpDelegateCallback<V extends MvpView, P extends MvpPresenter<V>> {
 
   /**
    * Creates the presenter instance

@@ -25,7 +25,7 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 import com.hannesdorfmann.mosby.mvp.delegate.FragmentMvpDelegateImpl;
 import com.hannesdorfmann.mosby.mvp.delegate.FragmentMvpDelegate;
-import com.hannesdorfmann.mosby.mvp.delegate.BaseMvpDelegateCallback;
+import com.hannesdorfmann.mosby.mvp.delegate.MvpDelegateCallback;
 
 /**
  * A Fragment that uses an {@link MvpPresenter} to implement a Model-View-Presenter
@@ -35,7 +35,7 @@ import com.hannesdorfmann.mosby.mvp.delegate.BaseMvpDelegateCallback;
  * @since 1.0.0
  */
 public abstract class MvpFragment<V extends MvpView, P extends MvpPresenter<V>> extends Fragment
-    implements BaseMvpDelegateCallback<V, P>, MvpView {
+    implements MvpDelegateCallback<V, P>, MvpView {
 
   protected FragmentMvpDelegate<V, P> mvpDelegate;
 

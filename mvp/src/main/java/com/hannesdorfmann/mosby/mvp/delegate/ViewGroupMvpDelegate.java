@@ -16,6 +16,7 @@
 
 package com.hannesdorfmann.mosby.mvp.delegate;
 
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.FrameLayout;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
@@ -48,4 +49,17 @@ public interface ViewGroupMvpDelegate<V extends MvpView, P extends MvpPresenter<
    */
   public void onDetachedFromWindow();
 
+  /**
+   * Must be called from {@link View#onRestoreInstanceState(Parcelable)}
+   *
+   * @param state The parcelable state
+   */
+  public void onRestoreInstanceState(Parcelable state);
+
+  /**
+   * Save the instatnce state
+   *
+   * @return The state with all the saved data
+   */
+  public Parcelable onSaveInstanceState();
 }

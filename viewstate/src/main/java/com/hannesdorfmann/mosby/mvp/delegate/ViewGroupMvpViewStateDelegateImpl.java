@@ -15,12 +15,12 @@
  */
 package com.hannesdorfmann.mosby.mvp.delegate;
 
+import android.content.Context;
 import android.os.Parcelable;
-import android.view.View;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
+import com.hannesdorfmann.mosby.mvp.viewstate.RestorableParcelableViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
-import com.hannesdorfmann.mosby.mvp.viewstate.layout.ViewStateSavedState;
 
 /**
  * A {@link ViewGroupMvpDelegate} that supports {@link ViewState}
@@ -31,59 +31,71 @@ import com.hannesdorfmann.mosby.mvp.viewstate.layout.ViewStateSavedState;
 public class ViewGroupMvpViewStateDelegateImpl<V extends MvpView, P extends MvpPresenter<V>>
     extends ViewGroupMvpDelegateImpl<V, P> {
 
-  public ViewGroupMvpViewStateDelegateImpl(MvpViewStateViewGroupDelegateCallback<V, P> delegateCallback) {
+  private boolean applyViewState = false;
+  private boolean viewStateRetained = false;
+
+  public ViewGroupMvpViewStateDelegateImpl(
+      ViewGroupViewStateDelegateCallback<V, P> delegateCallback) {
     super(delegateCallback);
   }
 
-  @Override protected MvpInternalDelegate<V, P> getInternalDelegate() {
-    if (internalDelegate == null) {
-      internalDelegate = new MvpInternalLayoutViewStateDelegate<V, P>(
-          (MvpViewStateViewGroupDelegateCallback) delegateCallback);
+  @Override protected MosbySavedState createSavedState(Parcelable superState) {
+
+    ViewGroupViewStateDelegateCallback<V, P> castedDelegate =
+        (ViewGroupViewStateDelegateCallback<V, P>) delegateCallback;
+
+    MosbyViewStateSavedState state = new MosbyViewStateSavedState(superState);
+    state.setMosbyViewId(viewId);
+    ViewState<V> viewState = castedDelegate.getViewState();
+
+    if (viewState instanceof RestorableParcelableViewState) {
+      state.setMosbyViewState((RestorableParcelableViewState<V>) viewState);
     }
 
-    return internalDelegate;
+    return state;
+  }
+
+  @Override protected void restoreSavedState(MosbySavedState state) {
+    super.restoreSavedState(state);
+    MosbyViewStateSavedState mosbySavedState = (MosbyViewStateSavedState) state;
+
+    ViewGroupViewStateDelegateCallback<V, P> castedDelegate =
+        (ViewGroupViewStateDelegateCallback<V, P>) delegateCallback;
+
+    ViewState<V> memoryViewState =
+        orientationChangeManager.getViewState(viewId, delegateCallback.getContext());
+
+    if (memoryViewState != null) {
+      // viewstate from memory
+      castedDelegate.setViewState(memoryViewState);
+      applyViewState = true;
+      viewStateRetained = true;
+    } else if (mosbySavedState.getMosbyViewState() != null) {
+      castedDelegate.setViewState(mosbySavedState.getMosbyViewState());
+      applyViewState = true;
+      viewStateRetained = false;
+    } else {
+      // No viewState found
+      applyViewState = false;
+    }
   }
 
   @Override public void onAttachedToWindow() {
     super.onAttachedToWindow();
-    MvpInternalLayoutViewStateDelegate internal =
-        (MvpInternalLayoutViewStateDelegate) getInternalDelegate();
-    internal.createOrRestoreViewState(null);
-    internal.applyViewState();
-  }
-
-  /**
-   * Must be called from {@link View#onSaveInstanceState()}
-   */
-  public Parcelable onSaveInstanceState() {
-
-    MvpViewStateViewGroupDelegateCallback delegate = (MvpViewStateViewGroupDelegateCallback) delegateCallback;
-    Parcelable superParcelable = delegate.superOnSaveInstanceState();
-
-    Parcelable vsParcelable =
-        ((MvpInternalLayoutViewStateDelegate) getInternalDelegate()).saveViewState(superParcelable);
-    if (vsParcelable != null) {
-      return vsParcelable;
-    } else {
-      return superParcelable;
+    if (applyViewState) {
+      ((ViewGroupViewStateDelegateCallback) delegateCallback).getViewState()
+          .apply(delegateCallback.getMvpView(), viewStateRetained);
     }
   }
 
-  /**
-   * Must be called from {@link View#onRestoreInstanceState(Parcelable)}
-   */
-  public void onRestoreInstanceState(Parcelable state) {
+  @Override public void onDetachedFromWindow() {
+    super.onDetachedFromWindow();
+    Context context = delegateCallback.getContext();
 
-    MvpViewStateViewGroupDelegateCallback delegate = (MvpViewStateViewGroupDelegateCallback) delegateCallback;
-
-    if (!(state instanceof ViewStateSavedState)) {
-      delegate.superOnRestoreInstanceState(state);
-      return;
+    if (delegateCallback.isRetainInstance()
+        && orientationChangeManager.willViewBeDetachedBecauseOrientationChange(context)) {
+      orientationChangeManager.putViewState(viewId,
+          ((ViewGroupViewStateDelegateCallback) delegateCallback).getViewState(), context);
     }
-
-    ViewStateSavedState vsState = (ViewStateSavedState) state;
-    ((MvpInternalLayoutViewStateDelegate) getInternalDelegate()).createOrRestoreViewState(vsState);
-
-    delegate.superOnRestoreInstanceState(vsState.getSuperState());
   }
 }

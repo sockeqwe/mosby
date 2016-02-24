@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.hannesdorfmann.mosby.mvp.viewstate.layout;
+package com.hannesdorfmann.mosby.mvp.delegate;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.view.View;
 import com.hannesdorfmann.mosby.mvp.viewstate.RestorableParcelableViewState;
 
 /**
@@ -26,26 +25,26 @@ import com.hannesdorfmann.mosby.mvp.viewstate.RestorableParcelableViewState;
  * @author Hannes Dorfmann
  * @since 1.1
  */
-public class ViewStateSavedState extends View.BaseSavedState {
+public class MosbyViewStateSavedState extends MosbySavedState {
 
-  public static final Parcelable.Creator<ViewStateSavedState> CREATOR =
-      new Parcelable.Creator<ViewStateSavedState>() {
-        public ViewStateSavedState createFromParcel(Parcel in) {
-          return new ViewStateSavedState(in);
+  public static final Parcelable.Creator<MosbyViewStateSavedState> CREATOR =
+      new Parcelable.Creator<MosbyViewStateSavedState>() {
+        public MosbyViewStateSavedState createFromParcel(Parcel in) {
+          return new MosbyViewStateSavedState(in);
         }
 
-        public ViewStateSavedState[] newArray(int size) {
-          return new ViewStateSavedState[size];
+        public MosbyViewStateSavedState[] newArray(int size) {
+          return new MosbyViewStateSavedState[size];
         }
       };
 
   private RestorableParcelableViewState mosbyViewState;
 
-  public ViewStateSavedState(Parcelable superState) {
+  public MosbyViewStateSavedState(Parcelable superState) {
     super(superState);
   }
 
-  private ViewStateSavedState(Parcel in) {
+  protected MosbyViewStateSavedState(Parcel in) {
     super(in);
     this.mosbyViewState = in.readParcelable(RestorableParcelableViewState.class.getClassLoader());
   }

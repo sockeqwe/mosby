@@ -24,7 +24,7 @@ import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 import com.hannesdorfmann.mosby.mvp.delegate.ViewGroupMvpViewStateDelegateImpl;
 import com.hannesdorfmann.mosby.mvp.delegate.ViewGroupMvpDelegate;
-import com.hannesdorfmann.mosby.mvp.delegate.MvpViewStateViewGroupDelegateCallback;
+import com.hannesdorfmann.mosby.mvp.delegate.ViewGroupViewStateDelegateCallback;
 import com.hannesdorfmann.mosby.mvp.layout.MvpFrameLayout;
 import com.hannesdorfmann.mosby.mvp.viewstate.RestorableParcelableViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
@@ -36,7 +36,7 @@ import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
  * @since 1.1
  */
 public abstract class MvpViewStateFrameLayout<V extends MvpView, P extends MvpPresenter<V>>
-    extends MvpFrameLayout<V, P> implements MvpViewStateViewGroupDelegateCallback<V, P> {
+    extends MvpFrameLayout<V, P> implements ViewGroupViewStateDelegateCallback<V, P> {
 
   private boolean restoringViewState = false;
   protected RestorableParcelableViewState viewState;
@@ -67,13 +67,12 @@ public abstract class MvpViewStateFrameLayout<V extends MvpView, P extends MvpPr
     return mvpDelegate;
   }
 
-  @SuppressLint("MissingSuperCall")
-  @Override protected Parcelable onSaveInstanceState() {
+  @SuppressLint("MissingSuperCall") @Override protected Parcelable onSaveInstanceState() {
     return ((ViewGroupMvpViewStateDelegateImpl) getMvpDelegate()).onSaveInstanceState();
   }
 
-  @SuppressLint("MissingSuperCall")
-  @Override protected void onRestoreInstanceState(Parcelable state) {
+  @SuppressLint("MissingSuperCall") @Override
+  protected void onRestoreInstanceState(Parcelable state) {
     ((ViewGroupMvpViewStateDelegateImpl) getMvpDelegate()).onRestoreInstanceState(state);
   }
 

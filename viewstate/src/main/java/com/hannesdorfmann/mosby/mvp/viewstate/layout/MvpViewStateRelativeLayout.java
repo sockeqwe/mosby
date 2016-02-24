@@ -24,7 +24,7 @@ import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 import com.hannesdorfmann.mosby.mvp.delegate.ViewGroupMvpViewStateDelegateImpl;
 import com.hannesdorfmann.mosby.mvp.delegate.ViewGroupMvpDelegate;
-import com.hannesdorfmann.mosby.mvp.delegate.MvpViewStateViewGroupDelegateCallback;
+import com.hannesdorfmann.mosby.mvp.delegate.ViewGroupViewStateDelegateCallback;
 import com.hannesdorfmann.mosby.mvp.layout.MvpRelativeLayout;
 import com.hannesdorfmann.mosby.mvp.viewstate.RestorableParcelableViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
@@ -36,7 +36,7 @@ import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
  * @since 1.1.0
  */
 public abstract class MvpViewStateRelativeLayout<V extends MvpView, P extends MvpPresenter<V>>
-    extends MvpRelativeLayout<V, P> implements MvpViewStateViewGroupDelegateCallback<V, P> {
+    extends MvpRelativeLayout<V, P> implements ViewGroupViewStateDelegateCallback<V, P> {
 
   private boolean restoringViewState = false;
   protected RestorableParcelableViewState viewState;

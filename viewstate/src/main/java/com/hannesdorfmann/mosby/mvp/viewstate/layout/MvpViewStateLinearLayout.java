@@ -24,7 +24,7 @@ import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 import com.hannesdorfmann.mosby.mvp.delegate.ViewGroupMvpViewStateDelegateImpl;
 import com.hannesdorfmann.mosby.mvp.delegate.ViewGroupMvpDelegate;
-import com.hannesdorfmann.mosby.mvp.delegate.MvpViewStateViewGroupDelegateCallback;
+import com.hannesdorfmann.mosby.mvp.delegate.ViewGroupViewStateDelegateCallback;
 import com.hannesdorfmann.mosby.mvp.layout.MvpLinearLayout;
 import com.hannesdorfmann.mosby.mvp.viewstate.RestorableParcelableViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
@@ -35,8 +35,8 @@ import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
  * @author Hannes Dorfmann
  * @since 1.1
  */
-public abstract class MvpViewStateLinearLayout<V extends MvpView, P extends MvpPresenter<V>> extends MvpLinearLayout<V, P>
-    implements MvpViewStateViewGroupDelegateCallback<V, P> {
+public abstract class MvpViewStateLinearLayout<V extends MvpView, P extends MvpPresenter<V>>
+    extends MvpLinearLayout<V, P> implements ViewGroupViewStateDelegateCallback<V, P> {
 
   private boolean restoringViewState = false;
   protected RestorableParcelableViewState viewState;
@@ -59,7 +59,6 @@ public abstract class MvpViewStateLinearLayout<V extends MvpView, P extends MvpP
     super(context, attrs, defStyleAttr, defStyleRes);
   }
 
-
   protected ViewGroupMvpDelegate<V, P> getMvpDelegate() {
     if (mvpDelegate == null) {
       mvpDelegate = new ViewGroupMvpViewStateDelegateImpl<V, P>(this);
@@ -72,8 +71,8 @@ public abstract class MvpViewStateLinearLayout<V extends MvpView, P extends MvpP
     return ((ViewGroupMvpViewStateDelegateImpl) getMvpDelegate()).onSaveInstanceState();
   }
 
-  @SuppressLint("MissingSuperCall")
-  @Override protected void onRestoreInstanceState(Parcelable state) {
+  @SuppressLint("MissingSuperCall") @Override
+  protected void onRestoreInstanceState(Parcelable state) {
     ((ViewGroupMvpViewStateDelegateImpl) getMvpDelegate()).onRestoreInstanceState(state);
   }
 

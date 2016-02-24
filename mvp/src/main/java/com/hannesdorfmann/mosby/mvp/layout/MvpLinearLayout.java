@@ -15,14 +15,16 @@
  */
 package com.hannesdorfmann.mosby.mvp.layout;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
-import com.hannesdorfmann.mosby.mvp.delegate.MvpDelegateCallback;
+import com.hannesdorfmann.mosby.mvp.delegate.ViewGroupDelegateCallback;
 import com.hannesdorfmann.mosby.mvp.delegate.ViewGroupMvpDelegate;
 import com.hannesdorfmann.mosby.mvp.delegate.ViewGroupMvpDelegateImpl;
 
@@ -33,10 +35,11 @@ import com.hannesdorfmann.mosby.mvp.delegate.ViewGroupMvpDelegateImpl;
  * @since 1.1
  */
 public abstract class MvpLinearLayout<V extends MvpView, P extends MvpPresenter<V>>
-    extends LinearLayout implements MvpView, MvpDelegateCallback<V, P> {
+    extends LinearLayout implements MvpView, ViewGroupDelegateCallback<V, P> {
 
   protected P presenter;
   protected ViewGroupMvpDelegate<V, P> mvpDelegate;
+  private boolean retainInstance = false;
 
   public MvpLinearLayout(Context context) {
     super(context);
@@ -67,7 +70,7 @@ public abstract class MvpLinearLayout<V extends MvpView, P extends MvpPresenter<
    * Only override this method if you really know what you are doing.
    * </p>
    *
-   * @return {@link ViewGroupMvpDelegateImpl}
+   * @return {@link ViewGroupMvpDelegate}
    */
   @NonNull protected ViewGroupMvpDelegate<V, P> getMvpDelegate() {
     if (mvpDelegate == null) {
@@ -85,6 +88,15 @@ public abstract class MvpLinearLayout<V extends MvpView, P extends MvpPresenter<
   @Override protected void onDetachedFromWindow() {
     super.onDetachedFromWindow();
     getMvpDelegate().onDetachedFromWindow();
+  }
+
+  @SuppressLint("MissingSuperCall") @Override protected Parcelable onSaveInstanceState() {
+    return getMvpDelegate().onSaveInstanceState();
+  }
+
+  @SuppressLint("MissingSuperCall") @Override
+  protected void onRestoreInstanceState(Parcelable state) {
+    getMvpDelegate().onRestoreInstanceState(state);
   }
 
   /**
@@ -107,12 +119,11 @@ public abstract class MvpLinearLayout<V extends MvpView, P extends MvpPresenter<
   }
 
   @Override public boolean isRetainInstance() {
-    return false;
+    return retainInstance;
   }
 
   @Override public void setRetainInstance(boolean retainingInstance) {
-    throw new UnsupportedOperationException(
-        "Retainining Instance is not supported / implemented yet");
+    this.retainInstance = retainingInstance;
   }
 
   @Override public boolean shouldInstanceBeRetained() {

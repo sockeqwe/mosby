@@ -16,20 +16,21 @@
 
 package com.hannesdorfmann.mosby.mvp.delegate;
 
+import android.content.Context;
 import android.os.Parcelable;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
-import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 
 /**
- * An enhanced version of {@link MvpViewStateDelegateCallback} that adds {@link ViewState} support for
+ * An enhanced version of {@link MvpDelegateCallback} that adds support
+ * for
  * android.view.View like FrameLayout etc.
  *
  * @author Hannes Dorfmann
- * @since 1.1.0
+ * @since 3.0
  */
-public interface MvpViewStateViewGroupDelegateCallback<V extends MvpView, P extends MvpPresenter<V>>
-    extends MvpViewStateDelegateCallback<V, P> {
+public interface ViewGroupDelegateCallback<V extends MvpView, P extends MvpPresenter<V>>
+    extends MvpDelegateCallback<V, P> {
 
   /**
    * This method must call super.onSaveInstanceState() within any view
@@ -42,4 +43,12 @@ public interface MvpViewStateViewGroupDelegateCallback<V extends MvpView, P exte
    * @param state The parcelable containing the state
    */
   public void superOnRestoreInstanceState(Parcelable state);
+
+  /**
+   * Get the context
+   *
+   * @return Get the context
+   * @since 3.0
+   */
+  public Context getContext();
 }

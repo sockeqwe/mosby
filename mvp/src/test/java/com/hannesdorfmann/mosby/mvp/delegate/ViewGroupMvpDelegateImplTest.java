@@ -17,6 +17,8 @@
 
 package com.hannesdorfmann.mosby.mvp.delegate;
 
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 import org.junit.Before;
@@ -30,7 +32,7 @@ public class ViewGroupMvpDelegateImplTest {
 
   private MvpView view;
   private MvpPresenter<MvpView> presenter;
-  private MvpDelegateCallback<MvpView, MvpPresenter<MvpView>> callback;
+  private PartialViewGroupMvpDelegateCallbackImpl callback;
   private ViewGroupMvpDelegateImpl<MvpView, MvpPresenter<MvpView>> delegate;
 
   @Before public void initComponents() {
@@ -38,7 +40,7 @@ public class ViewGroupMvpDelegateImplTest {
     };
 
     presenter = Mockito.mock(MvpPresenter.class);
-    callback = Mockito.mock(PartialMvpDelegateCallbackImpl.class);
+    callback = Mockito.mock(PartialViewGroupMvpDelegateCallbackImpl.class);
     Mockito.doCallRealMethod().when(callback).setPresenter(presenter);
     Mockito.doCallRealMethod().when(callback).getPresenter();
 
@@ -66,16 +68,28 @@ public class ViewGroupMvpDelegateImplTest {
   }
 
   private void testFinishViewGroup(boolean retainingInstanceState) {
+
+    AppCompatActivity mockActivity = Mockito.mock(AppCompatActivity.class);
+    FragmentManager mockFragmentManager = Mockito.mock(FragmentManager.class);
+
+    OrientationChangeManager.OrientationChangeFragment fragment =
+        new OrientationChangeManager.OrientationChangeFragment();
+
+    Mockito.when(mockFragmentManager.findFragmentByTag(OrientationChangeManager.FRAGMENT_TAG))
+        .thenReturn(fragment);
+    Mockito.when(mockActivity.getSupportFragmentManager()).thenReturn(mockFragmentManager);
+
     Mockito.when(callback.getPresenter()).thenReturn(presenter);
     Mockito.when(callback.shouldInstanceBeRetained()).thenReturn(retainingInstanceState);
+    Mockito.when(callback.isRetainInstance()).thenReturn(retainingInstanceState);
+    Mockito.when(callback.getContext()).thenReturn(mockActivity);
 
     delegate.onDetachedFromWindow();
 
     Mockito.verify(presenter, Mockito.times(1)).detachView(retainingInstanceState);
   }
 
-  @Test
-  public void reuseRetainingPresenter(){
+  @Test public void reuseRetainingPresenter() {
     Mockito.when(callback.getPresenter()).thenReturn(presenter);
     delegate.onAttachedToWindow();
 

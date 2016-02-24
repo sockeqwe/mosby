@@ -18,29 +18,30 @@
 package com.hannesdorfmann.mosby.mvp.delegate.mock;
 
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
-import com.hannesdorfmann.mosby.mvp.delegate.MvpViewStateViewGroupDelegateCallback;
+import com.hannesdorfmann.mosby.mvp.delegate.ViewGroupViewStateDelegateCallback;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 
 /**
  * A class for partial mocking
+ *
  * @author Hannes Dorfmann
  */
 public abstract class PartialViewGroupViewStateCallbackImpl
-    implements MvpViewStateViewGroupDelegateCallback<SimpleView, MvpPresenter<SimpleView>> {
+    implements ViewGroupViewStateDelegateCallback<SimpleView, MvpPresenter<SimpleView>> {
 
   private ViewState<SimpleView> viewState;
   private MvpPresenter<SimpleView> presenter;
 
-  @Override public void setViewState(ViewState<SimpleView> viewState) {
-    this.viewState = viewState;
+  @Override public void setViewState(ViewState<SimpleView> vs) {
+    viewState = vs;
   }
 
   @Override public ViewState<SimpleView> getViewState() {
     return viewState;
   }
 
-  @Override public void setPresenter(MvpPresenter<SimpleView> presenter) {
-    this.presenter = presenter;
+  @Override public void setPresenter(MvpPresenter<SimpleView> ps) {
+    presenter = ps;
   }
 
   @Override public MvpPresenter<SimpleView> getPresenter() {

@@ -9,6 +9,7 @@ import android.support.annotation.UiThread;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.util.SparseArrayCompat;
+import android.util.Log;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 
@@ -85,7 +86,10 @@ class OrientationChangeManager<V extends MvpView, P extends MvpPresenter<V>> {
 
     // No internalFragment found, so create a new one
     this.internalFragment = new OrientationChangeFragment();
-    activity.getSupportFragmentManager().beginTransaction().add(fragment, FRAGMENT_TAG).commit();
+    activity.getSupportFragmentManager()
+        .beginTransaction()
+        .add(internalFragment, FRAGMENT_TAG)
+        .commit();
 
     return this.internalFragment;
   }

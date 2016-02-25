@@ -87,7 +87,7 @@ public class ViewGroupMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<
 
       if (destroyedPermanently) {
         // Whole activity will be destroyed
-        orientationChangeManager.removePresenterAndViewState(viewId, context);
+        // Internally Orientation manager already does the clean up
         viewId = 0;
         delegateCallback.getPresenter().detachView(false);
       } else {

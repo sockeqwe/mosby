@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+  <android.support.design.widget.AppBarLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      >
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:layout_scrollFlags="scroll|enterAlways"
+        app:title="@string/app_name"
+        app:titleTextColor="@android:color/white"
+        />
+    />
+
+  </android.support.design.widget.AppBarLayout>
+
+  <com.hannesdorfmann.mosby.sample.flow.countries.CountriesList
+      android:id="@+id/countriesScreen"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      />
+
+</android.support.design.widget.CoordinatorLayout>

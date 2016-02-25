@@ -17,6 +17,7 @@ package com.hannesdorfmann.mosby.mvp.delegate;
 
 import android.content.Context;
 import android.os.Parcelable;
+import android.util.Log;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 import com.hannesdorfmann.mosby.mvp.viewstate.RestorableParcelableViewState;
@@ -31,8 +32,7 @@ import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 public class ViewGroupMvpViewStateDelegateImpl<V extends MvpView, P extends MvpPresenter<V>>
     extends ViewGroupMvpDelegateImpl<V, P> {
 
-  private boolean applyViewState = false;
-  private boolean viewStateRetained = false;
+  private ViewState<V> restoredParcelableViewState = null;
 
   public ViewGroupMvpViewStateDelegateImpl(
       ViewGroupViewStateDelegateCallback<V, P> delegateCallback) {
@@ -51,51 +51,62 @@ public class ViewGroupMvpViewStateDelegateImpl<V extends MvpView, P extends MvpP
     if (viewState instanceof RestorableParcelableViewState) {
       state.setMosbyViewState((RestorableParcelableViewState<V>) viewState);
     }
-
     return state;
   }
 
   @Override protected void restoreSavedState(MosbySavedState state) {
     super.restoreSavedState(state);
-    MosbyViewStateSavedState mosbySavedState = (MosbyViewStateSavedState) state;
 
-    ViewGroupViewStateDelegateCallback<V, P> castedDelegate =
-        (ViewGroupViewStateDelegateCallback<V, P>) delegateCallback;
+    MosbyViewStateSavedState mosbySavedState = (MosbyViewStateSavedState) state;
+    restoredParcelableViewState = mosbySavedState.getMosbyViewState();
+  }
+
+  @Override public void onAttachedToWindow() {
+    super.onAttachedToWindow();
+    ViewGroupViewStateDelegateCallback<V, P> castedCallback =
+        ((ViewGroupViewStateDelegateCallback<V, P>) delegateCallback);
 
     ViewState<V> memoryViewState =
         orientationChangeManager.getViewState(viewId, delegateCallback.getContext());
 
     if (memoryViewState != null) {
-      // viewstate from memory
-      castedDelegate.setViewState(memoryViewState);
-      applyViewState = true;
-      viewStateRetained = true;
-    } else if (mosbySavedState.getMosbyViewState() != null) {
-      castedDelegate.setViewState(mosbySavedState.getMosbyViewState());
-      applyViewState = true;
-      viewStateRetained = false;
+      // ViewState in memory
+      castedCallback.setRestoringViewState(true);
+      castedCallback.setViewState(memoryViewState);
+      memoryViewState.apply(castedCallback.getMvpView(), true);
+      castedCallback.setRestoringViewState(false);
+      restoredParcelableViewState = null; // free memory
+      castedCallback.onViewStateInstanceRestored(true);
+    } else if (restoredParcelableViewState != null) {
+      // ViewState from parcelable
+      castedCallback.setRestoringViewState(true);
+      castedCallback.setViewState(restoredParcelableViewState);
+      restoredParcelableViewState.apply(castedCallback.getMvpView(), false);
+      castedCallback.setRestoringViewState(false);
+      restoredParcelableViewState = null; // free memory
+      castedCallback.onViewStateInstanceRestored(false);
     } else {
-      // No viewState found
-      applyViewState = false;
-    }
-  }
-
-  @Override public void onAttachedToWindow() {
-    super.onAttachedToWindow();
-    if (applyViewState) {
-      ((ViewGroupViewStateDelegateCallback) delegateCallback).getViewState()
-          .apply(delegateCallback.getMvpView(), viewStateRetained);
+      // No view state, launching for first time
+      ViewState<V> viewState = castedCallback.createViewState();
+      if (viewState == null) {
+        throw new NullPointerException("ViewState returned from createViewState() is null! View is "
+            + castedCallback.getMvpView());
+      }
+      castedCallback.setViewState(viewState);
+      castedCallback.onNewViewStateInstance();
     }
   }
 
   @Override public void onDetachedFromWindow() {
-    super.onDetachedFromWindow();
     Context context = delegateCallback.getContext();
 
     if (delegateCallback.isRetainInstance()
-        && orientationChangeManager.willViewBeDetachedBecauseOrientationChange(context)) {
+        && !orientationChangeManager.willViewBeDestroyedPermanently(context)) {
       orientationChangeManager.putViewState(viewId,
           ((ViewGroupViewStateDelegateCallback) delegateCallback).getViewState(), context);
     }
+
+    // super will do the cleanup
+    super.onDetachedFromWindow();
   }
 }

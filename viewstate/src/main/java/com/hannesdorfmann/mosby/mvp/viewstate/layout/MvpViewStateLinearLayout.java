@@ -15,18 +15,15 @@
  */
 package com.hannesdorfmann.mosby.mvp.viewstate.layout;
 
-import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.os.Parcelable;
 import android.util.AttributeSet;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
-import com.hannesdorfmann.mosby.mvp.delegate.ViewGroupMvpViewStateDelegateImpl;
 import com.hannesdorfmann.mosby.mvp.delegate.ViewGroupMvpDelegate;
+import com.hannesdorfmann.mosby.mvp.delegate.ViewGroupMvpViewStateDelegateImpl;
 import com.hannesdorfmann.mosby.mvp.delegate.ViewGroupViewStateDelegateCallback;
 import com.hannesdorfmann.mosby.mvp.layout.MvpLinearLayout;
-import com.hannesdorfmann.mosby.mvp.viewstate.RestorableParcelableViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 
 /**
@@ -39,7 +36,7 @@ public abstract class MvpViewStateLinearLayout<V extends MvpView, P extends MvpP
     extends MvpLinearLayout<V, P> implements ViewGroupViewStateDelegateCallback<V, P> {
 
   private boolean restoringViewState = false;
-  protected RestorableParcelableViewState viewState;
+  protected ViewState<V> viewState;
 
   public MvpViewStateLinearLayout(Context context) {
     super(context);
@@ -59,6 +56,7 @@ public abstract class MvpViewStateLinearLayout<V extends MvpView, P extends MvpP
     super(context, attrs, defStyleAttr, defStyleRes);
   }
 
+  @Override
   protected ViewGroupMvpDelegate<V, P> getMvpDelegate() {
     if (mvpDelegate == null) {
       mvpDelegate = new ViewGroupMvpViewStateDelegateImpl<V, P>(this);
@@ -67,21 +65,12 @@ public abstract class MvpViewStateLinearLayout<V extends MvpView, P extends MvpP
     return mvpDelegate;
   }
 
-  @SuppressLint("MissingSuperCall") @Override protected Parcelable onSaveInstanceState() {
-    return ((ViewGroupMvpViewStateDelegateImpl) getMvpDelegate()).onSaveInstanceState();
-  }
-
-  @SuppressLint("MissingSuperCall") @Override
-  protected void onRestoreInstanceState(Parcelable state) {
-    ((ViewGroupMvpViewStateDelegateImpl) getMvpDelegate()).onRestoreInstanceState(state);
-  }
-
-  @Override public RestorableParcelableViewState getViewState() {
+  @Override public ViewState<V> getViewState() {
     return viewState;
   }
 
-  @Override public void setViewState(ViewState viewState) {
-    this.viewState = (RestorableParcelableViewState) viewState;
+  @Override public void setViewState(ViewState<V> viewState) {
+    this.viewState = viewState;
   }
 
   @Override public void setRestoringViewState(boolean retstoringViewState) {
@@ -96,11 +85,4 @@ public abstract class MvpViewStateLinearLayout<V extends MvpView, P extends MvpP
     // can be overridden in subclass
   }
 
-  @Override public Parcelable superOnSaveInstanceState() {
-    return super.onSaveInstanceState();
-  }
-
-  @Override public void superOnRestoreInstanceState(Parcelable state) {
-    super.onRestoreInstanceState(state);
-  }
 }

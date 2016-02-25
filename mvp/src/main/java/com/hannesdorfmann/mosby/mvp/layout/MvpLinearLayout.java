@@ -129,4 +129,12 @@ public abstract class MvpLinearLayout<V extends MvpView, P extends MvpPresenter<
   @Override public boolean shouldInstanceBeRetained() {
     return false;
   }
+
+  @Override public final Parcelable superOnSaveInstanceState() {
+    return super.onSaveInstanceState();
+  }
+
+  @Override public final void superOnRestoreInstanceState(Parcelable state) {
+    super.onRestoreInstanceState(state);
+  }
 }

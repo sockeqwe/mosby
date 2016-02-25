@@ -55,11 +55,10 @@ public class ViewGroupMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<
         delegateCallback.setPresenter(presenter);
         presenter.attachView(delegateCallback.getMvpView());
         return;
-      } else {
-        // TODO conflict resolution if view get's id held by someone else?
       }
     }
 
+    // TODO clean up that part (double getPresenter check)
     P presenter = delegateCallback.getPresenter();
     if (presenter == null) {
       presenter = delegateCallback.createPresenter();
@@ -70,7 +69,7 @@ public class ViewGroupMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<
 
     delegateCallback.setPresenter(presenter);
     if (delegateCallback.isRetainInstance()) {
-      viewId = orientationChangeManager.nextViewId();
+      viewId = orientationChangeManager.nextViewId(delegateCallback.getContext());
       orientationChangeManager.putPresenter(viewId, presenter, delegateCallback.getContext());
     }
 

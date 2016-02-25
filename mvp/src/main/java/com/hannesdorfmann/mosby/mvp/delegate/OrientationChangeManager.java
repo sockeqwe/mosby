@@ -9,7 +9,6 @@ import android.support.annotation.UiThread;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.util.SparseArrayCompat;
-import android.util.Log;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 
@@ -32,7 +31,7 @@ class OrientationChangeManager<V extends MvpView, P extends MvpPresenter<V>> {
   static final String FRAGMENT_TAG = "com.hannesdorfmann.mosby.mvp.OrientationChangeFragment";
 
   // 0 is preserverd as "no view id"
-  private static int VIEW_ID = 1;
+  private static int VIEW_ID = 0;
 
   /**
    * Never use this directly. Always use {@link #getFragment(Context)}
@@ -41,12 +40,21 @@ class OrientationChangeManager<V extends MvpView, P extends MvpPresenter<V>> {
   private boolean viewDestroyedPermanently = false;
 
   /**
-   * Get the next (internal) view id
+   * Get the next (mosby internal) view id
    *
+   * @param context The context
    * @return the view id
    */
-  int nextViewId() {
-    return VIEW_ID++;
+  int nextViewId(Context context) {
+    while (getPresenter(++VIEW_ID, context) != null) {
+      if (VIEW_ID == Integer.MAX_VALUE) {
+        throw new IllegalStateException(
+            "Oops, it seems that we ran out of (mosby internal) view id's. It seems that your user has navigated more than "
+                + Integer.MAX_VALUE
+                + " times through your app. There is nothing you can do to fix that");
+      }
+    }
+    return VIEW_ID;
   }
 
   private FragmentActivity getActivity(Context context) {

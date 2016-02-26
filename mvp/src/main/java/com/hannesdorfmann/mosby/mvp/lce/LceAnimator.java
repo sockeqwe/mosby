@@ -33,6 +33,8 @@ import com.hannesdorfmann.mosby.mvp.R;
  */
 public class LceAnimator {
 
+  private LceAnimator() {}
+
   /**
    * Show the loading view. No animations, because sometimes loading things is pretty fast (i.e.
    * retrieve data from memory cache).

@@ -45,11 +45,11 @@ class CountriesPresenter @Inject constructor(val atlas: Atlas) : MvpBasePresente
 
   override fun attachView(view: CountriesView?) {
     super.attachView(view)
-    Log.d("Flow", "attaching View $view to $this")
+    Log.d("Flow", "attaching View to $this")
   }
 
   override fun detachView(retainInstance: Boolean) {
-    Log.d("Flow", "detaching View " + view!! + " from $this retained: $retainInstance")
+    Log.d("Flow", "detaching View from $this retained: $retainInstance")
     Log.d("Flow", "-------------------")
     super.detachView(retainInstance)
     if (!retainInstance) {

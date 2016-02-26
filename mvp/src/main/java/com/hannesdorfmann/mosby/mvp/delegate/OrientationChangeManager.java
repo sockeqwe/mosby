@@ -30,14 +30,10 @@ class OrientationChangeManager<V extends MvpView, P extends MvpPresenter<V>> {
 
   static final String FRAGMENT_TAG = "com.hannesdorfmann.mosby.mvp.OrientationChangeFragment";
 
-  // 0 is preserverd as "no view id"
-  private static int VIEW_ID = 0;
-
   /**
    * Never use this directly. Always use {@link #getFragment(Context)}
    */
   private OrientationChangeFragment internalFragment = null;
-  private boolean viewDestroyedPermanently = false;
 
   /**
    * Get the next (mosby internal) view id
@@ -45,16 +41,8 @@ class OrientationChangeManager<V extends MvpView, P extends MvpPresenter<V>> {
    * @param context The context
    * @return the view id
    */
-  int nextViewId(Context context) {
-    while (getPresenter(++VIEW_ID, context) != null) {
-      if (VIEW_ID == Integer.MAX_VALUE) {
-        throw new IllegalStateException(
-            "Oops, it seems that we ran out of (mosby internal) view id's. It seems that your user has navigated more than "
-                + Integer.MAX_VALUE
-                + " times through your app. There is nothing you can do to fix that");
-      }
-    }
-    return VIEW_ID;
+  @UiThread int nextViewId(Context context) {
+    return getFragment(context).nextViewId();
   }
 
   private FragmentActivity getActivity(Context context) {
@@ -192,6 +180,12 @@ class OrientationChangeManager<V extends MvpView, P extends MvpPresenter<V>> {
     }
   }
 
+  /**
+   * Save the view state "in memory cache" during screen orientation changes
+   * @param viewId The view id (mosby internal)
+   * @param viewState The view state to save
+   * @param context The context
+   */
   public void putViewState(int viewId, Object viewState, Context context) {
     OrientationChangeFragment fragment = getFragment(context);
     CacheEntry<V, P> entry = fragment.get(viewId);
@@ -206,17 +200,12 @@ class OrientationChangeManager<V extends MvpView, P extends MvpPresenter<V>> {
   /**
    * Internal config change Cache entry
    */
-  static class CacheEntry<V extends MvpView, P extends MvpPresenter<V>> {
+  static final class CacheEntry<V extends MvpView, P extends MvpPresenter<V>> {
     P presenter;
     Object viewState; // workaround: dont want to introduce dependency to viewstate module
 
     public CacheEntry(P presenter) {
       this.presenter = presenter;
-    }
-
-    public CacheEntry(P presenter, Object viewState) {
-      this.presenter = presenter;
-      this.viewState = viewState;
     }
   }
 
@@ -226,21 +215,41 @@ class OrientationChangeManager<V extends MvpView, P extends MvpPresenter<V>> {
    * @author Hannes Dorfmann
    * @since 3.0
    */
-  public static class OrientationChangeFragment extends Fragment {
+  public static final class OrientationChangeFragment extends Fragment {
 
+    // 0 is preserverd as "no view id"
+    private int VIEW_ID = 0;
     private SparseArrayCompat<CacheEntry> cache = new SparseArrayCompat<>();
     private boolean stopped = true;
     private boolean destroyed = false;
 
-    public <T> T get(int key) {
+    /**
+     * Get a vlaue from cache
+     *
+     * @param key the key
+     * @param <T> The retrurn type
+     * @return the cache entry. Is <code>null</code> if no entry found for the given key
+     */
+    <T> T get(int key) {
       return (T) cache.get(key);
     }
 
-    public void put(int key, CacheEntry entry) {
+    /**
+     * Put value into the cache
+     *
+     * @param key the key
+     * @param entry the cache entry
+     */
+    void put(int key, CacheEntry entry) {
       cache.put(key, entry);
     }
 
-    public void remove(int key) {
+    /**
+     * Remove value from key
+     *
+     * @param key The key
+     */
+    void remove(int key) {
       cache.remove(key);
     }
 
@@ -265,6 +274,23 @@ class OrientationChangeManager<V extends MvpView, P extends MvpPresenter<V>> {
     @Override public void onStop() {
       super.onStop();
       stopped = true;
+    }
+
+    /**
+     * Get the next (mosby internal) view id
+     *
+     * @return view id
+     */
+    int nextViewId() {
+      while (cache.get(++VIEW_ID) != null) {
+        if (VIEW_ID == Integer.MAX_VALUE) {
+          throw new IllegalStateException(
+              "Oops, it seems that we ran out of (mosby internal) view id's. It seems that your user has navigated more than "
+                  + Integer.MAX_VALUE
+                  + " times through your app. There is nothing you can do to fix that");
+        }
+      }
+      return VIEW_ID;
     }
   }
 }

@@ -27,7 +27,7 @@ class CountriesList(c: Context, atts: AttributeSet) : CountriesView, MvpViewStat
 
 
   private val recyclerView: RecyclerView by bindView(R.id.recyclerView)
-  private val contentView: SwipeRefreshLayout by bindView(R.id.contentView)
+  private val swipeRefreshLayout: SwipeRefreshLayout by bindView(R.id.swipeRefreshLayout)
   private val errorView: View by bindView(R.id.errorView)
   private val loadingView: View by bindView(R.id.loadingView)
 
@@ -44,10 +44,10 @@ class CountriesList(c: Context, atts: AttributeSet) : CountriesView, MvpViewStat
       loadData(false)
     }
 
-    contentView.setOnRefreshListener {
+    swipeRefreshLayout.setOnRefreshListener {
       loadData(true)
     }
-    contentView.setProgressViewOffset(true, 0, dpToPx(54f).toInt())
+    swipeRefreshLayout.setProgressViewOffset(true, 0, dpToPx(58f).toInt())
   }
 
   override fun createPresenter(): CountriesPresenter = AtlasApplication.getComponent(
@@ -63,14 +63,14 @@ class CountriesList(c: Context, atts: AttributeSet) : CountriesView, MvpViewStat
     if (pullToRefresh) {
       loadingView.visibility = GONE
       errorView.visibility = GONE
-      contentView.visibility = VISIBLE
-      contentView.post {
-        contentView.isRefreshing = true
+      swipeRefreshLayout.visibility = VISIBLE
+      swipeRefreshLayout.post {
+        swipeRefreshLayout.isRefreshing = true
       }
     } else {
       loadingView.visibility = VISIBLE
       errorView.visibility = GONE
-      contentView.visibility = GONE
+      swipeRefreshLayout.visibility = GONE
     }
   }
 
@@ -79,13 +79,13 @@ class CountriesList(c: Context, atts: AttributeSet) : CountriesView, MvpViewStat
     castedViewState().setStateShowContent(adapter.items)
 
     if (isRestoringViewState) {
-      contentView.visibility = VISIBLE
+      swipeRefreshLayout.visibility = VISIBLE
       errorView.visibility = GONE
       loadingView.visibility = GONE
     } else {
-      contentView.alpha = 0f
-      contentView.visibility = VISIBLE
-      contentView.animate().alpha(1f).start()
+      swipeRefreshLayout.alpha = 0f
+      swipeRefreshLayout.visibility = VISIBLE
+      swipeRefreshLayout.animate().alpha(1f).start()
       loadingView.animate().alpha(
           0f).withEndAction { loadingView.visibility = GONE; loadingView.alpha = 1f }
           .start()
@@ -93,7 +93,8 @@ class CountriesList(c: Context, atts: AttributeSet) : CountriesView, MvpViewStat
       errorView.visibility = GONE
     }
 
-    contentView.isRefreshing = false
+    swipeRefreshLayout.isRefreshing = false
+
   }
 
   override fun showError(e: Throwable?, pullToRefresh: Boolean) {
@@ -101,15 +102,16 @@ class CountriesList(c: Context, atts: AttributeSet) : CountriesView, MvpViewStat
     castedViewState().setStateShowError(e, pullToRefresh)
 
     if (pullToRefresh) {
-      contentView.visibility = VISIBLE
+      swipeRefreshLayout.visibility = VISIBLE
       errorView.visibility = GONE
       loadingView.visibility = GONE
       Toast.makeText(context, "An error has occurred", Toast.LENGTH_SHORT).show()
     } else {
-      contentView.visibility = GONE
+      swipeRefreshLayout.visibility = GONE
       loadingView.visibility = GONE
       errorView.visibility = VISIBLE
     }
+    swipeRefreshLayout.isRefreshing = false
   }
 
   override fun setData(data: List<Country>) {

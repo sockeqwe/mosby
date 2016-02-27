@@ -16,13 +16,14 @@ import com.hannesdorfmann.mosby.sample.flow.AtlasApplication
 import com.hannesdorfmann.mosby.sample.flow.R
 import com.hannesdorfmann.mosby.sample.flow.dpToPx
 import com.hannesdorfmann.mosby.sample.flow.model.Country
+import flow.Flow
 
 /**
  *
  *
  * @author Hannes Dorfmann
  */
-class CountriesList(c: Context, atts: AttributeSet) : CountriesView, MvpViewStateFrameLayout<CountriesView, CountriesPresenter>(
+class CountriesListLayout(c: Context, atts: AttributeSet) : CountriesView, MvpViewStateFrameLayout<CountriesView, CountriesPresenter>(
     c, atts) {
 
 
@@ -31,10 +32,13 @@ class CountriesList(c: Context, atts: AttributeSet) : CountriesView, MvpViewStat
   private val errorView: View by bindView(R.id.errorView)
   private val loadingView: View by bindView(R.id.loadingView)
 
-  private val adapter = CountriesAdapter(LayoutInflater.from(context))
+  private val adapter = CountriesAdapter(LayoutInflater.from(context),
+      { // On click navigate to details screen
+        Flow.get(this).set(CountryDetailsScreen(it.id))
+      })
 
   init {
-    LayoutInflater.from(context).inflate(R.layout.countriesview, this, true)
+    LayoutInflater.from(context).inflate(R.layout.recycler_swiperefresh_view, this, true)
     isRetainInstance = true
 
     recyclerView.adapter = adapter

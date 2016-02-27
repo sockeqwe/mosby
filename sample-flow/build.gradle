@@ -12,7 +12,7 @@ android {
 
   defaultConfig {
     applicationId "com.hannesdorfmann.mosby.sample.flow"
-    minSdkVersion rootProject.ext.minSdk
+    minSdkVersion 19
     targetSdkVersion rootProject.ext.targetSdk
     versionName project.VERSION_NAME
     versionCode Integer.parseInt(project.VERSION_CODE)

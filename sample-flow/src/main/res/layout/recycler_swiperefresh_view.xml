@@ -19,21 +19,8 @@
   </android.support.v4.widget.SwipeRefreshLayout>
 
 
-  <ProgressBar
-      android:id="@+id/loadingView"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center"
-      android:indeterminate="true"
-      />
+  <include layout="@layout/merge_loadingview" />
 
-  <TextView
-      android:id="@+id/errorView"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center"
-      android:padding="16dp"
-      android:text="An error has occurred. Click here to retry"
-      />
+  <include layout="@layout/merge_errorview" />
 
 </merge>

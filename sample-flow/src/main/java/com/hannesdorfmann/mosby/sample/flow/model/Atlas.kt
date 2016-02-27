@@ -1,6 +1,8 @@
 package com.hannesdorfmann.mosby.sample.flow.model
 
+import com.hannesdorfmann.mosby.sample.flow.R
 import rx.Observable
+import java.text.NumberFormat
 import java.util.*
 
 /**
@@ -115,16 +117,47 @@ class Atlas {
       21 to "http://canada-travel-service.de/cms/sf/keyVisuals/Zentralkanada--East-Side-Hits-and-West-Side-Stories.jpg"
   )
 
+  /**
+   * Get a list of all countries
+   */
   fun getCountries(
       filter: (Country) -> Boolean = { true }): Observable<List<Country>> = Observable.fromCallable {
 
-    Thread.sleep(SLEEP)
+    simulateNetworkTrafic()
+    ArrayList(countriesMap.values).filter(filter).sortedBy { it.name }
+  }
 
+  /**
+   * Get the details
+   */
+  fun getDetails(id: Int) = Observable.fromCallable {
+    simulateNetworkTrafic()
+    val country = countriesMap[id]!!
+    CountryDetail(id, country.name, themeImageMap[id]!!,
+        arrayListOf(DetailsTab.InfoTab(id, R.string.tab_info),
+            DetailsTab.ImagesTab(id, R.string.tab_images),
+            DetailsTab.MapTab(id, R.string.tab_map)))
+  }
+
+  /**
+   * Get the info for a certain country
+   */
+  fun getInfo(id: Int) = Observable.fromCallable {
+    simulateNetworkTrafic()
+    val country = countriesMap[id]!!
+    listOf(InfoText(R.string.info_name, country.name),
+        InfoText(R.string.info_capital, country.capital),
+        InfoText(R.string.info_population, NumberFormat.getInstance().format(country.population)),
+        InfoText(R.string.info_area, "${NumberFormat.getInstance().format(country.area)} km2"),
+        InfoText(R.string.info_currency, country.currency)
+    )
+  }
+
+  private inline fun simulateNetworkTrafic() {
+    Thread.sleep(SLEEP)
     if (requestCounter++ % errorAfter == 0) {
       throw RuntimeException("Mocked Exception")
     }
-
-    ArrayList(countriesMap.values).filter(filter).sortedBy { it.name }
   }
 
 }

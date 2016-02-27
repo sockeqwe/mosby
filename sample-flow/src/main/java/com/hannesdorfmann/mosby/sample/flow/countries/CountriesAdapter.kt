@@ -17,21 +17,30 @@ import com.squareup.picasso.Picasso
  * @author Hannes Dorfmann
  */
 
-class CountryViewHolder(v: View) : RecyclerView.ViewHolder(v) {
+class CountryViewHolder(v: View, private val clickCallback: (Country) -> Unit) : RecyclerView.ViewHolder(
+    v) {
   val flag: ImageView by bindView(R.id.flag)
   val name: TextView by bindView(R.id.name)
+  lateinit var country: Country
+
+  init {
+    itemView.setOnClickListener {
+      clickCallback(country)
+    }
+  }
 }
 
-class CountriesAdapter(private val inflater: LayoutInflater) : RecyclerView.Adapter<CountryViewHolder>() {
+class CountriesAdapter(private val inflater: LayoutInflater, private val clickCallback: (Country) -> Unit) : RecyclerView.Adapter<CountryViewHolder>() {
 
   var items: List<Country>? = null
 
   override fun onCreateViewHolder(parent: ViewGroup?,
       p1: Int): CountryViewHolder = CountryViewHolder(
-      inflater.inflate(R.layout.item_country, parent, false))
+      inflater.inflate(R.layout.item_country, parent, false), clickCallback)
 
   override fun onBindViewHolder(vh: CountryViewHolder, pos: Int) {
     val country = items!![pos]
+    vh.country = country
     vh.name.text = country.name
     Picasso.with(vh.itemView.context).load(country.flagUrl).fit().centerInside().into(vh.flag)
   }

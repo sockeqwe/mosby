@@ -1,7 +1,6 @@
 package com.hannesdorfmann.mosby.sample.flow.flow
 
 import android.app.Activity
-import android.transition.TransitionManager
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.hannesdorfmann.mosby.sample.flow.R
@@ -23,7 +22,7 @@ class AppDispatcher(private val activity: Activity) : Dispatcher {
   override fun dispatch(traversal: Traversal, callback: TraversalCallback) {
 
     val container = activity.findViewById(R.id.container) as ViewGroup
-    TransitionManager.beginDelayedTransition(container)
+    //TransitionManager.beginDelayedTransition(container)
     val destination = traversal.destination.top<Any>()
 
     if (traversal.origin != null && container.childCount > 0) {

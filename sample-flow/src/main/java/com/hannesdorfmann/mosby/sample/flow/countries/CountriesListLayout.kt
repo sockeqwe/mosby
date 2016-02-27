@@ -126,4 +126,12 @@ class CountriesListLayout(c: Context, atts: AttributeSet) : CountriesView, MvpVi
   override fun loadData(pullToRefresh: Boolean) = presenter.loadCountries(pullToRefresh)
 
   private inline fun castedViewState() = viewState as RetainingLceViewState<List<Country>, CountriesView>
+
+  override fun onAttachedToWindow() {
+    super.onAttachedToWindow()
+  }
+
+  override fun onDetachedFromWindow() {
+    super.onDetachedFromWindow()
+  }
 }

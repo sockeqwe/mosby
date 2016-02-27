@@ -7,7 +7,6 @@ import com.hannesdorfmann.mosby.sample.flow.R
 import com.hannesdorfmann.mosby.sample.flow.countries.CountriesScreen
 import com.hannesdorfmann.mosby.sample.flow.countries.CountryDetailsScreen
 import flow.Dispatcher
-import flow.History
 import flow.Traversal
 import flow.TraversalCallback
 
@@ -26,7 +25,7 @@ class AppDispatcher(private val activity: Activity) : Dispatcher {
     val destination = traversal.destination.top<Any>()
 
     if (traversal.origin != null && container.childCount > 0) {
-      traversal.getState((traversal.origin as History).top()).save(container.getChildAt(0))
+      //traversal.getState((traversal.origin as History).top()).save(container.getChildAt(0))
       container.removeAllViews()
     }
 

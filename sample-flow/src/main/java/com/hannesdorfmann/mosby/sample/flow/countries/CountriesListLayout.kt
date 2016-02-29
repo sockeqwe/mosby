@@ -1,10 +1,12 @@
 package com.hannesdorfmann.mosby.sample.flow.countries
 
 import android.content.Context
+import android.os.Parcelable
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
@@ -129,9 +131,22 @@ class CountriesListLayout(c: Context, atts: AttributeSet) : CountriesView, MvpVi
 
   override fun onAttachedToWindow() {
     super.onAttachedToWindow()
+    Log.d("Test", "CountriesListLayout onAttachedToWindow")
   }
 
   override fun onDetachedFromWindow() {
     super.onDetachedFromWindow()
+    Log.d("Test", "CountriesListLayout onDetachedFromWindow")
+  }
+
+  override fun onSaveInstanceState(): Parcelable {
+
+    Log.d("Test", "CountriesListLayout onSaveInstanceState")
+    return super.onSaveInstanceState()
+  }
+
+  override fun onRestoreInstanceState(state: Parcelable) {
+    super.onRestoreInstanceState(state)
+    Log.d("Test", "CountriesListLayout onRestoreInstanceState")
   }
 }

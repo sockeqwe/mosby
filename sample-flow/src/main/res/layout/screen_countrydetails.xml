@@ -2,6 +2,7 @@
 <com.hannesdorfmann.mosby.sample.flow.countries.CountryDetailsLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/screenCountriesDetails"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
@@ -32,10 +33,9 @@
           android:layout_height="match_parent"
           android:fitsSystemWindows="true"
           app:contentScrim="?attr/colorPrimary"
-          app:layout_scrollFlags="scroll|exitUntilCollapsed"
-          app:expandedTitleMarginBottom="80dp"
           app:expandedTitleMarginStart="48dp"
-          app:titleEnabled="false"
+          app:layout_scrollFlags="scroll|exitUntilCollapsed"
+          app:titleEnabled="true"
           >
 
 
@@ -51,30 +51,22 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="?attr/actionBarSize"
             android:gravity="top"
             app:layout_collapseMode="pin"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:titleMarginTop="15dp"
-            />
-
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tabs"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:layout_gravity="bottom"
-            app:tabContentStart="72dp"
-            app:tabMode="scrollable"
             />
 
       </android.support.design.widget.CollapsingToolbarLayout>
 
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewPager"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingLeft="48dp"
+        android:paddingRight="16dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         />
 

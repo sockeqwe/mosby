@@ -134,14 +134,32 @@ class Atlas {
     simulateNetworkTrafic()
     val country = countriesMap[id]!!
     CountryDetail(id, country.name, themeImageMap[id]!!,
-        arrayListOf(DetailsTab.InfoTab(id, R.string.tab_info),
-            DetailsTab.ImagesTab(id, R.string.tab_images),
-            DetailsTab.MapTab(id, R.string.tab_map)))
+        arrayListOf(
+            InfoText(R.string.info_name, country.name),
+            InfoText(R.string.info_capital, country.capital),
+            InfoText(R.string.info_population, NumberFormat.getInstance().format(country.population)),
+            InfoText(R.string.info_area, "${NumberFormat.getInstance().format(country.area)} km2"),
+            InfoText(R.string.info_currency, country.currency),
+            InfoPicture(country.flagUrl),
+            InfoPicture("http://pics.tui.com/fileadmin/redaktion/300x200_shop_in_shop/Staedte/300x200-staedte-berlin.jpg"),
+            InfoPicture("http://traumhafte-kreuzfahrt.de/wp-content/uploads/Fotolia_22563121_XS-300x200.jpg"),
+            InfoPicture("http://madagaskar.de/wp-content/uploads/2015/03/Mada_2007_JE_2506-300x200.jpg"),
+            InfoPicture("https://www.art-galerie-shop.de/media/images/kategorien/kat-thumb-stadt.jpg"),
+            InfoPicture("http://www.austrianders.com/wp-content/uploads/2015/06/gmunden-195249_1280-e1450733385786.jpg"),
+            InfoPicture("http://www.reisen-und-tipps.de/Laender/Italien/Staedte/Bilder/Rom-r2.jpg"),
+            InfoPicture("https://www.billiger-mietwagen.de/magazin/wp-content/uploads/2015/12/spanien_palma_e_mallorca_le_seu_Fotolia_90058806_Subscription_Monthly_M-300x200.png"),
+            InfoPicture("http://pics.tui.com/fileadmin/redaktion/300x200_shop_in_shop/Staedte/300x200-staedte-barcelona-2.jpg"),
+            InfoPicture("https://www.foreverly.de/magazin/wp-content/uploads/2014/05/janbugno-fotolia-venedig-f7.jpg"),
+            InfoPicture("http://westfalenundich.de/wp-content/uploads/2014/09/DSC_0181-300x200.jpg"),
+            InfoPicture("https://www.billiger-mietwagen.de/magazin/wp-content/uploads/2015/10/beitrag_salamanca_-300x200.png"),
+            InfoPicture("http://img.welt.de/img/reise/crop148626918/2406604168-ci3x2s-w300-ai2x3l/58584568.jpg"),
+            InfoPicture("http://www.unterkunft.de/guide/bilder/Tschechien01.jpg")
+            ))
   }
 
   /**
    * Get the info for a certain country
-   */
+
   fun getInfo(id: Int) = Observable.fromCallable {
     simulateNetworkTrafic()
     val country = countriesMap[id]!!
@@ -152,6 +170,7 @@ class Atlas {
         InfoText(R.string.info_currency, country.currency)
     )
   }
+   */
 
   private inline fun simulateNetworkTrafic() {
     Thread.sleep(SLEEP)

@@ -39,6 +39,8 @@ dependencies {
   compile 'com.android.support:design:' + rootProject.ext.appcompat7Version
   compile 'com.android.support:recyclerview-v7:' + rootProject.ext.recyclerviewVersion
   compile 'com.android.support:appcompat-v7:' + rootProject.ext.appcompat7Version
+  compile 'com.android.support:percent:' + rootProject.ext.appcompat7Version
+
 
   compile 'com.squareup.picasso:picasso:' + rootProject.ext.picassoVersion
 

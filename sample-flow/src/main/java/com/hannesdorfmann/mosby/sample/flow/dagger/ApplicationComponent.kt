@@ -2,7 +2,6 @@ package com.hannesdorfmann.mosby.sample.flow.dagger
 
 import com.hannesdorfmann.mosby.sample.flow.countries.CountriesPresenter
 import com.hannesdorfmann.mosby.sample.flow.countries.CountryDetailsPresenter
-import com.hannesdorfmann.mosby.sample.flow.countries.InfoPresenter
 import dagger.Component
 import javax.inject.Singleton
 
@@ -19,5 +18,4 @@ interface ApplicationComponent {
 
   fun countryDetailsPresenter(): CountryDetailsPresenter
 
-  fun infoPresenter(): InfoPresenter
 }

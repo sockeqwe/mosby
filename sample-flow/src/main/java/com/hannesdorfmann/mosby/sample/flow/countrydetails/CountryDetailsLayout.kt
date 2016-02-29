@@ -3,11 +3,14 @@ package com.hannesdorfmann.mosby.sample.flow.countries
 import android.content.Context
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
+import android.os.Parcelable
 import android.support.design.widget.CollapsingToolbarLayout
-import android.support.design.widget.TabLayout
-import android.support.v4.view.ViewPager
+import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.util.AttributeSet
+import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
@@ -17,9 +20,9 @@ import com.hannesdorfmann.mosby.mvp.viewstate.layout.MvpViewStateFrameLayout
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.RetainingLceViewState
 import com.hannesdorfmann.mosby.sample.flow.AtlasApplication
 import com.hannesdorfmann.mosby.sample.flow.R
-import com.hannesdorfmann.mosby.sample.flow.countrydetails.CountryDetailsPagerAdapter
 import com.hannesdorfmann.mosby.sample.flow.countrydetails.CountryDetailsView
 import com.hannesdorfmann.mosby.sample.flow.model.CountryDetail
+import com.hannesdorfmann.mosby.sample.flow.model.InfoText
 import com.squareup.picasso.Picasso
 import flow.Flow
 
@@ -32,14 +35,16 @@ class CountryDetailsLayout(c: Context, atts: AttributeSet) : CountryDetailsView,
     c, atts) {
 
 
-  private val viewPager: ViewPager by bindView(R.id.viewPager)
+  private val recyclerView: RecyclerView by bindView(R.id.recyclerView)
   private val contentView: View by bindView(R.id.contentView)
   private val errorView: View by bindView(R.id.errorView)
   private val loadingView: View by bindView(R.id.loadingView)
   private val highlightImage: ImageView by bindView(R.id.highlightImage)
   private val colapsingToolbar: CollapsingToolbarLayout by bindView(R.id.collapsingToolbar)
   private val toolbar: Toolbar by bindView(R.id.toolbar)
-  private val tabs: TabLayout by bindView(R.id.tabs)
+
+  private var detailData: CountryDetail? = null
+  private val adapter = InfoAdapter(LayoutInflater.from(context))
 
   private val countryId by lazy {
     val countriesScreen: CountryDetailsScreen = Flow.getKey(this)!!
@@ -56,10 +61,19 @@ class CountryDetailsLayout(c: Context, atts: AttributeSet) : CountryDetailsView,
     toolbar.setNavigationOnClickListener {
       Flow.get(this).goBack()
     }
-    highlightImage.colorFilter = PorterDuffColorFilter(resources.getColor(R.color.image_highlight_darking), PorterDuff.Mode.SRC_ATOP)
+    highlightImage.colorFilter = PorterDuffColorFilter(
+        resources.getColor(R.color.image_highlight_darking), PorterDuff.Mode.SRC_ATOP)
     errorView.setOnClickListener {
       loadData(false)
     }
+
+    recyclerView.adapter = adapter
+    val layoutManager = GridLayoutManager(context, 3)
+    layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+      override fun getSpanSize(pos: Int) = if (adapter.items!![pos] is InfoText) 3 else 1
+    }
+    recyclerView.layoutManager = layoutManager
+
   }
 
   override fun createPresenter(): CountryDetailsPresenter = AtlasApplication.getComponent(
@@ -80,7 +94,7 @@ class CountryDetailsLayout(c: Context, atts: AttributeSet) : CountryDetailsView,
 
   override fun showContent() {
 
-    // TODO create ViewPager adapter
+    castedViewState().setStateShowContent(detailData)
 
     if (isRestoringViewState) {
       contentView.visibility = VISIBLE
@@ -116,19 +130,39 @@ class CountryDetailsLayout(c: Context, atts: AttributeSet) : CountryDetailsView,
   }
 
   override fun setData(data: CountryDetail) {
-
+    this.detailData = data
     Picasso.with(context).load(data.imageUrl).placeholder(
         R.color.image_placeholder).fit().centerCrop().into(highlightImage)
     colapsingToolbar.title = data.name
     toolbar.title = data.name
 
-    val adapter = CountryDetailsPagerAdapter(context, data.tabs)
-    viewPager.adapter = adapter
-    tabs.setupWithViewPager(viewPager)
+    adapter.items = data.infos
+    adapter.notifyDataSetChanged()
   }
 
   override fun loadData(pullToRefresh: Boolean) = presenter.loadDetails(countryId)
 
   private inline fun castedViewState() = viewState as RetainingLceViewState<CountryDetail, CountryDetailsView>
+
+  override fun onAttachedToWindow() {
+    super.onAttachedToWindow()
+    Log.d("Test", "CountryDetailsLayout onAttachedToWindow")
+  }
+
+  override fun onDetachedFromWindow() {
+    super.onDetachedFromWindow()
+    Log.d("Test", "CountryDetailsLayout onDetachedFromWindow")
+  }
+
+  override fun onSaveInstanceState(): Parcelable {
+
+    Log.d("Test", "CountryDetailsLayout onSaveInstanceState")
+    return super.onSaveInstanceState()
+  }
+
+  override fun onRestoreInstanceState(state: Parcelable) {
+    super.onRestoreInstanceState(state)
+    Log.d("Test", "CountryDetailsLayout onRestoreInstanceState")
+  }
 
 }

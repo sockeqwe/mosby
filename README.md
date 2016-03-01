@@ -13,6 +13,14 @@ dependencies {
 }
 ```
 
+SNAPSHOT:
+```groovy
+dependencies {
+	compile 'com.hannesdorfmann.mosby:mvp:3.0.0-SNAPSHOT'
+	compile 'com.hannesdorfmann.mosby:viewstate:3.0.0-SNAPSHOT'
+}
+```
+
 # Sample APK
 You can find the sample apk files in the [release section](https://github.com/sockeqwe/mosby/releases)
 

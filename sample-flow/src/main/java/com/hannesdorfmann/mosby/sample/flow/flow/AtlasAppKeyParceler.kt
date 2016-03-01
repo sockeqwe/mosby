@@ -8,7 +8,7 @@ import flow.KeyParceler
  *
  * @author Hannes Dorfmann
  */
-class AppKeyParceler : KeyParceler {
+class AtlasAppKeyParceler : KeyParceler {
 
   override fun toParcelable(key: Any?): Parcelable = key as Parcelable
 

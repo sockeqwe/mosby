@@ -17,8 +17,7 @@ import flow.TraversalCallback
  *
  * @author Hannes Dorfmann
  */
-class AppDispatcher(private val activity: Activity) : Dispatcher {
-
+class AtlasAppDispatcher(private val activity: Activity) : Dispatcher {
 
   override fun dispatch(traversal: Traversal, callback: TraversalCallback) {
 
@@ -39,7 +38,6 @@ class AppDispatcher(private val activity: Activity) : Dispatcher {
 
     val incomingView = LayoutInflater.from(traversal.createContext(destination, activity))
         .inflate(layoutRes, container, false)
-
 
     // Important: Restore before adding view
     traversal.getState(traversal.destination.top()).restore(incomingView)

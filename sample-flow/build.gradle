@@ -53,6 +53,9 @@ dependencies {
   compile 'io.reactivex:rxjava:1.1.1'
 
   compile 'com.jakewharton:kotterknife:0.1.0-SNAPSHOT'
+  compile 'mbanje.kurt:fabbutton:1.+'
+
+  compile 'com.github.jorgecastilloprz:fabprogresscircle:1.01@aar'
 
   compile 'com.google.dagger:dagger:2.0.2'
   kapt 'com.google.dagger:dagger-compiler:2.0.2'

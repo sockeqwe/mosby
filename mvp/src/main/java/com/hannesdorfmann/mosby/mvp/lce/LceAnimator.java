@@ -20,10 +20,10 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.content.Context;
+import android.content.res.Resources;
 import android.support.annotation.NonNull;
-import android.util.DisplayMetrics;
 import android.view.View;
+import com.hannesdorfmann.mosby.mvp.R;
 
 /**
  * Little helper class for animating content, error and loading view
@@ -32,6 +32,8 @@ import android.view.View;
  * @since 1.0.0
  */
 public class LceAnimator {
+
+  private LceAnimator() {}
 
   /**
    * Show the loading view. No animations, because sometimes loading things is pretty fast (i.e.
@@ -53,13 +55,14 @@ public class LceAnimator {
 
     contentView.setVisibility(View.GONE);
 
+    final Resources resources = loadingView.getResources();
     // Not visible yet, so animate the view in
     AnimatorSet set = new AnimatorSet();
-    ObjectAnimator in = ObjectAnimator.ofFloat(errorView, "alpha", 1f);
-    ObjectAnimator loadingOut = ObjectAnimator.ofFloat(loadingView, "alpha", 0f);
+    ObjectAnimator in = ObjectAnimator.ofFloat(errorView, View.ALPHA, 1f);
+    ObjectAnimator loadingOut = ObjectAnimator.ofFloat(loadingView,  View.ALPHA, 0f);
 
     set.playTogether(in, loadingOut);
-    set.setDuration(200);
+    set.setDuration(resources.getInteger(R.integer.lce_error_view_show_animation_time));
 
     set.addListener(new AnimatorListenerAdapter() {
 
@@ -92,19 +95,20 @@ public class LceAnimator {
 
       errorView.setVisibility(View.GONE);
 
-      int translateDp = 40;
+      final Resources resources = loadingView.getResources();
+      final int translateInPixels = resources.getDimensionPixelSize(R.dimen.lce_content_view_animation_translate_y);
       // Not visible yet, so animate the view in
       AnimatorSet set = new AnimatorSet();
-      ObjectAnimator contentFadeIn = ObjectAnimator.ofFloat(contentView, "alpha", 0f, 1f);
-      ObjectAnimator contentTranslateIn = ObjectAnimator.ofFloat(contentView, "translationY",
-          dpToPx(loadingView.getContext(), translateDp), 0);
+      ObjectAnimator contentFadeIn = ObjectAnimator.ofFloat(contentView, View.ALPHA, 0f, 1f);
+      ObjectAnimator contentTranslateIn = ObjectAnimator.ofFloat(contentView, View.TRANSLATION_Y,
+              translateInPixels, 0);
 
-      ObjectAnimator loadingFadeOut = ObjectAnimator.ofFloat(loadingView, "alpha", 1f, 0f);
-      ObjectAnimator loadingTranslateOut = ObjectAnimator.ofFloat(loadingView, "translationY", 0,
-          -dpToPx(loadingView.getContext(), translateDp));
+      ObjectAnimator loadingFadeOut = ObjectAnimator.ofFloat(loadingView, View.ALPHA, 1f, 0f);
+      ObjectAnimator loadingTranslateOut = ObjectAnimator.ofFloat(loadingView, View.TRANSLATION_Y, 0,
+              -translateInPixels);
 
       set.playTogether(contentFadeIn, contentTranslateIn, loadingFadeOut, loadingTranslateOut);
-      set.setDuration(500);
+      set.setDuration(resources.getInteger(R.integer.lce_content_view_show_animation_time));
 
       set.addListener(new AnimatorListenerAdapter() {
 
@@ -124,15 +128,5 @@ public class LceAnimator {
 
       set.start();
     }
-  }
-
-  /**
-   * Converts a dp value to a px value
-   *
-   * @param dp the dp value
-   */
-  public static int dpToPx(Context context, float dp) {
-    DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-    return (int) ((dp * displayMetrics.density) + 0.5);
   }
 }

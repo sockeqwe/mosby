@@ -58,7 +58,7 @@ import java.lang.ref.WeakReference;
  * So using a WeakReference and adding the {@link #isViewAttached()} check are basically just some
  * kind of safety net and not needed in a "perfect world". Please note that if you are sure that
  * you are coding in such a "perfect world" then you can also think about implementing your own
- * Presenterentirely without WeakReference and isViewAttached(). Note also that
+ * Presenter without WeakReference and isViewAttached(). Note also that
  * {@link MvpPresenter} is an interface. Hence implementing you own Presenter is easy.
  * </p>
  *

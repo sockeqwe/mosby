@@ -17,7 +17,12 @@
 package com.hannesdorfmann.mosby.mvp;
 
 /**
- * The base interface for each mvp presenter
+ * The base interface for each mvp presenter.
+ *
+ * <p>
+ * Mosby assumes that all interaction (i.e. updating the View) between Presenter and View is
+ * executed on android's main UI thread.
+ * </p>
  *
  * @author Hannes Dorfmann
  * @since 1.0.0

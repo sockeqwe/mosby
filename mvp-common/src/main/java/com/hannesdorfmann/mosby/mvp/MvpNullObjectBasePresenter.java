@@ -1,6 +1,8 @@
 package com.hannesdorfmann.mosby.mvp;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.UiThread;
+
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
@@ -21,10 +23,12 @@ public class MvpNullObjectBasePresenter<V extends MvpView> implements MvpPresent
 
   private V view;
 
+  @UiThread
   @Override public void attachView(V view) {
     this.view = view;
   }
 
+  @UiThread
   @NonNull public V getView() {
     if (view == null) {
       throw new NullPointerException("MvpView reference is null. Have you called attachView()?");
@@ -32,6 +36,7 @@ public class MvpNullObjectBasePresenter<V extends MvpView> implements MvpPresent
     return view;
   }
 
+  @UiThread
   @Override public void detachView(boolean retainInstance) {
     if (view != null) {
 

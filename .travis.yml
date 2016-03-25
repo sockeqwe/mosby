@@ -9,6 +9,9 @@ android:
 #    - sys-img-armeabi-v7a-android-18
 #    - sys-img-armeabi-v7a-android-23
 
+before_install:
+ - chmod +x .buildscript/deploy_snapshot.sh
+
 jdk:
   - oraclejdk8
 

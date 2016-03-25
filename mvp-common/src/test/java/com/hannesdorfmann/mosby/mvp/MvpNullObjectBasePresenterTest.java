@@ -67,23 +67,18 @@ public class MvpNullObjectBasePresenterTest {
   public static class ViewWithMulitpleInterfaces
       implements FooInterface, BarInterface, OtherTestView, TestView {
     @Override public void bar() {
-
     }
 
     @Override public void foo() {
-
     }
 
     @Override public void showFoo(TestData data) {
-
     }
 
     @Override public void showThat() {
-
     }
 
     @Override public void showOtherMvpView() {
-
     }
   }
 
@@ -103,7 +98,7 @@ public class MvpNullObjectBasePresenterTest {
     }
   }
 
-  public static class CorrectGenericsOrderPresenter<M, I>
+  public static class UselessGenericParamsPresenter<M, I>
       extends MvpNullObjectBasePresenter<TestView> {
 
     void viewShowThat() {
@@ -117,7 +112,7 @@ public class MvpNullObjectBasePresenterTest {
   public static class SubclassConstructor extends ParameterlessConstructor<TestData> {
   }
 
-  @Test public void testConstructorWorngGenericsOrder() {
+  @Test public void testUselessGenericsParamsPresenter() {
     // no exception should be thrown
 
     TestView view = new TestView() {
@@ -127,8 +122,8 @@ public class MvpNullObjectBasePresenterTest {
       @Override public void showThat() {
       }
     };
-    CorrectGenericsOrderPresenter presenter =
-        new CorrectGenericsOrderPresenter<TestData, FooInterface>();
+    UselessGenericParamsPresenter presenter =
+        new UselessGenericParamsPresenter<TestData, FooInterface>();
     pickingCorrectViewInterface(presenter);
     testAttachDetach(presenter, view);
 
@@ -137,6 +132,7 @@ public class MvpNullObjectBasePresenterTest {
     presenter.detachView(false);
     presenter.viewShowThat();
   }
+
 
   @Test public void testConstructorGenericParameterless() {
     // no exception should be thrown

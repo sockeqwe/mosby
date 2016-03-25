@@ -1,6 +1,7 @@
 package com.hannesdorfmann.mosby.mvp;
 
 import android.support.annotation.NonNull;
+import java.lang.ref.WeakReference;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
@@ -17,29 +18,86 @@ import java.lang.reflect.Type;
  * @see MvpBasePresenter
  * @since 1.2.0
  */
-public class MvpNullObjectBasePresenter<V extends MvpView> implements MvpPresenter<V> {
+public abstract class MvpNullObjectBasePresenter<V extends MvpView> implements MvpPresenter<V> {
 
-  private V view;
+  private WeakReference<V> view;
+  private final V nullView;
 
-  @Override public void attachView(V view) {
-    this.view = view;
+  public MvpNullObjectBasePresenter() {
+    try {
+
+      // Scan the inheritance hierarchy until we reached MvpNullObjectBasePresenter
+      Class<V> viewClass = null;
+      Class<?> currentClass = getClass();
+
+      while (viewClass == null) {
+
+        Type genericSuperType = currentClass.getGenericSuperclass();
+
+        while (!(genericSuperType instanceof ParameterizedType)) {
+          // Scan inheritance tree until we find ParameterizedType which is probably a MvpSubclass
+          currentClass = currentClass.getSuperclass();
+          genericSuperType = currentClass.getGenericSuperclass();
+        }
+
+        Type[] types = ((ParameterizedType) genericSuperType).getActualTypeArguments();
+
+        for (int i = 0; i < types.length; i++) {
+          Class<?> genericType = (Class<?>) types[i];
+          if (genericType.isInterface() && isSubTypeOfMvpView(genericType)) {
+            viewClass = (Class<V>) genericType;
+            break;
+          }
+        }
+
+        // Continue with next class in inheritance hierachy (see genericSuperType assignment at start of while loop)
+        currentClass = currentClass.getSuperclass();
+      }
+
+      nullView = NoOp.of(viewClass);
+    } catch (Throwable t) {
+      throw new IllegalArgumentException(
+          "The generic type <V extends MvpView> must be the first generic type argument of class "
+              + getClass().getSimpleName()
+              + " (per convention). Otherwise we can't determine which type of View this"
+              + " Presenter coordinates.", t);
+    }
   }
 
-  @NonNull public V getView() {
-    if (view == null) {
-      throw new NullPointerException("MvpView reference is null. Have you called attachView()?");
+  private boolean isSubTypeOfMvpView(Class<?> klass) {
+    do {
+      if (klass.equals(MvpView.class)) {
+        return true;
+      }
+      Class[] superInterfaces = klass.getInterfaces();
+      for (int i = 0; i < superInterfaces.length; i++) {
+        if (isSubTypeOfMvpView(superInterfaces[0])) {
+          klass = superInterfaces[0];
+        }
+      }
+    } while (klass != null);
+    return false;
+  }
+
+  @Override public void attachView(V view) {
+    this.view = new WeakReference<V>(view);
+  }
+
+  @NonNull protected V getView() {
+    if (view != null) {
+      V realView = view.get();
+      if (realView != null) {
+        return realView;
+      }
     }
-    return view;
+
+    return nullView;
   }
 
   @Override public void detachView(boolean retainInstance) {
     if (view != null) {
-
-      Type[] types =
-          ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments();
-
-      Class<V> viewClass = (Class<V>) types[0];
-      view = NoOp.of(viewClass);
+      view.clear();
+      view = null;
     }
   }
 }

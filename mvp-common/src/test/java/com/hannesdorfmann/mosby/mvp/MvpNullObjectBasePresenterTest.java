@@ -94,17 +94,49 @@ public class MvpNullObjectBasePresenterTest {
     }
   }
 
-  @Test public void testAttachDetach() {
+  public static class CorrectGenericsOrderPresenter<M, I>
+      extends MvpNullObjectBasePresenter<TestView> {
+  }
 
-    TestNullObjectPresenter presenter = new TestNullObjectPresenter();
+  public static class ParameterlessConstructor<M> extends TestNullObjectPresenter {
+  }
 
-    try {
-      // NullPointer exception should be thrown
-      presenter.getView();
-      Assert.fail("Nullpointer Exception should be thrown but haven't");
-    } catch (NullPointerException e) {
-      // Expected exception
-    }
+  public static class SubclassConstructor extends ParameterlessConstructor<TestData> {
+  }
+
+  @Test public void testConstructorWorngGenericsOrder() {
+    // no exception should be thrown
+    CorrectGenericsOrderPresenter presenter =
+        new CorrectGenericsOrderPresenter<TestData, FooInterface>();
+    pickingCorrectViewInterface(presenter);
+    testAttachDetach(presenter);
+  }
+
+  @Test public void testConstructorGenericParameterless() {
+    // no exception should be thrown
+    ParameterlessConstructor<TestData> presenter = new ParameterlessConstructor<TestData>();
+    pickingCorrectViewInterface(presenter);
+    testAttachDetach(presenter);
+  }
+
+  @Test public void testConstructorDirectlyBaseClass() {
+    // no exception should be thrown
+    MvpNullObjectBasePresenter presenter = new MvpNullObjectBasePresenter<TestView>() {
+    };
+    pickingCorrectViewInterface(presenter);
+    testAttachDetach(presenter);
+  }
+
+  @Test public void testConstructorSubClass() {
+    // no exception should be thrown
+    SubclassConstructor presenter = new SubclassConstructor();
+    pickingCorrectViewInterface(presenter);
+    testAttachDetach(presenter);
+  }
+
+  private void testAttachDetach(MvpNullObjectBasePresenter<TestView> presenter) {
+
+    Assert.assertNotNull(presenter.getView());
 
     TestView view = new TestView() {
       @Override public void showFoo(TestData data) {
@@ -134,10 +166,9 @@ public class MvpNullObjectBasePresenterTest {
     Assert.assertTrue(presenter.getView() != view); // Null Object view
   }
 
-  @Test public void pickingCorrectViewInterface() {
+  private void pickingCorrectViewInterface(MvpNullObjectBasePresenter<TestView> presenter) {
 
     ViewWithMulitpleInterfaces view = new ViewWithMulitpleInterfaces();
-    TestNullObjectPresenter presenter = new TestNullObjectPresenter();
 
     presenter.attachView(view);
     Assert.assertNotNull(presenter.getView());
@@ -147,7 +178,7 @@ public class MvpNullObjectBasePresenterTest {
     Assert.assertNotNull(presenter.getView());
     Assert.assertFalse(presenter.getView() == view);
 
-    // Invoke methods on proxy
+    // Invoke methods on null object
     presenter.getView().showFoo(new TestData());
     presenter.getView().showThat();
   }

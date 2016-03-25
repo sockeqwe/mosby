@@ -12,13 +12,10 @@ android:
 jdk:
   - oraclejdk8
 
-#after_success:
-#  - .buildscript/deploy_snapshot.sh
-
-#env:
-#  global:
-#    - secure: "NIWC0zkThskXn7uduTJ1yT78voqEgzEfw8tOImGNBjZ/NDU6yxM4bh+tq+fnkn5ENjELV6fgcYd2DUJSWmkFD2k9ZMRNLm//AqlQihl8aT+DpWhDdCkQjnolHnjm1O7+ys7Q/vswBZEzkBxzIgivajZEzvjarQItJjbpBftQ0Cs="
-#    - secure: "ahPT9EzJVpkM4q2HA/VBxUzgicvfdOOZaEvOiQKJofy1FrLjrBS2LFxqCbyffg0sjGUyvBMLg767CSt/0xRRFWIpsjxCfmvEmAURi89zdZ8MUNXIwe7x/0lXCdQIt8eueq3Qh5qFwJUy4aFbzVvcmMXKswWzw1O0+IcvYX00/xc="
+env:
+  global:
+    - secure: "UBaoIxRPDqr8ezH3aUf/Mf1C6OyQs2KWcu6MCdJx7ITKhs/PtVwNknhm7o4tPsLcHJrHex2Q4PoJy7ZUqfy+vPgT9hbQYrM8oCLmyPA9AtZiWIo9AXuqyzMOBFXMVHPgo78dQQhgwfGuUx5/dwmrTqRmk/bC5YmrfBmKGzD1ugY="
+    - secure: "di8dPmgdotlH4YuuNUgR1/wRA6PE07gJjD8Z23LJ9SQHIP9T9yb2qh6PwHgavu7uyMydaqucq9AYCsvnCpnsxDGg/f0TsipLoVcMzq6MZp1EkW1iEWYahQCg5CchtgOODDEL36DVjy08dVLTlmlIMfDIZzkXJP6H+BDKgnxim5s="
 
 branches:
   except:
@@ -30,6 +27,9 @@ notifications:
 sudo: false
 
 script: gradle build --stacktrace
+
+after_success:
+  - .buildscript/deploy_snapshot.sh
 
 cache:
   directories:

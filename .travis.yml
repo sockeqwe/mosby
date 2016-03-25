@@ -17,6 +17,7 @@ jdk:
 
 env:
   global:
+    - MALLOC_ARENA_MAX=2
     - secure: "UBaoIxRPDqr8ezH3aUf/Mf1C6OyQs2KWcu6MCdJx7ITKhs/PtVwNknhm7o4tPsLcHJrHex2Q4PoJy7ZUqfy+vPgT9hbQYrM8oCLmyPA9AtZiWIo9AXuqyzMOBFXMVHPgo78dQQhgwfGuUx5/dwmrTqRmk/bC5YmrfBmKGzD1ugY="
     - secure: "di8dPmgdotlH4YuuNUgR1/wRA6PE07gJjD8Z23LJ9SQHIP9T9yb2qh6PwHgavu7uyMydaqucq9AYCsvnCpnsxDGg/f0TsipLoVcMzq6MZp1EkW1iEWYahQCg5CchtgOODDEL36DVjy08dVLTlmlIMfDIZzkXJP6H+BDKgnxim5s="
 
@@ -27,7 +28,7 @@ branches:
 notifications:
   email: false
 
-sudo: false
+sudo: required
 
 script: gradle build --stacktrace
 

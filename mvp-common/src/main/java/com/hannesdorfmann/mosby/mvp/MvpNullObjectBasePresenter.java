@@ -71,17 +71,15 @@ public abstract class MvpNullObjectBasePresenter<V extends MvpView> implements M
    * @return true if subtype of MvpView, otherwise false
    */
   private boolean isSubTypeOfMvpView(Class<?> klass) {
-    do {
-      if (klass.equals(MvpView.class)) {
+    if (klass.equals(MvpView.class)) {
+      return true;
+    }
+    Class[] superInterfaces = klass.getInterfaces();
+    for (int i = 0; i < superInterfaces.length; i++) {
+      if (isSubTypeOfMvpView(superInterfaces[0])) {
         return true;
       }
-      Class[] superInterfaces = klass.getInterfaces();
-      for (int i = 0; i < superInterfaces.length; i++) {
-        if (isSubTypeOfMvpView(superInterfaces[0])) {
-          return true;
-        }
-      }
-    } while (klass != null);
+    }
     return false;
   }
 

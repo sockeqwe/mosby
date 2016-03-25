@@ -51,8 +51,17 @@ public class MvpNullObjectBasePresenterTest {
     public void showOtherMvpView();
   }
 
-  public static class TestData {
+  public interface SubMvpView extends TestView {
+  }
 
+  static class SubMvpViewPresenter extends MvpNullObjectBasePresenter<SubMvpView> {
+
+    public void invokeShowThat() {
+      getView().showThat();
+    }
+  }
+
+  public static class TestData {
   }
 
   public static class ViewWithMulitpleInterfaces
@@ -96,6 +105,10 @@ public class MvpNullObjectBasePresenterTest {
 
   public static class CorrectGenericsOrderPresenter<M, I>
       extends MvpNullObjectBasePresenter<TestView> {
+
+    void viewShowThat() {
+      getView().showThat();
+    }
   }
 
   public static class ParameterlessConstructor<M> extends TestNullObjectPresenter {
@@ -106,37 +119,6 @@ public class MvpNullObjectBasePresenterTest {
 
   @Test public void testConstructorWorngGenericsOrder() {
     // no exception should be thrown
-    CorrectGenericsOrderPresenter presenter =
-        new CorrectGenericsOrderPresenter<TestData, FooInterface>();
-    pickingCorrectViewInterface(presenter);
-    testAttachDetach(presenter);
-  }
-
-  @Test public void testConstructorGenericParameterless() {
-    // no exception should be thrown
-    ParameterlessConstructor<TestData> presenter = new ParameterlessConstructor<TestData>();
-    pickingCorrectViewInterface(presenter);
-    testAttachDetach(presenter);
-  }
-
-  @Test public void testConstructorDirectlyBaseClass() {
-    // no exception should be thrown
-    MvpNullObjectBasePresenter presenter = new MvpNullObjectBasePresenter<TestView>() {
-    };
-    pickingCorrectViewInterface(presenter);
-    testAttachDetach(presenter);
-  }
-
-  @Test public void testConstructorSubClass() {
-    // no exception should be thrown
-    SubclassConstructor presenter = new SubclassConstructor();
-    pickingCorrectViewInterface(presenter);
-    testAttachDetach(presenter);
-  }
-
-  private void testAttachDetach(MvpNullObjectBasePresenter<TestView> presenter) {
-
-    Assert.assertNotNull(presenter.getView());
 
     TestView view = new TestView() {
       @Override public void showFoo(TestData data) {
@@ -145,6 +127,100 @@ public class MvpNullObjectBasePresenterTest {
       @Override public void showThat() {
       }
     };
+    CorrectGenericsOrderPresenter presenter =
+        new CorrectGenericsOrderPresenter<TestData, FooInterface>();
+    pickingCorrectViewInterface(presenter);
+    testAttachDetach(presenter, view);
+
+    presenter.attachView(view);
+    presenter.viewShowThat();
+    presenter.detachView(false);
+    presenter.viewShowThat();
+  }
+
+  @Test public void testConstructorGenericParameterless() {
+    // no exception should be thrown
+
+    TestView view = new TestView() {
+      @Override public void showFoo(TestData data) {
+      }
+
+      @Override public void showThat() {
+      }
+    };
+    ParameterlessConstructor<TestData> presenter = new ParameterlessConstructor<TestData>();
+    pickingCorrectViewInterface(presenter);
+    testAttachDetach(presenter, view);
+
+    presenter.attachView(view);
+    presenter.viewShowThat();
+    presenter.detachView(false);
+    presenter.viewShowThat();
+  }
+
+  @Test public void testConstructorDirectlyBaseClass() {
+    // no exception should be thrown
+
+    TestView view = new TestView() {
+      @Override public void showFoo(TestData data) {
+      }
+
+      @Override public void showThat() {
+      }
+    };
+
+    MvpNullObjectBasePresenter presenter = new MvpNullObjectBasePresenter<TestView>() {
+    };
+    pickingCorrectViewInterface(presenter);
+    testAttachDetach(presenter, view);
+  }
+
+  @Test public void testConstructorSubClass() {
+    // no exception should be thrown
+    SubclassConstructor presenter = new SubclassConstructor();
+
+    TestView view = new TestView() {
+      @Override public void showFoo(TestData data) {
+      }
+
+      @Override public void showThat() {
+      }
+    };
+
+    pickingCorrectViewInterface(presenter);
+    testAttachDetach(presenter, view);
+
+    presenter.attachView(view);
+    presenter.viewShowThat();
+    presenter.detachView(false);
+    presenter.viewShowThat();
+  }
+
+  @Test public void testSubviewInterface() {
+    // no exception should be thrown
+
+    SubMvpView view = new SubMvpView() {
+      @Override public void showFoo(TestData data) {
+
+      }
+
+      @Override public void showThat() {
+
+      }
+    };
+
+    SubMvpViewPresenter presenter = new SubMvpViewPresenter();
+    testAttachDetach(presenter, view);
+    presenter.attachView(view);
+    presenter.invokeShowThat();
+    presenter.detachView(false);
+    presenter.invokeShowThat();
+  }
+
+  private <V extends MvpView> void testAttachDetach(MvpNullObjectBasePresenter<V> presenter,
+      V view) {
+
+    Assert.assertNotNull(presenter.getView());
 
     presenter.attachView(view);
     Assert.assertNotNull(presenter.getView());

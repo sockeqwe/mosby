@@ -64,6 +64,12 @@ public abstract class MvpNullObjectBasePresenter<V extends MvpView> implements M
     }
   }
 
+  /**
+   * Scans the interface inheritnace hierarchy and checks if on the root is MvpView.class
+   *
+   * @param klass The leaf interface where to begin to scan
+   * @return true if subtype of MvpView, otherwise false
+   */
   private boolean isSubTypeOfMvpView(Class<?> klass) {
     do {
       if (klass.equals(MvpView.class)) {
@@ -72,7 +78,7 @@ public abstract class MvpNullObjectBasePresenter<V extends MvpView> implements M
       Class[] superInterfaces = klass.getInterfaces();
       for (int i = 0; i < superInterfaces.length; i++) {
         if (isSubTypeOfMvpView(superInterfaces[0])) {
-          klass = superInterfaces[0];
+          return true;
         }
       }
     } while (klass != null);

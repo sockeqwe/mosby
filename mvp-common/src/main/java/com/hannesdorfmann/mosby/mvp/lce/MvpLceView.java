@@ -16,6 +16,7 @@
 
 package com.hannesdorfmann.mosby.mvp.lce;
 
+import android.support.annotation.UiThread;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 
 /**
@@ -48,6 +49,7 @@ public interface MvpLceView<M> extends MvpView {
    *
    * @param pullToRefresh true, if pull-to-refresh has been invoked loading.
    */
+  @UiThread
   public void showLoading(boolean pullToRefresh);
 
   /**
@@ -55,6 +57,7 @@ public interface MvpLceView<M> extends MvpView {
    *
    * <b>The content view must have the id = R.id.contentView</b>
    */
+  @UiThread
   public void showContent();
 
   /**
@@ -65,11 +68,13 @@ public interface MvpLceView<M> extends MvpView {
    * @param pullToRefresh true, if the exception was thrown during pull-to-refresh, otherwise
    * false.
    */
+  @UiThread
   public void showError(Throwable e, boolean pullToRefresh);
 
   /**
    * The data that should be displayed with {@link #showContent()}
    */
+  @UiThread
   public void setData(M data);
 
   /**
@@ -82,5 +87,6 @@ public interface MvpLceView<M> extends MvpView {
    *
    * @param pullToRefresh true, if triggered by a pull to refresh. Otherwise false.
    */
+  @UiThread
   public void loadData(boolean pullToRefresh);
 }

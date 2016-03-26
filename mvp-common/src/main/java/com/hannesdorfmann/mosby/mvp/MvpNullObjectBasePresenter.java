@@ -1,6 +1,7 @@
 package com.hannesdorfmann.mosby.mvp;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.UiThread;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -10,8 +11,18 @@ import java.lang.reflect.Type;
  * object pattern</a> for the attached mvp view. So whenever the view gets detached from this
  * presenter by calling{@link #detachView(boolean)}, a new "null object" view gets dynamically
  * instantiated by using reflections and set as the current
- * view (instead of null). The new "null object" view simply does nothing. This avoids null pointer
- * exceptions and checks like {@code if (getView() != null)}
+ * view (instead of null). The new "null object" view simply does nothing. This avoids
+ * NullPointerExceptions and checks like {@code if (getView() != null)}
+ *
+ * <p>
+ * Please note that when creating the "null object" the first generic parameter (left depth-first
+ * search) that will be found that is subtype of {@link MvpView} will be used as the type of the
+ * view. So avoid having multiple generic parameters for "View" like this {@code
+ * MyPresenter<FooMvpView, OtherMvpView>} because we can't know wheter FooMvpView or OtherMvpView is
+ * the
+ * real type of this presenter's view. In that case (left depth-first search) FooMvpView will be
+ * used (may cause ClassCastException if OtherMvpView was the desired one)
+ * </p>
  *
  * @param <V> The type of the {@link MvpView}
  * @author Jens Dirller , Hannes Dorfmann
@@ -83,11 +94,11 @@ public abstract class MvpNullObjectBasePresenter<V extends MvpView> implements M
     return false;
   }
 
-  @Override public void attachView(V view) {
+  @UiThread @Override public void attachView(@NonNull V view) {
     this.view = new WeakReference<V>(view);
   }
 
-  @NonNull protected V getView() {
+  @UiThread @NonNull protected V getView() {
     if (view != null) {
       V realView = view.get();
       if (realView != null) {
@@ -98,7 +109,7 @@ public abstract class MvpNullObjectBasePresenter<V extends MvpView> implements M
     return nullView;
   }
 
-  @Override public void detachView(boolean retainInstance) {
+  @UiThread @Override public void detachView(boolean retainInstance) {
     if (view != null) {
       view.clear();
       view = null;

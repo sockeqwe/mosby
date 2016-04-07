@@ -59,7 +59,7 @@ public abstract class MvpViewStateFragment<V extends MvpView, P extends MvpPrese
 
   @NonNull @Override protected FragmentMvpDelegate<V, P> getMvpDelegate() {
     if (mvpDelegate == null) {
-      mvpDelegate = new FragmentMvpViewStateDelegateImpl<V, P>(this);
+      mvpDelegate = new FragmentMvpViewStateDelegateImpl<>(this);
     }
 
     return mvpDelegate;

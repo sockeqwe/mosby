@@ -3,6 +3,7 @@ package com.hannesdorfmann.mosby.sample.mail.write;
 import android.annotation.TargetApi;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
@@ -92,7 +93,7 @@ import javax.inject.Inject;
     }
   }
 
-  @Override public RestorableViewState createViewState() {
+  @NonNull @Override public RestorableViewState createViewState() {
     return new WriteViewState();
   }
 

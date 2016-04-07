@@ -54,7 +54,7 @@ public abstract class MvpViewStateFragment<V extends MvpView, P extends MvpPrese
   /**
    * Create the view state object of this class
    */
-  public abstract ViewState createViewState();
+  public abstract ViewState<V> createViewState();
 
   @Override protected FragmentMvpDelegate<V, P> getMvpDelegate() {
     if (mvpDelegate == null) {
@@ -64,7 +64,7 @@ public abstract class MvpViewStateFragment<V extends MvpView, P extends MvpPrese
     return mvpDelegate;
   }
 
-  @Override public ViewState getViewState() {
+  @Override public ViewState<V> getViewState() {
     return viewState;
   }
 

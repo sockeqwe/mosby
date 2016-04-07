@@ -17,6 +17,7 @@
 package com.hannesdorfmann.mosby.mvp.viewstate;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
 import com.hannesdorfmann.mosby.mvp.MvpFragment;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
@@ -54,9 +55,9 @@ public abstract class MvpViewStateFragment<V extends MvpView, P extends MvpPrese
   /**
    * Create the view state object of this class
    */
-  public abstract ViewState<V> createViewState();
+  @NonNull public abstract ViewState<V> createViewState();
 
-  @Override protected FragmentMvpDelegate<V, P> getMvpDelegate() {
+  @NonNull @Override protected FragmentMvpDelegate<V, P> getMvpDelegate() {
     if (mvpDelegate == null) {
       mvpDelegate = new FragmentMvpViewStateDelegateImpl<V, P>(this);
     }

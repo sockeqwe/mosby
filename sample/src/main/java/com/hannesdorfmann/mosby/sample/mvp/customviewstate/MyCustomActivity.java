@@ -54,7 +54,7 @@ public class MyCustomActivity extends MvpViewStateActivity<MyCustomView, MyCusto
     presenter.doA();
   }
 
-  @Override public MyCustomPresenter createPresenter() {
+  @NonNull @Override public MyCustomPresenter createPresenter() {
     return new MyCustomPresenter();
   }
 

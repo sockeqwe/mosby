@@ -7,6 +7,7 @@ import android.animation.ObjectAnimator;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -80,7 +81,7 @@ public class ProfileActivity
     return getString(R.string.error_has_occurred);
   }
 
-  @Override public ProfilePresenter createPresenter() {
+  @NonNull @Override public ProfilePresenter createPresenter() {
     return profileComponent.presenter();
   }
 

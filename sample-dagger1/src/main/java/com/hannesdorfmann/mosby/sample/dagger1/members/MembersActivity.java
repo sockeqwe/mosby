@@ -17,6 +17,7 @@
 package com.hannesdorfmann.mosby.sample.dagger1.members;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 
 import android.support.v7.widget.LinearLayoutManager;
@@ -77,7 +78,7 @@ public class MembersActivity extends MvpLceViewStateActivity<SwipeRefreshLayout,
     return errorMessageDeterminer.getErrorMessage(e, pullToRefresh);
   }
 
-  @Override public MembersPresenter createPresenter() {
+  @NonNull @Override public MembersPresenter createPresenter() {
     return getObjectGraph().get(MembersPresenter.class);
   }
 

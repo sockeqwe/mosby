@@ -97,7 +97,7 @@ import javax.inject.Inject;
     return new WriteViewState();
   }
 
-  @Override public WritePresenter createPresenter() {
+  @NonNull @Override public WritePresenter createPresenter() {
     return writeComponent.presenter();
   }
 

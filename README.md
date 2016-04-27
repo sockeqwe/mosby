@@ -30,6 +30,9 @@ The changelog can be found in the [release section](https://github.com/sockeqwe/
 # Migrating
 See the [project website](http://hannesdorfmann.com/mosby/) for migrating from Mosby 1.x to Mosby 2.0
 
+# Conductor
+Mosby has a plugin for [Conductor](https://github.com/bluelinelabs/Conductor). You can find it here: https://github.com/sockeqwe/mosby-conductor
+
 # License
 ```
 Copyright 2015 Hannes Dorfmann

@@ -1,46 +1,27 @@
 language: android
-
 android:
   components:
-    - build-tools-23.0.1
-    - extra-android-m2repository
-    - android-23
-#    - android-18
-#    - sys-img-armeabi-v7a-android-18
-#    - sys-img-armeabi-v7a-android-23
-
+  - build-tools-23.0.1
+  - extra-android-m2repository
+  - android-23
 before_install:
- - chmod +x .buildscript/deploy_snapshot.sh
-
+- chmod +x .buildscript/deploy_snapshot.sh
 jdk:
-  - oraclejdk8
-
+- oraclejdk8
 env:
   global:
-    - MALLOC_ARENA_MAX=2
-    - secure: "r5TaIZkS1ErM6OFM1nhFuoQ68OEQA29jw/FUj6OGu1IkNE8Z2kTDuvRYyqitilU2Zy4DPA0bnSENone/YF+qeDi//o3rM77SuFr0ywYLoaCJAjLcWBCjyftFsl7gZRIhfIiB1WhYq/JHkI4cX0iibHZwoA95GAloZPWH3tQBCIw="
-    - secure: "di8dPmgdotlH4YuuNUgR1/wRA6PE07gJjD8Z23LJ9SQHIP9T9yb2qh6PwHgavu7uyMydaqucq9AYCsvnCpnsxDGg/f0TsipLoVcMzq6MZp1EkW1iEWYahQCg5CchtgOODDEL36DVjy08dVLTlmlIMfDIZzkXJP6H+BDKgnxim5s="
-
+  - MALLOC_ARENA_MAX=2
+  - secure: NYiROD67LSfBXxPZtmKIgw4N6A74eXDwcpKkHro8rXyOc61G9lng4wTuLzj4uHW4HFxMBuqb7PPBp3VuWppXGPhFUyr3SxanJGd/rHzCDuRcMR20oncSIIlr2fpbGC8jna+8xDisq6pZdd2NqwAWeYqML/U58yyEAwteCHFCjHI=
+  - secure: RjqmTNddPbFUjPF3ZvkfBKrUmP6QOWQFYDBMfiBC1n7ugHs0wpNBuGgRh0SQNIZ0idEcaqg6WksODrZgjtQsjAyZeDRFWSiJ7rssFfpfw9142K00cJqZCdqo3wy8D0pP4iXcMxc6eR1Jiu4sIgqA1fwPndBAnS//mcU/CyqoZoE=
 branches:
   except:
-    - gh-pages
-
+  - gh-pages
 notifications:
   email: false
-
 sudo: required
-
 script: gradle build --stacktrace
-
 after_success:
-  - .buildscript/deploy_snapshot.sh
-
+- ".buildscript/deploy_snapshot.sh"
 cache:
   directories:
-    - $HOME/.gradle
-
-# before_script:
-#  - echo no | android create avd --force -n test -t android-22 --abi armeabi-v7a
-#  - emulator -avd test -no-skin -no-audio -no-window &
-#  - android-wait-for-emulator
-#  - adb shell input keyevent 82 &
+  - "$HOME/.gradle"

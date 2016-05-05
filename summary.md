@@ -45,5 +45,6 @@ This module contains the base interfaces like `MvpView` and `MvpPresenter` and c
 ViewState is a feature in mosby that allows you to retain the views state during screen orientation changes. This is done by using `ActivityMvpViewStateDelegate`, `FragmentMvpViewStateDelegate` and `ViewGroupMvpDelegate` as the concrete implementations `MvpViewStateActivity`, `MvpViewStateFragment` do. Furthermore, LCE (Loading-Content-Error) implementations like `MvpLceViewStateActivity` and `MvpLceViewStateFragment` are provided by this module.
 
 ## Additional resources
- - [Ted Mosby - Software Architect:](http://hannesdorfmann.com/android/mosby/) The original blog post where Mosby has been introduced.
- - [Stinsons Playbook for Mosby:](http://hannesdorfmann.com/android/mosby-playbook/) A blog post providing some tips you may find useful while creating Mosby powered apps.
+ - [Ted Mosby - Software Architect:](http://hannesdorfmann.com/android/mosby) The original blog post where Mosby has been introduced.
+ - [Stinsons Playbook for Mosby:](http://hannesdorfmann.com/android/mosby-playbook) A blog post providing some tips you may find useful while creating Mosby powered apps.
+ - [Let Mosby flow - An alternative to Fragments:](http://hannesdorfmann.com/android/let-mosby-flow) A blog post that demonstrates how to use Mosby with square's navigation stack library Flow. 

@@ -31,6 +31,9 @@ Almost all pages on this site provide a `Disqus` section at the end of the page.
 ## Contributing
 If you would like to contribute code you can do so through GitHub by forking the repository and sending a pull request. When submitting code, please make every effort to follow existing conventions and style in order to keep the code as readable as possible.
 
+## Conductor
+[Conductor](https://github.com/bluelinelabs/Conductor) is a framework that allows building View-based Android applications. A plugin that enables Mosby MVP support for Conductor can be found [here](https://github.com/sockeqwe/mosby-conductor).
+
 ## License
 {% highlight text %}
  Copyright 2015 Hannes Dorfmann.

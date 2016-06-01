@@ -19,7 +19,7 @@ branches:
 notifications:
   email: false
 sudo: required
-script: gradle build --stacktrace
+script: ./gradlew build --stacktrace
 after_success:
 - ".buildscript/deploy_snapshot.sh"
 cache:

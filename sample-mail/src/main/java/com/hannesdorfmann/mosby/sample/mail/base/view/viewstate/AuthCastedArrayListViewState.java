@@ -25,6 +25,7 @@ import java.util.List;
 /**
  * @author Hannes Dorfmann
  */
+@SuppressWarnings("ParcelCreator")
 public class AuthCastedArrayListViewState<D extends List<? extends Parcelable>, V extends AuthView<D>>
     extends CastedArrayListLceViewState<D, V> implements AuthViewState<D, V> {
 

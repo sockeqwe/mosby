@@ -23,6 +23,7 @@ import com.hannesdorfmann.mosby.sample.mail.base.view.AuthView;
 /**
  * @author Hannes Dorfmann
  */
+@SuppressWarnings("ParcelCreator")
 public class AuthParcelableDataViewState<D extends Parcelable, V extends AuthView<D>>
     extends ParcelableDataLceViewState<D, V> implements AuthViewState<D, V> {
 

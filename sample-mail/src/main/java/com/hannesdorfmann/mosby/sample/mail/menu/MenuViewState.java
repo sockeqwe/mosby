@@ -25,6 +25,7 @@ import java.util.List;
 /**
  * @author Hannes Dorfmann
  */
+@SuppressWarnings("ParcelCreator")
 public class MenuViewState extends AuthCastedArrayListViewState<List<Label>, MenuView> {
 
   private Account account;

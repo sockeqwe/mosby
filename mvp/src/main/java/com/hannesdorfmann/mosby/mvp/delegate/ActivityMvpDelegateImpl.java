@@ -106,14 +106,14 @@ public class ActivityMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<V
   @Override public Object onRetainCustomNonConfigurationInstance() {
 
     P presenter = delegateCallback.shouldInstanceBeRetained() ? delegateCallback.getPresenter() : null;
-    Object nonMosbyConfiguraionInstance =
+    Object nonMosbyConfigurationInstance =
         delegateCallback.onRetainNonMosbyCustomNonConfigurationInstance();
 
-    if (presenter == null && nonMosbyConfiguraionInstance == null) {
+    if (presenter == null && nonMosbyConfigurationInstance == null) {
       return null;
     }
 
-    return new ActivityMvpNonConfigurationInstances<>(presenter, nonMosbyConfiguraionInstance);
+    return new ActivityMvpNonConfigurationInstances<>(presenter, nonMosbyConfigurationInstance);
   }
 
   @Override public Object getNonMosbyLastCustomNonConfigurationInstance() {

@@ -24,7 +24,7 @@ import com.hannesdorfmann.mosby.mvp.delegate.ActivityMvpDelegateCallback;
 import com.hannesdorfmann.mosby.mvp.delegate.ActivityMvpDelegateImpl;
 
 /**
- * An Activity that uses an {@link MvpPresenter} to implement a Model-View-Presenter
+ * An Activity that uses a {@link MvpPresenter} to implement a Model-View-Presenter
  * architecture.
  *
  * @author Hannes Dorfmann

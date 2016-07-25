@@ -28,7 +28,7 @@ import com.hannesdorfmann.mosby.mvp.delegate.FragmentMvpDelegate;
 import com.hannesdorfmann.mosby.mvp.delegate.MvpDelegateCallback;
 
 /**
- * A Fragment that uses an {@link MvpPresenter} to implement a Model-View-Presenter
+ * A Fragment that uses a {@link MvpPresenter} to implement a Model-View-Presenter
  * architecture
  *
  * @author Hannes Dorfmann

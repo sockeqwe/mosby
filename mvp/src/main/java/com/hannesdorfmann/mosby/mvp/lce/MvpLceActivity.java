@@ -73,7 +73,7 @@ public abstract class MvpLceActivity<CV extends View, M, V extends MvpLceView<M>
 
     if (errorView == null) {
       throw new NullPointerException(
-          "Error view is null! Have you specified a content view in your layout xml file?"
+          "Error view is null! Have you specified an error view in your layout xml file?"
               + " You have to give your error View the id R.id.errorView");
     }
 

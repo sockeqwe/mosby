@@ -14,23 +14,23 @@
 
         <TextView
             android:id="@+id/errorView"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textColor="@android:color/holo_red_dark"/>
 
-    <EditText
-        android:id="@+id/country_form_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:hint="Country name"/>
+        <EditText
+            android:id="@+id/country_form_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:hint="Country name"/>
 
-    <Button
-        android:id="@+id/country_form_save"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Save Country"/>
+        <Button
+            android:id="@+id/country_form_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save Country"/>
 
     </LinearLayout>
 

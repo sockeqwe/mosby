@@ -24,9 +24,7 @@ public class SceAnimator {
      * Show the loading view. No animations, because sometimes loading things is pretty fast (i.e.
      * retrieve data from memory cache).
      */
-    public static void showLoading(@NonNull View loadingView, @NonNull View contentView,
-                                   @NonNull View errorView) {
-
+    public static void showLoading(@NonNull View loadingView, @NonNull View errorView) {
         errorView.setVisibility(View.GONE);
         loadingView.setVisibility(View.VISIBLE);
     }
@@ -34,11 +32,7 @@ public class SceAnimator {
     /**
      * Shows the error view instead of the loading view
      */
-    public static void showErrorView(@NonNull final View loadingView, @NonNull final View contentView,
-                                     final View errorView) {
-
-        //contentView.setVisibility(View.GONE);
-
+    public static void showErrorView(@NonNull final View loadingView, final View errorView) {
         final Resources resources = loadingView.getResources();
         // Not visible yet, so animate the view in
         AnimatorSet set = new AnimatorSet();

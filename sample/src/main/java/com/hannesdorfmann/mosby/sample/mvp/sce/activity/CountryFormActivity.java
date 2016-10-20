@@ -41,7 +41,7 @@ implements CountryFormView<Country> {
 
     @Override
     protected String getErrorMessage(Throwable e) {
-        return null;
+        return e.getMessage();
     }
 
     @NonNull

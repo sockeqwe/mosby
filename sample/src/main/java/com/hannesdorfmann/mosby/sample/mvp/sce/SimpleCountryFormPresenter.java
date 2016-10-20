@@ -15,7 +15,8 @@ public class SimpleCountryFormPresenter extends MvpBasePresenter<CountryFormView
 
     @Override
     public void saveCountry(Country country) {
-        getView().showLoading();
+        if(isViewAttached())
+            getView().showLoading();
 
         if(countryAsyncSaver != null && !countryAsyncSaver.isCancelled()){
             countryAsyncSaver.cancel(true);

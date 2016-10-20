@@ -65,7 +65,7 @@ public abstract class MvpSceActivity<CV extends View, M, V extends MvpSceView, P
      * Override this method if you want to provide your own animation for showing the loading view
      */
     protected void animateLoadingViewIn() {
-        SceAnimator.showLoading(loadingView, formView, errorView);
+        SceAnimator.showLoading(loadingView, errorView);
     }
 
     @Override public void showForm() {
@@ -110,7 +110,7 @@ public abstract class MvpSceActivity<CV extends View, M, V extends MvpSceView, P
      * Animates the error view in (instead of displaying content view / loading view)
      */
     protected void animateErrorViewIn() {
-        SceAnimator.showErrorView(loadingView, formView, errorView);
+        SceAnimator.showErrorView(loadingView, errorView);
     }
 
 }

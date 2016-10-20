@@ -32,6 +32,7 @@ import com.hannesdorfmann.mosby.sample.mvp.lce.viewpager.ViewPagerActivity;
 import com.hannesdorfmann.mosby.sample.mvp.lce.viewstate.NotRetainingCountriesActivity;
 import com.hannesdorfmann.mosby.sample.mvp.lce.viewstate.RetainingCountriesActivity;
 import com.hannesdorfmann.mosby.sample.mvp.lce.viewstate.RetainingCountriesFragmentEmbededInXmlActivity;
+import com.hannesdorfmann.mosby.sample.mvp.sce.activity.CountryFormActivity;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
@@ -50,42 +51,44 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
   private Demo[] createDemos() {
     return new Demo[] {
-        new Demo("Simple LceActivity", new Intent(this, CountriesActivity.class)),
-        new Demo("Simple LceFragment",
+            new Demo("Simple LceActivity", new Intent(this, CountriesActivity.class)),
+            new Demo("Simple LceFragment",
+                    new Intent(this, FragmentContainerActivity.class).putExtra("fragment",
+                            "CountriesFragment")), new Demo("RetainingViewsState LceFragment",
             new Intent(this, FragmentContainerActivity.class).putExtra("fragment",
-                "CountriesFragment")), new Demo("RetainingViewsState LceFragment",
-        new Intent(this, FragmentContainerActivity.class).putExtra("fragment",
-            "RetainingCountriesFragment")),
-        new Demo("Retaining by using Parcelable ViewsState LceFragment",
-            new Intent(this, FragmentContainerActivity.class).putExtra("fragment",
-                "NotRetainingCountriesFragment")),
+                    "RetainingCountriesFragment")),
+            new Demo("Retaining by using Parcelable ViewsState LceFragment",
+                    new Intent(this, FragmentContainerActivity.class).putExtra("fragment",
+                            "NotRetainingCountriesFragment")),
 
-        new Demo("Retaining ViewsState LceActivity",
-            new Intent(this, RetainingCountriesActivity.class)),
-        new Demo("Retaining by using Parcelable ViewsState LceActivity",
-            new Intent(this, NotRetainingCountriesActivity.class)),
+            new Demo("SCE Form View", new Intent(this, CountryFormActivity.class)),
 
-        new Demo("MVP FrameLayout", new Intent(this, CountriesLayoutActivity.class)),
+            new Demo("Retaining ViewsState LceActivity",
+                    new Intent(this, RetainingCountriesActivity.class)),
+            new Demo("Retaining by using Parcelable ViewsState LceActivity",
+                    new Intent(this, NotRetainingCountriesActivity.class)),
 
-        new Demo("Custom ViewsState Fragment",
-            new Intent(this, FragmentContainerActivity.class).putExtra("fragment",
-                "CustomViewStateFragment")),
+            new Demo("MVP FrameLayout", new Intent(this, CountriesLayoutActivity.class)),
 
-        new Demo("Custom ViewState Activity", new Intent(this, MyCustomActivity.class)),
-        new Demo("Nested ViewState CountriesFragment",
-            new Intent(this, FragmentContainerActivity.class).putExtra("fragment",
-                "NestedNotRetainingFragment")),
-        new Demo("Nested ViewState CountriesFragment ViewPager",
-            new Intent(this, FragmentContainerActivity.class).putExtra("fragment",
-                "NestedNotRetainingViewPagerFragment")),
-        new Demo("Retaining ViewState Fragment embededed in activities xml layout ",
-            new Intent(this, RetainingCountriesFragmentEmbededInXmlActivity.class)),
+            new Demo("Custom ViewsState Fragment",
+                    new Intent(this, FragmentContainerActivity.class).putExtra("fragment",
+                            "CustomViewStateFragment")),
 
-        new Demo("ViewPager", new Intent(this, ViewPagerActivity.class)),
+            new Demo("Custom ViewState Activity", new Intent(this, MyCustomActivity.class)),
+            new Demo("Nested ViewState CountriesFragment",
+                    new Intent(this, FragmentContainerActivity.class).putExtra("fragment",
+                            "NestedNotRetainingFragment")),
+            new Demo("Nested ViewState CountriesFragment ViewPager",
+                    new Intent(this, FragmentContainerActivity.class).putExtra("fragment",
+                            "NestedNotRetainingViewPagerFragment")),
+            new Demo("Retaining ViewState Fragment embededed in activities xml layout ",
+                    new Intent(this, RetainingCountriesFragmentEmbededInXmlActivity.class)),
 
-        new Demo("ViewPager with FragmentSTATEPagerAdapter",
-            new Intent(this, ViewPagerActivity.class).putExtra(ViewPagerActivity.KEY_STATEPAGER,
-                true))
+            new Demo("ViewPager", new Intent(this, ViewPagerActivity.class)),
+
+            new Demo("ViewPager with FragmentSTATEPagerAdapter",
+                    new Intent(this, ViewPagerActivity.class).putExtra(ViewPagerActivity.KEY_STATEPAGER,
+                            true))
     };
   }
 

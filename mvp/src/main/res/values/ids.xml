@@ -3,4 +3,5 @@
   <item name="contentView" type="id"/>
   <item name="errorView" type="id"/>
   <item name="loadingView" type="id"/>
+  <item name="formView" type="id" />
 </resources>

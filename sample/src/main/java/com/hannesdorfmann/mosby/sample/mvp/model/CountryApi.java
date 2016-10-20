@@ -24,8 +24,9 @@ import java.util.List;
  */
 public class CountryApi {
 
+  private static ArrayList<Country> countries = new ArrayList<Country>(20);
+
   public static List<Country> getCountries() {
-    ArrayList<Country> countries = new ArrayList<Country>(20);
 
     countries.add(new Country("Italy"));
     countries.add(new Country("Germany"));
@@ -50,4 +51,9 @@ public class CountryApi {
 
     return countries;
   }
+
+  public static void addCountry(Country country){
+    countries.add(country);
+  }
+
 }

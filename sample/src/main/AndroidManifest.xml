@@ -47,6 +47,10 @@
     
     <activity android:name=".mvp.lce.viewpager.ViewPagerActivity"
       android:label="ViewPager" />
+
+    <activity android:name=".mvp.sce.activity.CountryFormActivity"
+      android:label="SCE Activity" />
+
   </application>
 
 

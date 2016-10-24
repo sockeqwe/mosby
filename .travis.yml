@@ -10,6 +10,7 @@ jdk:
 - oraclejdk8
 licenses:
 - android-sdk-license-.+
+- android-sdk-license-c81a61d9
 env:
   global:
   - MALLOC_ARENA_MAX=2

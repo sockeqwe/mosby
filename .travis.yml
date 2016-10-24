@@ -1,7 +1,7 @@
 language: android
 android:
   components:
-  - build-tools-23.0.1
+  - build-tools-23.0.3
   - extra-android-m2repository
   - android-23
 before_install:

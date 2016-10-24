@@ -8,6 +8,8 @@ before_install:
 - chmod +x .buildscript/deploy_snapshot.sh
 jdk:
 - oraclejdk8
+licenses:
+- android-sdk-license-.+
 env:
   global:
   - MALLOC_ARENA_MAX=2

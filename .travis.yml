@@ -1,13 +1,17 @@
 language: android
 android:
   components:
-  - build-tools-23.0.1
+  - tools
+  - build-tools-23.0.3
   - extra-android-m2repository
   - android-23
 before_install:
 - chmod +x .buildscript/deploy_snapshot.sh
 jdk:
 - oraclejdk8
+licenses:
+- android-sdk-license-.+
+- android-sdk-license-c81a61d9
 env:
   global:
   - MALLOC_ARENA_MAX=2

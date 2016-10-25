@@ -164,6 +164,7 @@ public abstract class MvpLceFragment<CV extends View, M, V extends MvpLceView<M>
     super.onDestroyView();
     loadingView = null;
     contentView = null;
+    errorView.setOnClickListener(null);
     errorView = null;
   }
 }

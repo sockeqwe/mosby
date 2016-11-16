@@ -31,7 +31,7 @@ import com.hannesdorfmann.mosby.mvp.R;
  * inflated xml layout</li>
  * <li>Display a error view: A <b>TextView</b> with <b>R.id.errorView</b> must be declared in your
  * inflated xml layout</li>
- * <li>Display content view: A view witjh <b>R.id.contentView</b> must be specified in your
+ * <li>Display content view: A view with <b>R.id.contentView</b> must be specified in your
  * inflated
  * xml layout</li>
  * </ul>

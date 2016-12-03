@@ -57,7 +57,7 @@ class CountryDetailsLayout(c: Context, atts: AttributeSet) : CountryDetailsView,
 
   override fun onFinishInflate() {
     super.onFinishInflate()
-    toolbar.setNavigationIcon(android.support.v7.appcompat.R.drawable.abc_ic_ab_back_mtrl_am_alpha)
+    // toolbar.setNavigationIcon(android.support.v7.appcompat.R.drawable.abc_ic_ab_back_mtrl_am_alpha)
     toolbar.setNavigationOnClickListener {
       Flow.get(this).goBack()
     }

@@ -2,9 +2,9 @@ language: android
 android:
   components:
   - tools
-  - build-tools-23.0.3
+  - build-tools-25.0.0
   - extra-android-m2repository
-  - android-23
+  - android-25
 before_install:
 - chmod +x .buildscript/deploy_snapshot.sh
 jdk:
@@ -24,8 +24,8 @@ notifications:
   email: false
 sudo: required
 script: ./gradlew build --stacktrace
-after_success:
-- ".buildscript/deploy_snapshot.sh"
+# after_success:
+# - ".buildscript/deploy_snapshot.sh"
 cache:
   directories:
   - "$HOME/.gradle"

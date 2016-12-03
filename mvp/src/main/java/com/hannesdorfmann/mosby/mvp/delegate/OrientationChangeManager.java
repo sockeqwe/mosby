@@ -26,7 +26,7 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
  * @author Hannes Dorfmann
  * @since 3.0
  */
-class OrientationChangeManager<V extends MvpView, P extends MvpPresenter<V>> {
+final class OrientationChangeManager<V extends MvpView, P extends MvpPresenter<V>> {
 
   static final String FRAGMENT_TAG = "com.hannesdorfmann.mosby.mvp.OrientationChangeFragment";
 

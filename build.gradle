@@ -62,7 +62,7 @@ ext {
 
 
   // Test Libs
-  robolectricVersion = '3.0'
+  robolectricVersion = '3.1.4'
   junitVersion = '4.12'
   mockitoVersion = '2.0.5-beta'
   powermockVersion = '1.6.2'

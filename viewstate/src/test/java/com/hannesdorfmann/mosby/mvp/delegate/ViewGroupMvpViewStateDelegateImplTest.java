@@ -22,8 +22,8 @@ package com.hannesdorfmann.mosby.mvp.delegate;
  */
 
 /*
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 18, manifest = Config.NONE)
+@RunWith(RobolectricTestRunner.class)
+@Config(constants = BuildConfig.class, sdk = 21, manifest = Config.NONE)
 */
 public class ViewGroupMvpViewStateDelegateImplTest {
 

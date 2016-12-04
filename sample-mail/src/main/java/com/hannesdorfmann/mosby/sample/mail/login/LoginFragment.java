@@ -18,6 +18,7 @@ package com.hannesdorfmann.mosby.sample.mail.login;
 
 import android.animation.LayoutTransition;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
@@ -71,7 +72,7 @@ public class LoginFragment extends BaseViewStateFragment<LoginView, LoginPresent
     loginForm.setLayoutTransition(transition);
   }
 
-  @Override public ViewState createViewState() {
+  @NonNull @Override public ViewState createViewState() {
     return new LoginViewState();
   }
 

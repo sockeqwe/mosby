@@ -17,6 +17,7 @@
 package com.hannesdorfmann.mosby.sample.mvp.lce.viewstate;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -78,7 +79,7 @@ public class NotRetainingCountriesActivity extends
     return CountriesErrorMessage.get(e, pullToRefresh, this);
   }
 
-  @Override public CountriesPresenter createPresenter() {
+  @NonNull @Override public CountriesPresenter createPresenter() {
     return new SimpleCountriesPresenter();
   }
 

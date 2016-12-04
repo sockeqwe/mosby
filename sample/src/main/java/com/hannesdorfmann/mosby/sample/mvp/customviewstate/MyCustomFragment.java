@@ -17,6 +17,7 @@
 package com.hannesdorfmann.mosby.sample.mvp.customviewstate;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,7 +58,7 @@ public class MyCustomFragment extends MvpViewStateFragment<MyCustomView, MyCusto
     ButterKnife.bind(this, view);
   }
 
-  @Override public ViewState createViewState() {
+  @NonNull @Override public ViewState createViewState() {
     return new MyCustomViewState();
   }
 

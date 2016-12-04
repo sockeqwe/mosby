@@ -17,6 +17,7 @@
 package com.hannesdorfmann.mosby.sample.mvp.customviewstate;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.TextView;
 
@@ -45,7 +46,7 @@ public class MyCustomActivity extends MvpViewStateActivity<MyCustomView, MyCusto
     ButterKnife.bind(this);
   }
 
-  @Override public RestorableViewState createViewState() {
+  @NonNull @Override public RestorableViewState createViewState() {
     return new MyCustomViewState();
   }
 
@@ -53,7 +54,7 @@ public class MyCustomActivity extends MvpViewStateActivity<MyCustomView, MyCusto
     presenter.doA();
   }
 
-  @Override public MyCustomPresenter createPresenter() {
+  @NonNull @Override public MyCustomPresenter createPresenter() {
     return new MyCustomPresenter();
   }
 

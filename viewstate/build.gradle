@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 apply from: '../maven-push.gradle'
 apply from: '../findbugs.gradle'
-apply plugin: 'com.getkeepsafe.dexcount'
+// apply plugin: 'com.getkeepsafe.dexcount'
 
 android {
   compileSdkVersion rootProject.ext.compileSdkVersion

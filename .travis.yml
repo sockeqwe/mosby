@@ -34,4 +34,4 @@ cache:
 after_failure:
   - cat /home/travis/build/sockeqwe/mosby/mvp/build/outputs/lint-results-debug.xml
   - cat /home/travis/build/sockeqwe/mosby/viewstate/build/outputs/lint-results-debug.xml
-  
+

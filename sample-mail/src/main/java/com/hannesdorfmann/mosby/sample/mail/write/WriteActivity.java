@@ -86,9 +86,9 @@ import javax.inject.Inject;
   @TargetApi(21) private Drawable getBackArrowDrawable() {
 
     if (BuildUtils.isMinApi21()) {
-      return getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha, getTheme());
+      return getResources().getDrawable(R.drawable.ic_action_back, getTheme());
     } else {
-      return getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+      return getResources().getDrawable(R.drawable.ic_action_back);
     }
   }
 

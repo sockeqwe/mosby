@@ -21,9 +21,9 @@ public class BuildUtils {
 
     if (isMinApi21()) {
       return context.getResources()
-          .getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha, context.getTheme());
+          .getDrawable(R.drawable.ic_action_back, context.getTheme());
     } else {
-      return context.getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+      return context.getResources().getDrawable(R.drawable.ic_action_back);
     }
   }
 }

@@ -4,12 +4,9 @@ apply from: '../findbugs.gradle'
 apply plugin: 'com.getkeepsafe.dexcount'
 
 android {
-  /*
+
   compileSdkVersion rootProject.ext.compileSdkVersion
   buildToolsVersion rootProject.ext.buildToolsVersion
-*/
-  compileSdkVersion 25
-  buildToolsVersion '25.0.0'
 
   defaultConfig {
     minSdkVersion rootProject.ext.minSdk

@@ -2,7 +2,7 @@ language: android
 android:
   components:
   - tools
-  - build-tools-25.0.0
+  - build-tools-25.0.1
   - extra-android-m2repository
   - android-25
 before_install:

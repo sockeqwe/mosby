@@ -40,6 +40,8 @@ android {
 dependencies {
 
   compile project(':mvp-common')
+  compile 'io.reactivex.rxjava2:rxjava:'+ rootProject.ext.rxjava2Version
+
 
   testCompile 'junit:junit:' + rootProject.ext.junitVersion
   testCompile 'org.mockito:mockito-core:' + rootProject.ext.mockitoVersion

@@ -24,7 +24,7 @@
 
   </android.support.design.widget.AppBarLayout>
 
-  <com.hannesdorfmann.mosby.sample.flow.countries.CountriesListLayout
+  <com.hannesdorfmann.mosby3.sample.flow.countries.CountriesListLayout
       android:id="@+id/countriesScreen"
       android:layout_width="match_parent"
       android:layout_height="match_parent"

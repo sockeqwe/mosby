@@ -1,0 +1,58 @@
+apply plugin: 'com.android.library'
+
+android {
+
+  compileSdkVersion rootProject.ext.compileSdkVersion
+  buildToolsVersion rootProject.ext.buildToolsVersion
+
+  defaultConfig {
+    minSdkVersion rootProject.ext.minSdk
+    targetSdkVersion rootProject.ext.targetSdk
+    versionName project.VERSION_NAME
+    versionCode Integer.parseInt(project.VERSION_CODE)
+
+    packagingOptions {
+      exclude 'LICENSE.txt'
+    }
+  }
+  buildTypes {
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+    }
+  }
+
+  compileOptions {
+    sourceCompatibility rootProject.ext.javaSourceCompatibility
+    targetCompatibility rootProject.ext.javaTargetCompatibility
+  }
+
+  /*
+  testOptions {
+    unitTests.returnDefaultValues = true
+  }
+  */
+}
+
+dependencies {
+
+  compile 'com.android.support:appcompat-v7:' + rootProject.ext.appcompat7Version
+
+  compile project(':mvp-common')
+
+  testCompile 'junit:junit:' + rootProject.ext.junitVersion
+  testCompile 'org.mockito:mockito-core:' + rootProject.ext.mockitoVersion
+
+  testCompile "org.robolectric:robolectric:"+rootProject.ext.robolectricVersion
+  testCompile "org.robolectric:shadows-support-v4:"+rootProject.ext.robolectricVersion
+
+
+  testCompile('org.powermock:powermock-api-mockito:' + rootProject.ext.powermockVersion) {
+    exclude module: 'hamcrest-core'
+    exclude module: 'objenesis'
+  }
+  testCompile('org.powermock:powermock-module-junit4:' + rootProject.ext.powermockVersion) {
+    exclude module: 'hamcrest-core'
+    exclude module: 'objenesis'
+  }
+}

@@ -34,7 +34,7 @@
       >
 
     <fragment
-        android:name="com.hannesdorfmann.mosby.sample.mail.menu.MenuFragment"
+        android:name="com.hannesdorfmann.mosby3.sample.mail.menu.MenuFragment"
         android:id="@+id/menuFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

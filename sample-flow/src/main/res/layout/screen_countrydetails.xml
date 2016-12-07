@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.hannesdorfmann.mosby.sample.flow.countries.CountryDetailsLayout
+<com.hannesdorfmann.mosby3.sample.flow.countries.CountryDetailsLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/screenCountriesDetails"
@@ -83,4 +83,4 @@
         />
 
   </android.support.design.widget.CoordinatorLayout>
-</com.hannesdorfmann.mosby.sample.flow.countries.CountryDetailsLayout>
+</com.hannesdorfmann.mosby3.sample.flow.countries.CountryDetailsLayout>

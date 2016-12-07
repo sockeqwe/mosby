@@ -52,7 +52,7 @@
         tools:text="25. Apr."
         />
     
-    <com.hannesdorfmann.mosby.sample.mail.ui.view.StarView
+    <com.hannesdorfmann.mosby3.sample.mail.ui.view.StarView
         android:id="@+id/starButton"
         android:layout_width="26dp"
         android:layout_height="26dp"

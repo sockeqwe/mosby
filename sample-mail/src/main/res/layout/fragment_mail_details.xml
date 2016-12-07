@@ -65,7 +65,7 @@
           />
 
 
-      <com.hannesdorfmann.mosby.sample.mail.label.LabelLayout
+      <com.hannesdorfmann.mosby3.sample.mail.label.LabelLayout
           android:id="@+id/label"
           android:layout_width="wrap_content"
           android:layout_height="30dp"
@@ -108,7 +108,7 @@
           tools:text="22. Apr."
           />
 
-      <com.hannesdorfmann.mosby.sample.mail.ui.view.StarView
+      <com.hannesdorfmann.mosby3.sample.mail.ui.view.StarView
           android:id="@+id/starButton"
           android:layout_width="24dp"
           android:layout_height="24dp"

@@ -13,6 +13,7 @@ android {
   }
 
   defaultConfig {
+    applicationId "com.hannesdorfmann.mosby3.sample.mail"
     minSdkVersion 16
     targetSdkVersion rootProject.ext.targetSdk
     versionName project.VERSION_NAME

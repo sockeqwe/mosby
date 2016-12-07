@@ -7,11 +7,12 @@ buildscript {
     jcenter()
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:2.2.2'
+    classpath 'com.android.tools.build:gradle:2.2.3'
     classpath 'com.neenbedankt.gradle.plugins:android-apt:1.7'
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     classpath "org.jetbrains.kotlin:kotlin-android-extensions:$kotlinVersion"
   //  classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.5.2'
+    classpath 'me.tatarka:gradle-retrolambda:3.4.0'
   }
 }
 

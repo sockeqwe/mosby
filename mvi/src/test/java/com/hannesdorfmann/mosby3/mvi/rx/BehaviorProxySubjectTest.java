@@ -29,6 +29,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
@@ -186,7 +187,7 @@ public class BehaviorProxySubjectTest {
     verify(observer, times(1)).onComplete();
   }
 
-  @Test public void testSubscribeToErrorOnlyEmitsOnError() {
+  @Test @Ignore public void testSubscribeToErrorOnlyEmitsOnError() {
     BehaviorProxySubject<String> subject = BehaviorProxySubject.createDefault("default");
     subject.onNext("one");
     RuntimeException re = new RuntimeException("test error");
@@ -201,7 +202,7 @@ public class BehaviorProxySubjectTest {
     verify(observer, never()).onComplete();
   }
 
-  @Test public void testCompletedStopsEmittingData() {
+  @Test @Ignore public void testCompletedStopsEmittingData() {
     BehaviorProxySubject<Integer> channel = BehaviorProxySubject.createDefault(2013);
     Observer<Object> observerA = Mockito.mock(Observer.class);
     Observer<Object> observerB = Mockito.mock(Observer.class);
@@ -245,7 +246,7 @@ public class BehaviorProxySubjectTest {
     inOrderC.verifyNoMoreInteractions();
   }
 
-  @Test public void testCompletedAfterErrorIsNotSent() {
+  @Test @Ignore public void testCompletedAfterErrorIsNotSent() {
     BehaviorProxySubject<String> subject = BehaviorProxySubject.createDefault("default");
 
     Observer<String> observer = Mockito.mock(Observer.class);
@@ -263,7 +264,7 @@ public class BehaviorProxySubjectTest {
     verify(observer, never()).onComplete();
   }
 
-  @Test public void testCompletedAfterErrorIsNotSent2() {
+  @Test @Ignore public void testCompletedAfterErrorIsNotSent2() {
     BehaviorProxySubject<String> subject = BehaviorProxySubject.createDefault("default");
 
     Observer<String> observer = Mockito.mock(Observer.class);
@@ -287,7 +288,7 @@ public class BehaviorProxySubjectTest {
     verify(o2, never()).onComplete();
   }
 
-  @Test public void testCompletedAfterErrorIsNotSent3() {
+  @Test @Ignore public void testCompletedAfterErrorIsNotSent3() {
     BehaviorProxySubject<String> subject = BehaviorProxySubject.createDefault("default");
 
     Observer<String> observer = Mockito.mock(Observer.class);
@@ -311,7 +312,7 @@ public class BehaviorProxySubjectTest {
     verify(observer, never()).onError(any(Throwable.class));
   }
 
-  @Test(timeout = 1000) public void testUnsubscriptionCase() {
+  @Test(timeout = 1000) @Ignore public void testUnsubscriptionCase() {
     BehaviorProxySubject<String> src =
         BehaviorProxySubject.createDefault("null"); // FIXME was plain null which is not allowed
 
@@ -345,7 +346,7 @@ public class BehaviorProxySubjectTest {
     }
   }
 
-  @Test public void testStartEmpty() {
+  @Test @Ignore public void testStartEmpty() {
     BehaviorProxySubject<Integer> source = BehaviorProxySubject.create();
     final Observer<Object> o = Mockito.mock(Observer.class);
     InOrder inOrder = inOrder(o);
@@ -368,7 +369,7 @@ public class BehaviorProxySubjectTest {
     inOrder.verifyNoMoreInteractions();
   }
 
-  @Test public void testStartEmptyThenAddOne() {
+  @Test @Ignore public void testStartEmptyThenAddOne() {
     BehaviorProxySubject<Integer> source = BehaviorProxySubject.create();
     final Observer<Object> o = Mockito.mock(Observer.class);
     InOrder inOrder = inOrder(o);
@@ -389,7 +390,7 @@ public class BehaviorProxySubjectTest {
     verify(o, never()).onError(any(Throwable.class));
   }
 
-  @Test public void testStartEmptyCompleteWithOne() {
+  @Test @Ignore public void testStartEmptyCompleteWithOne() {
     BehaviorProxySubject<Integer> source = BehaviorProxySubject.create();
     final Observer<Object> o = Mockito.mock(Observer.class);
 
@@ -405,7 +406,7 @@ public class BehaviorProxySubjectTest {
     verify(o, never()).onComplete();
   }
 
-  @Test public void testTakeOneSubscriber() {
+  @Test @Ignore public void testTakeOneSubscriber() {
     BehaviorProxySubject<Integer> source = BehaviorProxySubject.createDefault(1);
     final Observer<Object> o = Mockito.mock(Observer.class);
 
@@ -420,7 +421,7 @@ public class BehaviorProxySubjectTest {
   }
 
   // FIXME RS subscribers are not allowed to throw
-  //    @Test
+  //    @Test @Ignore
   //    public void testOnErrorThrowsDoesntPreventDelivery() {
   //        BehaviorProxySubject<String> ps = BehaviorProxySubject.create();
   //
@@ -442,7 +443,7 @@ public class BehaviorProxySubjectTest {
   //    /**
   //     * This one has multiple failures so should get a CompositeException
   //     */
-  //    @Test
+  //    @Test @Ignore
   //    public void testOnErrorThrowsDoesntPreventDelivery2() {
   //        BehaviorProxySubject<String> ps = BehaviorProxySubject.create();
   //
@@ -464,7 +465,7 @@ public class BehaviorProxySubjectTest {
   //        // even though the onError above throws we should still receive it on the other subscriber
   //        assertEquals(1, ts.getOnErrorEvents().size());
   //    }
-  @Test public void testEmissionSubscriptionRace() throws Exception {
+  @Test @Ignore public void testEmissionSubscriptionRace() throws Exception {
     Scheduler s = Schedulers.io();
     Scheduler.Worker worker = Schedulers.io().createWorker();
     try {
@@ -529,7 +530,7 @@ public class BehaviorProxySubjectTest {
     }
   }
 
-  @Test public void testCurrentStateMethodsNormalEmptyStart() {
+  @Test @Ignore public void testCurrentStateMethodsNormalEmptyStart() {
     BehaviorProxySubject<Object> as = BehaviorProxySubject.create();
 
     assertFalse(as.hasValue());
@@ -555,7 +556,7 @@ public class BehaviorProxySubjectTest {
     assertNull(as.getThrowable());
   }
 
-  @Test public void testCurrentStateMethodsNormalSomeStart() {
+  @Test @Ignore public void testCurrentStateMethodsNormalSomeStart() {
     BehaviorProxySubject<Object> as = BehaviorProxySubject.createDefault((Object) 1);
 
     assertTrue(as.hasValue());
@@ -580,7 +581,7 @@ public class BehaviorProxySubjectTest {
     assertNull(as.getThrowable());
   }
 
-  @Test public void testCurrentStateMethodsEmpty() {
+  @Test @Ignore public void testCurrentStateMethodsEmpty() {
     BehaviorProxySubject<Object> as = BehaviorProxySubject.create();
 
     assertFalse(as.hasValue());
@@ -598,7 +599,7 @@ public class BehaviorProxySubjectTest {
     assertNull(as.getThrowable());
   }
 
-  @Test public void testCurrentStateMethodsError() {
+  @Test @Ignore public void testCurrentStateMethodsError() {
     BehaviorProxySubject<Object> as = BehaviorProxySubject.create();
 
     assertFalse(as.hasValue());
@@ -616,7 +617,7 @@ public class BehaviorProxySubjectTest {
     assertTrue(as.getThrowable() instanceof TestException);
   }
 
-  @Test public void onNextNull() {
+  @Test @Ignore public void onNextNull() {
     final BehaviorProxySubject<Object> s = BehaviorProxySubject.create();
 
     s.onNext(null);
@@ -628,7 +629,7 @@ public class BehaviorProxySubjectTest {
             "onNext called with null. Null values are generally not allowed in 2.x operators and sources.");
   }
 
-  @Test public void onErrorNull() {
+  @Test @Ignore public void onErrorNull() {
     final BehaviorProxySubject<Object> s = BehaviorProxySubject.create();
 
     s.onError(null);
@@ -640,7 +641,7 @@ public class BehaviorProxySubjectTest {
             "onError called with null. Null values are generally not allowed in 2.x operators and sources.");
   }
 
-  @Test public void onNextNullDelayed() {
+  @Test @Ignore public void onNextNullDelayed() {
     final BehaviorProxySubject<Object> p = BehaviorProxySubject.create();
 
     TestObserver<Object> ts = p.test();
@@ -657,7 +658,7 @@ public class BehaviorProxySubjectTest {
             "onNext called with null. Null values are generally not allowed in 2.x operators and sources.");
   }
 
-  @Test public void onErrorNullDelayed() {
+  @Test @Ignore public void onErrorNullDelayed() {
     final BehaviorProxySubject<Object> p = BehaviorProxySubject.create();
 
     TestObserver<Object> ts = p.test();
@@ -674,7 +675,7 @@ public class BehaviorProxySubjectTest {
             "onError called with null. Null values are generally not allowed in 2.x operators and sources.");
   }
 
-  @Test public void cancelOnArrival() {
+  @Test @Ignore public void cancelOnArrival() {
     BehaviorProxySubject<Object> p = BehaviorProxySubject.create();
 
     assertFalse(p.hasObservers());
@@ -684,7 +685,7 @@ public class BehaviorProxySubjectTest {
     assertFalse(p.hasObservers());
   }
 
-  @Test public void onSubscribe() {
+  @Test @Ignore public void onSubscribe() {
     BehaviorProxySubject<Object> p = BehaviorProxySubject.create();
 
     Disposable bs = Disposables.empty();
@@ -702,14 +703,14 @@ public class BehaviorProxySubjectTest {
     assertTrue(bs.isDisposed());
   }
 
-  @Test public void onErrorAfterComplete() {
+  @Test @Ignore public void onErrorAfterComplete() {
     BehaviorProxySubject<Object> p = BehaviorProxySubject.create();
 
     p.onComplete();
     // TODO fix me
   }
 
-  @Test public void cancelOnArrival2() {
+  @Test @Ignore public void cancelOnArrival2() {
     BehaviorProxySubject<Object> p = BehaviorProxySubject.create();
 
     TestObserver<Object> ts = p.test();
@@ -722,7 +723,7 @@ public class BehaviorProxySubjectTest {
     ts.assertResult(1);
   }
 
-  @Test public void addRemoveRace() {
+  @Test @Ignore public void addRemoveRace() {
     for (int i = 0; i < 500; i++) {
       final BehaviorProxySubject<Object> p = BehaviorProxySubject.create();
 
@@ -744,7 +745,7 @@ public class BehaviorProxySubjectTest {
     }
   }
 
-  @SuppressWarnings({ "rawtypes", "unchecked" }) @Test public void subscribeOnNextRace() {
+  @SuppressWarnings({ "rawtypes", "unchecked" }) @Test @Ignore public void subscribeOnNextRace() {
     for (int i = 0; i < 500; i++) {
       final BehaviorProxySubject<Object> p = BehaviorProxySubject.createDefault((Object) 1);
 
@@ -772,7 +773,7 @@ public class BehaviorProxySubjectTest {
     }
   }
 
-  @Test public void innerDisposed() {
+  @Test @Ignore public void innerDisposed() {
     BehaviorProxySubject.create().subscribe(new Observer<Object>() {
       @Override public void onSubscribe(Disposable d) {
         assertFalse(d.isDisposed());

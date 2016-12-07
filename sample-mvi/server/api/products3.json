@@ -1,0 +1,42 @@
+[
+  {
+    "id": 30,
+    "name": "Angel wing charm",
+    "category": "Jewelry",
+    "image": "30.jpg",
+    "price": 7.00,
+    "description": "Angel wing charms"
+  },
+  {
+    "id": 31,
+    "name": "Steel Bangle Bracelet",
+    "category": "Jewelry",
+    "image": "31.jpg",
+    "price": 3.00,
+    "description": "Stainless expandable bracelet. Made from THICKER 1.8 mm wire."
+  },
+  {
+    "id": 32,
+    "name": "Crystals flat back stones",
+    "category": "Jewelry",
+    "image": "32.jpg",
+    "price": 4.00,
+    "description": "30 x pieces Swarovski Crystal AB (chameleon) or Clear Crystal - round flat back"
+  },
+  {
+    "id": 33,
+    "name": "Green Amethyst",
+    "category": "Jewelry",
+    "image": "33.jpg",
+    "price": 14.90,
+    "description": "These are gorgeous green amethyst rose-cut cabs. light green color, very crisp and clean."
+  },
+  {
+    "id": 34,
+    "name": "Flower Hair Comb",
+    "category": "Jewelry",
+    "image": "34.jpg",
+    "price": 11.95,
+    "description": "This listing for 2 pcs Hair Combs, Antique Bronze Flower Tray Hair Comb ... Perfect for resin cabochon ... you can choose your quantity for cheaper."
+  }
+]

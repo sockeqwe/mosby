@@ -2,5 +2,6 @@
 //     ':testing', ':mvp-common'
 
 include ':mvp-common', ':mvp', ':viewstate', ':testing', ':sample', ':mvi', ':sample-mail',
+    ':sample-mvi',
     ':presentermanager',
     ':sample-flow'

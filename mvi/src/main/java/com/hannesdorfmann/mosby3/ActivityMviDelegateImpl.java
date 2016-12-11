@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import com.hannesdorfmann.mosby3.mvi.MviPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
@@ -134,7 +135,8 @@ public class ActivityMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
   }
 
   @Override public void onStop() {
-    boolean destroyPresenter = keepPresenterInstance && !activity.isFinishing();
+    boolean destroyPresenter = keepPresenterInstance && activity.isFinishing();
+    Log.d("ActivityMviDelegateImpl", "onStop() "+destroyPresenter);
     presenter.detachView(destroyPresenter);
     if (destroyPresenter) {
       presenterManager.removePresenterAndViewState(mosbyViewId, activity);

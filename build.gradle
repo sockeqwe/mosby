@@ -44,9 +44,9 @@ ext {
   javaTargetCompatibility = JavaVersion.VERSION_1_7
 
   // Libraries
-  appcompat7Version = '25.0.0'
-  supportAnnotations = '25.0.0'
-  recyclerviewVersion = '25.0.0'
+  appcompat7Version = '25.0.1'
+  supportAnnotations = '25.0.1'
+  recyclerviewVersion = '25.0.1'
 
   // Libraries for samples
   fragmentargsVersion = '2.1.0'

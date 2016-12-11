@@ -1,3 +1,7 @@
 <resources>
   <string name="app_name">sample-mvi</string>
+  <!-- search -->
+  <string name="search_no_results">No results found</string>
+  <string name="search_icon">Search</string>
+  <string name="search_query_hint">Search ...</string>
 </resources>

@@ -9,6 +9,7 @@ import android.support.annotation.UiThread;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.util.ArrayMap;
+import android.util.Log;
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 import java.util.Map;
@@ -30,8 +31,9 @@ import java.util.UUID;
  */
 final class PresenterManager<V extends MvpView, P extends MvpPresenter<V>> {
 
-  static final String FRAGMENT_TAG = "com.hannesdorfmann.mosby3.mvp.PresenterManagerFragment";
-
+  private static final String FRAGMENT_TAG = "com.hannesdorfmann.mosby3.mvp.PresenterManagerFragment";
+  private static final boolean DEBUG = true;
+  private static final String DEBUG_TAG = "PresenterManager";
   /**
    * Never use this directly. Always use {@link #getFragment(Context)}
    */
@@ -52,6 +54,10 @@ final class PresenterManager<V extends MvpView, P extends MvpPresenter<V>> {
   }
 
   private FragmentActivity getActivity(Context context) {
+    if (context instanceof FragmentActivity) {
+      return (FragmentActivity) context;
+    }
+
     while (context instanceof ContextWrapper) {
       if (context instanceof FragmentActivity) {
         return (FragmentActivity) context;
@@ -71,6 +77,9 @@ final class PresenterManager<V extends MvpView, P extends MvpPresenter<V>> {
   @UiThread @NonNull private synchronized PresenterManagerFragment getFragment(Context context) {
 
     if (internalFragment != null) {
+      if (DEBUG){
+        Log.d(DEBUG_TAG, "internalFragment precached "+internalFragment);
+      }
       return internalFragment;
     }
 
@@ -83,6 +92,9 @@ final class PresenterManager<V extends MvpView, P extends MvpPresenter<V>> {
     // Already existing Fragment found
     if (fragment != null) {
       this.internalFragment = fragment;
+      if (DEBUG){
+        Log.d(DEBUG_TAG, "internalFragment found in FragmentManager "+internalFragment);
+      }
       return fragment;
     }
 
@@ -93,6 +105,9 @@ final class PresenterManager<V extends MvpView, P extends MvpPresenter<V>> {
         .add(internalFragment, FRAGMENT_TAG)
         .commitNow();
 
+    if (DEBUG){
+      Log.d(DEBUG_TAG, "internalFragment new created and put to FragmentManager "+internalFragment);
+    }
     return this.internalFragment;
   }
 
@@ -267,17 +282,27 @@ final class PresenterManager<V extends MvpView, P extends MvpPresenter<V>> {
       cache.clear();
       cache = null;
 
+      if (DEBUG){
+        Log.d(DEBUG_TAG, "internalFragment onDestroy() - clearing cache - "+this);
+      }
+
       super.onDestroy();
     }
 
     @Override public void onStart() {
       super.onStart();
       stopped = false;
+      if (DEBUG){
+        Log.d(DEBUG_TAG, "internalFragment onStart() "+this);
+      }
     }
 
     @Override public void onStop() {
       super.onStop();
       stopped = true;
+      if (DEBUG){
+        Log.d(DEBUG_TAG, "internalFragment onStop() "+this);
+      }
     }
 
     /**

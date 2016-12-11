@@ -2,4 +2,7 @@
   <!-- Default screen margins, per the Android Design guidelines. -->
   <dimen name="activity_horizontal_margin">16dp</dimen>
   <dimen name="activity_vertical_margin">16dp</dimen>
+
+  <dimen name="search_progress_margin">32dp</dimen>
+  <dimen name="grid_spacing">16dp</dimen>
 </resources>

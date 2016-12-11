@@ -21,5 +21,5 @@ public interface MviPresenter<V extends MvpView, VS> extends MvpPresenter<V> {
    *
    * @return Observable representing the viewstate
    */
-  Observable<VS> getViewStateObservable();
+  Observable<? extends VS> getViewStateObservable();
 }

@@ -6,7 +6,7 @@ package com.hannesdorfmann.mosby3.mvi;
  *
  * @author Hannes Dorfmann
  */
-abstract class ViewState<VS> {
+public abstract class ViewState<VS> {
 
   /**
    * Package visibility only

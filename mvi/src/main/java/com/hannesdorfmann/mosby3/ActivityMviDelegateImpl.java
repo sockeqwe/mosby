@@ -27,8 +27,8 @@ import com.hannesdorfmann.mosby3.mvp.MvpView;
 
 /**
  * The concrete implementation of {@link ActivityMviDelegate}.
- * This delegate creates the Presenter and attaches the view to the presenter in {@link
- * Activity#onStart()}. The view is detached from presenter in {@link
+ * This delegate creates the Presenter and attaches the viewState to the presenter in {@link
+ * Activity#onStart()}. The viewState is detached from presenter in {@link
  * Activity#onStop()}
  *
  * @param <V> The type of {@link MvpView}
@@ -40,7 +40,7 @@ import com.hannesdorfmann.mosby3.mvp.MvpView;
 public class ActivityMviDelegateImpl<V extends MvpView, P extends MviPresenter<V, ?>>
     implements ActivityMviDelegate {
 
-  private static final String KEY_MOSBY_VIEW_ID = "com.hannesdorfmann.mosby3.activity.view.id";
+  private static final String KEY_MOSBY_VIEW_ID = "com.hannesdorfmann.mosby3.activity.viewState.id";
   private String mosbyViewId = null;
 
   private MviDelegateCallback<V, P> delegateCallback;
@@ -94,12 +94,12 @@ public class ActivityMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
       presenter = presenterManager.getPresenter(mosbyViewId, activity);
       if (presenter == null) {
         // Process death,
-        // hence no presenter with the given view id stored, although we have a view id
+        // hence no presenter with the given viewState id stored, although we have a viewState id
         presenter = createViewIdAndCreatePresenter();
       }
     }
 
-    // presenter is ready, so attach view
+    // presenter is ready, so attach viewState
     V view = delegateCallback.getMvpView();
     if (view == null) {
       throw new NullPointerException(
@@ -109,7 +109,7 @@ public class ActivityMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
   }
 
   /**
-   * Generates the unique (mosby internal) view id and calls {@link MviDelegateCallback#createPresenter()}
+   * Generates the unique (mosby internal) viewState id and calls {@link MviDelegateCallback#createPresenter()}
    * to create a new presenter instance
    *
    * @return The new created presenter instance

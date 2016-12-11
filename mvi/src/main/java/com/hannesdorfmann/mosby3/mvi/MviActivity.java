@@ -12,7 +12,7 @@ import com.hannesdorfmann.mosby3.mvp.MvpView;
 
 /**
  * This abstract class can be used to extend from to implement an Model-View-Intent pattern with
- * this activity as View and a {@link MviPresenter} to coordinate the view and the underlying model
+ * this activity as View and a {@link MviPresenter} to coordinate the viewState and the underlying model
  * (business logic)
  *
  * @author Hannes Dorfmann
@@ -76,13 +76,13 @@ public abstract class MviActivity<V extends MvpView, P extends MviPresenter<V, ?
   /**
    * Instantiate a presenter instance
    *
-   * @return The {@link MvpPresenter} for this view
+   * @return The {@link MvpPresenter} for this viewState
    */
   @NonNull public abstract P createPresenter();
 
   /**
    * Get the mvp delegate. This is internally used for creating presenter, attaching and detaching
-   * view from presenter.
+   * viewState from presenter.
    *
    * <p><b>Please note that only one instance of mvp delegate should be used per Activity
    * instance</b>.

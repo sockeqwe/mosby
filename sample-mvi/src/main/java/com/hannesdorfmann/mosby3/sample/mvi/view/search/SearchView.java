@@ -33,9 +33,9 @@ public interface SearchView extends MvpView {
   Observable<String> searchIntent();
 
   /**
-   * Renders the view
+   * Renders the viewState
    *
-   * @param viewState The current view state that should be displayed
+   * @param viewState The current viewState state that should be displayed
    */
   void render(SearchViewState viewState);
 }

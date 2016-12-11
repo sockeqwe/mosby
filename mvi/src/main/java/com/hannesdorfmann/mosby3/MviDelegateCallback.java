@@ -22,7 +22,7 @@ import com.hannesdorfmann.mosby3.mvi.MviPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 
 /**
- * This callback that will be called to instantiate the presenter and to get the view.
+ * This callback that will be called to instantiate the presenter and to get the viewState.
  *
  * @author Hannes Dorfmann
  * @since 3.0.0
@@ -39,7 +39,7 @@ public interface MviDelegateCallback<V extends MvpView, P extends MviPresenter<V
   /**
    * Get the MvpView for the presenter
    *
-   * @return The view associated with the presenter
+   * @return The viewState associated with the presenter
    */
   @NonNull public V getMvpView();
 }

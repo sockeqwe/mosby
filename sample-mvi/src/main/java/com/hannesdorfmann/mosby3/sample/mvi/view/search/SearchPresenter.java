@@ -19,6 +19,7 @@ package com.hannesdorfmann.mosby3.sample.mvi.view.search;
 
 import com.hannesdorfmann.mosby3.mvi.MviBasePresenter;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.searchengine.SearchEngine;
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
 /**
@@ -35,17 +36,26 @@ public class SearchPresenter extends MviBasePresenter<SearchView, SearchViewStat
 
   @Override public void attachView(SearchView view) {
     SearchViewState initialViewState = new SearchViewState.SearchNotStartedYet();
-    view(initialViewState, model(view.searchIntent(),
-        (searchViewStateViewState, searchString) -> searchEngine.searchFor(searchString)
-            .map(products -> {
-              if (products.isEmpty()) {
-                return new SearchViewState.EmptyResult(searchString);
-              } else {
-                return new SearchViewState.SearchResult(searchString, products);
-              }
-            })
-            .startWith(new SearchViewState.Loading())
-            .onErrorReturn(error -> new SearchViewState.Error(searchString, error))).observeOn(
-        AndroidSchedulers.mainThread()), view::render);
+
+    Observable<SearchViewState> search = intent(view.searchIntent()).switchMap(searchString -> {
+      // Empty String, so no search
+      if (searchString.isEmpty()) {
+        return Observable.just(new SearchViewState.SearchNotStartedYet());
+      }
+
+      // search fro a product
+      return searchEngine.searchFor(searchString)
+          .map(products -> {
+            if (products.isEmpty()) {
+              return new SearchViewState.EmptyResult(searchString);
+            } else {
+              return new SearchViewState.SearchResult(searchString, products);
+            }
+          })
+          .startWith(new SearchViewState.Loading())
+          .onErrorReturn(error -> new SearchViewState.Error(searchString, error));
+    }).observeOn(AndroidSchedulers.mainThread());
+
+    subscribeViewState(initialViewState, search, view::render);
   }
 }

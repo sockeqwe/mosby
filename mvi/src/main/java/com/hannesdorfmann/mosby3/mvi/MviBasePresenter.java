@@ -4,12 +4,9 @@ import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.PublishSubject;
@@ -17,54 +14,54 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This type of presenter is responsible to interact with the view in a Model-View-Intent way.
+ * This type of presenter is responsible to interact with the viewState in a Model-View-Intent way.
  * A {@link MviBasePresenter} is the bridge that is repsonsible to setup the reactive flow between
- * view
+ * viewState
  * and model
  *
- * @param <V> The type of the view this presenter responds to
- * @param <VS> The type of the view state
+ * @param <V> The type of the viewState this presenter responds to
+ * @param <VS> The type of the viewState state
  * @author Hannes Dorfmann
  * @since 3.0
  */
 public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPresenter<V, VS> {
 
   /**
-   * This relay is the bridge to the view (UI). Whenever the view get's reattached, the latest
+   * This relay is the bridge to the viewState (UI). Whenever the viewState get's reattached, the latest
    * state will be reemitted.
    */
   private BehaviorSubject<VS> viewRelay;
 
   /**
-   * We only allow to cal {@link #view(Object, Observable, Consumer)} method once
+   * We only allow to cal {@link #subscribeViewState(Object, Observable, Consumer)} method once
    */
   private boolean viewMethodCalled = false;
   /**
-   * List of internal relays, bridging the gap between intents coming from the view (will be
-   * unsubscribed temporarly when view is detached i.e. during config changes)
+   * List of internal relays, bridging the gap between intents coming from the viewState (will be
+   * unsubscribed temporarly when viewState is detached i.e. during config changes)
    */
-  private List<IntentRelayObservablePair<?, VS>> intentModelRelays = new ArrayList<>(4);
+  private List<PublishSubject<?>> intentRelays = new ArrayList<>(4);
 
   /**
-   * Used for {@link #intentModelRelays}
+   * Used for {@link #intentRelays}
    */
-  private int intentModelRelayIndex = 0;
+  private int intentRelayIndex = 0;
 
   /**
-   * Composite Desposals holding subscriptions to all intents observable offered by the view.
+   * Composite Desposals holding subscriptions to all intents observable offered by the viewState.
    */
   private CompositeDisposable intentDisposals;
 
   /**
-   * Disposal to unsubscribe from the view when the view is detached (i.e. during screen
+   * Disposal to unsubscribe from the viewState when the viewState is detached (i.e. during screen
    * orientation
    * changes)
    */
   private Disposable viewRelayConsumerDisposable;
 
   /**
-   * Disposable between the viewState observable returned from {@link #model(Observable,
-   * BiFunction)} and {@link #viewRelay}
+   * Disposable between the viewState observable returned from {@link #intent(Observable)} and
+   * {@link #viewRelay}
    */
   private Disposable viewStateDisposable;
 
@@ -83,16 +80,16 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
    * <b>Do only invoke this method once!</b>
    * <p>
    * Internally Mosby will hold some relays to ensure that no items emitted from the ViewState
-   * Observable will be lost while view is not attached nor that the subscriptions to view intents
-   * will cause memory leaks while view detached.
+   * Observable will be lost while viewState is not attached nor that the subscriptions to viewState intents
+   * will cause memory leaks while viewState detached.
    * </p>
    *
    * @param initialViewState The initial ViewState. This item will emited for the first time
    * @param viewStateObservable The Observable emiting ViewState changes over time. This observable
-   * must be created with {@link #model(Observable, BiFunction)} functionl
+   * must be created with {@link #intent(Observable)} functionl
    * @param consumer The Consumer / subscriber to the viewState Observable
    */
-  @MainThread protected void view(@NonNull VS initialViewState, Observable<VS> viewStateObservable,
+  @MainThread protected void subscribeViewState(@NonNull VS initialViewState, Observable<VS> viewStateObservable,
       Consumer<VS> consumer) {
 
     if (viewMethodCalled) {
@@ -127,7 +124,8 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
       }
 
       @Override public void onError(Throwable e) {
-        viewRelay.onError(e); // TODO maybe some own error handling
+        throw new IllegalStateException(
+            "ViewState observable must not reach error state: onError()", e);
       }
 
       @Override public void onComplete() {
@@ -141,96 +139,50 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
   }
 
   /**
-   * This method is used to create an observable that receive "intents" and as result returns an
-   * observable emiting the changed view state (changed over time).
-   * Internally, this method uses {@link Observable#switchMap(Function)} for each emitted item from
-   * the intent observable. Also, this method internally ensures that no memory leak is caused by
-   * the subscription to the view's intent when the view gets detached
+   * This method creates a decorator around the original "intent".This method ensures that no
+   * memory
+   * leak is caused by the subscription to the viewState's intent when the viewState gets detached
    *
-   * @param intent The intent observable. Typically offered by the view interface
-   * @param reducerFunction The reducer function that takes the old viewstate and the intent as
-   * input and returns an observable for the view state.
+   * @param intent The intent observable. Typically offered by the viewState interface
    * @param <I> The type of the intent
-   * @return The Observable emitting the new ViewState. This observable should be passed in as
-   * parameter to {@link #view(Object, Observable, Consumer)} function
+   * @return The decorated intent Observable emitting the intent
    */
-  @MainThread protected <I> Observable<VS> model(final Observable<I> intent,
-      final BiFunction<ViewState<VS>, I, ObservableSource<VS>> reducerFunction) {
+  @MainThread protected <I> Observable<I> intent(final Observable<I> intent) {
 
-    final PublishSubject<I> intentRelay;
-    Observable<VS> modelObservable;
-    if (intentModelRelayIndex < intentModelRelays.size()) {
-      IntentRelayObservablePair<I, VS> intentReleayModelObservablePair =
-          (IntentRelayObservablePair<I, VS>) intentModelRelays.get(intentModelRelayIndex);
-      intentRelay = intentReleayModelObservablePair.intentRelay;
+    PublishSubject<I> intentRelay;
+    if (intentRelayIndex < intentRelays.size()) {
+      intentRelay = (PublishSubject<I>) intentRelays.get(intentRelayIndex);
       if (intentRelay == null) {
         throw new IllegalStateException(
-            "Somehow Mosby's internal view intent relay is null. The view intent was: " + intent);
-      }
-      modelObservable = intentReleayModelObservablePair.modelViewStateObservable;
-      if (modelObservable == null) {
-        throw new IllegalStateException(
-            "Somehow Mosby's internal modelFunction observable is null. The view intent was "
-                + intent);
+            "Somehow Mosby's internal viewState intent relay is null. The viewState intent was: " + intent);
       }
     } else {
       intentRelay = PublishSubject.create();
-      modelObservable = intentRelay.switchMap(new Function<I, ObservableSource<VS>>() {
-        @Override public ObservableSource<VS> apply(I intent) throws Exception {
-          return reducerFunction.apply(currentViewState, intent);
-        }
-      });
-      intentModelRelays.add(new IntentRelayObservablePair<I, VS>(intentRelay, modelObservable));
+      intentRelays.add(intentRelay);
     }
 
     if (intentDisposals == null) {
       intentDisposals = new CompositeDisposable();
     }
-    intentDisposals.add(intent.subscribeWith(new DisposableObserver<I>() {
-      @Override public void onNext(I value) {
-        intentRelay.onNext(value);
-      }
 
-      @Override public void onError(Throwable e) {
-        intentRelay.onError(e);
-      }
-
-      @Override public void onComplete() {
-        intentRelay.onComplete(); // TODO: Does an intent ever completes?
-      }
-    }));
-    intentModelRelayIndex++;
-    return modelObservable;
+    intentDisposals.add(intent.subscribeWith(new DisposableIntentObserver<I>(intentRelay)));
+    intentRelayIndex++;
+    return intentRelay;
   }
 
   @Override public void detachView(boolean retainInstance) {
     if (!retainInstance) {
+      if (viewStateDisposable != null) {
+        viewStateDisposable.dispose();
+      }
     }
 
     if (viewRelayConsumerDisposable != null) {
       viewRelayConsumerDisposable.dispose();
     }
     viewMethodCalled = false;
-    intentModelRelayIndex = 0;
+    intentRelayIndex = 0;
     intentDisposals.dispose();
     intentDisposals = null;
-  }
-
-  /**
-   * This class just holds a pair of Intent relay
-   *
-   * @param <I> The views's intent relay
-   * @param <VS> The ViewState Observable returned by the {@link #model(Observable, BiFunction)}
-   * function
-   */
-  private final class IntentRelayObservablePair<I, VS> {
-    private final PublishSubject<I> intentRelay;
-    private final Observable<VS> modelViewStateObservable;
-
-    public IntentRelayObservablePair(PublishSubject<I> intentRelay,
-        Observable<VS> modelViewStateObservable) {
-      this.intentRelay = intentRelay;
-      this.modelViewStateObservable = modelViewStateObservable;
-    }
   }
 }

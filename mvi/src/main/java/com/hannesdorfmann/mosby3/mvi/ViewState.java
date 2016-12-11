@@ -1,7 +1,7 @@
 package com.hannesdorfmann.mosby3.mvi;
 
 /**
- * This class is used to access the current ViewState of a certain view.
+ * This class is used to access the current ViewState of a certain viewState.
  * Calling get() will always return the latest ViewState
  *
  * @author Hannes Dorfmann

@@ -51,13 +51,13 @@ public interface ActivityMviDelegate<V extends MvpView, P extends MvpPresenter<V
 
   /**
    * This method must be called from {@link Activity#onCreate(Bundle)}.
-   * This method internally creates the presenter and attaches the view to it.
+   * This method internally creates the presenter and attaches the viewState to it.
    */
   public void onCreate(Bundle bundle);
 
   /**
    * This method must be called from {@link Activity#onDestroy()}}.
-   * This method internally detaches the view from presenter
+   * This method internally detaches the viewState from presenter
    */
   public void onDestroy();
 

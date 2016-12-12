@@ -36,7 +36,6 @@ public class SearchActivity extends MviActivity<SearchView, SearchPresenter> imp
 
   private SearchAdapter adapter;
   private Unbinder unbinder;
-  private Observable<CharSequence> searchInputObservable;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -48,10 +47,6 @@ public class SearchActivity extends MviActivity<SearchView, SearchPresenter> imp
     recyclerView.setLayoutManager(new GridLayoutManager(this, spanSize));
     recyclerView.addItemDecoration(new GridSpacingItemDecoration(spanSize,
         getResources().getDimensionPixelSize(R.dimen.grid_spacing), true));
-
-    searchInputObservable = RxJavaInterop.toV2Observable(RxSearchView.queryTextChanges(searchView)
-        .skip(2) // Because after screen orientation changes query Text will be resubmitted again
-    ).share();
   }
 
   @Override protected void onDestroy() {
@@ -65,9 +60,10 @@ public class SearchActivity extends MviActivity<SearchView, SearchPresenter> imp
   }
 
   @Override public Observable<String> searchIntent() {
-    return searchInputObservable
+    return RxJavaInterop.toV2Observable(RxSearchView.queryTextChanges(searchView))
+        .skip(2) // Because after screen orientation changes query Text will be resubmitted again
         .filter(queryString -> queryString.length() > 3 || queryString.length() == 0)
-        .debounce(300, TimeUnit.MILLISECONDS)
+        .debounce(500, TimeUnit.MILLISECONDS)
         .distinctUntilChanged()
         .map(CharSequence::toString)
         .doOnNext(s -> Timber.d("Search Intent '%s'", s));

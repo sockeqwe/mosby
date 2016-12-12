@@ -43,14 +43,6 @@ dependencies {
   compile project(':presentermanager')
   compile 'io.reactivex.rxjava2:rxjava:' + rootProject.ext.rxjava2Version
 
-
-  androidTestCompile 'junit:junit:' + rootProject.ext.junitVersion
-  androidTestCompile 'org.mockito:mockito-core:' + rootProject.ext.mockitoVersion
-
-  androidTestCompile 'com.android.support:support-annotations:' + rootProject.ext.appcompat7Version
-  androidTestCompile 'com.android.support.test:runner:' + rootProject.ext.androidSupportTestVersion
-  androidTestCompile 'com.android.support.test:rules:' + rootProject.ext.androidSupportTestVersion
-
   testCompile 'junit:junit:' + rootProject.ext.junitVersion
   testCompile 'org.mockito:mockito-core:' + rootProject.ext.mockitoVersion
 

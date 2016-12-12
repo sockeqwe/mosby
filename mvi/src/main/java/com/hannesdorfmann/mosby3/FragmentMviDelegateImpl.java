@@ -1,82 +1,81 @@
 /*
- * Copyright 2015 Hannes Dorfmann.
+ * Copyright 2016 Hannes Dorfmann.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
  */
 
 package com.hannesdorfmann.mosby3;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
+import android.support.v4.app.Fragment;
+import android.view.View;
 import com.hannesdorfmann.mosby3.mvi.MviPresenter;
-import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 
 /**
- * The concrete implementation of {@link ActivityMviDelegate}.
- * This delegate creates the Presenter and attaches the viewState to the presenter in {@link
- * Activity#onStart()}. The viewState is detached from presenter in {@link
- * Activity#onStop()}
+ * * The default implementation of {@link FragmentMviDelegate}
  *
  * @param <V> The type of {@link MvpView}
- * @param <P> The type of {@link MvpPresenter}
+ * @param <P> The type of {@link MviPresenter}
  * @author Hannes Dorfmann
- * @see ActivityMviDelegate
- * @since 3.0
+ * @see FragmentMviDelegate
+ * @since 3.0.0
  */
-public class ActivityMviDelegateImpl<V extends MvpView, P extends MviPresenter<V, ?>>
-    implements ActivityMviDelegate {
+public class FragmentMviDelegateImpl<V extends MvpView, P extends MviPresenter<V, ?>>
+    implements FragmentMviDelegate<V, P> {
 
   private static final String KEY_MOSBY_VIEW_ID = "com.hannesdorfmann.mosby3.activity.viewState.id";
   private String mosbyViewId = null;
 
-  private MviDelegateCallback<V, P> delegateCallback;
   private PresenterManager<V, P> presenterManager = new PresenterManager<V, P>();
-  private Activity activity;
-  private boolean keepPresenterInstance;
+
+  private MviDelegateCallback<V, P> delegateCallback;
+  private Fragment fragment;
+  private boolean onViewCreatedCalled = false;
+  private final boolean keepPresenterInstance;
   private P presenter;
 
-  /**
-   * Creates a new Delegate with an presenter that survives screen orientation changes
-   *
-   * @param activity The activity
-   * @param delegateCallback The delegate callback
-   */
-  public ActivityMviDelegateImpl(@NonNull Activity activity,
-      @NonNull MviDelegateCallback<V, P> delegateCallback) {
-    this(activity, delegateCallback, true);
+  public FragmentMviDelegateImpl(@NonNull MviDelegateCallback<V, P> delegateCallback,
+      @NonNull Fragment fragment) {
+    this(delegateCallback, fragment, true);
   }
 
-  /**
-   * Creates a new delegate
-   *
-   * @param activity The activity
-   * @param delegateCallback The delegate callback
-   * @param keepPresenterInstance true, if the presenter instance should be kept through screen
-   * orientation changes, false if not (a new presenter instance will be created every time you
-   * rotate your device)
-   */
-  public ActivityMviDelegateImpl(@NonNull Activity activity,
-      @NonNull MviDelegateCallback<V, P> delegateCallback, boolean keepPresenterInstance) {
+  public FragmentMviDelegateImpl(@NonNull MviDelegateCallback<V, P> delegateCallback,
+      @NonNull Fragment fragment, boolean keepPresenterInstance) {
     if (delegateCallback == null) {
-      throw new NullPointerException("MvpDelegateCallback is null!");
+      throw new NullPointerException("delegateCallback == null");
+    }
+
+    if (fragment == null) {
+      throw new NullPointerException("fragment == null");
     }
     this.delegateCallback = delegateCallback;
-    this.activity = activity;
+    this.fragment = fragment;
     this.keepPresenterInstance = keepPresenterInstance;
+  }
+
+  @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    onViewCreatedCalled = true;
+  }
+
+  @Override public void onDestroyView() {
+    onViewCreatedCalled = false;
   }
 
   @Override public void onCreate(@Nullable Bundle bundle) {
@@ -85,13 +84,41 @@ public class ActivityMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
     }
   }
 
+  @Override public void onDestroy() {
+    presenterManager = null;
+    presenter = null;
+    delegateCallback = null;
+    fragment = null;
+  }
+
+  @Override public void onPause() {
+  }
+
+  @Override public void onResume() {
+  }
+
+  @NonNull private Activity getActivity() {
+    Activity activity = fragment.getActivity();
+    if (activity == null) {
+      throw new NullPointerException(
+          "Activity returned by Fragment.getActivity() is null. Fragment is " + fragment);
+    }
+
+    return activity;
+  }
+
   @Override public void onStart() {
+    if (!onViewCreatedCalled) {
+      throw new IllegalStateException(
+          "It seems that onCreateView() has never been called (or has returned null). This means that your fragment is headless (no UI). That is not allowed because it doesn't make sense to use Mosby with a Fragment without View.");
+    }
+
     if (mosbyViewId == null) {
       // No presenter available,
       // Activity is starting for the first time (or keepPresenterInstance == false)
       presenter = createViewIdAndCreatePresenter();
     } else {
-      presenter = presenterManager.getPresenter(mosbyViewId, activity);
+      presenter = presenterManager.getPresenter(mosbyViewId, getActivity());
       if (presenter == null) {
         // Process death,
         // hence no presenter with the given viewState id stored, although we have a viewState id
@@ -103,7 +130,7 @@ public class ActivityMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
     V view = delegateCallback.getMvpView();
     if (view == null) {
       throw new NullPointerException(
-          "MvpView returned from getMvpView() is null. Returned by " + activity);
+          "MvpView returned from getMvpView() is null. Returned by " + fragment);
     }
     presenter.attachView(view);
   }
@@ -120,11 +147,12 @@ public class ActivityMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
     P presenter = delegateCallback.createPresenter();
     if (presenter == null) {
       throw new NullPointerException(
-          "Presenter returned from createPresenter() is null. Activity is " + activity);
+          "Presenter returned from createPresenter() is null. Fragment is " + fragment);
     }
     if (keepPresenterInstance) {
-      mosbyViewId = presenterManager.nextViewId(activity);
-      presenterManager.putPresenter(mosbyViewId, presenter, activity);
+      Context context = getActivity();
+      mosbyViewId = presenterManager.nextViewId(context);
+      presenterManager.putPresenter(mosbyViewId, presenter, context);
     }
     return presenter;
   }
@@ -136,38 +164,32 @@ public class ActivityMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
   }
 
   @Override public void onStop() {
+    Activity activity = getActivity();
     boolean destroyPresenter = keepPresenterInstance && activity.isFinishing();
-    Log.d("ActivityMviDelegateImpl", "onStop() " + destroyPresenter);
     presenter.detachView(destroyPresenter);
     if (destroyPresenter) {
       presenterManager.removePresenterAndViewState(mosbyViewId, activity);
     }
+
     presenterManager.cleanUp();
-    presenterManager = null;
-    presenter = null;
-    activity = null;
-    delegateCallback = null;
   }
 
-  @Override public void onDestroy() {
+  @Override public void onActivityCreated(Bundle savedInstanceState) {
   }
 
-  @Override public void onPostCreate(Bundle savedInstanceState) {
+  @Override public void onAttach(Activity activity) {
   }
 
-  @Override public void onPause() {
+  @Override public void onDetach() {
   }
 
-  @Override public void onResume() {
+  @Override public void onAttach(Context context) {
   }
 
-  @Override public void onRestart() {
+  @Override public void onAttachFragment(Fragment childFragment) {
   }
 
-  @Override public void onContentChanged() {
-  }
+  @Override public void onConfigurationChanged(Configuration newConfig) {
 
-  @Override public Object onRetainCustomNonConfigurationInstance() {
-    return null;
   }
 }

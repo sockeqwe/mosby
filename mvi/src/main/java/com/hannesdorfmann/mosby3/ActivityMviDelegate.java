@@ -19,6 +19,7 @@ package com.hannesdorfmann.mosby3;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import com.hannesdorfmann.mosby3.mvi.MviPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 
@@ -47,7 +48,7 @@ import com.hannesdorfmann.mosby3.mvp.MvpView;
  * @author Hannes Dorfmann
  * @since 1.1.0
  */
-public interface ActivityMviDelegate<V extends MvpView, P extends MvpPresenter<V>> {
+public interface ActivityMviDelegate<V extends MvpView, P extends MviPresenter<V, ?>> {
 
   /**
    * This method must be called from {@link Activity#onCreate(Bundle)}.

@@ -11,7 +11,8 @@
       android:label="@string/app_name"
       android:supportsRtl="true"
       android:theme="@style/AppTheme">
-    <activity android:name=".view.search.SearchActivity">
+    <activity android:name=".view.search.SearchActivity"
+        android:theme="@style/AppTheme.Translucent.Search">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
 

@@ -3,7 +3,7 @@
   <color name="colorPrimary">#546E7A</color>
   <color name="colorPrimaryDark">#455A64</color>
   <color name="accent">#607D8B</color>
-  <color name="accent_dark">@color/accent</color>
+  <color name="accent_dark">#455A64</color>
   <color name="colorAccent">@color/accent</color>
   <color name="scrim">#B9323232</color>
   <color name="background_dark">#E0E0E0</color>

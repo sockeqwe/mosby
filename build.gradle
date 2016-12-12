@@ -69,4 +69,5 @@ ext {
   mockitoVersion = '2.0.5-beta'
   powermockVersion = '1.6.2'
   leakcanaryVersion = '1.3.1'
+  androidSupportTestVersion = '0.5'
 }

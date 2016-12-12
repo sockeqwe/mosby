@@ -12,6 +12,7 @@
       android:background="?attr/colorPrimary"
       android:iconifiedByDefault="false"
       android:queryHint="@string/search_query_hint"
+      android:elevation="4dp"
       />
 
   <FrameLayout

@@ -15,35 +15,37 @@
  *
  */
 
-package com.hannesdorfmann.mosby3.mvi.integrationtest.lifecycle;
+package com.hannesdorfmann.mosby3.mvi.integrationtest.lifecycle.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.util.Log;
-import com.hannesdorfmann.mosby3.mvi.MviActivity;
+import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import com.hannesdorfmann.mosby3.mvi.MviFragment;
 import com.hannesdorfmann.mosby3.mvi.integrationtest.R;
+import com.hannesdorfmann.mosby3.mvi.integrationtest.lifecycle.LifecycleTestPresenter;
+import com.hannesdorfmann.mosby3.mvi.integrationtest.lifecycle.LifecycleTestView;
 
-public class LifecycleTestActivity extends MviActivity<LifecycleTestView, LifecycleTestPresenter>
-    implements LifecycleTestView {
+/**
+ * @author Hannes Dorfmann
+ */
+public class SimpleMviLifecycleFragment extends MviFragment<LifecycleTestView, LifecycleTestPresenter> implements LifecycleTestView {
+
 
   public LifecycleTestPresenter presenter;
   public static int createPresenterInvokations = 0;
 
-  @Override protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_lifecycle);
-    Log.d(getClass().getSimpleName(), "onCreate() " + this);
-  }
-
-  @Override protected void onDestroy() {
-    super.onDestroy();
-    Log.d(getClass().getSimpleName(), "onDestroy() " + this);
-  }
-
   @NonNull @Override public LifecycleTestPresenter createPresenter() {
     createPresenterInvokations++;
     presenter = new LifecycleTestPresenter();
-    Log.d(getClass().getSimpleName(), "createPresenter() " + this+" "+presenter);
     return presenter;
+  }
+
+  @Nullable @Override
+  public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+      @Nullable Bundle savedInstanceState) {
+    return inflater.inflate(R.layout.fragment_mvi, container, false);
   }
 }

@@ -31,8 +31,10 @@
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
     </activity>
-    <activity android:name=".lifecycle.LifecycleTestActivity">
+    <activity android:name=".lifecycle.activity.MviLifecycleActivity">
     </activity>
+
+    <activity android:name=".lifecycle.fragment.SimpleFragmentContainerActivity" />
   </application>
 
 </manifest>

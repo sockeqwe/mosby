@@ -27,16 +27,16 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-@RunWith(AndroidJUnit4.class) public class SimpleFragmentContainerActivityTest {
+@RunWith(AndroidJUnit4.class) public class RetainingFragmentContainerActivityTest {
 
-  @Rule public ActivityTestRule<SimpleFragmentContainerActivity> rule =
-      new ActivityTestRule<>(SimpleFragmentContainerActivity.class);
+  @Rule public ActivityTestRule<RetainingFragmentContainerActivity> rule =
+      new ActivityTestRule<>(RetainingFragmentContainerActivity.class);
 
   private static LifecycleTestPresenter presenter;
 
   @Test public void testConfigChange() throws Exception {
     // Context of the app under test.
-    SimpleFragmentContainerActivity portraitActivity = rule.getActivity();
+    RetainingFragmentContainerActivity portraitActivity = rule.getActivity();
 
     SimpleMviLifecycleFragment portraitFragment = portraitActivity.getFragment();
 
@@ -56,9 +56,10 @@ import org.junit.runner.RunWith;
 
     Assert.assertEquals(1, presenter.detachViewInvokations);
     Assert.assertTrue(presenter.onDettachViewRetainInstance);
+
     Assert.assertEquals(1, SimpleMviLifecycleFragment.createPresenterInvokations);
     Assert.assertEquals(2, presenter.attachViewInvokations);
-    Assert.assertTrue(presenter.attachedView != portraitFragment);
+    Assert.assertTrue(presenter.attachedView == portraitFragment);
   }
 
   @AfterClass

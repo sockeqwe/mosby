@@ -24,17 +24,11 @@
       android:label="@string/app_name"
       android:supportsRtl="true"
       android:theme="@style/AppTheme">
-    <activity android:name=".MviTestActivity">
-      <intent-filter>
-        <action android:name="android.intent.action.MAIN"/>
-
-        <category android:name="android.intent.category.LAUNCHER"/>
-      </intent-filter>
-    </activity>
     <activity android:name=".lifecycle.activity.MviLifecycleActivity">
     </activity>
 
     <activity android:name=".lifecycle.fragment.SimpleFragmentContainerActivity" />
+    <activity android:name=".lifecycle.fragment.RetainingFragmentContainerActivity" />
   </application>
 
 </manifest>

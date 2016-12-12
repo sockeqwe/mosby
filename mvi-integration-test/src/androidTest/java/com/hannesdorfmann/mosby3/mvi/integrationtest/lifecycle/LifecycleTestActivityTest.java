@@ -20,6 +20,7 @@ package com.hannesdorfmann.mosby3.mvi.integrationtest.lifecycle;
 import android.content.pm.ActivityInfo;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -30,6 +31,8 @@ import org.junit.runner.RunWith;
 
   @Rule public ActivityTestRule<LifecycleTestActivity> rule =
       new ActivityTestRule<>(LifecycleTestActivity.class);
+
+  private static LifecycleTestPresenter landscapePresenter;
 
   @Test public void testConfigChange() throws Exception {
     // Context of the app under test.
@@ -52,18 +55,24 @@ import org.junit.runner.RunWith;
     Assert.assertEquals(1, portraitPresenter.detachViewInvokations);
     Assert.assertTrue(portraitPresenter.onDettachViewRetainInstance);
 
-    LifecycleTestActivity landscapeActivity = rule.getActivity(); // TODO this one returnes always the same activity instance. No difference between landscape / portrait instance
-    LifecycleTestPresenter landscapePresenter = landscapeActivity.presenter;
+    LifecycleTestActivity landscapeActivity =
+        rule.getActivity(); // TODO this one returnes always the same activity instance. No difference between landscape / portrait instance
+    landscapePresenter = landscapeActivity.presenter;
     Assert.assertNotNull(landscapePresenter);
     Assert.assertTrue(portraitPresenter == landscapePresenter);
-//    Assert.assertTrue(portraitActivity != landscapeActivity);
+    //    Assert.assertTrue(portraitActivity != landscapeActivity);
     Assert.assertEquals(1, landscapeActivity.createPresenterInvokations);
     Assert.assertEquals(2, landscapePresenter.attachViewInvokations);
     Assert.assertTrue(landscapePresenter.attachedView != portraitActivity);
+  }
 
-    /* // TODO figure out how to run this assertins after Activity.onStop() / onDestroy()
+  @AfterClass
+  public static void checkPresenterNotRetained(){
+
+    // TODO is there a better way to test after onDestroy() has been called?
+    Assert.assertNotNull(landscapePresenter);
     Assert.assertEquals(2, landscapePresenter.detachViewInvokations);
     Assert.assertFalse(landscapePresenter.onDettachViewRetainInstance);
-    */
+
   }
 }

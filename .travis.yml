@@ -6,8 +6,16 @@ android:
   - build-tools-25.0.1
   - extra-android-m2repository
   - android-25
+  - sys-img-armeabi-v7a-android-17
+
 before_install:
 - chmod +x .buildscript/deploy_snapshot.sh
+# Emulator Management: Create, Start and Wait
+before_script:
+  - echo no | android create avd --force -n test -t android-17 --abi armeabi-v7a
+  - emulator -avd test -no-audio -no-window &
+  - android-wait-for-emulator
+  - adb shell input keyevent 82 &
 jdk:
 - oraclejdk8
 licenses:
@@ -24,7 +32,7 @@ branches:
 notifications:
   email: false
 sudo: required
-script: ./gradlew build --stacktrace
+script: ./gradlew build cAT --stacktrace
 # after_success:
 # - ".buildscript/deploy_snapshot.sh"
 cache:

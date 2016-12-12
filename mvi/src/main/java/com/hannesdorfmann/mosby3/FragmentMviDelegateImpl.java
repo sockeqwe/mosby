@@ -165,9 +165,9 @@ public class FragmentMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
 
   @Override public void onStop() {
     Activity activity = getActivity();
-    boolean destroyPresenter = keepPresenterInstance && activity.isFinishing();
-    presenter.detachView(destroyPresenter);
-    if (destroyPresenter) {
+    boolean retainPresenterInstance = keepPresenterInstance && activity.isChangingConfigurations();
+    presenter.detachView(retainPresenterInstance);
+    if (!retainPresenterInstance) {
       presenterManager.removePresenterAndViewState(mosbyViewId, activity);
     }
 

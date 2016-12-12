@@ -40,6 +40,9 @@ import com.hannesdorfmann.mosby3.mvp.MvpView;
 public class ActivityMviDelegateImpl<V extends MvpView, P extends MviPresenter<V, ?>>
     implements ActivityMviDelegate {
 
+  private static final boolean DEBUG = true;
+  private static final String DEBUG_TAG = ActivityMviDelegateImpl.class.getSimpleName();
+
   private static final String KEY_MOSBY_VIEW_ID = "com.hannesdorfmann.mosby3.activity.viewState.id";
   private String mosbyViewId = null;
 
@@ -83,6 +86,11 @@ public class ActivityMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
     if (keepPresenterInstance && bundle != null) {
       mosbyViewId = bundle.getString(KEY_MOSBY_VIEW_ID);
     }
+
+    if (DEBUG) {
+      Log.d(DEBUG_TAG,
+          "MosbyView ID = " + mosbyViewId + " for MvpView: " + delegateCallback.getMvpView());
+    }
   }
 
   @Override public void onStart() {
@@ -90,12 +98,24 @@ public class ActivityMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
       // No presenter available,
       // Activity is starting for the first time (or keepPresenterInstance == false)
       presenter = createViewIdAndCreatePresenter();
+      if (DEBUG) {
+        Log.d(DEBUG_TAG, "new Presenter instance created: " + presenter);
+      }
     } else {
       presenter = presenterManager.getPresenter(mosbyViewId, activity);
       if (presenter == null) {
         // Process death,
         // hence no presenter with the given viewState id stored, although we have a viewState id
         presenter = createViewIdAndCreatePresenter();
+        if (DEBUG) {
+          Log.d(DEBUG_TAG,
+              "No Presenter instance found in cache, although MosbyView ID present. This was caused by process death, therefore new Presenter instance created: "
+                  + presenter);
+        }
+      } else {
+        if (DEBUG) {
+          Log.d(DEBUG_TAG, "Presenter instance reused from internal cache: " + presenter);
+        }
       }
     }
 
@@ -106,6 +126,10 @@ public class ActivityMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
           "MvpView returned from getMvpView() is null. Returned by " + activity);
     }
     presenter.attachView(view);
+    if (DEBUG) {
+      Log.d(DEBUG_TAG,
+          "MvpView attached to Presenter. MvpView: " + view + "   Presenter: " + presenter);
+    }
   }
 
   /**
@@ -132,16 +156,30 @@ public class ActivityMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
   @Override public void onSaveInstanceState(Bundle outState) {
     if (keepPresenterInstance && outState != null) {
       outState.putString(KEY_MOSBY_VIEW_ID, mosbyViewId);
+      if (DEBUG) {
+        Log.d(DEBUG_TAG, "Saving MosbyViewId into Bundle. ViewId: " + mosbyViewId);
+      }
     }
   }
 
   @Override public void onStop() {
-    boolean destroyPresenter = keepPresenterInstance && activity.isFinishing();
-    Log.d("ActivityMviDelegateImpl", "onStop() " + destroyPresenter);
-    presenter.detachView(destroyPresenter);
-    if (destroyPresenter) {
+    boolean retainPresenterInstance = keepPresenterInstance && activity.isChangingConfigurations();
+    presenter.detachView(retainPresenterInstance);
+    if (!retainPresenterInstance) {
       presenterManager.removePresenterAndViewState(mosbyViewId, activity);
     }
+
+    if (DEBUG) {
+      Log.d(DEBUG_TAG, "detached MvpView from Presenter. MvpView "
+          + delegateCallback.getMvpView()
+          + "   Presenter: "
+          + presenter);
+      Log.d(DEBUG_TAG, "Retaining presenter instance: "
+          + Boolean.toString(retainPresenterInstance).toUpperCase()
+          + " "
+          + presenter);
+    }
+
     presenterManager.cleanUp();
     presenterManager = null;
     presenter = null;

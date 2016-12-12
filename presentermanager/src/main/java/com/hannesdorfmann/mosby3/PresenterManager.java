@@ -32,7 +32,7 @@ import java.util.UUID;
 final class PresenterManager<V extends MvpView, P extends MvpPresenter<V>> {
 
   private static final String FRAGMENT_TAG = "com.hannesdorfmann.mosby3.mvp.PresenterManagerFragment";
-  private static final boolean DEBUG = true;
+  private static final boolean DEBUG = false;
   private static final String DEBUG_TAG = "PresenterManager";
   /**
    * Never use this directly. Always use {@link #getFragment(Context)}

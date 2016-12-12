@@ -27,7 +27,8 @@ import java.util.List;
 public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPresenter<V, VS> {
 
   /**
-   * This relay is the bridge to the viewState (UI). Whenever the viewState get's reattached, the latest
+   * This relay is the bridge to the viewState (UI). Whenever the viewState get's reattached, the
+   * latest
    * state will be reemitted.
    */
   private BehaviorSubject<VS> viewRelay;
@@ -80,7 +81,8 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
    * <b>Do only invoke this method once!</b>
    * <p>
    * Internally Mosby will hold some relays to ensure that no items emitted from the ViewState
-   * Observable will be lost while viewState is not attached nor that the subscriptions to viewState intents
+   * Observable will be lost while viewState is not attached nor that the subscriptions to viewState
+   * intents
    * will cause memory leaks while viewState detached.
    * </p>
    *
@@ -89,8 +91,8 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
    * must be created with {@link #intent(Observable)} functionl
    * @param consumer The Consumer / subscriber to the viewState Observable
    */
-  @MainThread protected void subscribeViewState(@NonNull VS initialViewState, Observable<VS> viewStateObservable,
-      Consumer<VS> consumer) {
+  @MainThread protected void subscribeViewState(@NonNull VS initialViewState,
+      Observable<VS> viewStateObservable, Consumer<VS> consumer) {
 
     if (viewMethodCalled) {
       throw new IllegalStateException("View Method is only allowed to be called once");
@@ -154,7 +156,8 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
       intentRelay = (PublishSubject<I>) intentRelays.get(intentRelayIndex);
       if (intentRelay == null) {
         throw new IllegalStateException(
-            "Somehow Mosby's internal viewState intent relay is null. The viewState intent was: " + intent);
+            "Somehow Mosby's internal viewState intent relay is null. The viewState intent was: "
+                + intent);
       }
     } else {
       intentRelay = PublishSubject.create();
@@ -182,7 +185,9 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
     }
     viewMethodCalled = false;
     intentRelayIndex = 0;
-    intentDisposals.dispose();
-    intentDisposals = null;
+    if (intentDisposals != null) {
+      intentDisposals.dispose();
+      intentDisposals = null;
+    }
   }
 }

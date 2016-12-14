@@ -2,4 +2,5 @@
 //     ':testing', ':mvp-common'
 
 include ':mvp-common', ':mvp', ':viewstate', ':testing', ':sample', ':mvi', ':sample-mail',
+    ':utils-fragment-integration-test',
     ':mvi-integration-test', ':sample-mvi', ':presentermanager', ':sample-flow', ':utils-fragment'

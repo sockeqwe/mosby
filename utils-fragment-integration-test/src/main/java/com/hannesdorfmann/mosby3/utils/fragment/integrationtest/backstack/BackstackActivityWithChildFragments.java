@@ -21,7 +21,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import com.hannesdorfmann.mosby3.utils.fragment.integrationtest.R;
 
-public class BackstackActivity extends AppCompatActivity {
+public class BackstackActivityWithChildFragments extends AppCompatActivity {
 
   private static final String TAG_BACKSTACK = "fragmentBackstack";
   private static final String TAG_NOT_BACKSTACK = "fragmentNotBackstack";

@@ -30,14 +30,14 @@ import org.junit.runner.RunWith;
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
-@RunWith(AndroidJUnit4.class) public class BackstackActivityTest {
+@RunWith(AndroidJUnit4.class) public class BackstackActivityWithChildFragmentsTest {
 
-  @Rule public ActivityTestRule<BackstackActivity> rule =
-      new ActivityTestRule<>(BackstackActivity.class);
+  @Rule public ActivityTestRule<BackstackActivityWithChildFragments> rule =
+      new ActivityTestRule<>(BackstackActivityWithChildFragments.class);
 
   @Test public void fragmentsOnBackstack() throws Exception {
     // Context of the app under test.
-    BackstackActivity activity = rule.getActivity();
+    BackstackActivityWithChildFragments activity = rule.getActivity();
     Thread.sleep(1000);
 
     FragmentOnBackstack fragmentOnBackstack;
@@ -67,7 +67,7 @@ import org.junit.runner.RunWith;
     // Screen orientation change
     //
     activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-    // Will call onStop() where we set the onbackStackflag
+    // Will call onStop() where we set the onbackStack flag
     Thread.sleep(1000);
 
     Assert.assertTrue(fragmentOnBackstack.onBackStack);

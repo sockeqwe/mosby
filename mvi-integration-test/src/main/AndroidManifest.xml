@@ -28,6 +28,7 @@
     <activity android:name=".lifecycle.fragment.SimpleFragmentContainerActivity" />
     <activity android:name=".lifecycle.fragment.RetainingFragmentContainerActivity" />
     <activity android:name=".lifecycle.fragment.childfragment.MviLifecycleChildFragmentActivity" />
+    <activity android:name=".lifecycle.fragment.backstack.MviLifecycleBackstackActivity" />
   </application>
 
 </manifest>

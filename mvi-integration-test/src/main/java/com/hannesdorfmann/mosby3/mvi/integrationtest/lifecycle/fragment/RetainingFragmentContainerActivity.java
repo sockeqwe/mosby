@@ -34,13 +34,13 @@ public class RetainingFragmentContainerActivity extends AppCompatActivity {
     setContentView(R.layout.activity_lifecycle);
 
     if (savedInstanceState == null) {
-      SimpleMviLifecycleFragment f = new SimpleMviLifecycleFragment();
+      SimpleRetainingMviLifecycleFragment f = new SimpleRetainingMviLifecycleFragment();
       f.setRetainInstance(true);
       getSupportFragmentManager().beginTransaction().replace(R.id.container, f, TAG).commitNow();
     }
   }
 
-  public SimpleMviLifecycleFragment getFragment(){
-    return (SimpleMviLifecycleFragment) getSupportFragmentManager().findFragmentByTag(TAG);
+  public SimpleRetainingMviLifecycleFragment getFragment(){
+    return (SimpleRetainingMviLifecycleFragment) getSupportFragmentManager().findFragmentByTag(TAG);
   }
 }

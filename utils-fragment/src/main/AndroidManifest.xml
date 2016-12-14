@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Copyright 2016 Hannes Dorfmann.
   ~
@@ -16,16 +15,9 @@
   ~
   -->
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.hannesdorfmann.mosby3.utils.fragment">
 
-  <TextView
-      android:id="@+id/text"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center"
-      android:textSize="20sp"
-      android:text="MVI FRAGMENT"
-      />
-</FrameLayout>
+  <application />
+
+</manifest>

@@ -23,6 +23,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.BackstackAccessor;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import com.hannesdorfmann.mosby3.mvi.MviPresenter;
@@ -48,16 +49,18 @@ public class FragmentMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
   private MviDelegateCallback<V, P> delegateCallback;
   private Fragment fragment;
   private boolean onViewCreatedCalled = false;
-  private final boolean keepPresenterInstance;
+  private final boolean keepPresenterDuringScreenOrientationChange;
+  private final boolean keepPresenterOnBackstack;
   private P presenter;
 
   public FragmentMviDelegateImpl(@NonNull MviDelegateCallback<V, P> delegateCallback,
       @NonNull Fragment fragment) {
-    this(delegateCallback, fragment, true);
+    this(delegateCallback, fragment, true, true);
   }
 
   public FragmentMviDelegateImpl(@NonNull MviDelegateCallback<V, P> delegateCallback,
-      @NonNull Fragment fragment, boolean keepPresenterInstance) {
+      @NonNull Fragment fragment, boolean keepPresenterDuringScreenOrientationChange,
+      boolean keepPresenterOnBackstack) {
     if (delegateCallback == null) {
       throw new NullPointerException("delegateCallback == null");
     }
@@ -67,7 +70,8 @@ public class FragmentMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
     }
     this.delegateCallback = delegateCallback;
     this.fragment = fragment;
-    this.keepPresenterInstance = keepPresenterInstance;
+    this.keepPresenterDuringScreenOrientationChange = keepPresenterDuringScreenOrientationChange;
+    this.keepPresenterOnBackstack = keepPresenterOnBackstack;
   }
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -79,7 +83,8 @@ public class FragmentMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
   }
 
   @Override public void onCreate(@Nullable Bundle bundle) {
-    if (keepPresenterInstance && bundle != null) {
+    if ((keepPresenterDuringScreenOrientationChange || keepPresenterOnBackstack)
+        && bundle != null) {
       mosbyViewId = bundle.getString(KEY_MOSBY_VIEW_ID);
     }
   }
@@ -115,7 +120,7 @@ public class FragmentMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
 
     if (mosbyViewId == null) {
       // No presenter available,
-      // Activity is starting for the first time (or keepPresenterInstance == false)
+      // Activity is starting for the first time (or keepPresenterDuringScreenOrientationChange == false)
       presenter = createViewIdAndCreatePresenter();
     } else {
       presenter = presenterManager.getPresenter(mosbyViewId, getActivity());
@@ -149,7 +154,7 @@ public class FragmentMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
       throw new NullPointerException(
           "Presenter returned from createPresenter() is null. Fragment is " + fragment);
     }
-    if (keepPresenterInstance) {
+    if (keepPresenterDuringScreenOrientationChange || keepPresenterOnBackstack) {
       Context context = getActivity();
       mosbyViewId = presenterManager.nextViewId(context);
       presenterManager.putPresenter(mosbyViewId, presenter, context);
@@ -158,14 +163,18 @@ public class FragmentMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
   }
 
   @Override public void onSaveInstanceState(Bundle outState) {
-    if (keepPresenterInstance && outState != null) {
+    if ((keepPresenterDuringScreenOrientationChange || keepPresenterOnBackstack)
+        && outState != null) {
       outState.putString(KEY_MOSBY_VIEW_ID, mosbyViewId);
     }
   }
 
   @Override public void onStop() {
     Activity activity = getActivity();
-    boolean retainPresenterInstance = keepPresenterInstance && activity.isChangingConfigurations();
+    boolean retainPresenterInstance =
+        (keepPresenterDuringScreenOrientationChange && activity.isChangingConfigurations())
+            || (BackstackAccessor.isFragmentOnBackStack(fragment) && keepPresenterOnBackstack);
+
     presenter.detachView(retainPresenterInstance);
     if (!retainPresenterInstance) {
       presenterManager.removePresenterAndViewState(mosbyViewId, activity);

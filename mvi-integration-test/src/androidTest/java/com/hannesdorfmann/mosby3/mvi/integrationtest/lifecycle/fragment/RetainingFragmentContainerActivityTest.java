@@ -34,17 +34,17 @@ import org.junit.runner.RunWith;
 
   private static LifecycleTestPresenter presenter;
 
-  @Test public void testConfigChange() throws Exception {
+  @Test public void screenOrientationChange() throws Exception {
     // Context of the app under test.
     RetainingFragmentContainerActivity portraitActivity = rule.getActivity();
 
-    SimpleMviLifecycleFragment portraitFragment = portraitActivity.getFragment();
+    SimpleRetainingMviLifecycleFragment fragment = portraitActivity.getFragment();
 
-    presenter = portraitFragment.presenter;
+    presenter = fragment.presenter;
     Assert.assertNotNull(presenter);
-    Assert.assertEquals(1, SimpleMviLifecycleFragment.createPresenterInvokations);
+    Assert.assertEquals(1, fragment.createPresenterInvokations);
     Assert.assertEquals(1, presenter.attachViewInvokations);
-    Assert.assertTrue(presenter.attachedView == portraitFragment);
+    Assert.assertTrue(presenter.attachedView == fragment);
 
     Thread.sleep(1000);
 
@@ -57,9 +57,9 @@ import org.junit.runner.RunWith;
     Assert.assertEquals(1, presenter.detachViewInvokations);
     Assert.assertTrue(presenter.onDettachViewRetainInstance);
 
-    Assert.assertEquals(1, SimpleMviLifecycleFragment.createPresenterInvokations);
+    Assert.assertEquals(1, fragment.createPresenterInvokations);
     Assert.assertEquals(2, presenter.attachViewInvokations);
-    Assert.assertTrue(presenter.attachedView == portraitFragment);
+    Assert.assertTrue(presenter.attachedView == fragment);
   }
 
   @AfterClass

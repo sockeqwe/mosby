@@ -17,9 +17,6 @@
 
 package android.support.v4.app;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-
 /**
  * With this utility class one can access the fragment backstack
  *
@@ -43,36 +40,18 @@ public class BackstackAccessor {
     int backStackSize = fragmentManager.getBackStackEntryCount();
     for (int i = 0; i < backStackSize; i++) {
       BackStackRecord stackEntry = (BackStackRecord) fragmentManager.getBackStackEntryAt(i);
-      BackStackRecord.Op head = stackEntry.mHead;
-      BackStackRecord.Op tail = stackEntry.mTail;
-      if (head != null && head.fragment == fragment) {
-        return true;
-      }
-
-      if (tail != null && tail.fragment == fragment) {
-        return true;
-      }
-
-      if (head != null && findNext(fragment, head.next)) {
-        return true;
-      }
-
-      if (head != null && findPrevious(fragment, head.prev)) {
-        return true;
-      }
-
-      if (tail != null && findNext(fragment, tail.next)) {
-        return true;
-      }
-
-      if (tail != null && findPrevious(fragment, tail.prev)) {
-        return true;
+      int opsCount = stackEntry.mOps == null ? 0 : stackEntry.mOps.size();
+      for (int j = 0; j < opsCount; j++) {
+        BackStackRecord.Op op = stackEntry.mOps.get(j);
+        if (op.fragment == fragment) {
+          return true;
+        }
       }
     }
 
     return false;
   }
-
+/*
   private static boolean findNext(@NonNull Fragment toFind, @Nullable BackStackRecord.Op next) {
     if (next == null) {
       return false;
@@ -97,4 +76,5 @@ public class BackstackAccessor {
       return findPrevious(toFind, previous.prev);
     }
   }
+  */
 }

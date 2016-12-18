@@ -15,45 +15,26 @@
  *
  */
 
-package com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model;
+package com.hannesdorfmann.mosby3.sample.mvi.view.ui.viewholder;
+
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import com.hannesdorfmann.mosby3.sample.mvi.R;
 
 /**
- * This is a pojo model class representing a Product
+ * Simply shows a progress bar. This is typically used for pagination to indicate  that more items
+ * are loading.
  *
  * @author Hannes Dorfmann
  */
-public final class Product implements FeedItem {
-  private int id;
-  private String image;
-  private String name;
-  private String category;
-  private String description;
-  private double price;
+public class LoadingViewHolder extends RecyclerView.ViewHolder {
 
-  Product() {
+  public static LoadingViewHolder create(LayoutInflater inflater) {
+    return new LoadingViewHolder(inflater.inflate(R.layout.item_loading, null, false));
   }
 
-  public int getId() {
-    return id;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public String getCategory() {
-    return category;
-  }
-
-  public String getDescription() {
-    return description;
-  }
-
-  public String getImage() {
-    return image;
-  }
-
-  public double getPrice() {
-    return price;
+  private LoadingViewHolder(View itemView) {
+    super(itemView);
   }
 }

@@ -1,0 +1,50 @@
+[
+  {
+    "id": -1,
+    "name": "Hanukkah Sweater",
+    "category": "Clothing",
+    "image": "-1.jpg",
+    "price": 24.99,
+    "description": "It's the holiday season, 1990. A young boy, Kevin Stein is getting ready to travel to Boca to visit his bubbie with his family. Unfortunately for him, they leave earlier than anticipated - now this is plausible because everyone knows us Jews are never on time. Ever. Especially when traveling in groups, and that's increased exponentially when traveling to the airport together. So anyway they leave earlier than expected, Kevin slept in anticipating a late departure per usual only to find that he has the whole house to himself. What does he do? Fuckin' rage. That's the plot for Home Alone Jew."
+  },
+  {
+    "id": -2,
+    "name": "Christmas Stocking",
+    "category": "Clothing",
+    "image": "-2.jpg",
+    "price": 38.35,
+    "description": "Gorgeous kimono draped jacket. All sheer mesh. Embellished with dazzling sequins and embroidery with a floral design. Open front. Draped style that will fit many sizes. Light weight kimono."
+  },
+  {
+    "id": -3,
+    "name": "Wine Socks",
+    "category": "Clothing",
+    "image": "-3.jpg",
+    "price": 13.99,
+    "description": "THE BEST QUALITY SOCKS!! We use real merino wool & it's not scratchy/itchy..just so so sooo soft! They'll instantly become your favorite socks. With a timeless design, they are sure to never go out of fashion."
+  },
+  {
+    "id": -4,
+    "name": "Sweatshirt",
+    "category": "Clothing",
+    "image": "-4.jpg",
+    "price": 27.75,
+    "description": "Style and comfort are the perfect words to describe this unbelievably cute hoodie. The light sweater knit gives it an incredibly soft hand that drapes beautifully. It’s a can’t miss for any season."
+  },
+  {
+    "id": -5,
+    "name": "Red Coat",
+    "category": "Clothing",
+    "image": "-5.jpg",
+    "price": 299.00,
+    "description": "Fancy tailoring is what this red military coat is all about. The cinched in waist will give you a wonderful silhouette whilst the knee length will give you just enough coverage to stay super cozy. Perfect to wear with knee high winter boots."
+  },
+  {
+    "id": -6,
+    "name": "Hogwarts Shirts",
+    "category": "Clothing",
+    "image": "-6.jpg",
+    "price": 18.95,
+    "description": "The essential long sleeve tee gets a fresh update with a soft poly-viscose blend, draped silhouette and wide neckline that can be worn on or off the shoulder."
+  }
+]

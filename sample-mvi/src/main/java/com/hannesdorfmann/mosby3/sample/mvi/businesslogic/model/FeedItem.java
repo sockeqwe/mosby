@@ -18,42 +18,9 @@
 package com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model;
 
 /**
- * This is a pojo model class representing a Product
+ * Just an empty interface representing a list of items that can be displayed on screen
  *
  * @author Hannes Dorfmann
  */
-public final class Product implements FeedItem {
-  private int id;
-  private String image;
-  private String name;
-  private String category;
-  private String description;
-  private double price;
-
-  Product() {
-  }
-
-  public int getId() {
-    return id;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public String getCategory() {
-    return category;
-  }
-
-  public String getDescription() {
-    return description;
-  }
-
-  public String getImage() {
-    return image;
-  }
-
-  public double getPrice() {
-    return price;
-  }
+public interface FeedItem {
 }

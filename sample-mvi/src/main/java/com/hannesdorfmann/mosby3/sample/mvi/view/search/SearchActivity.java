@@ -80,6 +80,7 @@ public class SearchActivity extends MviActivity<SearchView, SearchPresenter> imp
     } else if (viewState instanceof SearchViewState.EmptyResult) {
       renderEmptyResult();
     } else if (viewState instanceof SearchViewState.Error) {
+      Timber.e(((SearchViewState.Error) viewState).getError());
       renderError();
     } else {
       throw new IllegalArgumentException("Don't know how to render viewState " + viewState);

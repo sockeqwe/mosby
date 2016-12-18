@@ -18,42 +18,18 @@
 package com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model;
 
 /**
- * This is a pojo model class representing a Product
+ * This is a indicator that also some more items are available that could be loaded
  *
  * @author Hannes Dorfmann
  */
-public final class Product implements FeedItem {
-  private int id;
-  private String image;
-  private String name;
-  private String category;
-  private String description;
-  private double price;
+public class AdditionalItemsLoadable implements FeedItem {
+  private final int moreItemsAvailableCount;
 
-  Product() {
+  public AdditionalItemsLoadable(int moreItemsAvailableCount) {
+    this.moreItemsAvailableCount = moreItemsAvailableCount;
   }
 
-  public int getId() {
-    return id;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public String getCategory() {
-    return category;
-  }
-
-  public String getDescription() {
-    return description;
-  }
-
-  public String getImage() {
-    return image;
-  }
-
-  public double getPrice() {
-    return price;
+  public int getMoreItemsCount() {
+    return moreItemsAvailableCount;
   }
 }

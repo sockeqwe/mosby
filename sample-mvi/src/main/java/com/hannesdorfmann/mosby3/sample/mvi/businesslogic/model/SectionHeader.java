@@ -18,42 +18,18 @@
 package com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model;
 
 /**
- * This is a pojo model class representing a Product
+ * A section header used to group elemens
  *
  * @author Hannes Dorfmann
  */
-public final class Product implements FeedItem {
-  private int id;
-  private String image;
-  private String name;
-  private String category;
-  private String description;
-  private double price;
+public class SectionHeader implements FeedItem {
+  private final String name;
 
-  Product() {
-  }
-
-  public int getId() {
-    return id;
+  public SectionHeader(String name) {
+    this.name = name;
   }
 
   public String getName() {
     return name;
-  }
-
-  public String getCategory() {
-    return category;
-  }
-
-  public String getDescription() {
-    return description;
-  }
-
-  public String getImage() {
-    return image;
-  }
-
-  public double getPrice() {
-    return price;
   }
 }

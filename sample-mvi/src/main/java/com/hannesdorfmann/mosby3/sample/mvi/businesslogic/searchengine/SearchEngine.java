@@ -18,10 +18,9 @@
 package com.hannesdorfmann.mosby3.sample.mvi.businesslogic.searchengine;
 
 import android.support.annotation.NonNull;
-import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.http.ProductApi;
+import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.http.ProductBackendApiDecorator;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model.Product;
 import io.reactivex.Observable;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,10 +29,10 @@ import java.util.List;
  * @author Hannes Dorfmann
  */
 public class SearchEngine {
-  private final ProductApi productApi;
+  private final ProductBackendApiDecorator backend;
 
-  public SearchEngine(ProductApi productApi) {
-    this.productApi = productApi;
+  public SearchEngine(ProductBackendApiDecorator productApi) {
+    this.backend = productApi;
   }
 
   public Observable<List<Product>> searchFor(@NonNull String searchQueryText) {
@@ -46,21 +45,7 @@ public class SearchEngine {
       return Observable.error(new IllegalArgumentException("SearchQueryTest is blank"));
     }
 
-    return Observable.zip(createSearchObservable(searchQueryText, 1),
-        createSearchObservable(searchQueryText, 2), createSearchObservable(searchQueryText, 3),
-        (products, products2, products3) -> {
-          List<Product> productList = new ArrayList<Product>();
-          productList.addAll(products);
-          productList.addAll(products2);
-          productList.addAll(products3);
-          return productList;
-        });
-  }
-
-  private Observable<List<Product>> createSearchObservable(@NonNull String searchQueryText,
-      int pagination) {
-
-    return productApi.getProducts(pagination)
+    return backend.getAllProducts()
         .flatMap(Observable::fromIterable)
         .filter(product -> isProductMatchingSearchCriteria(product, searchQueryText))
         .toList()

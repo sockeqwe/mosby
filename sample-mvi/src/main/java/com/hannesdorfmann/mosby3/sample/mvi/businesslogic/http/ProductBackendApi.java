@@ -28,15 +28,15 @@ import retrofit2.http.Path;
  *
  * @author Hannes Dorfmann
  */
-public interface ProductApi {
+public interface ProductBackendApi {
 
   public static final String BASE_URL = "https://raw.githubusercontent.com";
   public static final String BASE_URL_BRANCH = "mvi"; // TODO switch to master branch
   public static final String BASE_IMAGE_URL =
-      BASE_URL + "/sockeqwe/mosby/" + ProductApi.BASE_URL_BRANCH + "/sample-mvi/server/images/";
+      BASE_URL + "/sockeqwe/mosby/" + ProductBackendApi.BASE_URL_BRANCH + "/sample-mvi/server/images/";
 
   @GET("/sockeqwe/mosby/"
-      + ProductApi.BASE_URL_BRANCH
+      + ProductBackendApi.BASE_URL_BRANCH
       + "/sample-mvi/server/api/products{pagination}.json")
   public Observable<List<Product>> getProducts(@Path("pagination") int pagination);
 }

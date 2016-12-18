@@ -5,14 +5,20 @@
   <uses-permission android:name="android.permission.INTERNET"/>
 
   <application
-      android:name=".SampleApplication"
-      android:allowBackup="true"
+      android:allowBackup="false"
       android:icon="@mipmap/ic_launcher"
       android:label="@string/app_name"
+      android:name=".SampleApplication"
       android:supportsRtl="true"
       android:theme="@style/AppTheme">
-    <activity android:name=".view.search.SearchActivity"
+    <activity
+        android:name=".view.search.SearchActivity"
         android:theme="@style/AppTheme.Translucent.Search">
+    </activity>
+    <activity
+        android:label="@string/title_activity_main_activiy"
+        android:name=".MainActiviy"
+        android:theme="@style/AppTheme">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
 

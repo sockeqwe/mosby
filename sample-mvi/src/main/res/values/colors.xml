@@ -7,4 +7,6 @@
   <color name="colorAccent">@color/accent</color>
   <color name="scrim">#B9323232</color>
   <color name="background_dark">#E0E0E0</color>
+
+  <color name="loadMoreItems">#9E9E9E</color>
 </resources>

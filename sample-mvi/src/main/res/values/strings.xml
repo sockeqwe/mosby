@@ -4,4 +4,12 @@
   <string name="search_no_results">No results found</string>
   <string name="search_icon">Search</string>
   <string name="search_query_hint">Search ...</string>
+  <string name="error_unknown">An Error has occurred</string>
+  <string name="click_to_load_more">click to load more</string>
+  <string name="title_activity_main_activiy">Mosby MVI Example</string>
+
+  <string name="navigation_drawer_open">Open navigation drawer</string>
+  <string name="navigation_drawer_close">Close navigation drawer</string>
+
+  <string name="action_settings">Settings</string>
 </resources>

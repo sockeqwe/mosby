@@ -50,10 +50,11 @@ public class ProductBackendApiDecorator {
    * Get a list with all products from backend
    */
   public Observable<List<Product>> getAllProducts() {
-    return Observable.zip(getProducts(1), getProducts(2), getProducts(3),
-        (products, products2, products3) -> {
+    return Observable.zip(getProducts(0), getProducts(1), getProducts(2), getProducts(3),
+        (products0, products1, products2, products3) -> {
           List<Product> productList = new ArrayList<Product>();
-          productList.addAll(products);
+          productList.addAll(products0);
+          productList.addAll(products1);
           productList.addAll(products2);
           productList.addAll(products3);
           return productList;

@@ -29,13 +29,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import butterknife.BindInt;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import com.hannesdorfmann.mosby3.mvi.MviFragment;
 import com.hannesdorfmann.mosby3.sample.mvi.R;
 import com.hannesdorfmann.mosby3.sample.mvi.SampleApplication;
-import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model.SectionHeader;
+import com.hannesdorfmann.mosby3.sample.mvi.view.ui.GridSpacingItemDecoration;
 import com.jakewharton.rxbinding.support.v4.widget.RxSwipeRefreshLayout;
 import com.jakewharton.rxbinding.support.v7.widget.RxRecyclerView;
 import hu.akarnokd.rxjava.interop.RxJavaInterop;
@@ -58,6 +59,7 @@ public class HomeFragment extends MviFragment<HomeView, HomePresenter> implement
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
   @BindView(R.id.loadingView) View loadingView;
   @BindView(R.id.errorView) TextView errorView;
+  @BindInt(R.integer.grid_span_size) int spanSize;
 
   @NonNull @Override public HomePresenter createPresenter() {
     Timber.d("createPresenter");
@@ -71,11 +73,17 @@ public class HomeFragment extends MviFragment<HomeView, HomePresenter> implement
     unbinder = ButterKnife.bind(this, view);
 
     adapter = new HomeAdapter(inflater);
+    recyclerView.addItemDecoration(new GridSpacingItemDecoration(spanSize,
+        getResources().getDimensionPixelSize(R.dimen.grid_spacing), true));
     layoutManager = new GridLayoutManager(getActivity(), 2);
     layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
       @Override public int getSpanSize(int position) {
-        if (adapter.getItems().size() == position) return 2;
-        if (adapter.getItems().get(position) instanceof SectionHeader) return 2;
+
+        int viewType = adapter.getItemViewType(position);
+        if (viewType == HomeAdapter.VIEW_TYPE_LOADING_MORE_NEXT_PAGE
+            || viewType == HomeAdapter.VIEW_TYPE_SECTION_HEADER) {
+          return 2;
+        }
 
         return 1;
       }
@@ -94,12 +102,11 @@ public class HomeFragment extends MviFragment<HomeView, HomePresenter> implement
   @Override public void onStart() {
     super.onStart();
     startLoadingObservable.onNext(true);
-    startLoadingObservable.onComplete(); // Never fire again load more
+    startLoadingObservable.onComplete(); // Never fire again after orientation change
   }
 
   @Override public Observable<Boolean> loadFirstPageIntent() {
-    return startLoadingObservable
-        .doOnNext(ignored -> Timber.d("loadFirstPage Intent"));
+    return startLoadingObservable.doOnNext(ignored -> Timber.d("loadFirstPage Intent"));
   }
 
   @Override public Observable<Boolean> loadNextPageIntent() {
@@ -120,16 +127,22 @@ public class HomeFragment extends MviFragment<HomeView, HomePresenter> implement
 
   @Override public void render(HomeViewState viewState) {
     Timber.d("render %s", viewState);
-    if (viewState instanceof HomeViewState.DataState) {
-      renderShowData((HomeViewState.DataState) viewState);
-    } else if (viewState instanceof HomeViewState.FirstPageLoadingState) {
+    if (!viewState.isLoadingFirstPage()
+        //&& !viewState.isLoadingFirstPage()
+        // && !viewState.isLoadingPullToRefresh()
+        && viewState.getFirstPageError() == null
+      //&& viewState.getNextPageError() == null
+      //&& viewState.getPullToRefreshError() == null
+        ) {
+      renderShowData(viewState);
+    } else if (viewState.isLoadingFirstPage()) {
       renderFirstPageLoading();
-    } else if (viewState instanceof HomeViewState.FirstPageErrorState) {
+    } else if (viewState.getFirstPageError() != null) {
       renderFirstPageError();
     }
   }
 
-  private void renderShowData(HomeViewState.DataState state) {
+  private void renderShowData(HomeViewState state) {
     TransitionManager.beginDelayedTransition((ViewGroup) getView());
     loadingView.setVisibility(View.GONE);
     errorView.setVisibility(View.GONE);

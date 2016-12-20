@@ -19,10 +19,12 @@ package com.hannesdorfmann.mosby3.sample.mvi.view.home;
 
 import com.hannesdorfmann.mosby3.mvi.MviBasePresenter;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.feed.HomeFeedLoader;
+import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model.FeedItem;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Hannes Dorfmann
@@ -37,36 +39,103 @@ public class HomePresenter extends MviBasePresenter<HomeView, HomeViewState> {
 
   @Override public void attachView(HomeView view) {
 
-    Observable<HomeViewState> loadFirstPage = intent(view.loadFirstPageIntent()).flatMap(
+    Observable<PartialHomeViewState> loadFirstPage = intent(view.loadFirstPageIntent()).flatMap(
         ignored -> feedLoader.loadFirstPage()
-            .map(items -> (HomeViewState) new HomeViewState.DataState(items, false, null, false,
-                null))
-            .startWith(new HomeViewState.FirstPageLoadingState())
-            .onErrorReturn(HomeViewState.FirstPageErrorState::new)
+            .map(items -> (PartialHomeViewState) new PartialHomeViewState.FirstPageLoaded(items))
+            .startWith(new PartialHomeViewState.FirstPageLoading())
+            .onErrorReturn(PartialHomeViewState.FirstPageError::new)
             .subscribeOn(Schedulers.io()));
 
-    Observable<HomeViewState> nextPage = intent(view.loadNextPageIntent()).flatMap(
+    Observable<PartialHomeViewState> nextPage = intent(view.loadNextPageIntent()).flatMap(
         ignored -> feedLoader.loadNextPage()
-            .map(items -> new HomeViewState.DataState(items, false, null, false, null))
-            .startWith(
-                new HomeViewState.DataState(Collections.emptyList(), true, null, false, null))
-            .onErrorReturn(
-                error -> new HomeViewState.DataState(Collections.emptyList(), false, error, false,
-                    null))
+            .map(items -> (PartialHomeViewState) new PartialHomeViewState.NextPageLoaded(items))
+            .startWith(new PartialHomeViewState.NextPageLoading())
+            .onErrorReturn(PartialHomeViewState.NexPageLoadingError::new)
             .subscribeOn(Schedulers.io()));
 
-    Observable<HomeViewState> pullToRefreshObservable = intent(view.pullToRefreshIntent()).flatMap(
-        ignored -> feedLoader.loadNewestPage().subscribeOn(Schedulers.io()))
-        .map(items -> (HomeViewState) new HomeViewState.DataState(items, false, null, false, null))
-        .startWith(new HomeViewState.DataState(Collections.emptyList(), false, null, true, null))
-        .onErrorReturn(
-            error -> new HomeViewState.DataState(Collections.emptyList(), false, null, false,
-                error));
+    Observable<PartialHomeViewState> pullToRefreshObservable =
+        intent(view.pullToRefreshIntent()).flatMap(
+            ignored -> feedLoader.loadNewestPage().subscribeOn(Schedulers.io()))
+            .map(
+                items -> (PartialHomeViewState) new PartialHomeViewState.PullToRefreshLoaded(items))
+            .startWith(new PartialHomeViewState.PullToRefreshLoading())
+            .onErrorReturn(PartialHomeViewState.PullToRefeshLoadingError::new)
+            .subscribeOn(Schedulers.io());
 
-    Observable<HomeViewState> allIntents =
+    Observable<PartialHomeViewState> partialViewStateFromIntentsObservable =
         Observable.merge(loadFirstPage, nextPage, pullToRefreshObservable)
             .observeOn(AndroidSchedulers.mainThread());
 
-    subscribeViewState(new HomeViewState.FirstPageLoadingState(), allIntents, view::render);
+    HomeViewState initialViewState = new HomeViewState.Builder().firstPageLoading(true).build();
+    subscribeViewState(initialViewState,
+        partialViewStateFromIntentsObservable.scan(initialViewState, this::viewStateReducer),
+        view::render);
+  }
+
+  private HomeViewState viewStateReducer(HomeViewState previousState,
+      PartialHomeViewState newState) {
+
+    if (newState instanceof PartialHomeViewState.FirstPageLoading) {
+      return previousState.builder().firstPageLoading(true).firstPageError(null).build();
+    }
+
+    if (newState instanceof PartialHomeViewState.FirstPageError) {
+      return previousState.builder()
+          .firstPageLoading(false)
+          .firstPageError(((PartialHomeViewState.FirstPageError) newState).getError())
+          .build();
+    }
+
+    if (newState instanceof PartialHomeViewState.FirstPageLoaded) {
+      return previousState.builder()
+          .firstPageLoading(false)
+          .firstPageError(null)
+          .data(((PartialHomeViewState.FirstPageLoaded) newState).getData())
+          .build();
+    }
+
+    if (newState instanceof PartialHomeViewState.NextPageLoading) {
+      return previousState.builder().nextPageLoading(true).nextPageError(null).build();
+    }
+
+    if (newState instanceof PartialHomeViewState.NexPageLoadingError) {
+      return previousState.builder()
+          .nextPageLoading(false)
+          .nextPageError(((PartialHomeViewState.NexPageLoadingError) newState).getError())
+          .build();
+    }
+
+    if (newState instanceof PartialHomeViewState.NextPageLoaded) {
+      List<FeedItem> data = new ArrayList<>(previousState.getData().size()
+          + ((PartialHomeViewState.NextPageLoaded) newState).getData().size());
+      data.addAll(((PartialHomeViewState.NextPageLoaded) newState).getData());
+
+      return previousState.builder().nextPageLoading(false).nextPageError(null).data(data).build();
+    }
+
+    if (newState instanceof PartialHomeViewState.PullToRefreshLoading) {
+      return previousState.builder().pullToRefreshLoading(true).pullToRefreshError(null).build();
+    }
+
+    if (newState instanceof PartialHomeViewState.PullToRefeshLoadingError) {
+      return previousState.builder()
+          .pullToRefreshLoading(false)
+          .pullToRefreshError(((PartialHomeViewState.PullToRefeshLoadingError) newState).getError())
+          .build();
+    }
+
+    if (newState instanceof PartialHomeViewState.PullToRefreshLoaded) {
+      List<FeedItem> data = new ArrayList<>(previousState.getData().size()
+          + ((PartialHomeViewState.PullToRefreshLoaded) newState).getData().size());
+      data.addAll(0, ((PartialHomeViewState.PullToRefreshLoaded) newState).getData());
+
+      return previousState.builder()
+          .pullToRefreshLoading(true)
+          .pullToRefreshError(null)
+          .data(data)
+          .build();
+    }
+
+    throw new IllegalStateException("Don't know how to reduce the partial state " + newState);
   }
 }

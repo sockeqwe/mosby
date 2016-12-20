@@ -17,6 +17,8 @@
 
 package com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model;
 
+import android.support.annotation.NonNull;
+
 /**
  * This is a indicator that also some more items are available that could be loaded
  *
@@ -24,12 +26,34 @@ package com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model;
  */
 public class AdditionalItemsLoadable implements FeedItem {
   private final int moreItemsAvailableCount;
+  private final String groupName;
 
-  public AdditionalItemsLoadable(int moreItemsAvailableCount) {
+  public AdditionalItemsLoadable(int moreItemsAvailableCount, @NonNull String groupName) {
     this.moreItemsAvailableCount = moreItemsAvailableCount;
+    this.groupName = groupName;
   }
 
   public int getMoreItemsCount() {
     return moreItemsAvailableCount;
+  }
+
+  @NonNull public String getGroupName() {
+    return groupName;
+  }
+
+  @Override public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    AdditionalItemsLoadable that = (AdditionalItemsLoadable) o;
+
+    if (moreItemsAvailableCount != that.moreItemsAvailableCount) return false;
+    return groupName.equals(that.groupName);
+  }
+
+  @Override public int hashCode() {
+    int result = moreItemsAvailableCount;
+    result = 31 * result + groupName.hashCode();
+    return result;
   }
 }

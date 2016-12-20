@@ -17,6 +17,8 @@
 
 package com.hannesdorfmann.mosby3.sample.mvi.view.home;
 
+import android.support.annotation.Nullable;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -36,10 +38,10 @@ import java.util.List;
 
 public class HomeAdapter extends RecyclerView.Adapter {
 
-  private final int VIEW_TYPE_PRODUCT = 0;
-  private final int VIEW_TYPE_LOADING_MORE_NEXT_PAGE = 1;
-  private final int VIEW_TYPE_SECTION_HEADER = 2;
-  private final int VIEW_TYPE_MORE_ITEMS_AVAILABLE = 3;
+  static final int VIEW_TYPE_PRODUCT = 0;
+  static final int VIEW_TYPE_LOADING_MORE_NEXT_PAGE = 1;
+  static final int VIEW_TYPE_SECTION_HEADER = 2;
+  static final int VIEW_TYPE_MORE_ITEMS_AVAILABLE = 3;
 
   private boolean isLoadingNextPage = false;
   private List<FeedItem> items;
@@ -61,14 +63,62 @@ public class HomeAdapter extends RecyclerView.Adapter {
     return isLoadingNextPage;
   }
 
-  public void setItems(List<FeedItem> items) {
+  public void setItems(List<FeedItem> newItems) {
     List<FeedItem> oldItems = this.items;
-    this.items = items;
+    this.items = newItems;
 
     if (oldItems == null) {
       notifyDataSetChanged();
     } else {
       // Use Diff utils
+      DiffUtil.calculateDiff(new DiffUtil.Callback() {
+        @Override public int getOldListSize() {
+          return oldItems.size();
+        }
+
+        @Override public int getNewListSize() {
+          return newItems.size();
+        }
+
+        @Override public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+          Object oldItem = oldItems.get(oldItemPosition);
+          Object newItem = newItems.get(newItemPosition);
+
+          if (oldItem instanceof Product
+              && newItem instanceof Product
+              && ((Product) oldItem).getId() == ((Product) newItem).getId()) {
+            return true;
+          }
+
+          if (oldItem instanceof SectionHeader
+              && newItem instanceof SectionHeader
+              && ((SectionHeader) oldItem).getName().equals(((SectionHeader) newItem).getName())) {
+            return true;
+          }
+
+          if (oldItem instanceof AdditionalItemsLoadable
+              && newItem instanceof AdditionalItemsLoadable
+              && ((AdditionalItemsLoadable) oldItem).getGroupName()
+              .equals(((AdditionalItemsLoadable) newItem).getGroupName())) {
+            return true;
+          }
+
+          return false;
+        }
+
+        @Override public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+          Object oldItem = oldItems.get(oldItemPosition);
+          Object newItem = newItems.get(newItemPosition);
+
+            return oldItem.equals(newItem);
+        }
+
+        @Nullable @Override
+        public Object getChangePayload(int oldItemPosition, int newItemPosition) {
+          // TODO implement for loading
+          return super.getChangePayload(oldItemPosition, newItemPosition);
+        }
+      }, true).dispatchUpdatesTo(this);
     }
   }
 

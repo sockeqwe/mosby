@@ -17,6 +17,8 @@
 
 package com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model;
 
+import android.support.annotation.NonNull;
+
 /**
  * A section header used to group elemens
  *
@@ -25,11 +27,25 @@ package com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model;
 public class SectionHeader implements FeedItem {
   private final String name;
 
-  public SectionHeader(String name) {
+  public SectionHeader(@NonNull String name) {
     this.name = name;
   }
 
+  @NonNull
   public String getName() {
     return name;
+  }
+
+  @Override public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    SectionHeader that = (SectionHeader) o;
+
+    return name.equals(that.name);
+  }
+
+  @Override public int hashCode() {
+    return name.hashCode();
   }
 }

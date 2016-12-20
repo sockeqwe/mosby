@@ -127,7 +127,7 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
 
       @Override public void onError(Throwable e) {
         throw new IllegalStateException(
-            "ViewState observable must not reach error state: onError()", e);
+            "ViewState observable must not reach error state - onError()", e);
       }
 
       @Override public void onComplete() {

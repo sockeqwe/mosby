@@ -35,7 +35,6 @@ import java.util.List;
 public class GroupedPagedFeedLoader {
   private final PagingFeedLoader feedLoader;
   private final int collapsedGroupProductItemCount = 3;
-  private Observable<List<FeedItem>> newestPage;
 
   public GroupedPagedFeedLoader(PagingFeedLoader feedLoader) {
     this.feedLoader = feedLoader;
@@ -46,18 +45,28 @@ public class GroupedPagedFeedLoader {
   }
 
   public Observable<List<FeedItem>> getGroupedNextPage() {
-    return feedLoader.nextPage()
-        .flatMap(Observable::fromIterable)
+    return groupByCategory(feedLoader.nextPage());
+  }
+
+  public Observable<List<FeedItem>> getNewestPage() {
+    return groupByCategory(feedLoader.newestPage());
+  }
+
+  private Observable<List<FeedItem>> groupByCategory(
+      Observable<List<Product>> originalListToGroup) {
+    return originalListToGroup.flatMap(Observable::fromIterable)
         .groupBy(Product::getCategory)
         .flatMap(groupedByCategory -> groupedByCategory.toList().map(productsInGroup -> {
+          String groupName = groupedByCategory.getKey();
           List<FeedItem> items = new ArrayList<FeedItem>();
-          items.add(new SectionHeader(groupedByCategory.getKey()));
+          items.add(new SectionHeader(groupName));
           if (collapsedGroupProductItemCount < productsInGroup.size()) {
             for (int i = 0; i < collapsedGroupProductItemCount; i++) {
               items.add(productsInGroup.get(i));
             }
-            items.add(new AdditionalItemsLoadable(
-                productsInGroup.size() - collapsedGroupProductItemCount));
+            items.add(
+                new AdditionalItemsLoadable(productsInGroup.size() - collapsedGroupProductItemCount,
+                    groupName));
           } else {
             items.addAll(productsInGroup);
           }
@@ -66,9 +75,5 @@ public class GroupedPagedFeedLoader {
         .concatMap(Observable::fromIterable)
         .toList()
         .toObservable();
-  }
-
-  public Observable<List<FeedItem>> getNewestPage() {
-    return newestPage;
   }
 }

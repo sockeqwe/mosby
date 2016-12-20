@@ -18,89 +18,143 @@
 package com.hannesdorfmann.mosby3.sample.mvi.view.home;
 
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model.FeedItem;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * @author Hannes Dorfmann
  */
 
-public interface HomeViewState {
+public final class HomeViewState {
 
-  /**
-   * Indicates that the first page is loading
-   */
-  public final class FirstPageLoadingState implements HomeViewState {
+  private final boolean loadingFirstPage;
+  private final Throwable firstPageError;
+  private final List<FeedItem> data;
+  private final boolean loadingNextPage;
+  private final Throwable nextPageError;
+  private final boolean loadingPullToRefresh;
+  private final Throwable pullToRefreshError;
 
-    @Override public String toString() {
-      return "FirstPageLoadingState{}";
-    }
+  private HomeViewState(List<FeedItem> data, boolean loadingFirstPage, Throwable firstPageError,
+      boolean loadingNextPage, Throwable nextPageError, boolean loadingPullToRefresh,
+      Throwable pullToRefreshError) {
+    this.data = data;
+    this.loadingNextPage = loadingNextPage;
+    this.nextPageError = nextPageError;
+    this.loadingPullToRefresh = loadingPullToRefresh;
+    this.pullToRefreshError = pullToRefreshError;
+    this.firstPageError = firstPageError;
+    this.loadingFirstPage = loadingFirstPage;
   }
 
-  /**
-   * Indicates that an error has occurred while loading the first page
-   */
-  public final class FirstPageErrorState implements HomeViewState {
-    private final Throwable error;
-
-    public FirstPageErrorState(Throwable error) {
-      this.error = error;
-    }
-
-    public Throwable getError() {
-      return error;
-    }
-
-    @Override public String toString() {
-      return "FirstPageErrorState{" +
-          "error=" + error +
-          '}';
-    }
+  public List<FeedItem> getData() {
+    return data;
   }
 
-  public final class DataState implements HomeViewState {
-    private final List<FeedItem> data;
-    private final boolean loadingNextPage;
-    private final Throwable nextPageError;
-    private final boolean loadingPullToRefresh;
-    private final Throwable pullToRefreshError;
+  public boolean isLoadingNextPage() {
+    return loadingNextPage;
+  }
 
-    public DataState(List<FeedItem> data, boolean loadingNextPage, Throwable nextPageError,
-        boolean loadingPullToRefresh, Throwable pullToRefreshError) {
+  public Throwable getNextPageError() {
+    return nextPageError;
+  }
+
+  public boolean isLoadingPullToRefresh() {
+    return loadingPullToRefresh;
+  }
+
+  public Throwable getPullToRefreshError() {
+    return pullToRefreshError;
+  }
+
+  public boolean isLoadingFirstPage() {
+    return loadingFirstPage;
+  }
+
+  public Throwable getFirstPageError() {
+    return firstPageError;
+  }
+
+  public Builder builder() {
+    return new Builder(this);
+  }
+
+  @Override public String toString() {
+    return "HomeViewState{" +
+        "\nloadingFirstPage=" + loadingFirstPage +
+        ",\n firstPageError=" + firstPageError +
+        ",\n data=" + data +
+        ",\n loadingNextPage=" + loadingNextPage +
+        ",\n nextPageError=" + nextPageError +
+        ",\n loadingPullToRefresh=" + loadingPullToRefresh +
+        ",\n pullToRefreshError=" + pullToRefreshError +
+        "\n}";
+  }
+
+  public static final class Builder {
+    private boolean loadingFirstPage;
+    private Throwable firstPageError;
+    private List<FeedItem> data;
+    private boolean loadingNextPage;
+    private Throwable nextPageError;
+    private boolean loadingPullToRefresh;
+    private Throwable pullToRefreshError;
+
+    public Builder() {
+      data = Collections.emptyList();
+    }
+
+    public Builder(HomeViewState toCopyFrom) {
+      this.data = new ArrayList<>(toCopyFrom.getData().size());
+      this.data.addAll(toCopyFrom.getData());
+      this.loadingFirstPage = toCopyFrom.isLoadingFirstPage();
+      this.loadingNextPage = toCopyFrom.isLoadingNextPage();
+      this.loadingNextPage = toCopyFrom.isLoadingNextPage();
+      this.nextPageError = toCopyFrom.getNextPageError();
+      this.pullToRefreshError = toCopyFrom.getPullToRefreshError();
+      this.firstPageError = toCopyFrom.getFirstPageError();
+    }
+
+    public Builder firstPageLoading(boolean loadingFirstPage) {
+      this.loadingFirstPage = loadingFirstPage;
+      return this;
+    }
+
+    public Builder firstPageError(Throwable error) {
+      this.firstPageError = error;
+      return this;
+    }
+
+    public Builder data(List<FeedItem> data) {
       this.data = data;
+      return this;
+    }
+
+    public Builder nextPageLoading(boolean loadingNextPage) {
       this.loadingNextPage = loadingNextPage;
-      this.nextPageError = nextPageError;
-      this.loadingPullToRefresh = loadingPullToRefresh;
-      this.pullToRefreshError = pullToRefreshError;
+      return this;
     }
 
-    public List<FeedItem> getData() {
-      return data;
+    public Builder nextPageError(Throwable error) {
+      this.nextPageError = error;
+      return this;
     }
 
-    public boolean isLoadingNextPage() {
-      return loadingNextPage;
+    public Builder pullToRefreshLoading(boolean loading) {
+      this.loadingPullToRefresh = loading;
+      return this;
     }
 
-    public Throwable getNextPageError() {
-      return nextPageError;
+    public Builder pullToRefreshError(Throwable error) {
+      this.pullToRefreshError = error;
+      return this;
     }
 
-    public boolean isLoadingPullToRefresh() {
-      return loadingPullToRefresh;
-    }
-
-    public Throwable getPullToRefreshError() {
-      return pullToRefreshError;
-    }
-
-    @Override public String toString() {
-      return "DataState{" +
-          "data=" + data +
-          ", loadingNextPage=" + loadingNextPage +
-          ", nextPageError=" + nextPageError +
-          ", loadingPullToRefresh=" + loadingPullToRefresh +
-          ", pullToRefreshError=" + pullToRefreshError +
-          '}';
+    public HomeViewState build() {
+      return new HomeViewState(data, loadingFirstPage, firstPageError, loadingNextPage,
+          nextPageError, loadingPullToRefresh, pullToRefreshError);
     }
   }
 }
+

@@ -59,7 +59,7 @@ public class DependencyInjection {
   }
 
   HomeFeedLoader newHomeFeedLoader() {
-    return new HomeFeedLoader(newGroupedPagedFeedLoader());
+    return new HomeFeedLoader(newGroupedPagedFeedLoader(), backendApiDecorator);
   }
 
   public SearchPresenter newSearchPresenter() {

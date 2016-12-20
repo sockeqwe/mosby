@@ -18,6 +18,7 @@
 package com.hannesdorfmann.mosby3.sample.mvi.view.home;
 
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model.FeedItem;
+import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model.Product;
 import java.util.List;
 
 /**
@@ -140,6 +141,63 @@ public interface PartialHomeViewState {
     }
 
     public List<FeedItem> getData() {
+      return data;
+    }
+  }
+
+  /**
+   * Loading all Products of a given category has been started
+   */
+  public final class ProductsOfCategoriesLoading implements PartialHomeViewState {
+    private final String categoryName;
+
+    public ProductsOfCategoriesLoading(String categoryName) {
+      this.categoryName = categoryName;
+    }
+
+    public String getCategoryName() {
+      return categoryName;
+    }
+  }
+
+  /**
+   * An error while loading all products has been occurred
+   */
+  public final class ProductsOfCategoriesLoadingError implements PartialHomeViewState {
+    private final String categoryName;
+    private final Throwable error;
+
+    public ProductsOfCategoriesLoadingError(String categoryName, Throwable error) {
+      this.categoryName = categoryName;
+      this.error = error;
+    }
+
+    public String getCategoryName() {
+      return categoryName;
+    }
+
+    public Throwable getError() {
+      return error;
+    }
+  }
+
+  /**
+   * Products of a given Category has been loaded
+   */
+  public final class ProductsOfCategoriesLoaded implements PartialHomeViewState {
+    private final List<Product> data;
+    private final String categoryName;
+
+    public ProductsOfCategoriesLoaded(String categoryName, List<Product> data) {
+      this.data = data;
+      this.categoryName = categoryName;
+    }
+
+    public String getCategoryName() {
+      return categoryName;
+    }
+
+    public List<Product> getData() {
       return data;
     }
   }

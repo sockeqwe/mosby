@@ -17,9 +17,12 @@
 
 package com.hannesdorfmann.mosby3.sample.mvi.view.home;
 
+import android.support.v4.util.Pair;
 import com.hannesdorfmann.mosby3.mvi.MviBasePresenter;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.feed.HomeFeedLoader;
+import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model.AdditionalItemsLoadable;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model.FeedItem;
+import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model.SectionHeader;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -62,8 +65,20 @@ public class HomePresenter extends MviBasePresenter<HomeView, HomeViewState> {
             .onErrorReturn(PartialHomeViewState.PullToRefeshLoadingError::new)
             .subscribeOn(Schedulers.io());
 
+    Observable<PartialHomeViewState> loadMoreFromGroup =
+        intent(view.loadAllProductsFromCategoryIntent()).flatMap(
+            categoryName -> feedLoader.loadProductsOfGroup(categoryName)
+                .subscribeOn(Schedulers.io())
+                .map(
+                    products -> (PartialHomeViewState) new PartialHomeViewState.ProductsOfCategoriesLoaded(
+                        categoryName, products))
+                .startWith(new PartialHomeViewState.ProductsOfCategoriesLoading(categoryName))
+                .onErrorReturn(
+                    error -> new PartialHomeViewState.ProductsOfCategoriesLoadingError(categoryName,
+                        error)));
+
     Observable<PartialHomeViewState> partialViewStateFromIntentsObservable =
-        Observable.merge(loadFirstPage, nextPage, pullToRefreshObservable)
+        Observable.merge(loadFirstPage, nextPage, pullToRefreshObservable, loadMoreFromGroup)
             .observeOn(AndroidSchedulers.mainThread());
 
     HomeViewState initialViewState = new HomeViewState.Builder().firstPageLoading(true).build();
@@ -74,6 +89,8 @@ public class HomePresenter extends MviBasePresenter<HomeView, HomeViewState> {
 
   private HomeViewState viewStateReducer(HomeViewState previousState,
       PartialHomeViewState newState) {
+
+    // Timber.d("viewStateReducer newState: %s", newState);
 
     if (newState instanceof PartialHomeViewState.FirstPageLoading) {
       return previousState.builder().firstPageLoading(true).firstPageError(null).build();
@@ -108,6 +125,7 @@ public class HomePresenter extends MviBasePresenter<HomeView, HomeViewState> {
     if (newState instanceof PartialHomeViewState.NextPageLoaded) {
       List<FeedItem> data = new ArrayList<>(previousState.getData().size()
           + ((PartialHomeViewState.NextPageLoaded) newState).getData().size());
+      data.addAll(previousState.getData());
       data.addAll(((PartialHomeViewState.NextPageLoaded) newState).getData());
 
       return previousState.builder().nextPageLoading(false).nextPageError(null).data(data).build();
@@ -127,8 +145,8 @@ public class HomePresenter extends MviBasePresenter<HomeView, HomeViewState> {
     if (newState instanceof PartialHomeViewState.PullToRefreshLoaded) {
       List<FeedItem> data = new ArrayList<>(previousState.getData().size()
           + ((PartialHomeViewState.PullToRefreshLoaded) newState).getData().size());
-      data.addAll(0, ((PartialHomeViewState.PullToRefreshLoaded) newState).getData());
-
+      data.addAll(((PartialHomeViewState.PullToRefreshLoaded) newState).getData());
+      data.addAll(previousState.getData());
       return previousState.builder()
           .pullToRefreshLoading(true)
           .pullToRefreshError(null)
@@ -136,6 +154,98 @@ public class HomePresenter extends MviBasePresenter<HomeView, HomeViewState> {
           .build();
     }
 
+    if (newState instanceof PartialHomeViewState.ProductsOfCategoriesLoading) {
+      Pair<Integer, AdditionalItemsLoadable> found = findAdditionalItems(
+          ((PartialHomeViewState.ProductsOfCategoriesLoading) newState).getCategoryName(),
+          previousState.getData());
+      AdditionalItemsLoadable foundItem = found.second;
+      AdditionalItemsLoadable toInsert =
+          new AdditionalItemsLoadable(foundItem.getMoreItemsAvailableCount(),
+              foundItem.getCategoryName(), true, null);
+
+      List<FeedItem> data = new ArrayList<>(previousState.getData().size());
+      data.addAll(previousState.getData());
+      data.set(found.first, toInsert);
+
+      return previousState.builder().data(data).build();
+    }
+
+    if (newState instanceof PartialHomeViewState.ProductsOfCategoriesLoadingError) {
+      Pair<Integer, AdditionalItemsLoadable> found = findAdditionalItems(
+          ((PartialHomeViewState.ProductsOfCategoriesLoadingError) newState).getCategoryName(),
+          previousState.getData());
+
+      AdditionalItemsLoadable foundItem = found.second;
+      AdditionalItemsLoadable toInsert =
+          new AdditionalItemsLoadable(foundItem.getMoreItemsAvailableCount(),
+              foundItem.getCategoryName(), false,
+              ((PartialHomeViewState.ProductsOfCategoriesLoadingError) newState).getError());
+
+      List<FeedItem> data = new ArrayList<>(previousState.getData().size());
+      data.addAll(previousState.getData());
+      data.set(found.first, toInsert);
+
+      return previousState.builder().data(data).build();
+    }
+
+    if (newState instanceof PartialHomeViewState.ProductsOfCategoriesLoaded) {
+      Pair<Integer, AdditionalItemsLoadable> found = findAdditionalItems(
+          ((PartialHomeViewState.ProductsOfCategoriesLoaded) newState).getCategoryName(),
+          previousState.getData());
+
+      List<FeedItem> data = new ArrayList<>(previousState.getData().size()
+          + ((PartialHomeViewState.ProductsOfCategoriesLoaded) newState).getData().size());
+      data.addAll(previousState.getData());
+
+      // Search for the section header
+      int sectionHeaderIndex = -1;
+      for (int i = found.first; i >= 0; i--) {
+        FeedItem item = previousState.getData().get(i);
+        if (item instanceof SectionHeader && ((SectionHeader) item).getName()
+            .equals(
+                ((PartialHomeViewState.ProductsOfCategoriesLoaded) newState).getCategoryName())) {
+          sectionHeaderIndex = i;
+          break;
+        }
+
+        // Remove all items of that category. The new list of products will be added afterwards
+        data.remove(i);
+      }
+
+      if (sectionHeaderIndex < 0) {
+        throw new RuntimeException("Couldn't find the section header for category "
+            + ((PartialHomeViewState.ProductsOfCategoriesLoaded) newState).getCategoryName());
+      }
+
+      data.addAll(sectionHeaderIndex + 1,
+          ((PartialHomeViewState.ProductsOfCategoriesLoaded) newState).getData());
+
+      return previousState.builder().data(data).build();
+    }
+
     throw new IllegalStateException("Don't know how to reduce the partial state " + newState);
+  }
+
+  /**
+   * find the {@link AdditionalItemsLoadable} for the given category name
+   *
+   * @param categoryName The name of the category
+   * @param items the list of feeditems
+   */
+  private Pair<Integer, AdditionalItemsLoadable> findAdditionalItems(String categoryName,
+      List<FeedItem> items) {
+    int size = items.size();
+    for (int i = 0; i < size; i++) {
+      FeedItem item = items.get(i);
+      if (item instanceof AdditionalItemsLoadable
+          && ((AdditionalItemsLoadable) item).getCategoryName().equals(categoryName)) {
+        return Pair.create(i, (AdditionalItemsLoadable) item);
+      }
+    }
+
+    throw new RuntimeException("No "
+        + AdditionalItemsLoadable.class.getSimpleName()
+        + " has been fround for category = "
+        + categoryName);
   }
 }

@@ -20,7 +20,12 @@
     android:id="@+id/sectionName"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="32dp"
-    android:paddingBottom="8dp">
+    android:paddingTop="42dp"
+    android:paddingBottom="4dp"
+    android:paddingLeft="@dimen/grid_spacing"
+    android:paddingRight="@dimen/grid_spacing"
+    android:textSize="22sp"
+    android:textAllCaps="true">
+
 
 </TextView>

@@ -66,7 +66,7 @@ public class GroupedPagedFeedLoader {
             }
             items.add(
                 new AdditionalItemsLoadable(productsInGroup.size() - collapsedGroupProductItemCount,
-                    groupName));
+                    groupName, false, null));
           } else {
             items.addAll(productsInGroup);
           }

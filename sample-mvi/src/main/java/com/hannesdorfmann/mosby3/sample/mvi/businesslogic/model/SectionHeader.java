@@ -48,4 +48,10 @@ public class SectionHeader implements FeedItem {
   @Override public int hashCode() {
     return name.hashCode();
   }
+
+  @Override public String toString() {
+    return "SectionHeader{" +
+        "name='" + name + '\'' +
+        '}';
+  }
 }

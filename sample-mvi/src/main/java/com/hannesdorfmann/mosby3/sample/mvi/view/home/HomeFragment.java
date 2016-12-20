@@ -125,6 +125,10 @@ public class HomeFragment extends MviFragment<HomeView, HomePresenter> implement
         .doOnNext(ignored -> Timber.d("pullToRefresh Intent"));
   }
 
+  @Override public Observable<String> loadAllProductsFromCategoryIntent() {
+    return adapter.loadMoreItemsOfCategoryObservable();
+  }
+
   @Override public void render(HomeViewState viewState) {
     Timber.d("render %s", viewState);
     if (!viewState.isLoadingFirstPage()

@@ -18,6 +18,7 @@
 package com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 /**
  * This is a indicator that also some more items are available that could be loaded
@@ -27,18 +28,35 @@ import android.support.annotation.NonNull;
 public class AdditionalItemsLoadable implements FeedItem {
   private final int moreItemsAvailableCount;
   private final String groupName;
+  private final boolean loading;
+  private final Throwable loadingError;
 
-  public AdditionalItemsLoadable(int moreItemsAvailableCount, @NonNull String groupName) {
+  public AdditionalItemsLoadable(int moreItemsAvailableCount, @NonNull String groupName,
+      boolean loading, @Nullable Throwable loadingError) {
     this.moreItemsAvailableCount = moreItemsAvailableCount;
     this.groupName = groupName;
+    this.loading = loading;
+    this.loadingError = loadingError;
   }
 
   public int getMoreItemsCount() {
     return moreItemsAvailableCount;
   }
 
-  @NonNull public String getGroupName() {
+  @NonNull public String getCategoryName() {
     return groupName;
+  }
+
+  public int getMoreItemsAvailableCount() {
+    return moreItemsAvailableCount;
+  }
+
+  public boolean isLoading() {
+    return loading;
+  }
+
+  public Throwable getLoadingError() {
+    return loadingError;
   }
 
   @Override public boolean equals(Object o) {
@@ -48,12 +66,26 @@ public class AdditionalItemsLoadable implements FeedItem {
     AdditionalItemsLoadable that = (AdditionalItemsLoadable) o;
 
     if (moreItemsAvailableCount != that.moreItemsAvailableCount) return false;
-    return groupName.equals(that.groupName);
+    if (loading != that.loading) return false;
+    if (!groupName.equals(that.groupName)) return false;
+    return loadingError != null ? loadingError.equals(that.loadingError)
+        : that.loadingError == null;
   }
 
   @Override public int hashCode() {
     int result = moreItemsAvailableCount;
     result = 31 * result + groupName.hashCode();
+    result = 31 * result + (loading ? 1 : 0);
+    result = 31 * result + (loadingError != null ? loadingError.hashCode() : 0);
     return result;
+  }
+
+  @Override public String toString() {
+    return "AdditionalItemsLoadable{" +
+        "moreItemsAvailableCount=" + moreItemsAvailableCount +
+        ", groupName='" + groupName + '\'' +
+        ", loading=" + loading +
+        ", loadingError=" + loadingError +
+        '}';
   }
 }

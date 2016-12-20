@@ -86,4 +86,15 @@ public final class Product implements FeedItem {
     result = 31 * result + (int) (temp ^ (temp >>> 32));
     return result;
   }
+
+  @Override public String toString() {
+    return "Product{" +
+        "id=" + id +
+        ", image='" + image + '\'' +
+        ", name='" + name + '\'' +
+        ", category='" + category + '\'' +
+        ", description='" + description + '\'' +
+        ", price=" + price +
+        '}';
+  }
 }

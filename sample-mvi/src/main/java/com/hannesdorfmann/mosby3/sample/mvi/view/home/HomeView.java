@@ -18,19 +18,46 @@
 package com.hannesdorfmann.mosby3.sample.mvi.view.home;
 
 import com.hannesdorfmann.mosby3.mvp.MvpView;
+import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model.FeedItem;
 import io.reactivex.Observable;
 
 /**
+ * The HomeView responsible to display a list of {@link FeedItem}
+ *
  * @author Hannes Dorfmann
  */
 public interface HomeView extends MvpView {
 
+  /**
+   * The intent to load the first page
+   *
+   * @return The emitted item boolean can be ignored because it is always true
+   */
   public Observable<Boolean> loadFirstPageIntent();
 
+  /**
+   * The intent to load the next page
+   *
+   * @return The emitted item boolean can be ignored because it is always true
+   */
   public Observable<Boolean> loadNextPageIntent();
 
+  /**
+   * The intent to react on pull-to-refresh
+   *
+   * @return The emitted item boolean can be ignored because it is always true
+   */
   public Observable<Boolean> pullToRefreshIntent();
 
-  public void render(HomeViewState viewState);
+  /**
+   * The intent to load more items from a given group
+   *
+   * @return Observable with the name of the group
+   */
+  public Observable<String> loadAllProductsFromCategoryIntent();
 
+  /**
+   * Renders the viewState
+   */
+  public void render(HomeViewState viewState);
 }

@@ -16,7 +16,8 @@
   ~
   -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -27,22 +28,41 @@
       android:id="@+id/moreItemsCount"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:layout_centerInParent="true"
       android:layout_gravity="bottom|center_horizontal"
       android:gravity="bottom"
-      android:layout_centerInParent="true"
       android:textColor="@color/loadMoreItems"
       android:textSize="60sp"
       />
 
   <Button
+      android:id="@+id/loadMoreButtton"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:layout_below="@id/moreItemsCount"
+      android:layout_centerHorizontal="true"
       android:text="@string/click_to_load_more"
       android:textColor="@color/loadMoreItems"
       style="@style/Base.Widget.AppCompat.Button.Borderless"
-      android:layout_centerHorizontal="true"
-      android:layout_below="@id/moreItemsCount"
       />
 
+  <ProgressBar
+      android:id="@+id/loadingView"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerInParent="true"
+      android:indeterminate="true"
+      android:visibility="gone"
+      />
 
+  <Button
+      android:id="@+id/errorRetryButton"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerInParent="true"
+      android:text="@string/click_to_load_more_error"
+      android:textColor="@color/loadMoreItems"
+      style="@style/Base.Widget.AppCompat.Button.Borderless"
+      android:visibility="gone"
+      />
 </RelativeLayout>

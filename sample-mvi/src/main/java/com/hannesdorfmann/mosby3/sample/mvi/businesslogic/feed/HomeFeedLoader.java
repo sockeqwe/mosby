@@ -17,7 +17,9 @@
 
 package com.hannesdorfmann.mosby3.sample.mvi.businesslogic.feed;
 
+import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.http.ProductBackendApiDecorator;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model.FeedItem;
+import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model.Product;
 import io.reactivex.Observable;
 import java.util.List;
 
@@ -28,9 +30,12 @@ import java.util.List;
  */
 public class HomeFeedLoader {
   private final GroupedPagedFeedLoader groupedLoader;
+  private final ProductBackendApiDecorator backendApi;
 
-  public HomeFeedLoader(GroupedPagedFeedLoader groupedLoader) {
+  public HomeFeedLoader(GroupedPagedFeedLoader groupedLoader,
+      ProductBackendApiDecorator backendApi) {
     this.groupedLoader = groupedLoader;
+    this.backendApi = backendApi;
   }
 
   /**
@@ -40,11 +45,26 @@ public class HomeFeedLoader {
     return groupedLoader.getNewestPage();
   }
 
+  /**
+   * Loads the first page
+   */
   public Observable<List<FeedItem>> loadFirstPage() {
     return groupedLoader.getGroupedFirstPage();
   }
 
+  /**
+   * loads the next page (pagination)
+   */
   public Observable<List<FeedItem>> loadNextPage() {
     return groupedLoader.getGroupedNextPage();
+  }
+
+  /**
+   * Loads all items of  a given category
+   *
+   * @param categoryName the category name
+   */
+  public Observable<List<Product>> loadProductsOfGroup(String categoryName) {
+    return backendApi.getAllProductsOfCategory(categoryName);
   }
 }

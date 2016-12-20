@@ -81,7 +81,7 @@ public final class HomeViewState {
   }
 
   @Override public String toString() {
-    return "HomeViewState{" +
+    return "HomeViewState{" + 
         "\nloadingFirstPage=" + loadingFirstPage +
         ",\n firstPageError=" + firstPageError +
         ",\n data=" + data +

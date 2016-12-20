@@ -17,7 +17,6 @@
 
 package com.hannesdorfmann.mosby3.sample.mvi.view.home;
 
-import android.support.annotation.Nullable;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -30,13 +29,16 @@ import com.hannesdorfmann.mosby3.sample.mvi.view.ui.viewholder.LoadingViewHolder
 import com.hannesdorfmann.mosby3.sample.mvi.view.ui.viewholder.MoreItemsViewHolder;
 import com.hannesdorfmann.mosby3.sample.mvi.view.ui.viewholder.ProductViewHolder;
 import com.hannesdorfmann.mosby3.sample.mvi.view.ui.viewholder.SectionHederViewHolder;
+import io.reactivex.Observable;
+import io.reactivex.subjects.PublishSubject;
 import java.util.List;
 
 /**
  * @author Hannes Dorfmann
  */
 
-public class HomeAdapter extends RecyclerView.Adapter {
+public class HomeAdapter extends RecyclerView.Adapter
+    implements MoreItemsViewHolder.LoadItemsClickListener {
 
   static final int VIEW_TYPE_PRODUCT = 0;
   static final int VIEW_TYPE_LOADING_MORE_NEXT_PAGE = 1;
@@ -46,6 +48,8 @@ public class HomeAdapter extends RecyclerView.Adapter {
   private boolean isLoadingNextPage = false;
   private List<FeedItem> items;
   private final LayoutInflater layoutInflater;
+
+  private PublishSubject<String> loadMoreItemsOfCategoryObservable = PublishSubject.create();
 
   public HomeAdapter(LayoutInflater layoutInflater) {
     this.layoutInflater = layoutInflater;
@@ -98,8 +102,8 @@ public class HomeAdapter extends RecyclerView.Adapter {
 
           if (oldItem instanceof AdditionalItemsLoadable
               && newItem instanceof AdditionalItemsLoadable
-              && ((AdditionalItemsLoadable) oldItem).getGroupName()
-              .equals(((AdditionalItemsLoadable) newItem).getGroupName())) {
+              && ((AdditionalItemsLoadable) oldItem).getCategoryName()
+              .equals(((AdditionalItemsLoadable) newItem).getCategoryName())) {
             return true;
           }
 
@@ -110,13 +114,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
           Object oldItem = oldItems.get(oldItemPosition);
           Object newItem = newItems.get(newItemPosition);
 
-            return oldItem.equals(newItem);
-        }
-
-        @Nullable @Override
-        public Object getChangePayload(int oldItemPosition, int newItemPosition) {
-          // TODO implement for loading
-          return super.getChangePayload(oldItemPosition, newItemPosition);
+          return oldItem.equals(newItem);
         }
       }, true).dispatchUpdatesTo(this);
     }
@@ -151,7 +149,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
       case VIEW_TYPE_LOADING_MORE_NEXT_PAGE:
         return LoadingViewHolder.create(layoutInflater);
       case VIEW_TYPE_MORE_ITEMS_AVAILABLE:
-        return MoreItemsViewHolder.create(layoutInflater);
+        return MoreItemsViewHolder.create(layoutInflater, this);
       case VIEW_TYPE_SECTION_HEADER:
         return SectionHederViewHolder.create(layoutInflater);
     }
@@ -179,5 +177,13 @@ public class HomeAdapter extends RecyclerView.Adapter {
 
   @Override public int getItemCount() {
     return items == null ? 0 : (items.size() + (isLoadingNextPage ? 1 : 0));
+  }
+
+  @Override public void loadItemsForCategory(String category) {
+    loadMoreItemsOfCategoryObservable.onNext(category);
+  }
+
+  public Observable<String> loadMoreItemsOfCategoryObservable() {
+    return loadMoreItemsOfCategoryObservable;
   }
 }

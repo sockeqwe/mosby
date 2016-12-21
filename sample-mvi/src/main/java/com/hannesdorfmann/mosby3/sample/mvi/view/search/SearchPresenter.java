@@ -56,6 +56,6 @@ public class SearchPresenter extends MviBasePresenter<SearchView, SearchViewStat
           .onErrorReturn(error -> new SearchViewState.Error(searchString, error));
     }).observeOn(AndroidSchedulers.mainThread());
 
-    subscribeViewState(initialViewState, search, view::render);
+    subscribeViewState(search, view::render);
   }
 }

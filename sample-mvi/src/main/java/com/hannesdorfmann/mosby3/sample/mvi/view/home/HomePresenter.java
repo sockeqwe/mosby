@@ -37,6 +37,7 @@ public class HomePresenter extends MviBasePresenter<HomeView, HomeViewState> {
   private final HomeFeedLoader feedLoader;
 
   public HomePresenter(HomeFeedLoader feedLoader) {
+    super(new HomeViewState.Builder().firstPageLoading(true).build());
     this.feedLoader = feedLoader;
   }
 
@@ -81,10 +82,9 @@ public class HomePresenter extends MviBasePresenter<HomeView, HomeViewState> {
         Observable.merge(loadFirstPage, nextPage, pullToRefreshObservable, loadMoreFromGroup)
             .observeOn(AndroidSchedulers.mainThread());
 
-    HomeViewState initialViewState = new HomeViewState.Builder().firstPageLoading(true).build();
-    subscribeViewState(initialViewState,
-        partialViewStateFromIntentsObservable.scan(initialViewState, this::viewStateReducer),
-        view::render);
+    subscribeViewState(
+        partialViewStateFromIntentsObservable.scan(getViewStateObservable().blockingFirst(),
+            this::viewStateReducer), view::render);
   }
 
   private HomeViewState viewStateReducer(HomeViewState previousState,

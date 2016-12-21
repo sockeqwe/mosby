@@ -58,7 +58,7 @@ ext {
   parcelablepleaseVersion = '1.0.1'
   annotatedadapterVersion = '1.1.1.1-SNAPSHOT'
   rxjavaVersion = '1.0.16'
-  rxjava2Version = '2.0.1'
+  rxjava2Version = '2.0.3'
   rxandroidVersion = '1.0.1'
   dagger2Version = '2.0'
 

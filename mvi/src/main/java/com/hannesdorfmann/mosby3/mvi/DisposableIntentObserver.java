@@ -21,10 +21,11 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.subjects.PublishSubject;
 
 /**
- * Just a simple {@link DisposableObserver} that is used to cancel subscritptions from viewState's
+ * Just a simple {@link DisposableObserver} that is used to cancel subscriptions from view's
  * intent to the internal relays
  *
  * @author Hannes Dorfmann
+ * @since 3.0
  */
 class DisposableIntentObserver<I> extends DisposableObserver<I> {
 

@@ -31,10 +31,10 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
    * latest
    * state will be reemitted.
    */
-  private BehaviorSubject<VS> viewRelay;
+  private final BehaviorSubject<VS> viewRelay;
 
   /**
-   * We only allow to cal {@link #subscribeViewState(Object, Observable, Consumer)} method once
+   * We only allow to cal {@link #subscribeViewState(Observable, Consumer)} method once
    */
   private boolean viewMethodCalled = false;
   /**
@@ -67,13 +67,28 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
   private Disposable viewStateDisposable;
 
   /**
-   * Wrapper class to always access the latest viewstate value
+   * Creates a new Presenter without an initial view state
    */
-  private final ViewState<VS> currentViewState = new ViewState<VS>() {
-    @Override VS get() {
-      return viewRelay.getValue();
+  public MviBasePresenter() {
+    viewRelay = BehaviorSubject.create();
+  }
+
+  /**
+   * Creaes a new Presenter with the initial view state
+   *
+   * @param initialViewState initial view state (must be not null)
+   */
+  public MviBasePresenter(@NonNull VS initialViewState) {
+    if (initialViewState == null) {
+      throw new NullPointerException("Initia ViewState == null");
     }
-  };
+
+    viewRelay = BehaviorSubject.createDefault(initialViewState);
+  }
+
+  @Override public Observable<VS> getViewStateObservable() {
+    return viewRelay;
+  }
 
   /**
    * This method subscribes the Observable emiting {@link ViewState} over time to the passed
@@ -81,29 +96,21 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
    * <b>Do only invoke this method once!</b>
    * <p>
    * Internally Mosby will hold some relays to ensure that no items emitted from the ViewState
-   * Observable will be lost while viewState is not attached nor that the subscriptions to viewState
+   * Observable will be lost while viewState is not attached nor that the subscriptions to
+   * viewState
    * intents
    * will cause memory leaks while viewState detached.
    * </p>
    *
-   * @param initialViewState The initial ViewState. This item will emited for the first time
    * @param viewStateObservable The Observable emiting ViewState changes over time. This observable
    * must be created with {@link #intent(Observable)} functionl
    * @param consumer The Consumer / subscriber to the viewState Observable
    */
-  @MainThread protected void subscribeViewState(@NonNull VS initialViewState,
-      Observable<VS> viewStateObservable, Consumer<VS> consumer) {
+  @MainThread protected void subscribeViewState(Observable<VS> viewStateObservable,
+      Consumer<VS> consumer) {
 
     if (viewMethodCalled) {
       throw new IllegalStateException("View Method is only allowed to be called once");
-    }
-
-    if (initialViewState == null) {
-      throw new NullPointerException("initialViewState == null");
-    }
-
-    if (viewRelay == null) {
-      viewRelay = BehaviorSubject.createDefault(initialViewState);
     }
 
     if (viewRelayConsumerDisposable != null) {
@@ -134,10 +141,6 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
         // ViewState observable never completes so ignore any complete event
       }
     });
-  }
-
-  @Override public Observable<VS> getViewStateObservable() {
-    return viewRelay;
   }
 
   /**

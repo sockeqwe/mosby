@@ -171,7 +171,7 @@ public class HomeAdapter extends RecyclerView.Adapter
     } else if (holder instanceof MoreItemsViewHolder) {
       ((MoreItemsViewHolder) holder).bind((AdditionalItemsLoadable) item);
     } else {
-      throw new IllegalArgumentException("couldn't bind  ViewHolder " + holder);
+      throw new IllegalArgumentException("couldn't accept  ViewHolder " + holder);
     }
   }
 

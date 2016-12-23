@@ -34,10 +34,9 @@ public class SearchPresenter extends MviBasePresenter<SearchView, SearchViewStat
     this.searchEngine = searchEngine;
   }
 
-  @Override public void attachView(SearchView view) {
-    SearchViewState initialViewState = new SearchViewState.SearchNotStartedYet();
+  @Override protected void bindIntents() {
 
-    Observable<SearchViewState> search = intent(view.searchIntent()).switchMap(searchString -> {
+    Observable<SearchViewState> search = intent(SearchView::searchIntent).switchMap(searchString -> {
       // Empty String, so no search
       if (searchString.isEmpty()) {
         return Observable.just(new SearchViewState.SearchNotStartedYet());
@@ -56,6 +55,6 @@ public class SearchPresenter extends MviBasePresenter<SearchView, SearchViewStat
           .onErrorReturn(error -> new SearchViewState.Error(searchString, error));
     }).observeOn(AndroidSchedulers.mainThread());
 
-    subscribeViewState(search, view::render);
+    subscribeViewState(search, SearchView::render);
   }
 }

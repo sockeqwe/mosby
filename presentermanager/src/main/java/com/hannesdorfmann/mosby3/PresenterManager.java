@@ -31,11 +31,12 @@ import java.util.UUID;
  */
 final class PresenterManager<V extends MvpView, P extends MvpPresenter<V>> {
 
-  private static final String FRAGMENT_TAG = "com.hannesdorfmann.mosby3.mvp.PresenterManagerFragment";
+  private static final String FRAGMENT_TAG =
+      "com.hannesdorfmann.mosby3.mvp.PresenterManagerFragment";
   private static final boolean DEBUG = false;
   private static final String DEBUG_TAG = "PresenterManager";
   /**
-   * Never use this directly. Always use {@link #getFragment(Context)}
+   * Never use this directly. Always use {@link #getFragmentOrCreate(Context)}
    */
   private PresenterManagerFragment internalFragment = null;
 
@@ -50,10 +51,13 @@ final class PresenterManager<V extends MvpView, P extends MvpPresenter<V>> {
    * @return the view id
    */
   @UiThread @NonNull String nextViewId(Context context) {
-    return getFragment(context).nextViewId();
+    return getFragmentOrCreate(context).nextViewId();
   }
 
-  private FragmentActivity getActivity(Context context) {
+  @NonNull private FragmentActivity getActivity(@NonNull Context context) {
+    if (context == null) {
+      throw new NullPointerException("context == null");
+    }
     if (context instanceof FragmentActivity) {
       return (FragmentActivity) context;
     }
@@ -68,17 +72,12 @@ final class PresenterManager<V extends MvpView, P extends MvpPresenter<V>> {
         "Could not find the surrounding FragmentActivity. Does your activity extends from android.support.v4.app.FragmentActivity like android.support.v7.app.AppCompatActivity ?");
   }
 
-  /**
-   * Get the internalFragment or creates a new one
-   *
-   * @param context The context
-   * @return The internalFragment
-   */
-  @UiThread @NonNull private synchronized PresenterManagerFragment getFragment(Context context) {
+  @Nullable @UiThread
+  private PresenterManagerFragment getFragmentIfNotClearedYet(@NonNull Context context) {
 
     if (internalFragment != null) {
-      if (DEBUG){
-        Log.d(DEBUG_TAG, "internalFragment precached "+internalFragment);
+      if (DEBUG) {
+        Log.d(DEBUG_TAG, "internalFragment precached " + internalFragment);
       }
       return internalFragment;
     }
@@ -92,21 +91,38 @@ final class PresenterManager<V extends MvpView, P extends MvpPresenter<V>> {
     // Already existing Fragment found
     if (fragment != null) {
       this.internalFragment = fragment;
-      if (DEBUG){
-        Log.d(DEBUG_TAG, "internalFragment found in FragmentManager "+internalFragment);
+      if (DEBUG) {
+        Log.d(DEBUG_TAG, "internalFragment found in FragmentManager " + internalFragment);
       }
+      return fragment;
+    }
+
+    return null;
+  }
+
+  /**
+   * Get the internalFragment or creates a new one
+   *
+   * @param context The context
+   * @return The internalFragment
+   */
+  @UiThread @NonNull private PresenterManagerFragment getFragmentOrCreate(Context context) {
+
+    PresenterManagerFragment fragment = getFragmentIfNotClearedYet(context);
+    if (fragment != null) {
       return fragment;
     }
 
     // No internalFragment found, so create a new one
     this.internalFragment = new PresenterManagerFragment();
-    activity.getSupportFragmentManager()
+    getActivity(context).getSupportFragmentManager()
         .beginTransaction()
         .add(internalFragment, FRAGMENT_TAG)
         .commitNow();
 
-    if (DEBUG){
-      Log.d(DEBUG_TAG, "internalFragment new created and put to FragmentManager "+internalFragment);
+    if (DEBUG) {
+      Log.d(DEBUG_TAG,
+          "internalFragment new created and put to FragmentManager " + internalFragment);
     }
     return this.internalFragment;
   }
@@ -120,7 +136,7 @@ final class PresenterManager<V extends MvpView, P extends MvpPresenter<V>> {
    */
   @UiThread P getPresenter(String viewId, @NonNull Context context) {
 
-    PresenterManagerFragment fragment = getFragment(context);
+    PresenterManagerFragment fragment = getFragmentOrCreate(context);
 
     CacheEntry<V, P> entry = fragment.get(viewId);
     return entry == null ? null : entry.presenter;
@@ -135,7 +151,7 @@ final class PresenterManager<V extends MvpView, P extends MvpPresenter<V>> {
    */
   @UiThread public <T> T getViewState(String viewId, @NonNull Context context) {
 
-    PresenterManagerFragment fragment = getFragment(context);
+    PresenterManagerFragment fragment = getFragmentOrCreate(context);
 
     CacheEntry<V, P> entry = fragment.get(viewId);
     return entry == null ? null : (T) entry.viewState;
@@ -156,8 +172,7 @@ final class PresenterManager<V extends MvpView, P extends MvpPresenter<V>> {
    * @return true, if destroyed permanently, otherwise false
    */
   public boolean willViewBeDestroyedPermanently(Context context) {
-    PresenterManagerFragment fragment = getFragment(context);
-    return fragment.destroyed;
+    return !getActivity(context).isChangingConfigurations();
   }
 
   /**
@@ -168,8 +183,7 @@ final class PresenterManager<V extends MvpView, P extends MvpPresenter<V>> {
    * @return true, if detached because of an orientation change. Otherwise, false
    */
   public boolean willViewBeDetachedBecauseOrientationChange(Context context) {
-    PresenterManagerFragment fragment = getFragment(context);
-    return fragment.stopped;
+    return getActivity(context).isChangingConfigurations();
   }
 
   /**
@@ -179,8 +193,12 @@ final class PresenterManager<V extends MvpView, P extends MvpPresenter<V>> {
    * @param context The context
    */
   public void removePresenterAndViewState(String viewId, Context context) {
-    PresenterManagerFragment fragment = getFragment(context);
-    fragment.remove(viewId);
+    PresenterManagerFragment fragment = getFragmentIfNotClearedYet(context);
+    if (fragment != null) {
+      fragment.remove(viewId);
+    }
+    // Otherwise presenter cache has already been cleared by the fragment itself
+    // and therefore the presenter is already removed from internal cache
   }
 
   /**
@@ -191,7 +209,7 @@ final class PresenterManager<V extends MvpView, P extends MvpPresenter<V>> {
    * @param context the context
    */
   public void putPresenter(String viewId, P presenter, Context context) {
-    PresenterManagerFragment fragment = getFragment(context);
+    PresenterManagerFragment fragment = getFragmentOrCreate(context);
     CacheEntry<V, P> entry = fragment.get(viewId);
     if (entry == null) {
       entry = new CacheEntry<V, P>(presenter);
@@ -209,7 +227,7 @@ final class PresenterManager<V extends MvpView, P extends MvpPresenter<V>> {
    * @param context The context
    */
   public void putViewState(String viewId, Object viewState, Context context) {
-    PresenterManagerFragment fragment = getFragment(context);
+    PresenterManagerFragment fragment = getFragmentOrCreate(context);
     CacheEntry<V, P> entry = fragment.get(viewId);
     if (entry == null) {
       throw new IllegalStateException(
@@ -269,7 +287,9 @@ final class PresenterManager<V extends MvpView, P extends MvpPresenter<V>> {
      * @param key The key
      */
     void remove(String key) {
-      cache.remove(key);
+      if (cache != null) { // check if cache has already been cleared
+        cache.remove(key);
+      }
     }
 
     @Override public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -282,8 +302,8 @@ final class PresenterManager<V extends MvpView, P extends MvpPresenter<V>> {
       cache.clear();
       cache = null;
 
-      if (DEBUG){
-        Log.d(DEBUG_TAG, "internalFragment onDestroy() - clearing cache - "+this);
+      if (DEBUG) {
+        Log.d(DEBUG_TAG, "internalFragment onDestroy() - clearing cache - " + this);
       }
 
       super.onDestroy();
@@ -292,16 +312,16 @@ final class PresenterManager<V extends MvpView, P extends MvpPresenter<V>> {
     @Override public void onStart() {
       super.onStart();
       stopped = false;
-      if (DEBUG){
-        Log.d(DEBUG_TAG, "internalFragment onStart() "+this);
+      if (DEBUG) {
+        Log.d(DEBUG_TAG, "internalFragment onStart() " + this);
       }
     }
 
     @Override public void onStop() {
       super.onStop();
       stopped = true;
-      if (DEBUG){
-        Log.d(DEBUG_TAG, "internalFragment onStop() "+this);
+      if (DEBUG) {
+        Log.d(DEBUG_TAG, "internalFragment onStop() " + this);
       }
     }
 

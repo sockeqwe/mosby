@@ -17,8 +17,8 @@
 
 package com.hannesdorfmann.mosby3.sample.mvi;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -26,15 +26,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import com.hannesdorfmann.mosby3.sample.mvi.view.home.HomeFragment;
+import com.hannesdorfmann.mosby3.sample.mvi.view.search.SearchActivity;
 
-public class MainActiviy extends AppCompatActivity
-    implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActiviy extends AppCompatActivity {
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main_activiy);
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-    setSupportActionBar(toolbar);
+
+    toolbar.inflateMenu(R.menu.activity_main_toolbar);
+    toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+      @Override public boolean onMenuItemClick(MenuItem item) {
+        startActivity(new Intent(MainActiviy.this, SearchActivity.class));
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        return true;
+      }
+    });
 
     DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
     ActionBarDrawerToggle toggle =
@@ -42,9 +50,6 @@ public class MainActiviy extends AppCompatActivity
             R.string.navigation_drawer_close);
     drawer.setDrawerListener(toggle);
     toggle.syncState();
-
-    NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-    navigationView.setNavigationItemSelectedListener(this);
 
     if (savedInstanceState == null) {
       getSupportFragmentManager().beginTransaction()
@@ -60,29 +65,5 @@ public class MainActiviy extends AppCompatActivity
     } else {
       super.onBackPressed();
     }
-  }
-
-  @SuppressWarnings("StatementWithEmptyBody") @Override
-  public boolean onNavigationItemSelected(MenuItem item) {
-    // Handle navigation view item clicks here.
-    int id = item.getItemId();
-
-    if (id == R.id.nav_camera) {
-      // Handle the camera action
-    } else if (id == R.id.nav_gallery) {
-
-    } else if (id == R.id.nav_slideshow) {
-
-    } else if (id == R.id.nav_manage) {
-
-    } else if (id == R.id.nav_share) {
-
-    } else if (id == R.id.nav_send) {
-
-    }
-
-    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-    drawer.closeDrawer(GravityCompat.START);
-    return true;
   }
 }

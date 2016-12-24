@@ -90,11 +90,8 @@ public final class Product implements FeedItem {
   @Override public String toString() {
     return "Product{" +
         "id=" + id +
-        ", image='" + image + '\'' +
         ", name='" + name + '\'' +
         ", category='" + category + '\'' +
-        ", description='" + description + '\'' +
-        ", price=" + price +
         '}';
   }
 }

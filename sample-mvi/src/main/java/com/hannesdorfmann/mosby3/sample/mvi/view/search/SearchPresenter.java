@@ -21,6 +21,7 @@ import com.hannesdorfmann.mosby3.mvi.MviBasePresenter;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.searchengine.SearchEngine;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import timber.log.Timber;
 
 /**
  * MVI Presenter for {@link SearchView}
@@ -31,29 +32,31 @@ public class SearchPresenter extends MviBasePresenter<SearchView, SearchViewStat
   private final SearchEngine searchEngine;
 
   public SearchPresenter(SearchEngine searchEngine) {
+    super(new SearchViewState.SearchNotStartedYet());
     this.searchEngine = searchEngine;
   }
 
   @Override protected void bindIntents() {
+    Timber.d("bindIntents");
+    Observable<SearchViewState> search =
+        intent(SearchView::searchIntent).switchMap(searchString -> {
+          // Empty String, so no search
+          if (searchString.isEmpty()) {
+            return Observable.just(new SearchViewState.SearchNotStartedYet());
+          }
 
-    Observable<SearchViewState> search = intent(SearchView::searchIntent).switchMap(searchString -> {
-      // Empty String, so no search
-      if (searchString.isEmpty()) {
-        return Observable.just(new SearchViewState.SearchNotStartedYet());
-      }
-
-      // search fro a product
-      return searchEngine.searchFor(searchString)
-          .map(products -> {
-            if (products.isEmpty()) {
-              return new SearchViewState.EmptyResult(searchString);
-            } else {
-              return new SearchViewState.SearchResult(searchString, products);
-            }
-          })
-          .startWith(new SearchViewState.Loading())
-          .onErrorReturn(error -> new SearchViewState.Error(searchString, error));
-    }).observeOn(AndroidSchedulers.mainThread());
+          // search fro a product
+          return searchEngine.searchFor(searchString)
+              .map(products -> {
+                if (products.isEmpty()) {
+                  return new SearchViewState.EmptyResult(searchString);
+                } else {
+                  return new SearchViewState.SearchResult(searchString, products);
+                }
+              })
+              .startWith(new SearchViewState.Loading())
+              .onErrorReturn(error -> new SearchViewState.Error(searchString, error));
+        }).observeOn(AndroidSchedulers.mainThread());
 
     subscribeViewState(search, SearchView::render);
   }

@@ -9,7 +9,7 @@
       android:id="@+id/searchView"
       android:layout_width="match_parent"
       android:layout_height="?attr/actionBarSize"
-      android:background="?attr/colorPrimary"
+      android:background="@color/search_toolbar_background"
       android:iconifiedByDefault="false"
       android:queryHint="@string/search_query_hint"
       android:elevation="4dp"
@@ -25,7 +25,7 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/background_dark"
+        android:background="@color/window_background"
         >
 
       <ProgressBar

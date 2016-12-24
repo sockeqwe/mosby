@@ -24,6 +24,7 @@ import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.http.ProductBackendApi
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.http.ProductBackendApiDecorator;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.searchengine.SearchEngine;
 import com.hannesdorfmann.mosby3.sample.mvi.view.home.HomePresenter;
+import com.hannesdorfmann.mosby3.sample.mvi.view.menu.MainMenuPresenter;
 import com.hannesdorfmann.mosby3.sample.mvi.view.search.SearchPresenter;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -68,5 +69,9 @@ public class DependencyInjection {
 
   public HomePresenter newHomePresenter() {
     return new HomePresenter(newHomeFeedLoader());
+  }
+
+  public MainMenuPresenter newMenuPresenter(){
+    return new MainMenuPresenter(backendApiDecorator);
   }
 }

@@ -73,21 +73,23 @@ public class HomeFragment extends MviFragment<HomeView, HomePresenter> implement
     unbinder = ButterKnife.bind(this, view);
 
     adapter = new HomeAdapter(inflater);
-    recyclerView.addItemDecoration(new GridSpacingItemDecoration(spanSize,
-        getResources().getDimensionPixelSize(R.dimen.grid_spacing), true));
-    layoutManager = new GridLayoutManager(getActivity(), 2);
+    layoutManager = new GridLayoutManager(getActivity(), spanSize);
     layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
       @Override public int getSpanSize(int position) {
 
         int viewType = adapter.getItemViewType(position);
         if (viewType == HomeAdapter.VIEW_TYPE_LOADING_MORE_NEXT_PAGE
             || viewType == HomeAdapter.VIEW_TYPE_SECTION_HEADER) {
-          return 2;
+          return spanSize;
         }
 
         return 1;
       }
     });
+
+    recyclerView.addItemDecoration(new GridSpacingItemDecoration(spanSize,
+        getResources().getDimensionPixelSize(R.dimen.grid_spacing), true));
+
     recyclerView.setAdapter(adapter);
     recyclerView.setLayoutManager(layoutManager);
 

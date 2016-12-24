@@ -40,7 +40,7 @@ import com.hannesdorfmann.mosby3.mvp.MvpView;
 public class ActivityMviDelegateImpl<V extends MvpView, P extends MviPresenter<V, ?>>
     implements ActivityMviDelegate {
 
-  private static final boolean DEBUG = true;
+  private static final boolean DEBUG = false;
   private static final String DEBUG_TAG = ActivityMviDelegateImpl.class.getSimpleName();
 
   private static final String KEY_MOSBY_VIEW_ID = "com.hannesdorfmann.mosby3.activity.viewState.id";

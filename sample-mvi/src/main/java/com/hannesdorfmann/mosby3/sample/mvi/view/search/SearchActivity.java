@@ -54,6 +54,11 @@ public class SearchActivity extends MviActivity<SearchView, SearchPresenter> imp
     unbinder.unbind();
   }
 
+  @Override public void onBackPressed() {
+    super.onBackPressed();
+    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+  }
+
   @NonNull @Override public SearchPresenter createPresenter() {
     Timber.d("createPresenter");
     return SampleApplication.getDependencyInjection(this).newSearchPresenter();

@@ -2,9 +2,11 @@ package com.hannesdorfmann.mosby3.sample.mvi.view.search;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.transition.TransitionManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -12,7 +14,7 @@ import butterknife.BindInt;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import com.hannesdorfmann.mosby3.mvi.MviActivity;
+import com.hannesdorfmann.mosby3.mvi.MviFragment;
 import com.hannesdorfmann.mosby3.sample.mvi.R;
 import com.hannesdorfmann.mosby3.sample.mvi.SampleApplication;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model.Product;
@@ -24,7 +26,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import timber.log.Timber;
 
-public class SearchActivity extends MviActivity<SearchView, SearchPresenter> implements SearchView {
+public class SearchFragment extends MviFragment<SearchView, SearchPresenter> implements SearchView {
 
   @BindView(R.id.searchView) android.widget.SearchView searchView;
   @BindView(R.id.container) ViewGroup container;
@@ -37,31 +39,29 @@ public class SearchActivity extends MviActivity<SearchView, SearchPresenter> imp
   private SearchAdapter adapter;
   private Unbinder unbinder;
 
-  @Override protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_search);
-    unbinder = ButterKnife.bind(this);
+  @Nullable @Override
+  public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+      @Nullable Bundle savedInstanceState) {
+    View view = inflater.inflate(R.layout.fragment_search, container, false);
+    unbinder = ButterKnife.bind(this, view);
 
-    adapter = new SearchAdapter(getLayoutInflater());
+    adapter = new SearchAdapter(inflater);
     recyclerView.setAdapter(adapter);
-    recyclerView.setLayoutManager(new GridLayoutManager(this, spanCount));
+    recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), spanCount));
     recyclerView.addItemDecoration(new GridSpacingItemDecoration(spanCount,
         getResources().getDimensionPixelSize(R.dimen.grid_spacing), true));
+
+    return view;
   }
 
-  @Override protected void onDestroy() {
-    super.onDestroy();
+  @Override public void onDestroyView() {
+    super.onDestroyView();
     unbinder.unbind();
-  }
-
-  @Override public void onBackPressed() {
-    super.onBackPressed();
-    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
   }
 
   @NonNull @Override public SearchPresenter createPresenter() {
     Timber.d("createPresenter");
-    return SampleApplication.getDependencyInjection(this).newSearchPresenter();
+    return SampleApplication.getDependencyInjection(getActivity()).newSearchPresenter();
   }
 
   @Override public Observable<String> searchIntent() {

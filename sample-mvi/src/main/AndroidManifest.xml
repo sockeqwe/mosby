@@ -12,10 +12,6 @@
       android:supportsRtl="true"
       android:theme="@style/AppTheme">
     <activity
-        android:name=".view.search.SearchActivity"
-        android:theme="@style/AppTheme.Translucent.Search">
-    </activity>
-    <activity
         android:label="@string/title_activity_main_activiy"
         android:name=".MainActiviy"
         android:theme="@style/AppTheme">

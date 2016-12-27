@@ -17,7 +17,6 @@
 
 package com.hannesdorfmann.mosby3.sample.mvi;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
@@ -29,7 +28,7 @@ import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model.MainMenuItem;
 import com.hannesdorfmann.mosby3.sample.mvi.view.category.CategoryFragment;
 import com.hannesdorfmann.mosby3.sample.mvi.view.home.HomeFragment;
 import com.hannesdorfmann.mosby3.sample.mvi.view.menu.MenuViewState;
-import com.hannesdorfmann.mosby3.sample.mvi.view.search.SearchActivity;
+import com.hannesdorfmann.mosby3.sample.mvi.view.search.SearchFragment;
 import io.reactivex.disposables.Disposable;
 
 public class MainActiviy extends AppCompatActivity {
@@ -47,12 +46,17 @@ public class MainActiviy extends AppCompatActivity {
     toolbar.setTitle("Mosby MVI");
     toolbar.inflateMenu(R.menu.activity_main_toolbar);
     toolbar.setOnMenuItemClickListener(item -> {
-      startActivity(new Intent(MainActiviy.this, SearchActivity.class));
-      overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+
+      getSupportFragmentManager().beginTransaction()
+          .add(R.id.drawerLayout, new SearchFragment())
+          .addToBackStack("Search")
+          .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+          .commit();
+
       return true;
     });
 
-    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawerLayout);
     ActionBarDrawerToggle toggle =
         new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open,
             R.string.navigation_drawer_close);
@@ -98,7 +102,7 @@ public class MainActiviy extends AppCompatActivity {
   }
 
   private boolean closeDrawerIfOpen() {
-    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawerLayout);
     if (drawer.isDrawerOpen(GravityCompat.START)) {
       drawer.closeDrawer(GravityCompat.START);
       return true;

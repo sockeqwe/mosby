@@ -19,29 +19,37 @@ package com.hannesdorfmann.mosby3.sample.mvi;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
+import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model.MainMenuItem;
+import com.hannesdorfmann.mosby3.sample.mvi.view.category.CategoryFragment;
 import com.hannesdorfmann.mosby3.sample.mvi.view.home.HomeFragment;
+import com.hannesdorfmann.mosby3.sample.mvi.view.menu.MenuViewState;
 import com.hannesdorfmann.mosby3.sample.mvi.view.search.SearchActivity;
+import io.reactivex.disposables.Disposable;
 
 public class MainActiviy extends AppCompatActivity {
+
+  private static final String KEY_TOOLBAR_TITLE = "toolbarTitle";
+
+  private Toolbar toolbar;
+  private Disposable disposable;
+  private String title;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main_activiy);
-    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
+    toolbar = (Toolbar) findViewById(R.id.toolbar);
+    toolbar.setTitle("Mosby MVI");
     toolbar.inflateMenu(R.menu.activity_main_toolbar);
-    toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-      @Override public boolean onMenuItemClick(MenuItem item) {
-        startActivity(new Intent(MainActiviy.this, SearchActivity.class));
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-        return true;
-      }
+    toolbar.setOnMenuItemClickListener(item -> {
+      startActivity(new Intent(MainActiviy.this, SearchActivity.class));
+      overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+      return true;
     });
 
     DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -52,18 +60,64 @@ public class MainActiviy extends AppCompatActivity {
     toggle.syncState();
 
     if (savedInstanceState == null) {
-      getSupportFragmentManager().beginTransaction()
-          .replace(R.id.fragmentContainer, new HomeFragment())
-          .commit();
+      showCategoryItems(MainMenuItem.HOME);
+    } else {
+      title = savedInstanceState.getString(KEY_TOOLBAR_TITLE);
     }
+
+    disposable = SampleApplication.getDependencyInjection(this)
+        .getMainMenuPresenter()
+        .getViewStateObservable()
+        .filter(state -> state instanceof MenuViewState.DataState)
+        .cast(MenuViewState.DataState.class)
+        .map(this::findSelectedMenuItem)
+        .subscribe(this::showCategoryItems);
+  }
+
+  @Override protected void onStop() {
+    super.onStop();
+    disposable.dispose();
+  }
+
+  @Override protected void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    outState.putString(KEY_TOOLBAR_TITLE, toolbar.getTitle().toString());
+  }
+
+  private String findSelectedMenuItem(MenuViewState.DataState state) {
+    for (MainMenuItem item : state.getCategories())
+      if (item.isSelected()) return item.getName();
+
+    throw new IllegalStateException("No category is selected in Main Menu" + state);
   }
 
   @Override public void onBackPressed() {
+    if (!closeDrawerIfOpen()) {
+      super.onBackPressed();
+    }
+  }
+
+  private boolean closeDrawerIfOpen() {
     DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
     if (drawer.isDrawerOpen(GravityCompat.START)) {
       drawer.closeDrawer(GravityCompat.START);
-    } else {
-      super.onBackPressed();
+      return true;
+    }
+    return false;
+  }
+
+  public void showCategoryItems(String categoryName) {
+    closeDrawerIfOpen();
+    String currentCategory = toolbar.getTitle().toString();
+    if (!currentCategory.equals(categoryName)) {
+      toolbar.setTitle(categoryName);
+      Fragment f;
+      if (categoryName.equals(MainMenuItem.HOME)) {
+        f = new HomeFragment();
+      } else {
+        f = CategoryFragment.newInstance(categoryName);
+      }
+      getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, f).commit();
     }
   }
 }

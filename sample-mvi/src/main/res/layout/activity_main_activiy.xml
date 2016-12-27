@@ -59,7 +59,7 @@
 
   <com.hannesdorfmann.mosby3.sample.mvi.view.menu.MainMenuLayout
       android:id="@+id/mainMenu"
-      android:layout_width="320dp"
+      android:layout_width="200dp"
       android:layout_height="match_parent"
       android:layout_gravity="start"
       android:fitsSystemWindows="true"

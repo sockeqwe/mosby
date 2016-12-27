@@ -36,13 +36,13 @@ public class ViewGroupMviDelegateImpl<V extends MvpView, P extends MviPresenter<
     implements ViewGroupMviDelegate<V, P> {
 
   // TODO allow custom save state hook in
-  private static final boolean DEBUG = true;
+  private static final boolean DEBUG = false;
   private static final String DEBUG_TAG = ViewGroupMviDelegateImpl.class.getSimpleName();
 
-  protected ViewGroupMviDelegateCallback<V, P> delegateCallback;
-  protected PresenterManager<V, P> orientationChangeManager = new PresenterManager<>();
-  protected String mosbyViewId;
-  protected final boolean keepPresenterDuringScreenOrientationChange;
+  private ViewGroupMviDelegateCallback<V, P> delegateCallback;
+  private PresenterManager<V, P> orientationChangeManager = new PresenterManager<>();
+  private String mosbyViewId;
+  private final boolean keepPresenterDuringScreenOrientationChange;
   private PresenterManager<V, P> presenterManager = new PresenterManager<V, P>();
   private P presenter;
 
@@ -205,7 +205,7 @@ public class ViewGroupMviDelegateImpl<V extends MvpView, P extends MviPresenter<
    *
    * @return The saved state
    */
-  protected MosbySavedState createSavedState(Parcelable superState) {
+  private MosbySavedState createSavedState(Parcelable superState) {
     MosbySavedState state = new MosbySavedState(superState);
     state.setMosbyViewId(mosbyViewId);
     return state;
@@ -216,7 +216,7 @@ public class ViewGroupMviDelegateImpl<V extends MvpView, P extends MviPresenter<
    *
    * @param state The state to read data from
    */
-  protected void restoreSavedState(MosbySavedState state) {
+  private void restoreSavedState(MosbySavedState state) {
     mosbyViewId = state.getMosbyViewId();
   }
 

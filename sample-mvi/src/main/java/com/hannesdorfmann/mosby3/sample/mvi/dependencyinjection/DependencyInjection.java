@@ -23,6 +23,7 @@ import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.feed.PagingFeedLoader;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.http.ProductBackendApi;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.http.ProductBackendApiDecorator;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.searchengine.SearchEngine;
+import com.hannesdorfmann.mosby3.sample.mvi.view.category.CategoryPresenter;
 import com.hannesdorfmann.mosby3.sample.mvi.view.home.HomePresenter;
 import com.hannesdorfmann.mosby3.sample.mvi.view.menu.MainMenuPresenter;
 import com.hannesdorfmann.mosby3.sample.mvi.view.search.SearchPresenter;
@@ -46,6 +47,7 @@ public class DependencyInjection {
   private final ProductBackendApi backendApi = retrofit.create(ProductBackendApi.class);
   private final ProductBackendApiDecorator backendApiDecorator =
       new ProductBackendApiDecorator(backendApi);
+  private final MainMenuPresenter mainMenuPresenter = new MainMenuPresenter(backendApiDecorator);
 
   SearchEngine newSearchEngine() {
     return new SearchEngine(backendApiDecorator);
@@ -71,7 +73,14 @@ public class DependencyInjection {
     return new HomePresenter(newHomeFeedLoader());
   }
 
-  public MainMenuPresenter newMenuPresenter(){
-    return new MainMenuPresenter(backendApiDecorator);
+  /**
+   * This is a singleton
+   */
+  public MainMenuPresenter getMainMenuPresenter() {
+    return mainMenuPresenter;
+  }
+
+  public CategoryPresenter newCategoryPresenter() {
+    return new CategoryPresenter(backendApiDecorator);
   }
 }

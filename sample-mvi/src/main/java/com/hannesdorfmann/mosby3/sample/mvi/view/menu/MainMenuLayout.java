@@ -54,16 +54,15 @@ public class MainMenuLayout extends MviFrameLayout<MainMenuView, MainMenuPresent
 
   @Override public MainMenuPresenter createPresenter() {
     Timber.d("Create MainMenuPresenter");
-    return SampleApplication.getDependencyInjection(getContext()).newMenuPresenter();
+    return SampleApplication.getDependencyInjection(getContext()).getMainMenuPresenter();
   }
 
   @Override public Observable<Boolean> loadCategoriesIntent() {
-    return Observable.just(true).doOnNext(ignored -> Timber.d("load categories intent"));
+    return Observable.just(true);
   }
 
   @Override public Observable<String> selectCategoryIntent() {
-    return adapter.getSelectedItemObservable()
-        .doOnNext(cat -> Timber.d("select category %s intent", cat));
+    return adapter.getSelectedItemObservable();
   }
 
   @Override public void render(MenuViewState menuViewState) {
@@ -76,6 +75,7 @@ public class MainMenuLayout extends MviFrameLayout<MainMenuView, MainMenuPresent
       errorView.setVisibility(View.GONE);
     } else if (menuViewState instanceof MenuViewState.DataState) {
       adapter.setItems(((MenuViewState.DataState) menuViewState).getCategories());
+      adapter.notifyDataSetChanged();
       loadingView.setVisibility(View.GONE);
       recyclerView.setVisibility(View.VISIBLE);
       errorView.setVisibility(View.GONE);

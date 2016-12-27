@@ -19,6 +19,5 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
   <item android:drawable="@color/mainMenuItemSelected" android:state_pressed="true"/>
-  <item android:drawable="@color/mainMenuItemSelected" android:state_selected="true"/>
 
 </selector>

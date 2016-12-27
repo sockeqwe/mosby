@@ -12,6 +12,7 @@
       android:textSize="18sp"
       android:padding="32dp"
       android:text="@string/error_unknown"
+      android:visibility="gone"
   />
 
 </merge>

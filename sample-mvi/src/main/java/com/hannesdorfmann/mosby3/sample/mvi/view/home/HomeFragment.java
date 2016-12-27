@@ -41,7 +41,6 @@ import com.jakewharton.rxbinding.support.v4.widget.RxSwipeRefreshLayout;
 import com.jakewharton.rxbinding.support.v7.widget.RxRecyclerView;
 import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import io.reactivex.Observable;
-import io.reactivex.subjects.PublishSubject;
 import timber.log.Timber;
 
 /**
@@ -53,13 +52,12 @@ public class HomeFragment extends MviFragment<HomeView, HomePresenter> implement
   private HomeAdapter adapter;
   private GridLayoutManager layoutManager;
   private Unbinder unbinder;
-  private PublishSubject<Boolean> startLoadingObservable = PublishSubject.create();
 
   @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
   @BindView(R.id.loadingView) View loadingView;
   @BindView(R.id.errorView) TextView errorView;
-  @BindInt(R.integer.grid_span_size) int spanSize;
+  @BindInt(R.integer.grid_span_size) int spanCount;
 
   @NonNull @Override public HomePresenter createPresenter() {
     Timber.d("createPresenter");
@@ -73,21 +71,21 @@ public class HomeFragment extends MviFragment<HomeView, HomePresenter> implement
     unbinder = ButterKnife.bind(this, view);
 
     adapter = new HomeAdapter(inflater);
-    layoutManager = new GridLayoutManager(getActivity(), spanSize);
+    layoutManager = new GridLayoutManager(getActivity(), spanCount);
     layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
       @Override public int getSpanSize(int position) {
 
         int viewType = adapter.getItemViewType(position);
         if (viewType == HomeAdapter.VIEW_TYPE_LOADING_MORE_NEXT_PAGE
             || viewType == HomeAdapter.VIEW_TYPE_SECTION_HEADER) {
-          return spanSize;
+          return spanCount;
         }
 
         return 1;
       }
     });
 
-    recyclerView.addItemDecoration(new GridSpacingItemDecoration(spanSize,
+    recyclerView.addItemDecoration(new GridSpacingItemDecoration(spanCount,
         getResources().getDimensionPixelSize(R.dimen.grid_spacing), true));
 
     recyclerView.setAdapter(adapter);
@@ -101,14 +99,8 @@ public class HomeFragment extends MviFragment<HomeView, HomePresenter> implement
     unbinder.unbind();
   }
 
-  @Override public void onStart() {
-    super.onStart();
-    startLoadingObservable.onNext(true);
-    startLoadingObservable.onComplete(); // Never fire again after orientation change
-  }
-
   @Override public Observable<Boolean> loadFirstPageIntent() {
-    return startLoadingObservable.doOnNext(ignored -> Timber.d("loadFirstPage Intent"));
+    return  Observable.just(true);
   }
 
   @Override public Observable<Boolean> loadNextPageIntent() {
@@ -117,14 +109,12 @@ public class HomeFragment extends MviFragment<HomeView, HomePresenter> implement
         .filter(event -> event == RecyclerView.SCROLL_STATE_IDLE)
         .filter(
             event -> layoutManager.findLastVisibleItemPosition() == adapter.getItems().size() - 1)
-        .map(integer -> true)
-        .doOnNext(ignored -> Timber.d("loadNextPage Intent"));
+        .map(integer -> true);
   }
 
   @Override public Observable<Boolean> pullToRefreshIntent() {
     return RxJavaInterop.toV2Observable(
-        RxSwipeRefreshLayout.refreshes(swipeRefreshLayout).map(ignored -> true))
-        .doOnNext(ignored -> Timber.d("pullToRefresh Intent"));
+        RxSwipeRefreshLayout.refreshes(swipeRefreshLayout).map(ignored -> true));
   }
 
   @Override public Observable<String> loadAllProductsFromCategoryIntent() {
@@ -134,11 +124,7 @@ public class HomeFragment extends MviFragment<HomeView, HomePresenter> implement
   @Override public void render(HomeViewState viewState) {
     Timber.d("render %s", viewState);
     if (!viewState.isLoadingFirstPage()
-        //&& !viewState.isLoadingFirstPage()
-        // && !viewState.isLoadingPullToRefresh()
         && viewState.getFirstPageError() == null
-      //&& viewState.getNextPageError() == null
-      //&& viewState.getPullToRefreshError() == null
         ) {
       renderShowData(viewState);
     } else if (viewState.isLoadingFirstPage()) {

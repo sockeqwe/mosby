@@ -26,6 +26,7 @@ import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import java.util.ArrayList;
 import java.util.List;
+import timber.log.Timber;
 
 /**
  * @author Hannes Dorfmann
@@ -39,11 +40,13 @@ public class MainMenuPresenter extends MviBasePresenter<MainMenuView, MenuViewSt
 
   @Override protected void bindIntents() {
 
-    Observable<List<String>> loadCategories = intent(MainMenuView::loadCategoriesIntent).flatMap(
-        ignored -> backendApi.getAllCategories().subscribeOn(Schedulers.io()));
+    Observable<List<String>> loadCategories = intent(MainMenuView::loadCategoriesIntent).doOnNext(
+        categoryName -> Timber.d("intent: load category %s", categoryName))
+        .flatMap(ignored -> backendApi.getAllCategories().subscribeOn(Schedulers.io()));
 
     Observable<String> selectCategory =
-        intent(MainMenuView::selectCategoryIntent).startWith(MainMenuItem.HOME);
+        intent(MainMenuView::selectCategoryIntent).doOnNext(
+            categoryName -> Timber.d("intent: select category %s", categoryName)).startWith(MainMenuItem.HOME);
 
     List<Observable<?>> allIntents = new ArrayList<>(2);
     allIntents.add(loadCategories);
@@ -56,7 +59,7 @@ public class MainMenuPresenter extends MviBasePresenter<MainMenuView, MenuViewSt
 
           List<MainMenuItem> categoriesItems = new ArrayList<MainMenuItem>(categories.size() + 1);
           categoriesItems.add(
-              new MainMenuItem(MainMenuItem.HOME, selectCategory.equals(MainMenuItem.HOME)));
+              new MainMenuItem(MainMenuItem.HOME, selectedCategory.equals(MainMenuItem.HOME)));
 
           for (int i = 0; i < categories.size(); i++) {
             String category = categories.get(i);

@@ -32,7 +32,7 @@ public class SearchActivity extends MviActivity<SearchView, SearchPresenter> imp
   @BindView(R.id.errorView) TextView errorView;
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
   @BindView(R.id.emptyView) View emptyView;
-  @BindInt(R.integer.grid_span_size) int spanSize;
+  @BindInt(R.integer.grid_span_size) int spanCount;
 
   private SearchAdapter adapter;
   private Unbinder unbinder;
@@ -44,8 +44,8 @@ public class SearchActivity extends MviActivity<SearchView, SearchPresenter> imp
 
     adapter = new SearchAdapter(getLayoutInflater());
     recyclerView.setAdapter(adapter);
-    recyclerView.setLayoutManager(new GridLayoutManager(this, spanSize));
-    recyclerView.addItemDecoration(new GridSpacingItemDecoration(spanSize,
+    recyclerView.setLayoutManager(new GridLayoutManager(this, spanCount));
+    recyclerView.addItemDecoration(new GridSpacingItemDecoration(spanCount,
         getResources().getDimensionPixelSize(R.dimen.grid_spacing), true));
   }
 
@@ -70,8 +70,7 @@ public class SearchActivity extends MviActivity<SearchView, SearchPresenter> imp
         .filter(queryString -> queryString.length() > 3 || queryString.length() == 0)
         .debounce(500, TimeUnit.MILLISECONDS)
         .distinctUntilChanged()
-        .map(CharSequence::toString)
-        .doOnNext(s -> Timber.d("Search Intent '%s'", s));
+        .map(CharSequence::toString);
   }
 
   @Override public void render(SearchViewState viewState) {

@@ -47,15 +47,10 @@ public class MainMenuViewHolder extends RecyclerView.ViewHolder {
   private MainMenuViewHolder(View itemView, MainMenuSelectionListener listener) {
     super(itemView);
     ButterKnife.bind(this, itemView);
-    itemView.setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View v) {
-        listener.onItemSelected(name.getText().toString());
-      }
-    });
+    itemView.setOnClickListener(v -> listener.onItemSelected(name.getText().toString()));
   }
 
   public void bind(MainMenuItem item) {
     name.setText(item.getName());
-    name.setSelected(item.isSelected());
   }
 }

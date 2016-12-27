@@ -37,15 +37,16 @@ public class SearchPresenter extends MviBasePresenter<SearchView, SearchViewStat
   }
 
   @Override protected void bindIntents() {
-    Timber.d("bindIntents");
     Observable<SearchViewState> search =
-        intent(SearchView::searchIntent).switchMap(searchString -> {
+        intent(SearchView::searchIntent)
+            .doOnNext(s -> Timber.d("intent: Search '%s'", s))
+            .switchMap(searchString -> {
           // Empty String, so no search
           if (searchString.isEmpty()) {
             return Observable.just(new SearchViewState.SearchNotStartedYet());
           }
 
-          // search fro a product
+          // search for product
           return searchEngine.searchFor(searchString)
               .map(products -> {
                 if (products.isEmpty()) {

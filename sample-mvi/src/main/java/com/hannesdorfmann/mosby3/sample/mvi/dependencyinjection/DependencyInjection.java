@@ -17,6 +17,7 @@
 
 package com.hannesdorfmann.mosby3.sample.mvi.dependencyinjection;
 
+import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.ShoppingCart;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.feed.GroupedPagedFeedLoader;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.feed.HomeFeedLoader;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.feed.PagingFeedLoader;
@@ -48,6 +49,7 @@ public class DependencyInjection {
   private final ProductBackendApiDecorator backendApiDecorator =
       new ProductBackendApiDecorator(backendApi);
   private final MainMenuPresenter mainMenuPresenter = new MainMenuPresenter(backendApiDecorator);
+  private final ShoppingCart shoppingCart = new ShoppingCart();
 
   SearchEngine newSearchEngine() {
     return new SearchEngine(backendApiDecorator);

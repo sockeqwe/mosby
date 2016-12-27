@@ -88,4 +88,15 @@ public class ProductBackendApiDecorator {
       return result;
     });
   }
+
+  /**
+   * Get the product with the given id
+   *
+   * @param productId The product id
+   */
+  public Observable<Product> getProduct(int productId) {
+    return getAllProducts().flatMap(products -> Observable.fromIterable(products))
+        .filter(product -> product.getId() == productId)
+        .take(1);
+  }
 }

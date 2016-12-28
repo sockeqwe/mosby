@@ -30,11 +30,13 @@ public class LifecycleTestPresenter extends MviBasePresenter<LifecycleTestView, 
   public LifecycleTestView attachedView;
   public int detachViewInvokations = 0;
   public boolean onDettachViewRetainInstance = false;
+  public int bindIntentInvocations = 0;
 
   @Override public void attachView(LifecycleTestView view) {
+    super.attachView(view);
     attachViewInvokations++;
     attachedView = view;
-    Log.d(getClass().getSimpleName(), "attachView "+ attachViewInvokations +" "+attachedView);
+    Log.d(getClass().getSimpleName(), "attachView " + attachViewInvokations + " " + attachedView);
   }
 
   @Override public void detachView(boolean retainInstance) {
@@ -42,6 +44,14 @@ public class LifecycleTestPresenter extends MviBasePresenter<LifecycleTestView, 
     attachedView = null;
     detachViewInvokations++;
     onDettachViewRetainInstance = retainInstance;
-    Log.d(getClass().getSimpleName(), "detachView "+ detachViewInvokations +" "+retainInstance);
+    Log.d(getClass().getSimpleName(), "detachView " + detachViewInvokations + " " + retainInstance);
+  }
+
+  @Override protected void bindIntents() {
+    if (bindIntentInvocations >= 1) {
+      throw new IllegalStateException(
+          "bindIntents() is called more than once. Invokations: " + bindIntentInvocations);
+    }
+    bindIntentInvocations++;
   }
 }

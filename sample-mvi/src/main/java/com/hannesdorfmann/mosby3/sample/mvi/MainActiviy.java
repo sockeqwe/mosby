@@ -48,11 +48,11 @@ public class MainActiviy extends AppCompatActivity {
     toolbar.setOnMenuItemClickListener(item -> {
 
       getSupportFragmentManager().beginTransaction()
+          .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
+              android.R.anim.fade_in, android.R.anim.fade_out)
           .add(R.id.drawerLayout, new SearchFragment())
           .addToBackStack("Search")
-          .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
           .commit();
-
       return true;
     });
 

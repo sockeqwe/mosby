@@ -77,7 +77,7 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
   private final BehaviorSubject<VS> viewRelay;
 
   /**
-   * We only allow to cal {@link #subscribeViewState(Observable, Consumer)} method once
+   * We only allow to cal {@link #subscribeViewState(Observable, ViewStateConsumer)} method once
    */
   private boolean subscribeViewStateMethodCalled = false;
   /**
@@ -99,7 +99,8 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
   private Disposable viewRelayConsumerDisposable;
 
   /**
-   * Disposable between the viewState observable returned from {@link #intent(Observable)} and
+   * Disposable between the viewState observable returned from {@link #intent(ViewIntentBinder)}
+   * and
    * {@link #viewRelay}
    */
   private Disposable viewStateDisposable;
@@ -214,8 +215,7 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
     });
   }
 
-  // TODO: make this final?
-  @CallSuper @Override final public void attachView(@NonNull V view) {
+  @CallSuper @Override public void attachView(@NonNull V view) {
     if (viewAttachedFirstTime) {
       bindIntents();
     }
@@ -241,7 +241,8 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
    * view's intent when the view gets
    * detached.
    *
-   * @param intent The intent observable. Typically offered by the viewState interface
+   * @param binder The {@link ViewIntentBinder} from where the the real view's intent will be
+   * bound
    * @param <I> The type of the intent
    * @return The decorated intent Observable emitting the intent
    */

@@ -48,11 +48,14 @@ public class HomeAdapter extends RecyclerView.Adapter
   private boolean isLoadingNextPage = false;
   private List<FeedItem> items;
   private final LayoutInflater layoutInflater;
+  private final ProductViewHolder.ProductClickedListener productClickedListener;
 
   private PublishSubject<String> loadMoreItemsOfCategoryObservable = PublishSubject.create();
 
-  public HomeAdapter(LayoutInflater layoutInflater) {
+  public HomeAdapter(LayoutInflater layoutInflater,
+      ProductViewHolder.ProductClickedListener productClickedListener) {
     this.layoutInflater = layoutInflater;
+    this.productClickedListener = productClickedListener;
   }
 
   public List<FeedItem> getItems() {
@@ -145,7 +148,7 @@ public class HomeAdapter extends RecyclerView.Adapter
   @Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     switch (viewType) {
       case VIEW_TYPE_PRODUCT:
-        return ProductViewHolder.create(layoutInflater);
+        return ProductViewHolder.create(layoutInflater, productClickedListener);
       case VIEW_TYPE_LOADING_MORE_NEXT_PAGE:
         return LoadingViewHolder.create(layoutInflater);
       case VIEW_TYPE_MORE_ITEMS_AVAILABLE:

@@ -18,7 +18,9 @@ import com.hannesdorfmann.mosby3.mvi.MviFragment;
 import com.hannesdorfmann.mosby3.sample.mvi.R;
 import com.hannesdorfmann.mosby3.sample.mvi.SampleApplication;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model.Product;
+import com.hannesdorfmann.mosby3.sample.mvi.view.detail.ProductDetailsActivity;
 import com.hannesdorfmann.mosby3.sample.mvi.view.ui.GridSpacingItemDecoration;
+import com.hannesdorfmann.mosby3.sample.mvi.view.ui.viewholder.ProductViewHolder;
 import com.jakewharton.rxbinding.widget.RxSearchView;
 import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import io.reactivex.Observable;
@@ -26,7 +28,8 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import timber.log.Timber;
 
-public class SearchFragment extends MviFragment<SearchView, SearchPresenter> implements SearchView {
+public class SearchFragment extends MviFragment<SearchView, SearchPresenter>
+    implements SearchView, ProductViewHolder.ProductClickedListener {
 
   @BindView(R.id.searchView) android.widget.SearchView searchView;
   @BindView(R.id.container) ViewGroup container;
@@ -45,7 +48,7 @@ public class SearchFragment extends MviFragment<SearchView, SearchPresenter> imp
     View view = inflater.inflate(R.layout.fragment_search, container, false);
     unbinder = ButterKnife.bind(this, view);
 
-    adapter = new SearchAdapter(inflater);
+    adapter = new SearchAdapter(inflater, this);
     recyclerView.setAdapter(adapter);
     recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), spanCount));
     recyclerView.addItemDecoration(new GridSpacingItemDecoration(spanCount,
@@ -57,6 +60,10 @@ public class SearchFragment extends MviFragment<SearchView, SearchPresenter> imp
   @Override public void onDestroyView() {
     super.onDestroyView();
     unbinder.unbind();
+  }
+
+  @Override public void onProductClicked(Product product) {
+    ProductDetailsActivity.start(getActivity(), product);
   }
 
   @NonNull @Override public SearchPresenter createPresenter() {

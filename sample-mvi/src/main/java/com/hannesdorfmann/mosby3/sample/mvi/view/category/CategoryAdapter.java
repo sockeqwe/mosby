@@ -32,10 +32,12 @@ import java.util.List;
 public class CategoryAdapter extends RecyclerView.Adapter<ProductViewHolder> {
 
   private final LayoutInflater inflater;
+  private final ProductViewHolder.ProductClickedListener productClickedListener;
   private List<Product> products;
 
-  public CategoryAdapter(LayoutInflater inflater) {
+  public CategoryAdapter(LayoutInflater inflater, ProductViewHolder.ProductClickedListener productClickedListener) {
     this.inflater = inflater;
+    this.productClickedListener = productClickedListener;
   }
 
   public void setProducts(List<Product> products) {
@@ -43,7 +45,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<ProductViewHolder> {
   }
 
   @Override public ProductViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-    return ProductViewHolder.create(inflater);
+    return ProductViewHolder.create(inflater, productClickedListener);
   }
 
   @Override public void onBindViewHolder(ProductViewHolder holder, int position) {

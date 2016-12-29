@@ -48,6 +48,7 @@ public class ShoppingCart {
     List<Product> updatedShoppingCart = new ArrayList<>();
     updatedShoppingCart.addAll(itemsInShoppingCart.getValue());
     updatedShoppingCart.add(product);
+    itemsInShoppingCart.onNext(updatedShoppingCart);
     return Completable.complete();
   }
 
@@ -58,6 +59,7 @@ public class ShoppingCart {
     List<Product> updatedShoppingCart = new ArrayList<>();
     updatedShoppingCart.addAll(itemsInShoppingCart.getValue());
     updatedShoppingCart.remove(product);
+    itemsInShoppingCart.onNext(updatedShoppingCart);
     return Completable.complete();
   }
 }

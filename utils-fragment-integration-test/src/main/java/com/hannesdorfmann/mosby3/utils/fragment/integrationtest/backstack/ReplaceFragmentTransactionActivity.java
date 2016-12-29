@@ -49,7 +49,7 @@ public class ReplaceFragmentTransactionActivity extends AppCompatActivity {
     handler.postDelayed(new Runnable() {
       @Override public void run() {
         getSupportFragmentManager().beginTransaction()
-            .replace(R.id.fragmentContainer, new ReplaceTransactionFragment())
+            .replace(R.id.fragmentContainer, ReplaceTransactionFragment.newInstance(false))
             .commit();
       }
     }, wait);
@@ -59,10 +59,14 @@ public class ReplaceFragmentTransactionActivity extends AppCompatActivity {
     handler.postDelayed(new Runnable() {
       @Override public void run() {
         getSupportFragmentManager().beginTransaction()
-            .replace(R.id.fragmentContainer, new ReplaceTransactionFragment())
+            .replace(R.id.fragmentContainer, ReplaceTransactionFragment.newInstance(true))
             .addToBackStack(null)
             .commit();
       }
     }, wait);
+  }
+
+  @Override public void onBackPressed() {
+    super.onBackPressed();
   }
 }

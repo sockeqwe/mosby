@@ -35,6 +35,22 @@ public class ReplaceTransactionFragment extends Fragment {
 
   public static int onBackStackCount = 0;
   public static int notOnBackStackCount = 0;
+  private static final String KEY_ON_BACKSTACK = "onBackStack";
+
+  private boolean onBackStack = false;
+
+  public static ReplaceTransactionFragment newInstance(boolean onBackStack) {
+    ReplaceTransactionFragment f = new ReplaceTransactionFragment();
+    Bundle args = new Bundle();
+    args.putBoolean(KEY_ON_BACKSTACK, onBackStack);
+    f.setArguments(args);
+    return f;
+  }
+
+  @Override public void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    onBackStack = getArguments().getBoolean(KEY_ON_BACKSTACK);
+  }
 
   @Nullable @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -49,7 +65,25 @@ public class ReplaceTransactionFragment extends Fragment {
 
   @Override public void onStop() {
     super.onStop();
-    if ( BackstackAccessor.isFragmentOnBackStack(this)){
+    boolean onBackStack = this.onBackStack;
+    boolean foundOnBackStack = BackstackAccessor.isFragmentOnBackStack(this);
+    if (onBackStack != foundOnBackStack) {
+
+      boolean refound = BackstackAccessor.isFragmentOnBackStack(this);
+
+      throw new IllegalStateException(onBackStack
+          + " "
+          + foundOnBackStack
+          + " --- Fragment should be onBackstack: "
+          + onBackStack
+          + " but was found on backstack: "
+          + foundOnBackStack
+          + "  "
+          + toString()
+          + " "
+          + refound);
+    }
+    if (foundOnBackStack) {
       onBackStackCount++;
     } else {
       notOnBackStackCount++;

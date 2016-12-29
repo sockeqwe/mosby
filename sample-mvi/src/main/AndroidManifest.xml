@@ -17,13 +17,12 @@
         android:theme="@style/AppTheme">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
-
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
     </activity>
     <activity
         android:label="@string/title_activity_product_detail"
-        android:name=".view.detail.ProductDetailActivity"
+        android:name=".view.detail.ProductDetailsActivity"
         android:parentActivityName=".MainActiviy"
         android:theme="@style/AppTheme">
       <meta-data

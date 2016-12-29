@@ -34,7 +34,9 @@ import com.hannesdorfmann.mosby3.mvi.MviFragment;
 import com.hannesdorfmann.mosby3.sample.mvi.R;
 import com.hannesdorfmann.mosby3.sample.mvi.SampleApplication;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model.Product;
+import com.hannesdorfmann.mosby3.sample.mvi.view.detail.ProductDetailsActivity;
 import com.hannesdorfmann.mosby3.sample.mvi.view.ui.GridSpacingItemDecoration;
+import com.hannesdorfmann.mosby3.sample.mvi.view.ui.viewholder.ProductViewHolder;
 import io.reactivex.Observable;
 import java.util.List;
 import timber.log.Timber;
@@ -45,7 +47,7 @@ import timber.log.Timber;
  * @author Hannes Dorfmann
  */
 public class CategoryFragment extends MviFragment<CategoryView, CategoryPresenter>
-    implements CategoryView {
+    implements CategoryView, ProductViewHolder.ProductClickedListener {
 
   private final static String CATEGORY_NAME = "categoryName";
 
@@ -55,6 +57,10 @@ public class CategoryFragment extends MviFragment<CategoryView, CategoryPresente
   @BindInt(R.integer.grid_span_size) int spanCount;
   private Unbinder unbinder;
   private CategoryAdapter adapter;
+
+  @Override public void onProductClicked(Product product) {
+    ProductDetailsActivity.start(getActivity(), product);
+  }
 
   @NonNull public static CategoryFragment newInstance(@NonNull String categoryName) {
     if (categoryName == null) {
@@ -73,7 +79,7 @@ public class CategoryFragment extends MviFragment<CategoryView, CategoryPresente
     View view = inflater.inflate(R.layout.fragment_category, container, false);
     unbinder = ButterKnife.bind(this, view);
     GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), spanCount);
-    adapter = new CategoryAdapter(inflater);
+    adapter = new CategoryAdapter(inflater, this);
     recyclerView.setAdapter(adapter);
     recyclerView.setLayoutManager(layoutManager);
     recyclerView.addItemDecoration(new GridSpacingItemDecoration(spanCount,

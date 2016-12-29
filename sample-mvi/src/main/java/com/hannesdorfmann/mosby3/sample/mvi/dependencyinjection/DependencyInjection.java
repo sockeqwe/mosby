@@ -17,6 +17,7 @@
 
 package com.hannesdorfmann.mosby3.sample.mvi.dependencyinjection;
 
+import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.DetailsInteractor;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.ShoppingCart;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.feed.GroupedPagedFeedLoader;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.feed.HomeFeedLoader;
@@ -25,6 +26,7 @@ import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.http.ProductBackendApi
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.http.ProductBackendApiDecorator;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.searchengine.SearchEngine;
 import com.hannesdorfmann.mosby3.sample.mvi.view.category.CategoryPresenter;
+import com.hannesdorfmann.mosby3.sample.mvi.view.detail.ProductDetailsPresenter;
 import com.hannesdorfmann.mosby3.sample.mvi.view.home.HomePresenter;
 import com.hannesdorfmann.mosby3.sample.mvi.view.menu.MainMenuPresenter;
 import com.hannesdorfmann.mosby3.sample.mvi.view.search.SearchPresenter;
@@ -84,5 +86,9 @@ public class DependencyInjection {
 
   public CategoryPresenter newCategoryPresenter() {
     return new CategoryPresenter(backendApiDecorator);
+  }
+
+  public ProductDetailsPresenter newProductDetailsPresenter() {
+    return new ProductDetailsPresenter(new DetailsInteractor(backendApiDecorator, shoppingCart));
   }
 }

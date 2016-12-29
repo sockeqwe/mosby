@@ -27,7 +27,12 @@
       android:theme="@style/AppTheme">
     <activity android:name=".backstack.BackstackActivityWithChildFragments" />
     <activity android:name=".backstack.AddFragmentTransactionActivity" />
-    <activity android:name=".backstack.ReplaceFragmentTransactionActivity"/>
+    <activity android:name=".backstack.ReplaceFragmentTransactionActivity">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+      </intent-filter>
+    </activity>
   </application>
 
 </manifest>

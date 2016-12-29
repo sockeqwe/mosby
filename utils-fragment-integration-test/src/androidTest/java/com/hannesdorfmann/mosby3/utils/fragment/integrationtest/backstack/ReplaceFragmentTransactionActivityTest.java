@@ -49,8 +49,9 @@ import org.junit.runner.RunWith;
     Thread.sleep(1000);
 
     Assert.assertEquals(ReplaceFragmentTransactionActivity.FRAGMENTS_COUNT,
-        ReplaceTransactionFragment.notOnBackStackCount);
-    Assert.assertEquals(ReplaceFragmentTransactionActivity.FRAGMENTS_COUNT,
         ReplaceTransactionFragment.onBackStackCount);
+
+    Assert.assertEquals(ReplaceFragmentTransactionActivity.FRAGMENTS_COUNT,
+        ReplaceTransactionFragment.notOnBackStackCount);
   }
 }

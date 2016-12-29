@@ -36,7 +36,10 @@ import butterknife.Unbinder;
 import com.hannesdorfmann.mosby3.mvi.MviFragment;
 import com.hannesdorfmann.mosby3.sample.mvi.R;
 import com.hannesdorfmann.mosby3.sample.mvi.SampleApplication;
+import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model.Product;
+import com.hannesdorfmann.mosby3.sample.mvi.view.detail.ProductDetailsActivity;
 import com.hannesdorfmann.mosby3.sample.mvi.view.ui.GridSpacingItemDecoration;
+import com.hannesdorfmann.mosby3.sample.mvi.view.ui.viewholder.ProductViewHolder;
 import com.jakewharton.rxbinding.support.v4.widget.RxSwipeRefreshLayout;
 import com.jakewharton.rxbinding.support.v7.widget.RxRecyclerView;
 import hu.akarnokd.rxjava.interop.RxJavaInterop;
@@ -47,7 +50,8 @@ import timber.log.Timber;
  * @author Hannes Dorfmann
  */
 
-public class HomeFragment extends MviFragment<HomeView, HomePresenter> implements HomeView {
+public class HomeFragment extends MviFragment<HomeView, HomePresenter>
+    implements HomeView, ProductViewHolder.ProductClickedListener {
 
   private HomeAdapter adapter;
   private GridLayoutManager layoutManager;
@@ -64,13 +68,17 @@ public class HomeFragment extends MviFragment<HomeView, HomePresenter> implement
     return SampleApplication.getDependencyInjection(getActivity()).newHomePresenter();
   }
 
+  @Override public void onProductClicked(Product product) {
+    ProductDetailsActivity.start(getActivity(), product);
+  }
+
   @Nullable @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_home, container, false);
     unbinder = ButterKnife.bind(this, view);
 
-    adapter = new HomeAdapter(inflater);
+    adapter = new HomeAdapter(inflater, this);
     layoutManager = new GridLayoutManager(getActivity(), spanCount);
     layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
       @Override public int getSpanSize(int position) {
@@ -94,13 +102,29 @@ public class HomeFragment extends MviFragment<HomeView, HomePresenter> implement
     return view;
   }
 
+  @Override public void onStop() {
+    super.onStop();
+    Timber.d("onStop()");
+  }
+
+  @Override public void onPause() {
+    super.onPause();
+    Timber.d("onPause()");
+  }
+
+  @Override public void onResume() {
+    super.onResume();
+    Timber.d("onResume");
+  }
+
   @Override public void onDestroyView() {
+    Timber.d("onDestroyView");
     super.onDestroyView();
     unbinder.unbind();
   }
 
   @Override public Observable<Boolean> loadFirstPageIntent() {
-    return  Observable.just(true);
+    return Observable.just(true).doOnComplete(() -> Timber.d("firstPage completed"));
   }
 
   @Override public Observable<Boolean> loadNextPageIntent() {
@@ -123,9 +147,7 @@ public class HomeFragment extends MviFragment<HomeView, HomePresenter> implement
 
   @Override public void render(HomeViewState viewState) {
     Timber.d("render %s", viewState);
-    if (!viewState.isLoadingFirstPage()
-        && viewState.getFirstPageError() == null
-        ) {
+    if (!viewState.isLoadingFirstPage() && viewState.getFirstPageError() == null) {
       renderShowData(viewState);
     } else if (viewState.isLoadingFirstPage()) {
       renderFirstPageLoading();

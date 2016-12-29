@@ -37,4 +37,11 @@ public class ProductDetail {
   public boolean isInShoppingCart() {
     return isInShoppingCart;
   }
+
+  @Override public String toString() {
+    return "ProductDetail{" +
+        "product=" + product +
+        ", isInShoppingCart=" + isInShoppingCart +
+        '}';
+  }
 }

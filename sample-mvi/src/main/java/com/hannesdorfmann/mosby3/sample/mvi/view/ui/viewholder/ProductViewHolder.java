@@ -36,19 +36,27 @@ import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model.Product;
  */
 public class ProductViewHolder extends RecyclerView.ViewHolder {
 
-  public static ProductViewHolder create(LayoutInflater inflater) {
-    return new ProductViewHolder(inflater.inflate(R.layout.item_product, null, false));
+  public interface ProductClickedListener {
+    public void onProductClicked(Product product);
+  }
+
+  public static ProductViewHolder create(LayoutInflater inflater, ProductClickedListener listener) {
+    return new ProductViewHolder(inflater.inflate(R.layout.item_product, null, false), listener);
   }
 
   @BindView(R.id.productImage) ImageView image;
   @BindView(R.id.productName) TextView name;
 
-  private ProductViewHolder(View itemView) {
+  private Product product;
+
+  private ProductViewHolder(View itemView, ProductClickedListener clickedListener) {
     super(itemView);
     ButterKnife.bind(this, itemView);
+    itemView.setOnClickListener(v -> clickedListener.onProductClicked(product));
   }
 
   public void bind(Product product) {
+    this.product = product;
     Glide.with(itemView.getContext())
         .load(ProductBackendApi.BASE_IMAGE_URL + product.getImage())
         .centerCrop()

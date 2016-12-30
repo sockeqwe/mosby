@@ -30,6 +30,7 @@ import com.hannesdorfmann.mosby3.sample.mvi.view.home.HomeFragment;
 import com.hannesdorfmann.mosby3.sample.mvi.view.menu.MenuViewState;
 import com.hannesdorfmann.mosby3.sample.mvi.view.search.SearchFragment;
 import io.reactivex.disposables.Disposable;
+import timber.log.Timber;
 
 public class MainActiviy extends AppCompatActivity {
 
@@ -78,9 +79,10 @@ public class MainActiviy extends AppCompatActivity {
         .subscribe(this::showCategoryItems);
   }
 
-  @Override protected void onStop() {
-    super.onStop();
+  @Override protected void onDestroy() {
+    super.onDestroy();
     disposable.dispose();
+    Timber.d("------- Destoryed -------");
   }
 
   @Override protected void onSaveInstanceState(Bundle outState) {

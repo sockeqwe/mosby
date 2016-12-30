@@ -172,7 +172,7 @@ public class FragmentMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
   @Override public void onStop() {
     Activity activity = getActivity();
     boolean retainPresenterInstance =
-        (keepPresenterDuringScreenOrientationChange && activity.isChangingConfigurations())
+        (keepPresenterDuringScreenOrientationChange && !activity.isFinishing())
             || (BackstackAccessor.isFragmentOnBackStack(fragment) && keepPresenterOnBackstack);
 
     presenter.detachView(retainPresenterInstance);

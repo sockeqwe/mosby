@@ -40,9 +40,8 @@ import com.hannesdorfmann.mosby3.mvp.MvpView;
 public class ActivityMviDelegateImpl<V extends MvpView, P extends MviPresenter<V, ?>>
     implements ActivityMviDelegate {
 
-  private static final boolean DEBUG = false;
-  private static final String DEBUG_TAG = ActivityMviDelegateImpl.class.getSimpleName();
-
+  public static final boolean DEBUG = false;
+  private static final String DEBUG_TAG = "ActivityMviDelegateImpl";
   private static final String KEY_MOSBY_VIEW_ID = "com.hannesdorfmann.mosby3.activity.viewState.id";
   private String mosbyViewId = null;
 
@@ -99,7 +98,10 @@ public class ActivityMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
       // Activity is starting for the first time (or keepPresenterInstance == false)
       presenter = createViewIdAndCreatePresenter();
       if (DEBUG) {
-        Log.d(DEBUG_TAG, "new Presenter instance created: " + presenter);
+        Log.d(DEBUG_TAG, "new Presenter instance created: "
+            + presenter
+            + " for "
+            + delegateCallback.getMvpView());
       }
     } else {
       presenter = presenterManager.getPresenter(mosbyViewId, activity);

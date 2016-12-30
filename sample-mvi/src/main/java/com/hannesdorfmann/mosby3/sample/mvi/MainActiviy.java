@@ -68,6 +68,7 @@ public class MainActiviy extends AppCompatActivity {
       showCategoryItems(MainMenuItem.HOME);
     } else {
       title = savedInstanceState.getString(KEY_TOOLBAR_TITLE);
+      toolbar.setTitle(title);
     }
 
     disposable = SampleApplication.getDependencyInjection(this)

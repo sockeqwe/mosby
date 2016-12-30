@@ -36,11 +36,10 @@ public class ViewGroupMviDelegateImpl<V extends MvpView, P extends MviPresenter<
     implements ViewGroupMviDelegate<V, P> {
 
   // TODO allow custom save state hook in
-  private static final boolean DEBUG = false;
-  private static final String DEBUG_TAG = ViewGroupMviDelegateImpl.class.getSimpleName();
+  public static final boolean DEBUG = false;
+  private static final String DEBUG_TAG = "ViewGroupMviDelegateImp";
 
   private ViewGroupMviDelegateCallback<V, P> delegateCallback;
-  private PresenterManager<V, P> orientationChangeManager = new PresenterManager<>();
   private String mosbyViewId;
   private final boolean keepPresenterDuringScreenOrientationChange;
   private PresenterManager<V, P> presenterManager = new PresenterManager<V, P>();
@@ -134,7 +133,7 @@ public class ViewGroupMviDelegateImpl<V extends MvpView, P extends MviPresenter<
       Context context = getContext();
 
       boolean destroyedPermanently =
-          orientationChangeManager.willViewBeDestroyedPermanently(context);
+          presenterManager.willViewBeDestroyedPermanently(context);
 
       if (destroyedPermanently) {
         // Whole activity will be destroyed
@@ -152,7 +151,7 @@ public class ViewGroupMviDelegateImpl<V extends MvpView, P extends MviPresenter<
         presenter.detachView(false);
       } else {
         boolean detachedBecauseOrientationChange =
-            orientationChangeManager.willViewBeDetachedBecauseOrientationChange(context);
+            presenterManager.willViewBeDetachedBecauseOrientationChange(context);
         if (detachedBecauseOrientationChange) {
           // Simple orientation change
           if (DEBUG) {
@@ -172,7 +171,7 @@ public class ViewGroupMviDelegateImpl<V extends MvpView, P extends MviPresenter<
                 + presenter
                 + " because view has been destroyed. Also Presenter is removed permanently from internal cache.");
           }
-          orientationChangeManager.removePresenterAndViewState(mosbyViewId, context);
+          presenterManager.removePresenterAndViewState(mosbyViewId, context);
           mosbyViewId = null;
           presenter.detachView(false);
         }
@@ -183,7 +182,7 @@ public class ViewGroupMviDelegateImpl<V extends MvpView, P extends MviPresenter<
     }
 
     // Important cleanup to avoid memory leaks
-    orientationChangeManager.cleanUp();
+    presenterManager.cleanUp();
   }
 
   /**

@@ -33,7 +33,8 @@ final class PresenterManager<V extends MvpView, P extends MvpPresenter<V>> {
 
   private static final String FRAGMENT_TAG =
       "com.hannesdorfmann.mosby3.mvp.PresenterManagerFragment";
-  private static final boolean DEBUG = false;
+
+  public static final boolean DEBUG = true;
   private static final String DEBUG_TAG = "PresenterManager";
   /**
    * Never use this directly. Always use {@link #getFragmentOrCreate(Context)}
@@ -118,7 +119,7 @@ final class PresenterManager<V extends MvpView, P extends MvpPresenter<V>> {
     getActivity(context).getSupportFragmentManager()
         .beginTransaction()
         .add(internalFragment, FRAGMENT_TAG)
-        .commitNow();
+        .commit(); // TODO should be commitNow() ?
 
     if (DEBUG) {
       Log.d(DEBUG_TAG,
@@ -257,8 +258,6 @@ final class PresenterManager<V extends MvpView, P extends MvpPresenter<V>> {
    */
   public static final class PresenterManagerFragment extends Fragment {
     private Map<String, CacheEntry> cache = new ArrayMap<>();
-    private boolean stopped = true;
-    private boolean destroyed = false;
 
     /**
      * Get a value from cache
@@ -298,12 +297,12 @@ final class PresenterManager<V extends MvpView, P extends MvpPresenter<V>> {
     }
 
     @Override public void onDestroy() {
-      destroyed = true;
+      //destroyed = true;
       cache.clear();
       cache = null;
 
       if (DEBUG) {
-        Log.d(DEBUG_TAG, "internalFragment onDestroy() - clearing cache - " + this);
+        Log.d(DEBUG_TAG, toString() + " internalFragment onDestroy() - clearing cache - " + this);
       }
 
       super.onDestroy();
@@ -311,18 +310,21 @@ final class PresenterManager<V extends MvpView, P extends MvpPresenter<V>> {
 
     @Override public void onStart() {
       super.onStart();
-      stopped = false;
+     /*
       if (DEBUG) {
-        Log.d(DEBUG_TAG, "internalFragment onStart() " + this);
+        Log.d(DEBUG_TAG, toString() + " internalFragment onStart() " + this);
       }
+      */
     }
 
     @Override public void onStop() {
       super.onStop();
-      stopped = true;
+
+      /*
       if (DEBUG) {
-        Log.d(DEBUG_TAG, "internalFragment onStop() " + this);
+        Log.d(DEBUG_TAG, toString() + " internalFragment onStop() " + this);
       }
+      */
     }
 
     /**

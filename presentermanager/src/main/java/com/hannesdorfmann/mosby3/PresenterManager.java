@@ -116,7 +116,8 @@ final class PresenterManager<V extends MvpView, P extends MvpPresenter<V>> {
 
     // No internalFragment found, so create a new one
     this.internalFragment = new PresenterManagerFragment();
-    getActivity(context).getSupportFragmentManager()
+    FragmentActivity activity = getActivity(context);
+    activity.getSupportFragmentManager()
         .beginTransaction()
         .add(internalFragment, FRAGMENT_TAG)
         .commit(); // TODO should be commitNow() ?

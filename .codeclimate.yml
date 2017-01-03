@@ -2,6 +2,8 @@
 engines:
   fixme:
     enabled: true
+  duplication:
+  	enabled: true
 ratings:
   paths: []
 exclude_paths: []

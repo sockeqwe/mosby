@@ -59,6 +59,8 @@ dependencies {
   compile 'com.android.support:cardview-v7:' + rootProject.ext.appcompat7Version
   compile 'com.android.support:design:' + rootProject.ext.appcompat7Version
 
+  compile 'com.sothree.slidinguppanel:library:3.3.1'
+
   compile 'com.squareup.leakcanary:leakcanary-android:' + rootProject.ext.leakcanaryVersion
   compile 'com.jakewharton.timber:timber:4.4.0'
 

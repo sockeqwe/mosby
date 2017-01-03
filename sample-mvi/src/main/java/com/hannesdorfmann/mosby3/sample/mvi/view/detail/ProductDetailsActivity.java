@@ -40,6 +40,7 @@ import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model.Product;
 import com.jakewharton.rxbinding.view.RxView;
 import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import io.reactivex.Observable;
+import java.util.Locale;
 import timber.log.Timber;
 
 public class ProductDetailsActivity extends MviActivity<ProductDetailsView, ProductDetailsPresenter>
@@ -128,7 +129,7 @@ public class ProductDetailsActivity extends MviActivity<ProductDetailsView, Prod
 
     isProductInshoppingCart = state.getDetail().isInShoppingCart();
     product = state.getDetail().getProduct();
-    price.setText("Price: $" + product.getPrice());
+    price.setText("Price: $" + String.format(Locale.US, "%.2f", product.getPrice()));
     description.setText(product.getDescription());
     toolbar.setTitle(product.getName());
     collapsingToolbarLayout.setTitle(product.getName());

@@ -41,8 +41,16 @@ public class BackstackAccessor {
     for (int i = 0; i < backStackSize; i++) {
       BackStackRecord stackEntry = (BackStackRecord) fragmentManager.getBackStackEntryAt(i);
       int opsCount = stackEntry.mOps == null ? 0 : stackEntry.mOps.size();
+      /*
       for (int j = 0; j < opsCount; j++) {
         BackStackRecord.Op op = stackEntry.mOps.get(j);
+        if (op.fragment == fragment) {
+          return true;
+        }
+      }
+        */
+      if (opsCount > 0) {
+        BackStackRecord.Op op = stackEntry.mOps.get(0);
         if (op.fragment == fragment) {
           return true;
         }

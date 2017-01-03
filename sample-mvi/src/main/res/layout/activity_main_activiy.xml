@@ -27,43 +27,59 @@
     tools:openDrawer="start"
     >
 
-
-  <LinearLayout
-      xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto"
-      xmlns:tools="http://schemas.android.com/tools"
+  <com.sothree.slidinguppanel.SlidingUpPanelLayout
+      xmlns:sothree="http://schemas.android.com/apk/res-auto"
+      android:id="@+id/sliding_layout"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:fitsSystemWindows="true"
-      android:orientation="vertical"
-      tools:context="com.hannesdorfmann.mosby3.sample.mvi.MainActiviy"
+      android:gravity="bottom"
+      sothree:umanoPanelHeight="48dp"
+      sothree:umanoShadowHeight="4dp"
       >
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        app:popupTheme="@style/AppTheme.PopupOverlay"
-        />
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical"
+        tools:context="com.hannesdorfmann.mosby3.sample.mvi.MainActiviy"
+        >
+
+      <android.support.v7.widget.Toolbar
+          android:id="@+id/toolbar"
+          android:layout_width="match_parent"
+          android:layout_height="?attr/actionBarSize"
+          android:background="?attr/colorPrimary"
+          app:popupTheme="@style/AppTheme.PopupOverlay"
+          />
 
 
-    <FrameLayout
-        android:id="@+id/fragmentContainer"
+      <FrameLayout
+          android:id="@+id/fragmentContainer"
+          android:layout_width="match_parent"
+          android:layout_height="0dp"
+          android:layout_weight="1"
+          />
+    </LinearLayout>
+
+    <fragment
+        android:id="@+id/shoppingCartFragment"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:name="com.hannesdorfmann.mosby3.sample.mvi.view.shoppingcartlist.ShoppingCartFragment"
         />
-  </LinearLayout>
-
+  </com.sothree.slidinguppanel.SlidingUpPanelLayout>
 
   <com.hannesdorfmann.mosby3.sample.mvi.view.menu.MainMenuLayout
       android:id="@+id/mainMenu"
       android:layout_width="200dp"
       android:layout_height="match_parent"
       android:layout_gravity="start"
-      android:fitsSystemWindows="true"
       android:background="@color/window_background"
+      android:fitsSystemWindows="true"
       />
 
 

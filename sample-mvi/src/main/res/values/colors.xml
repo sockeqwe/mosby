@@ -12,4 +12,6 @@
 
   <color name="loadMoreItems">#9E9E9E</color>
   <color name="mainMenuItemSelected">#CFD8DC</color>
+
+  <color name="selected_shopping_cart_item">#40B0BEC5</color>
 </resources>

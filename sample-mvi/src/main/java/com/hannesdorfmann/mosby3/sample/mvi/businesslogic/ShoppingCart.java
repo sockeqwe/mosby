@@ -53,12 +53,23 @@ public class ShoppingCart {
   }
 
   /**
-   * Adds a product to the shopping cart
+   * Remove a product to the shopping cart
    */
   public Completable removeProduct(Product product) {
     List<Product> updatedShoppingCart = new ArrayList<>();
     updatedShoppingCart.addAll(itemsInShoppingCart.getValue());
     updatedShoppingCart.remove(product);
+    itemsInShoppingCart.onNext(updatedShoppingCart);
+    return Completable.complete();
+  }
+
+  /**
+   * Remove a list of Products from the shopping cart
+   */
+  public Completable removeProducts(List<Product> products) {
+    List<Product> updatedShoppingCart = new ArrayList<>();
+    updatedShoppingCart.addAll(itemsInShoppingCart.getValue());
+    updatedShoppingCart.removeAll(products);
     itemsInShoppingCart.onNext(updatedShoppingCart);
     return Completable.complete();
   }

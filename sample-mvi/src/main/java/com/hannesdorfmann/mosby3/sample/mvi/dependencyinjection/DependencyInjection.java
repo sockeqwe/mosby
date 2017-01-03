@@ -30,6 +30,8 @@ import com.hannesdorfmann.mosby3.sample.mvi.view.detail.ProductDetailsPresenter;
 import com.hannesdorfmann.mosby3.sample.mvi.view.home.HomePresenter;
 import com.hannesdorfmann.mosby3.sample.mvi.view.menu.MainMenuPresenter;
 import com.hannesdorfmann.mosby3.sample.mvi.view.search.SearchPresenter;
+import com.hannesdorfmann.mosby3.sample.mvi.view.shoppingcartlist.ShoppingCartPresenter;
+import io.reactivex.Observable;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.moshi.MoshiConverterFactory;
@@ -52,6 +54,8 @@ public class DependencyInjection {
       new ProductBackendApiDecorator(backendApi);
   private final MainMenuPresenter mainMenuPresenter = new MainMenuPresenter(backendApiDecorator);
   private final ShoppingCart shoppingCart = new ShoppingCart();
+  private final ShoppingCartPresenter shoppingCartPresenter =
+      new ShoppingCartPresenter(shoppingCart, Observable.just(true)); // TODO implement
 
   SearchEngine newSearchEngine() {
     return new SearchEngine(backendApiDecorator);
@@ -90,5 +94,12 @@ public class DependencyInjection {
 
   public ProductDetailsPresenter newProductDetailsPresenter() {
     return new ProductDetailsPresenter(new DetailsInteractor(backendApiDecorator, shoppingCart));
+  }
+
+  /**
+   * This is a singleton
+   */
+  public ShoppingCartPresenter getShoppingCartPresenter() {
+    return shoppingCartPresenter;
   }
 }

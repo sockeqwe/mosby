@@ -18,11 +18,17 @@
 package com.hannesdorfmann.mosby3.sample.mvi.view.selectedcounttoolbar;
 
 import com.hannesdorfmann.mosby3.mvp.MvpView;
+import io.reactivex.Observable;
 
 /**
  * @author Hannes Dorfmann
  */
 public interface SelectedCountToolbarView extends MvpView {
+
+  /**
+   * The intent to clear the selection
+   */
+  public Observable<Boolean> clearSelectionIntent();
 
   /**
    * Render the selected state

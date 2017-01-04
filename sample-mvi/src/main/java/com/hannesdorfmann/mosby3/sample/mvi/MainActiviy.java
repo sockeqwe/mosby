@@ -24,16 +24,20 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model.MainMenuItem;
+import com.hannesdorfmann.mosby3.sample.mvi.dependencyinjection.DependencyInjection;
 import com.hannesdorfmann.mosby3.sample.mvi.view.category.CategoryFragment;
 import com.hannesdorfmann.mosby3.sample.mvi.view.home.HomeFragment;
 import com.hannesdorfmann.mosby3.sample.mvi.view.menu.MenuViewState;
 import com.hannesdorfmann.mosby3.sample.mvi.view.search.SearchFragment;
+import com.hannesdorfmann.mosby3.sample.mvi.view.selectedcounttoolbar.SelectedCountToolbar;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.subjects.PublishSubject;
 import timber.log.Timber;
 
 public class MainActiviy extends AppCompatActivity {
@@ -46,6 +50,7 @@ public class MainActiviy extends AppCompatActivity {
   private Unbinder unbinder;
   private Disposable disposable;
   private String title;
+  private PublishSubject<Boolean> clearSelectionRelay;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -67,7 +72,7 @@ public class MainActiviy extends AppCompatActivity {
     ActionBarDrawerToggle toggle =
         new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open,
             R.string.navigation_drawer_close);
-    drawer.setDrawerListener(toggle);
+    drawer.addDrawerListener(toggle);
     toggle.syncState();
 
     if (savedInstanceState == null) {
@@ -78,13 +83,14 @@ public class MainActiviy extends AppCompatActivity {
     }
 
     // TODO Create a Presenter & ViewState for this Activity
-    disposable = SampleApplication.getDependencyInjection(this)
-        .getMainMenuPresenter()
+    DependencyInjection dependencyInjection = SampleApplication.getDependencyInjection(this);
+    disposable = dependencyInjection.getMainMenuPresenter()
         .getViewStateObservable()
         .filter(state -> state instanceof MenuViewState.DataState)
         .cast(MenuViewState.DataState.class)
         .map(this::findSelectedMenuItem)
         .subscribe(this::showCategoryItems);
+    clearSelectionRelay = dependencyInjection.getClearSelectionRelay();
   }
 
   @Override protected void onDestroy() {
@@ -107,8 +113,12 @@ public class MainActiviy extends AppCompatActivity {
   }
 
   @Override public void onBackPressed() {
-    if (!closeDrawerIfOpen() && ! closeSlidingUpPanelIfOpen()) {
-      super.onBackPressed();
+    SelectedCountToolbar selectedCountToolbar =
+        (SelectedCountToolbar) findViewById(R.id.selectedCountToolbar);
+    if (!closeDrawerIfOpen()) {
+      if (selectedCountToolbar.getVisibility() == View.VISIBLE) {
+        clearSelectionRelay.onNext(true);
+      } else if (!closeSlidingUpPanelIfOpen()) super.onBackPressed();
     }
   }
 
@@ -117,7 +127,7 @@ public class MainActiviy extends AppCompatActivity {
       slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
       return true;
     }
-    return  false;
+    return false;
   }
 
   private boolean closeDrawerIfOpen() {

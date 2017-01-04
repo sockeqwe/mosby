@@ -23,6 +23,7 @@ import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model.Product;
 import io.reactivex.Observable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import timber.log.Timber;
 
@@ -35,17 +36,24 @@ public class ShoppingCartOverviewPresenter
 
   private final ShoppingCart shoppingCart;
   private final Observable<Boolean> deleteSelectedItemsIntent;
+  private final Observable<Boolean> clearSelectionIntent;
 
   public ShoppingCartOverviewPresenter(ShoppingCart shoppingCart,
-      Observable<Boolean> deleteSelectedItemsIntent) {
+      Observable<Boolean> deleteSelectedItemsIntent, Observable<Boolean> clearSelectionIntent) {
     this.shoppingCart = shoppingCart;
     this.deleteSelectedItemsIntent = deleteSelectedItemsIntent;
+    this.clearSelectionIntent = clearSelectionIntent;
   }
 
   @Override protected void bindIntents() {
 
+    //
+    // Observable that emits a list of selected products over time (or empty list if the selection has been cleared)
+    //
     Observable<List<Product>> selectedItemsIntent =
-        intent(ShoppingCartOverviewView::selectItemsIntent).startWith(new ArrayList<Product>(0));
+        intent(ShoppingCartOverviewView::selectItemsIntent).mergeWith(
+            clearSelectionIntent.map(ignore -> Collections.emptyList()))
+            .startWith(new ArrayList<Product>(0));
 
     //
     // Delete Items
@@ -73,8 +81,7 @@ public class ShoppingCartOverviewPresenter
           List<Product> itemsInShoppingCart = (List<Product>) results[0];
           List<Product> selectedProducts = (List<Product>) results[1];
 
-          List<ShoppingCartOverviewItem> items =
-              new ArrayList<ShoppingCartOverviewItem>(itemsInShoppingCart.size());
+          List<ShoppingCartOverviewItem> items = new ArrayList<>(itemsInShoppingCart.size());
           for (int i = 0; i < itemsInShoppingCart.size(); i++) {
             Product p = itemsInShoppingCart.get(i);
             items.add(new ShoppingCartOverviewItem(p, selectedProducts.contains(p)));

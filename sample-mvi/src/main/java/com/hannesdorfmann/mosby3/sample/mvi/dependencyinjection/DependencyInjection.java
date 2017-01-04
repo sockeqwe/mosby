@@ -36,6 +36,7 @@ import com.hannesdorfmann.mosby3.sample.mvi.view.shoppingcartlabel.ShoppingCartL
 import com.hannesdorfmann.mosby3.sample.mvi.view.shoppingcartoverview.ShoppingCartOverviewItem;
 import com.hannesdorfmann.mosby3.sample.mvi.view.shoppingcartoverview.ShoppingCartOverviewPresenter;
 import io.reactivex.Observable;
+import io.reactivex.subjects.PublishSubject;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.moshi.MoshiConverterFactory;
@@ -48,18 +49,23 @@ import retrofit2.converter.moshi.MoshiConverterFactory;
  */
 public class DependencyInjection {
 
+  // Don't do this in your real app
+  private final PublishSubject<Boolean> clearSelectionRelay = PublishSubject.create();
+
+  //
+  // Some singletons
+  //
   private final Retrofit retrofit = new Retrofit.Builder().baseUrl(ProductBackendApi.BASE_URL)
       .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
       .addConverterFactory(MoshiConverterFactory.create())
       .build();
-
   private final ProductBackendApi backendApi = retrofit.create(ProductBackendApi.class);
   private final ProductBackendApiDecorator backendApiDecorator =
       new ProductBackendApiDecorator(backendApi);
   private final MainMenuPresenter mainMenuPresenter = new MainMenuPresenter(backendApiDecorator);
   private final ShoppingCart shoppingCart = new ShoppingCart();
   private final ShoppingCartOverviewPresenter shoppingCartPresenter =
-      new ShoppingCartOverviewPresenter(shoppingCart, Observable.just(true)); // TODO implement
+      new ShoppingCartOverviewPresenter(shoppingCart, Observable.just(true), clearSelectionRelay);
 
   SearchEngine newSearchEngine() {
     return new SearchEngine(backendApiDecorator);
@@ -116,13 +122,20 @@ public class DependencyInjection {
   }
 
   public SelectedCountToolbarPresenter newSelectedCountToolbarPresenter() {
-    return new SelectedCountToolbarPresenter(
+
+    Observable<Integer> selectedItemCountObservable =
         shoppingCartPresenter.getViewStateObservable().map(items -> {
           int selected = 0;
           for (ShoppingCartOverviewItem item : items) {
             if (item.isSelected()) selected++;
           }
           return selected;
-        }));
+        });
+
+    return new SelectedCountToolbarPresenter(selectedItemCountObservable, clearSelectionRelay);
+  }
+
+  public PublishSubject<Boolean> getClearSelectionRelay() {
+    return clearSelectionRelay;
   }
 }

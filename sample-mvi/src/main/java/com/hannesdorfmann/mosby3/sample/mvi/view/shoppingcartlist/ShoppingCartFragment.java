@@ -83,6 +83,7 @@ public class ShoppingCartFragment extends MviFragment<ShoppingCartView, Shopping
   }
 
   @Override public void render(List<ShoppingCartItem> itemsInShoppingCart) {
+    Timber.d("Render %s ", itemsInShoppingCart);
     adapter.setItems(itemsInShoppingCart);
   }
 }

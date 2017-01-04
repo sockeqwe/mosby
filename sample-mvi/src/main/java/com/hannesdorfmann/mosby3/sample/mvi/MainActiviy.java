@@ -24,11 +24,15 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model.MainMenuItem;
 import com.hannesdorfmann.mosby3.sample.mvi.view.category.CategoryFragment;
 import com.hannesdorfmann.mosby3.sample.mvi.view.home.HomeFragment;
 import com.hannesdorfmann.mosby3.sample.mvi.view.menu.MenuViewState;
 import com.hannesdorfmann.mosby3.sample.mvi.view.search.SearchFragment;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import io.reactivex.disposables.Disposable;
 import timber.log.Timber;
 
@@ -36,14 +40,17 @@ public class MainActiviy extends AppCompatActivity {
 
   private static final String KEY_TOOLBAR_TITLE = "toolbarTitle";
 
-  private Toolbar toolbar;
+  @BindView(R.id.toolbar) Toolbar toolbar;
+  @BindView(R.id.drawerLayout) DrawerLayout drawer;
+  @BindView(R.id.sliding_layout) SlidingUpPanelLayout slidingUpPanel;
+  private Unbinder unbinder;
   private Disposable disposable;
   private String title;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main_activiy);
-    toolbar = (Toolbar) findViewById(R.id.toolbar);
+    setContentView(R.layout.activity_main);
+    unbinder = ButterKnife.bind(this);
     toolbar.setTitle("Mosby MVI");
     toolbar.inflateMenu(R.menu.activity_main_toolbar);
     toolbar.setOnMenuItemClickListener(item -> {
@@ -57,7 +64,6 @@ public class MainActiviy extends AppCompatActivity {
       return true;
     });
 
-    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawerLayout);
     ActionBarDrawerToggle toggle =
         new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open,
             R.string.navigation_drawer_close);
@@ -71,6 +77,7 @@ public class MainActiviy extends AppCompatActivity {
       toolbar.setTitle(title);
     }
 
+    // TODO Create a Presenter & ViewState for this Activity
     disposable = SampleApplication.getDependencyInjection(this)
         .getMainMenuPresenter()
         .getViewStateObservable()
@@ -82,6 +89,7 @@ public class MainActiviy extends AppCompatActivity {
 
   @Override protected void onDestroy() {
     super.onDestroy();
+    unbinder.unbind();
     disposable.dispose();
     Timber.d("------- Destoryed -------");
   }

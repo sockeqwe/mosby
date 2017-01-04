@@ -37,7 +37,7 @@ public class ShoppingCart {
   /**
    * An observable to observe the items in the shopping cart
    */
-  public Observable<List<Product>> shoppingCart() {
+  public Observable<List<Product>> itemsInShoppingCart() {
     return itemsInShoppingCart;
   }
 

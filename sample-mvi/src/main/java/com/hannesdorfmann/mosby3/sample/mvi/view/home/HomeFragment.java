@@ -102,23 +102,8 @@ public class HomeFragment extends MviFragment<HomeView, HomePresenter>
     return view;
   }
 
-  @Override public void onStop() {
-    super.onStop();
-    Timber.d("onStop()");
-  }
-
-  @Override public void onPause() {
-    super.onPause();
-    Timber.d("onPause()");
-  }
-
-  @Override public void onResume() {
-    super.onResume();
-    Timber.d("onResume");
-  }
 
   @Override public void onDestroyView() {
-    Timber.d("onDestroyView");
     super.onDestroyView();
     unbinder.unbind();
   }

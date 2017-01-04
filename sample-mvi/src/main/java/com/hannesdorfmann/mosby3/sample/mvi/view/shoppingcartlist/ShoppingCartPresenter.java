@@ -24,6 +24,7 @@ import io.reactivex.Observable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import timber.log.Timber;
 
 /**
  * @author Hannes Dorfmann
@@ -49,18 +50,21 @@ public class ShoppingCartPresenter
     //
     // Delete Items
     //
+
     /*
     selectedItemsIntent.filter(items -> !items.isEmpty())
+        .concatWith(deleteSelectedItemsIntent)
         .switchMap(selectedItems -> shoppingCart.removeProducts(selectedItems).toObservable())
         .subscribe();
-        */
+*/
 
     //
     // Display a list of items in the shopping cart
     //
     Observable<List<Product>> shoppingCartContentObservable =
-        intent(ShoppingCartView::loadItemsIntent).flatMap(ignored -> shoppingCart.shoppingCart());
-
+        intent(ShoppingCartView::loadItemsIntent).doOnNext(
+            ignored -> Timber.d("load ShoppingCart intent"))
+            .flatMap(ignored -> shoppingCart.itemsInShoppingCart());
     List<Observable<?>> combiningObservables =
         Arrays.asList(shoppingCartContentObservable, selectedItemsIntent);
 

@@ -248,7 +248,7 @@ public class HomePresenter extends MviBasePresenter<HomeView, HomeViewState> {
 
     throw new RuntimeException("No "
         + AdditionalItemsLoadable.class.getSimpleName()
-        + " has been fround for category = "
+        + " has been found for category = "
         + categoryName);
   }
 }

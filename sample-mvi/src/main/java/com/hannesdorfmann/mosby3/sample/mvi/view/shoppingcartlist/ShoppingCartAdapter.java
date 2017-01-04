@@ -29,6 +29,7 @@ import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
 import java.util.ArrayList;
 import java.util.List;
+import timber.log.Timber;
 
 /**
  * @author Hannes Dorfmann
@@ -76,7 +77,6 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartItemVi
   }
 
   @Override public boolean onItemLongPressed(ShoppingCartItem product) {
-
     toggleSelection(product);
     return true;
   }
@@ -103,7 +103,7 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartItemVi
         }
 
         @Override public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-          return false;
+          return beforeItems.get(oldItemPosition).equals(items.get(newItemPosition));
         }
       });
       diffResult.dispatchUpdatesTo(this);
@@ -114,8 +114,10 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartItemVi
     List<Product> selectedItems = new ArrayList<>();
     for (ShoppingCartItem item : items) {
 
-      if (item == toToggle && !toToggle.isSelected()) {
-        selectedItems.add(item.getProduct());
+      if (item.equals(toToggle)) {
+        if (!toToggle.isSelected()) {
+          selectedItems.add(item.getProduct());
+        }
       } else if (item.isSelected()) {
         selectedItems.add(item.getProduct());
       }
@@ -125,6 +127,6 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartItemVi
   }
 
   public Observable<List<Product>> selectedItemsObservable() {
-    return selectedProducts;
+    return selectedProducts.doOnNext(selected -> Timber.d("selected %s ", selected));
   }
 }

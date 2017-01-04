@@ -44,7 +44,7 @@ public class DetailsInteractor {
    */
   public Observable<ProductDetail> getDetails(int productId) {
     List<Observable<?>> observables =
-        Arrays.asList(backendApi.getProduct(productId), shoppingCart.shoppingCart());
+        Arrays.asList(backendApi.getProduct(productId), shoppingCart.itemsInShoppingCart());
 
     return Observable.combineLatest(observables, objects -> {
       Product product = (Product) objects[0];

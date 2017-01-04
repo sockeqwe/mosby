@@ -80,7 +80,7 @@ public class ShoppingCartItemViewHolder extends RecyclerView.ViewHolder {
         .into(image);
 
     name.setText(product.getName());
-    price.setText(String.format(Locale.US, "%.2f", product.getPrice()));
+    price.setText(String.format(Locale.US, "$ %.2f", product.getPrice()));
 
     if (item.isSelected()) {
       if (Build.VERSION.SDK_INT >= 23) {

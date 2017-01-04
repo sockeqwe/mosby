@@ -33,7 +33,7 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:gravity="bottom"
-      sothree:umanoPanelHeight="48dp"
+      sothree:umanoPanelHeight="?attr/actionBarSize"
       sothree:umanoShadowHeight="4dp"
       >
 

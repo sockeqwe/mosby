@@ -15,7 +15,7 @@
  *
  */
 
-package com.hannesdorfmann.mosby3.sample.mvi.view.shoppingcartlist;
+package com.hannesdorfmann.mosby3.sample.mvi.view.shoppingcartoverview;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -42,10 +42,10 @@ import timber.log.Timber;
  *
  * @author Hannes Dorfmann
  */
-public class ShoppingCartFragment extends MviFragment<ShoppingCartView, ShoppingCartPresenter>
-    implements ShoppingCartView {
+public class ShoppingCartOverviewFragment extends MviFragment<ShoppingCartOverviewView, ShoppingCartOverviewPresenter>
+    implements ShoppingCartOverviewView {
 
-  private ShoppingCartAdapter adapter;
+  private ShoppingCartOverviewAdapter adapter;
   private Unbinder unbinder;
   @BindView(R.id.shoppingCartRecyclerView) RecyclerView recyclerView;
 
@@ -54,7 +54,7 @@ public class ShoppingCartFragment extends MviFragment<ShoppingCartView, Shopping
       @Nullable Bundle savedInstanceState) {
     View v = inflater.inflate(R.layout.fragment_shopping_cart, container, false);
     unbinder = ButterKnife.bind(this, v);
-    adapter = new ShoppingCartAdapter(getActivity());
+    adapter = new ShoppingCartOverviewAdapter(getActivity());
     recyclerView.setAdapter(adapter);
     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     return v;
@@ -65,7 +65,7 @@ public class ShoppingCartFragment extends MviFragment<ShoppingCartView, Shopping
     unbinder.unbind();
   }
 
-  @NonNull @Override public ShoppingCartPresenter createPresenter() {
+  @NonNull @Override public ShoppingCartOverviewPresenter createPresenter() {
     Timber.d("Create Presenter");
     return SampleApplication.getDependencyInjection(getActivity()).getShoppingCartPresenter();
   }
@@ -82,7 +82,7 @@ public class ShoppingCartFragment extends MviFragment<ShoppingCartView, Shopping
     return null;
   }
 
-  @Override public void render(List<ShoppingCartItem> itemsInShoppingCart) {
+  @Override public void render(List<ShoppingCartOverviewItem> itemsInShoppingCart) {
     Timber.d("Render %s ", itemsInShoppingCart);
     adapter.setItems(itemsInShoppingCart);
   }

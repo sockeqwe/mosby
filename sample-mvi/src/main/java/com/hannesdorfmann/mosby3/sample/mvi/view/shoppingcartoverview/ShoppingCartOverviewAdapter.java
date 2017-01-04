@@ -15,7 +15,7 @@
  *
  */
 
-package com.hannesdorfmann.mosby3.sample.mvi.view.shoppingcartlist;
+package com.hannesdorfmann.mosby3.sample.mvi.view.shoppingcartoverview;
 
 import android.app.Activity;
 import android.support.v7.util.DiffUtil;
@@ -35,15 +35,15 @@ import timber.log.Timber;
  * @author Hannes Dorfmann
  */
 
-public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartItemViewHolder>
+public class ShoppingCartOverviewAdapter extends RecyclerView.Adapter<ShoppingCartItemViewHolder>
     implements ShoppingCartItemViewHolder.ItemSelectedListener {
 
   private final LayoutInflater layoutInflater;
   private final Activity activity;
-  private List<ShoppingCartItem> items;
+  private List<ShoppingCartOverviewItem> items;
   private PublishSubject<List<Product>> selectedProducts = PublishSubject.create();
 
-  public ShoppingCartAdapter(Activity activity) {
+  public ShoppingCartOverviewAdapter(Activity activity) {
     this.activity = activity;
     this.layoutInflater = activity.getLayoutInflater();
   }
@@ -61,14 +61,14 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartItemVi
   }
 
   public boolean isInSelectionMode() {
-    for (ShoppingCartItem item : items) {
+    for (ShoppingCartOverviewItem item : items) {
       if (item.isSelected()) return true;
     }
 
     return false;
   }
 
-  @Override public void onItemClicked(ShoppingCartItem product) {
+  @Override public void onItemClicked(ShoppingCartOverviewItem product) {
     if (isInSelectionMode()) {
       toggleSelection(product);
     } else {
@@ -76,13 +76,13 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartItemVi
     }
   }
 
-  @Override public boolean onItemLongPressed(ShoppingCartItem product) {
+  @Override public boolean onItemLongPressed(ShoppingCartOverviewItem product) {
     toggleSelection(product);
     return true;
   }
 
-  public void setItems(List<ShoppingCartItem> items) {
-    List<ShoppingCartItem> beforeItems = this.items;
+  public void setItems(List<ShoppingCartOverviewItem> items) {
+    List<ShoppingCartOverviewItem> beforeItems = this.items;
     this.items = items;
     if (beforeItems == null) {
       notifyDataSetChanged();
@@ -110,9 +110,9 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartItemVi
     }
   }
 
-  private void toggleSelection(ShoppingCartItem toToggle) {
+  private void toggleSelection(ShoppingCartOverviewItem toToggle) {
     List<Product> selectedItems = new ArrayList<>();
-    for (ShoppingCartItem item : items) {
+    for (ShoppingCartOverviewItem item : items) {
 
       if (item.equals(toToggle)) {
         if (!toToggle.isSelected()) {

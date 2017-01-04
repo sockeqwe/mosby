@@ -107,9 +107,17 @@ public class MainActiviy extends AppCompatActivity {
   }
 
   @Override public void onBackPressed() {
-    if (!closeDrawerIfOpen()) {
+    if (!closeDrawerIfOpen() && ! closeSlidingUpPanelIfOpen()) {
       super.onBackPressed();
     }
+  }
+
+  private boolean closeSlidingUpPanelIfOpen() {
+    if (slidingUpPanel.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED) {
+      slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+      return true;
+    }
+    return  false;
   }
 
   private boolean closeDrawerIfOpen() {

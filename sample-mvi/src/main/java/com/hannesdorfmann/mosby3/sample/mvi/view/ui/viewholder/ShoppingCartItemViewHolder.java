@@ -31,7 +31,7 @@ import com.bumptech.glide.Glide;
 import com.hannesdorfmann.mosby3.sample.mvi.R;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.http.ProductBackendApi;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model.Product;
-import com.hannesdorfmann.mosby3.sample.mvi.view.shoppingcartlist.ShoppingCartItem;
+import com.hannesdorfmann.mosby3.sample.mvi.view.shoppingcartoverview.ShoppingCartOverviewItem;
 import java.util.Locale;
 
 /**
@@ -41,9 +41,9 @@ import java.util.Locale;
 public class ShoppingCartItemViewHolder extends RecyclerView.ViewHolder {
 
   public interface ItemSelectedListener {
-    public void onItemClicked(ShoppingCartItem product);
+    public void onItemClicked(ShoppingCartOverviewItem product);
 
-    public boolean onItemLongPressed(ShoppingCartItem product);
+    public boolean onItemLongPressed(ShoppingCartOverviewItem product);
   }
 
   public static ShoppingCartItemViewHolder create(LayoutInflater inflater,
@@ -53,7 +53,7 @@ public class ShoppingCartItemViewHolder extends RecyclerView.ViewHolder {
   }
 
   private final ItemSelectedListener selectedListener;
-  private ShoppingCartItem item;
+  private ShoppingCartOverviewItem item;
   private final Drawable selectedDrawable;
   @BindView(R.id.image) ImageView image;
   @BindView(R.id.name) TextView name;
@@ -70,7 +70,7 @@ public class ShoppingCartItemViewHolder extends RecyclerView.ViewHolder {
     ButterKnife.bind(this, itemView);
   }
 
-  public void bind(ShoppingCartItem item) {
+  public void bind(ShoppingCartOverviewItem item) {
     this.item = item;
     Product product = item.getProduct();
 

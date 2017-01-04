@@ -21,25 +21,50 @@
     android:layout_height="match_parent"
     >
 
-  <Button
+  <com.hannesdorfmann.mosby3.sample.mvi.view.checkoutbutton.CheckoutButton
       android:id="@+id/checkoutButton"
       android:layout_width="wrap_content"
       android:layout_height="40dp"
-      android:layout_centerHorizontal="true"
-      android:text="Checkout"
-      android:layout_marginTop="4dp"
+      android:layout_alignParentRight="true"
       android:layout_marginBottom="4dp"
+      android:layout_marginLeft="16dp"
+      android:layout_marginRight="16dp"
+      android:layout_marginTop="4dp"
+      android:text="Checkout"
       />
 
+  <com.hannesdorfmann.mosby3.sample.mvi.view.shoppingcartlabel.ShoppingCartLabel
+      android:id="@+id/shoppingCartLabel"
+      android:layout_width="wrap_content"
+      android:layout_height="40dp"
+      android:layout_alignParentLeft="true"
+      android:layout_marginBottom="4dp"
+      android:layout_marginLeft="16dp"
+      android:layout_marginTop="4dp"
+      android:layout_toLeftOf="@+id/checkoutButton"
+      android:clickable="false"
+      android:gravity="left|center_vertical"
+      android:maxLines="1"
+      style="@style/Widget.AppCompat.Button.Borderless.Colored"
+      />
+
+
+  <com.hannesdorfmann.mosby3.sample.mvi.view.selectedcounttoolbar.SelectedCountToolbar
+      android:id="@+id/selectedCountToolbar"
+      android:layout_width="match_parent"
+      android:layout_height="?attr/actionBarSize"
+      android:background="@color/accent"
+      android:elevation="4dp"
+      />
 
   <android.support.v7.widget.RecyclerView
       android:id="@+id/shoppingCartRecyclerView"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:layout_below="@id/checkoutButton"
-      android:paddingTop="8dp"
-      android:paddingBottom="8dp"
       android:clipToPadding="false"
+      android:paddingBottom="8dp"
+      android:paddingTop="8dp"
       />
 
 

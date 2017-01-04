@@ -32,11 +32,13 @@ import com.hannesdorfmann.mosby3.mvp.MvpView;
  * <ul>
  * <li>{@link #onAttachedToWindow()}</li>
  * <li>{@link #onDetachedFromWindow()}</li>
+ * <li>{@link #onSaveInstanceState()}</li>
+ * <li>{@link #onRestoreInstanceState(Parcelable)} ()}</li>
  * </ul>
  * </p>
  *
  * @author Hannes Dorfmann
- * @since 1.1.0
+ * @since 3.0.0
  */
 public interface ViewGroupMviDelegate<V extends MvpView, P extends MvpPresenter<V>> {
 

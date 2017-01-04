@@ -15,7 +15,7 @@
  *
  */
 
-package com.hannesdorfmann.mosby3.sample.mvi.view.shoppingcartlist;
+package com.hannesdorfmann.mosby3.sample.mvi.view.shoppingcartoverview;
 
 import com.hannesdorfmann.mosby3.mvi.MviBasePresenter;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.ShoppingCart;
@@ -30,13 +30,13 @@ import timber.log.Timber;
  * @author Hannes Dorfmann
  */
 
-public class ShoppingCartPresenter
-    extends MviBasePresenter<ShoppingCartView, List<ShoppingCartItem>> {
+public class ShoppingCartOverviewPresenter
+    extends MviBasePresenter<ShoppingCartOverviewView, List<ShoppingCartOverviewItem>> {
 
   private final ShoppingCart shoppingCart;
   private final Observable<Boolean> deleteSelectedItemsIntent;
 
-  public ShoppingCartPresenter(ShoppingCart shoppingCart,
+  public ShoppingCartOverviewPresenter(ShoppingCart shoppingCart,
       Observable<Boolean> deleteSelectedItemsIntent) {
     this.shoppingCart = shoppingCart;
     this.deleteSelectedItemsIntent = deleteSelectedItemsIntent;
@@ -45,7 +45,7 @@ public class ShoppingCartPresenter
   @Override protected void bindIntents() {
 
     Observable<List<Product>> selectedItemsIntent =
-        intent(ShoppingCartView::selectItemsIntent).startWith(new ArrayList<Product>(0));
+        intent(ShoppingCartOverviewView::selectItemsIntent).startWith(new ArrayList<Product>(0));
 
     //
     // Delete Items
@@ -62,26 +62,26 @@ public class ShoppingCartPresenter
     // Display a list of items in the shopping cart
     //
     Observable<List<Product>> shoppingCartContentObservable =
-        intent(ShoppingCartView::loadItemsIntent).doOnNext(
+        intent(ShoppingCartOverviewView::loadItemsIntent).doOnNext(
             ignored -> Timber.d("load ShoppingCart intent"))
             .flatMap(ignored -> shoppingCart.itemsInShoppingCart());
     List<Observable<?>> combiningObservables =
         Arrays.asList(shoppingCartContentObservable, selectedItemsIntent);
 
-    Observable<List<ShoppingCartItem>> shoppingCartContentWithSelectedItems =
+    Observable<List<ShoppingCartOverviewItem>> shoppingCartContentWithSelectedItems =
         Observable.combineLatest(combiningObservables, results -> {
           List<Product> itemsInShoppingCart = (List<Product>) results[0];
           List<Product> selectedProducts = (List<Product>) results[1];
 
-          List<ShoppingCartItem> items =
-              new ArrayList<ShoppingCartItem>(itemsInShoppingCart.size());
+          List<ShoppingCartOverviewItem> items =
+              new ArrayList<ShoppingCartOverviewItem>(itemsInShoppingCart.size());
           for (int i = 0; i < itemsInShoppingCart.size(); i++) {
             Product p = itemsInShoppingCart.get(i);
-            items.add(new ShoppingCartItem(p, selectedProducts.contains(p)));
+            items.add(new ShoppingCartOverviewItem(p, selectedProducts.contains(p)));
           }
           return items;
         });
 
-    subscribeViewState(shoppingCartContentWithSelectedItems, ShoppingCartView::render);
+    subscribeViewState(shoppingCartContentWithSelectedItems, ShoppingCartOverviewView::render);
   }
 }

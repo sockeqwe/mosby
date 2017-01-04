@@ -15,21 +15,21 @@
  *
  */
 
-package com.hannesdorfmann.mosby3.sample.mvi.view.shoppingcartlist;
+package com.hannesdorfmann.mosby3.sample.mvi.view.shoppingcartoverview;
 
 import android.support.annotation.NonNull;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model.Product;
 
 /**
- * Is part of the view state for {@link ShoppingCartView}
+ * Is part of the view state for {@link ShoppingCartOverviewView}
  *
  * @author Hannes Dorfmann
  */
-public class ShoppingCartItem {
+public class ShoppingCartOverviewItem {
   private final Product product;
   private final boolean isSelected;
 
-  public ShoppingCartItem(@NonNull Product product, boolean isSelected) {
+  public ShoppingCartOverviewItem(@NonNull Product product, boolean isSelected) {
     this.product = product;
     this.isSelected = isSelected;
   }
@@ -53,7 +53,7 @@ public class ShoppingCartItem {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
 
-    ShoppingCartItem item = (ShoppingCartItem) o;
+    ShoppingCartOverviewItem item = (ShoppingCartOverviewItem) o;
 
     if (isSelected != item.isSelected) return false;
     return product.equals(item.product);

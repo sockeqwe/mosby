@@ -15,7 +15,7 @@
  *
  */
 
-package com.hannesdorfmann.mosby3.sample.mvi.view.shoppingcartlist;
+package com.hannesdorfmann.mosby3.sample.mvi.view.shoppingcartoverview;
 
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model.Product;
@@ -27,7 +27,7 @@ import java.util.List;
  *
  * @author Hannes Dorfmann
  */
-public interface ShoppingCartView extends MvpView {
+public interface ShoppingCartOverviewView extends MvpView {
 
   /**
    * Intent to load the items from the shopping cart
@@ -47,5 +47,5 @@ public interface ShoppingCartView extends MvpView {
   /**
    * Renders the View with the given items that are in the shopping cart right now
    */
-  void render(List<ShoppingCartItem> itemsInShoppingCart);
+  void render(List<ShoppingCartOverviewItem> itemsInShoppingCart);
 }

@@ -26,11 +26,15 @@ import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.http.ProductBackendApi
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.http.ProductBackendApiDecorator;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.searchengine.SearchEngine;
 import com.hannesdorfmann.mosby3.sample.mvi.view.category.CategoryPresenter;
+import com.hannesdorfmann.mosby3.sample.mvi.view.checkoutbutton.CheckoutButtonPresenter;
 import com.hannesdorfmann.mosby3.sample.mvi.view.detail.ProductDetailsPresenter;
 import com.hannesdorfmann.mosby3.sample.mvi.view.home.HomePresenter;
 import com.hannesdorfmann.mosby3.sample.mvi.view.menu.MainMenuPresenter;
 import com.hannesdorfmann.mosby3.sample.mvi.view.search.SearchPresenter;
-import com.hannesdorfmann.mosby3.sample.mvi.view.shoppingcartlist.ShoppingCartPresenter;
+import com.hannesdorfmann.mosby3.sample.mvi.view.selectedcounttoolbar.SelectedCountToolbarPresenter;
+import com.hannesdorfmann.mosby3.sample.mvi.view.shoppingcartlabel.ShoppingCartLabelPresenter;
+import com.hannesdorfmann.mosby3.sample.mvi.view.shoppingcartoverview.ShoppingCartOverviewItem;
+import com.hannesdorfmann.mosby3.sample.mvi.view.shoppingcartoverview.ShoppingCartOverviewPresenter;
 import io.reactivex.Observable;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -54,8 +58,8 @@ public class DependencyInjection {
       new ProductBackendApiDecorator(backendApi);
   private final MainMenuPresenter mainMenuPresenter = new MainMenuPresenter(backendApiDecorator);
   private final ShoppingCart shoppingCart = new ShoppingCart();
-  private final ShoppingCartPresenter shoppingCartPresenter =
-      new ShoppingCartPresenter(shoppingCart, Observable.just(true)); // TODO implement
+  private final ShoppingCartOverviewPresenter shoppingCartPresenter =
+      new ShoppingCartOverviewPresenter(shoppingCart, Observable.just(true)); // TODO implement
 
   SearchEngine newSearchEngine() {
     return new SearchEngine(backendApiDecorator);
@@ -99,7 +103,26 @@ public class DependencyInjection {
   /**
    * This is a singleton
    */
-  public ShoppingCartPresenter getShoppingCartPresenter() {
+  public ShoppingCartOverviewPresenter getShoppingCartPresenter() {
     return shoppingCartPresenter;
+  }
+
+  public ShoppingCartLabelPresenter newShoppingCartLabelPresenter() {
+    return new ShoppingCartLabelPresenter(shoppingCart);
+  }
+
+  public CheckoutButtonPresenter newCheckoutButtonPresenter() {
+    return new CheckoutButtonPresenter(shoppingCart);
+  }
+
+  public SelectedCountToolbarPresenter newSelectedCountToolbarPresenter() {
+    return new SelectedCountToolbarPresenter(
+        shoppingCartPresenter.getViewStateObservable().map(items -> {
+          int selected = 0;
+          for (ShoppingCartOverviewItem item : items) {
+            if (item.isSelected()) selected++;
+          }
+          return selected;
+        }));
   }
 }

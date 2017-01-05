@@ -46,7 +46,7 @@ public class GroupedPagedFeedLoader {
   }
 
   public Observable<List<FeedItem>> getGroupedNextPage() {
-    return groupByCategory(feedLoader.nextPage()).delay(5, TimeUnit.SECONDS);
+    return groupByCategory(feedLoader.nextPage()).delay(2, TimeUnit.SECONDS);
   }
 
   public Observable<List<FeedItem>> getNewestPage() {

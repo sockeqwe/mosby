@@ -22,6 +22,7 @@ import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model.FeedItem;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model.Product;
 import io.reactivex.Observable;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Builds the HomeFeed
@@ -42,21 +43,21 @@ public class HomeFeedLoader {
    * Typically triggered with a pull-to-refresh
    */
   public Observable<List<FeedItem>> loadNewestPage() {
-    return groupedLoader.getNewestPage();
+    return groupedLoader.getNewestPage().delay(2, TimeUnit.SECONDS);
   }
 
   /**
    * Loads the first page
    */
   public Observable<List<FeedItem>> loadFirstPage() {
-    return groupedLoader.getGroupedFirstPage();
+    return groupedLoader.getGroupedFirstPage().delay(2, TimeUnit.SECONDS);
   }
 
   /**
    * loads the next page (pagination)
    */
   public Observable<List<FeedItem>> loadNextPage() {
-    return groupedLoader.getGroupedNextPage();
+    return groupedLoader.getGroupedNextPage().delay(2, TimeUnit.SECONDS);
   }
 
   /**
@@ -65,6 +66,6 @@ public class HomeFeedLoader {
    * @param categoryName the category name
    */
   public Observable<List<Product>> loadProductsOfGroup(String categoryName) {
-    return backendApi.getAllProductsOfCategory(categoryName);
+    return backendApi.getAllProductsOfCategory(categoryName).delay(3, TimeUnit.SECONDS);
   }
 }

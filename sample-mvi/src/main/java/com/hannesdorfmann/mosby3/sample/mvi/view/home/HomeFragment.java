@@ -137,6 +137,8 @@ public class HomeFragment extends MviFragment<HomeView, HomePresenter>
       renderFirstPageLoading();
     } else if (viewState.getFirstPageError() != null) {
       renderFirstPageError();
+    } else {
+      throw new IllegalStateException("Unknown view state " + viewState);
     }
   }
 
@@ -151,7 +153,17 @@ public class HomeFragment extends MviFragment<HomeView, HomePresenter>
       recyclerView.smoothScrollToPosition(adapter.getItemCount());
     }
     adapter.setItems(state.getData());
+
+    boolean pullToRefreshFinished = swipeRefreshLayout.isRefreshing()
+        && !state.isLoadingPullToRefresh()
+        && state.getPullToRefreshError() == null;
+    if (pullToRefreshFinished) {
+      // Swipe to refresh finished successfully so scroll to the top of the list (to see inserted items)
+      recyclerView.smoothScrollToPosition(0);
+    }
+
     swipeRefreshLayout.setRefreshing(state.isLoadingPullToRefresh());
+
     if (state.getNextPageError() != null) {
       Snackbar.make(getView(), R.string.error_unknown, Snackbar.LENGTH_LONG)
           .show(); // TODO callback

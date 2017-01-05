@@ -63,12 +63,12 @@ public class HomePresenter extends MviBasePresenter<HomeView, HomeViewState> {
     Observable<PartialHomeViewState> pullToRefreshObservable =
         intent(HomeView::pullToRefreshIntent).doOnNext(
             ignored -> Timber.d("intent: pull to refresh"))
-            .flatMap(ignored -> feedLoader.loadNewestPage().subscribeOn(Schedulers.io()))
-            .map(
-                items -> (PartialHomeViewState) new PartialHomeViewState.PullToRefreshLoaded(items))
-            .startWith(new PartialHomeViewState.PullToRefreshLoading())
-            .onErrorReturn(PartialHomeViewState.PullToRefeshLoadingError::new)
-            .subscribeOn(Schedulers.io());
+            .flatMap(ignored -> feedLoader.loadNewestPage()
+                .subscribeOn(Schedulers.io())
+                .map(items -> (PartialHomeViewState) new PartialHomeViewState.PullToRefreshLoaded(
+                    items))
+                .startWith(new PartialHomeViewState.PullToRefreshLoading())
+                .onErrorReturn(PartialHomeViewState.PullToRefeshLoadingError::new));
 
     Observable<PartialHomeViewState> loadMoreFromGroup =
         intent(HomeView::loadAllProductsFromCategoryIntent).doOnNext(
@@ -151,7 +151,7 @@ public class HomePresenter extends MviBasePresenter<HomeView, HomeViewState> {
       data.addAll(((PartialHomeViewState.PullToRefreshLoaded) newState).getData());
       data.addAll(previousState.getData());
       return previousState.builder()
-          .pullToRefreshLoading(true)
+          .pullToRefreshLoading(false)
           .pullToRefreshError(null)
           .data(data)
           .build();

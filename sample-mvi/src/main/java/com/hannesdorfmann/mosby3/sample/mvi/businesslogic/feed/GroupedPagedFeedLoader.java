@@ -24,7 +24,6 @@ import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model.SectionHeader;
 import io.reactivex.Observable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Takes a {@link PagingFeedLoader} but groups the resulting list of products into categories.
@@ -46,7 +45,7 @@ public class GroupedPagedFeedLoader {
   }
 
   public Observable<List<FeedItem>> getGroupedNextPage() {
-    return groupByCategory(feedLoader.nextPage()).delay(2, TimeUnit.SECONDS);
+    return groupByCategory(feedLoader.nextPage());
   }
 
   public Observable<List<FeedItem>> getNewestPage() {

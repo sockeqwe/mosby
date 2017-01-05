@@ -102,7 +102,6 @@ public class HomeFragment extends MviFragment<HomeView, HomePresenter>
     return view;
   }
 
-
   @Override public void onDestroyView() {
     super.onDestroyView();
     unbinder.unbind();
@@ -114,10 +113,10 @@ public class HomeFragment extends MviFragment<HomeView, HomePresenter>
 
   @Override public Observable<Boolean> loadNextPageIntent() {
     return RxJavaInterop.toV2Observable(RxRecyclerView.scrollStateChanges(recyclerView))
-        .filter(event -> adapter.isLoadingNextPage())
+        .filter(event -> !adapter.isLoadingNextPage())
         .filter(event -> event == RecyclerView.SCROLL_STATE_IDLE)
-        .filter(
-            event -> layoutManager.findLastVisibleItemPosition() == adapter.getItems().size() - 1)
+        .filter(event -> layoutManager.findLastCompletelyVisibleItemPosition()
+            == adapter.getItems().size() - 1)
         .map(integer -> true);
   }
 

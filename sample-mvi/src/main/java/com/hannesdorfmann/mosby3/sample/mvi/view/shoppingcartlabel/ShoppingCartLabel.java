@@ -30,9 +30,9 @@ import io.reactivex.Observable;
 import timber.log.Timber;
 
 /**
+ * A UI widget that displays how many items are in the shopping cart
  * @author Hannes Dorfmann
  */
-
 public class ShoppingCartLabel extends AppCompatButton implements ShoppingCartLabelView,
     ViewGroupMviDelegateCallback<ShoppingCartLabelView, ShoppingCartLabelPresenter> {
 

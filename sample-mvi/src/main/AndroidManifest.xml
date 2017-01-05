@@ -13,7 +13,7 @@
       android:theme="@style/AppTheme">
     <activity
         android:label="@string/title_activity_main_activiy"
-        android:name=".MainActiviy"
+        android:name=".MainActivity"
         android:theme="@style/AppTheme">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
@@ -23,11 +23,11 @@
     <activity
         android:label="@string/title_activity_product_detail"
         android:name=".view.detail.ProductDetailsActivity"
-        android:parentActivityName=".MainActiviy"
+        android:parentActivityName=".MainActivity"
         android:theme="@style/AppTheme">
       <meta-data
           android:name="android.support.PARENT_ACTIVITY"
-          android:value="com.hannesdorfmann.mosby3.sample.mvi.MainActiviy"/>
+          android:value="com.hannesdorfmann.mosby3.sample.mvi.MainActivity"/>
     </activity>
   </application>
 

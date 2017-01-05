@@ -45,7 +45,7 @@
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
         android:orientation="vertical"
-        tools:context="com.hannesdorfmann.mosby3.sample.mvi.MainActiviy"
+        tools:context="com.hannesdorfmann.mosby3.sample.mvi.MainActivity"
         >
 
       <android.support.v7.widget.Toolbar

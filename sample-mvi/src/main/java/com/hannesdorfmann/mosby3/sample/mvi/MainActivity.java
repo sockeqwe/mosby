@@ -40,7 +40,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.subjects.PublishSubject;
 import timber.log.Timber;
 
-public class MainActiviy extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
   private static final String KEY_TOOLBAR_TITLE = "toolbarTitle";
 

@@ -21,6 +21,7 @@ import com.hannesdorfmann.mosby3.mvi.MviBasePresenter;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.ShoppingCart;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model.Product;
 import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,6 +40,7 @@ public class ShoppingCartOverviewPresenter
   private final Observable<Boolean> deleteSelectedItemsIntent;
   private final Observable<Boolean> clearSelectionIntent;
   private Disposable deleteDisposable;
+  private Disposable deleteSelectedDisposable;
 
   public ShoppingCartOverviewPresenter(ShoppingCart shoppingCart,
       Observable<Boolean> deleteSelectedItemsIntent, Observable<Boolean> clearSelectionIntent) {
@@ -58,14 +60,23 @@ public class ShoppingCartOverviewPresenter
             .startWith(new ArrayList<Product>(0));
 
     //
-    // Delete Items
+    // Delete multiple selected Items
     //
 
-    deleteDisposable = selectedItemsIntent.switchMap(
+    deleteSelectedDisposable = selectedItemsIntent.switchMap(
         selectedItems -> deleteSelectedItemsIntent.filter(ignored -> !selectedItems.isEmpty())
+            .doOnNext(ignored -> Timber.d("intent: remove %d selected items from shopping cart",
+                selectedItems.size()))
             .flatMap(ignore -> shoppingCart.removeProducts(selectedItems).toObservable()))
         .subscribe();
 
+    //
+    // Delete a single item
+    //
+    deleteDisposable = intent(ShoppingCartOverviewView::removeItemIntent).doOnNext(
+        item -> Timber.d("intent: remove item from shopping cart: %s", item))
+        .flatMap(productToDelete -> shoppingCart.removeProduct(productToDelete).toObservable())
+        .subscribe();
     //
     // Display a list of items in the shopping cart
     //
@@ -87,12 +98,14 @@ public class ShoppingCartOverviewPresenter
             items.add(new ShoppingCartOverviewItem(p, selectedProducts.contains(p)));
           }
           return items;
-        });
+        })
+        .observeOn(AndroidSchedulers.mainThread());
 
     subscribeViewState(shoppingCartContentWithSelectedItems, ShoppingCartOverviewView::render);
   }
-  
+
   @Override protected void unbindIntents() {
     deleteDisposable.dispose();
+    deleteSelectedDisposable.dispose();
   }
 }

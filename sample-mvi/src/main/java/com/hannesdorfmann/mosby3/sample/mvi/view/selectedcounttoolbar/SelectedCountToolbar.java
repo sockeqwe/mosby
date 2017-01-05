@@ -75,7 +75,7 @@ public class SelectedCountToolbar extends Toolbar implements SelectedCountToolba
   }
 
   @Override public void render(int selectedCount) {
-    Timber.d("render %d selected items");
+    Timber.d("render %d selected items", selectedCount);
     if (selectedCount == 0) {
       setVisibility(View.GONE);
     } else {

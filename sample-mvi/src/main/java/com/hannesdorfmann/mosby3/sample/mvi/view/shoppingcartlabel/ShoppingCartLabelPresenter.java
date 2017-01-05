@@ -20,6 +20,7 @@ package com.hannesdorfmann.mosby3.sample.mvi.view.shoppingcartlabel;
 import com.hannesdorfmann.mosby3.mvi.MviBasePresenter;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.ShoppingCart;
 import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import java.util.List;
 import timber.log.Timber;
 
@@ -42,7 +43,8 @@ public class ShoppingCartLabelPresenter extends MviBasePresenter<ShoppingCartLab
         intent(ShoppingCartLabelView::loadIntent).doOnNext(
             ignored -> Timber.d("intent: load number of items in shopping cart"))
             .flatMap(ignored -> shoppingCart.itemsInShoppingCart())
-            .map(List::size);
+            .map(List::size)
+            .observeOn(AndroidSchedulers.mainThread());
 
     subscribeViewState(numberOfItemsInShoppingCart, ShoppingCartLabelView::render);
   }

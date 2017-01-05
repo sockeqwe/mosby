@@ -129,4 +129,8 @@ public class ShoppingCartOverviewAdapter extends RecyclerView.Adapter<ShoppingCa
   public Observable<List<Product>> selectedItemsObservable() {
     return selectedProducts.doOnNext(selected -> Timber.d("selected %s ", selected));
   }
+
+  public Product getProductAt(int position) {
+    return items.get(position).getProduct();
+  }
 }

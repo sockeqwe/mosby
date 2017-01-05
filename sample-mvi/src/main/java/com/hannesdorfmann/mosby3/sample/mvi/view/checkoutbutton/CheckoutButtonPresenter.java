@@ -20,6 +20,7 @@ package com.hannesdorfmann.mosby3.sample.mvi.view.checkoutbutton;
 import com.hannesdorfmann.mosby3.mvi.MviBasePresenter;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.ShoppingCart;
 import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import timber.log.Timber;
 
 /**
@@ -47,7 +48,8 @@ public class CheckoutButtonPresenter extends MviBasePresenter<CheckoutButtonView
                 sum += items.get(i).getPrice();
               }
               return sum;
-            });
+            })
+            .observeOn(AndroidSchedulers.mainThread());
 
     subscribeViewState(numberOfItemsInShoppingCart, CheckoutButtonView::render);
   }

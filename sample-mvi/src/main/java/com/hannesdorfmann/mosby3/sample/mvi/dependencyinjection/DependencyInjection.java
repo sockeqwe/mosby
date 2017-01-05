@@ -51,6 +51,7 @@ public class DependencyInjection {
 
   // Don't do this in your real app
   private final PublishSubject<Boolean> clearSelectionRelay = PublishSubject.create();
+  private final PublishSubject<Boolean> deleteSelectionRelay = PublishSubject.create();
 
   //
   // Some singletons
@@ -65,7 +66,7 @@ public class DependencyInjection {
   private final MainMenuPresenter mainMenuPresenter = new MainMenuPresenter(backendApiDecorator);
   private final ShoppingCart shoppingCart = new ShoppingCart();
   private final ShoppingCartOverviewPresenter shoppingCartPresenter =
-      new ShoppingCartOverviewPresenter(shoppingCart, Observable.just(true), clearSelectionRelay);
+      new ShoppingCartOverviewPresenter(shoppingCart, deleteSelectionRelay, clearSelectionRelay);
 
   SearchEngine newSearchEngine() {
     return new SearchEngine(backendApiDecorator);
@@ -132,7 +133,8 @@ public class DependencyInjection {
           return selected;
         });
 
-    return new SelectedCountToolbarPresenter(selectedItemCountObservable, clearSelectionRelay);
+    return new SelectedCountToolbarPresenter(selectedItemCountObservable, clearSelectionRelay,
+        deleteSelectionRelay);
   }
 
   public PublishSubject<Boolean> getClearSelectionRelay() {

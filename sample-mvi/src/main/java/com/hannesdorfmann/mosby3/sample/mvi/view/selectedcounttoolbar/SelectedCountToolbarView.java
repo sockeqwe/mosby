@@ -31,6 +31,11 @@ public interface SelectedCountToolbarView extends MvpView {
   public Observable<Boolean> clearSelectionIntent();
 
   /**
+   * Intent to delete the selected items
+   */
+  public Observable<Boolean> deleteSelectedItemsIntent();
+
+  /**
    * Render the selected state
    */
   public void render(int selectedCount);

@@ -21,6 +21,7 @@ import com.hannesdorfmann.mosby3.mvi.MviBasePresenter;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.ShoppingCart;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model.Product;
 import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -37,6 +38,7 @@ public class ShoppingCartOverviewPresenter
   private final ShoppingCart shoppingCart;
   private final Observable<Boolean> deleteSelectedItemsIntent;
   private final Observable<Boolean> clearSelectionIntent;
+  private Disposable deleteDisposable;
 
   public ShoppingCartOverviewPresenter(ShoppingCart shoppingCart,
       Observable<Boolean> deleteSelectedItemsIntent, Observable<Boolean> clearSelectionIntent) {
@@ -59,12 +61,11 @@ public class ShoppingCartOverviewPresenter
     // Delete Items
     //
 
-    /*
-    selectedItemsIntent.filter(items -> !items.isEmpty())
-        .concatWith(deleteSelectedItemsIntent)
-        .switchMap(selectedItems -> shoppingCart.removeProducts(selectedItems).toObservable())
-        .subscribe();
-*/
+    deleteDisposable = selectedItemsIntent.switchMap(
+        selectedItems -> deleteSelectedItemsIntent
+            .filter(ignored -> !selectedItems.isEmpty())
+            .flatMap(ignore -> shoppingCart.removeProducts(selectedItems).toObservable()))
+            .subscribe();
 
     //
     // Display a list of items in the shopping cart
@@ -90,5 +91,12 @@ public class ShoppingCartOverviewPresenter
         });
 
     subscribeViewState(shoppingCartContentWithSelectedItems, ShoppingCartOverviewView::render);
+  }
+
+  @Override public void detachView(boolean retainInstance) {
+    super.detachView(retainInstance);
+    if (!retainInstance) {
+      deleteDisposable.dispose();
+    }
   }
 }

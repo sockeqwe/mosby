@@ -26,6 +26,7 @@ import android.view.View;
 import com.hannesdorfmann.mosby3.ViewGroupMviDelegate;
 import com.hannesdorfmann.mosby3.ViewGroupMviDelegateCallback;
 import com.hannesdorfmann.mosby3.ViewGroupMviDelegateImpl;
+import com.hannesdorfmann.mosby3.sample.mvi.R;
 import com.hannesdorfmann.mosby3.sample.mvi.SampleApplication;
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
@@ -42,14 +43,25 @@ public class SelectedCountToolbar extends Toolbar implements SelectedCountToolba
       mviDelegate = new ViewGroupMviDelegateImpl<>(this);
 
   private final PublishSubject<Boolean> clearSelectionIntent = PublishSubject.create();
+  private final PublishSubject<Boolean> deleteSelectedItemsIntent = PublishSubject.create();
 
   public SelectedCountToolbar(Context context, AttributeSet attrs) {
     super(context, attrs);
     setNavigationOnClickListener(v -> clearSelectionIntent.onNext(true));
+    setNavigationIcon(R.drawable.ic_back_selection_count_toolbar);
+    inflateMenu(R.menu.shopping_cart_toolbar);
+    setOnMenuItemClickListener(item -> {
+      deleteSelectedItemsIntent.onNext(true);
+      return true;
+    });
   }
 
   @Override public Observable<Boolean> clearSelectionIntent() {
     return clearSelectionIntent;
+  }
+
+  @Override public Observable<Boolean> deleteSelectedItemsIntent() {
+    return deleteSelectedItemsIntent;
   }
 
   @NonNull @Override public SelectedCountToolbarView getMvpView() {

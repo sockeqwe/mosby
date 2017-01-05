@@ -30,18 +30,28 @@ public class SelectedCountToolbarPresenter
 
   private final Observable<Integer> selectedCountObservable;
   private final PublishSubject<Boolean> clearSelectionRelay;
+  private final PublishSubject<Boolean> deleteSelectedItemsRelay;
   Disposable clearSelectionDisposal;
+  Disposable deleteSelectedItemsDisposal;
 
   public SelectedCountToolbarPresenter(Observable<Integer> selectedCountObservable,
-      PublishSubject<Boolean> clearSelectionRelay) {
+      PublishSubject<Boolean> clearSelectionRelay,
+      PublishSubject<Boolean> deleteSelectedItemsRelay) {
     this.selectedCountObservable = selectedCountObservable;
     this.clearSelectionRelay = clearSelectionRelay;
+    this.deleteSelectedItemsRelay = deleteSelectedItemsRelay;
   }
 
   @Override protected void bindIntents() {
 
-    clearSelectionDisposal = intent(SelectedCountToolbarView::clearSelectionIntent).flatMap(
-        ignore -> clearSelectionRelay).subscribe();
+    clearSelectionDisposal = intent(SelectedCountToolbarView::clearSelectionIntent).subscribe(
+        aBoolean -> clearSelectionRelay.onNext(aBoolean));
+    subscribeViewState(selectedCountObservable, SelectedCountToolbarView::render);
+
+    deleteSelectedItemsDisposal =
+        intent(SelectedCountToolbarView::deleteSelectedItemsIntent).subscribe(
+            aBoolean -> deleteSelectedItemsRelay.onNext(aBoolean));
+
     subscribeViewState(selectedCountObservable, SelectedCountToolbarView::render);
   }
 
@@ -49,6 +59,7 @@ public class SelectedCountToolbarPresenter
     super.detachView(retainInstance);
     if (!retainInstance && clearSelectionDisposal != null) {
       clearSelectionDisposal.dispose();
+      deleteSelectedItemsDisposal.dispose();
     }
   }
 }

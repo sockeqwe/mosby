@@ -62,8 +62,23 @@ public class HomeAdapter extends RecyclerView.Adapter
     return items;
   }
 
-  public void setLoadingNextPage(boolean loadingNextPage) {
+  /**
+   * @return true if value has changed since last invocation
+   */
+  public boolean setLoadingNextPage(boolean loadingNextPage) {
+    boolean hasLoadingMoreChanged = loadingNextPage != isLoadingNextPage;
+
+    boolean notifyInserted = loadingNextPage && hasLoadingMoreChanged;
+    boolean notifyRemoved = !loadingNextPage && hasLoadingMoreChanged;
     isLoadingNextPage = loadingNextPage;
+
+    if (notifyInserted) {
+      notifyItemInserted(items.size());
+    } else if (notifyRemoved) {
+      notifyItemRemoved(items.size());
+    }
+
+    return hasLoadingMoreChanged;
   }
 
   public boolean isLoadingNextPage() {

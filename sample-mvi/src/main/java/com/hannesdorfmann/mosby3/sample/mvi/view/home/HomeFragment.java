@@ -145,7 +145,11 @@ public class HomeFragment extends MviFragment<HomeView, HomePresenter>
     loadingView.setVisibility(View.GONE);
     errorView.setVisibility(View.GONE);
     swipeRefreshLayout.setVisibility(View.VISIBLE);
-    adapter.setLoadingNextPage(state.isLoadingNextPage());
+    boolean changed = adapter.setLoadingNextPage(state.isLoadingNextPage());
+    if (changed && state.isLoadingNextPage()) {
+      // scroll to the end of the list so that the user sees the load more progress bar
+      recyclerView.smoothScrollToPosition(adapter.getItemCount());
+    }
     adapter.setItems(state.getData());
     swipeRefreshLayout.setRefreshing(state.isLoadingPullToRefresh());
     if (state.getNextPageError() != null) {

@@ -17,8 +17,45 @@ import java.util.List;
 /**
  * This type of presenter is responsible to interact with the viewState in a Model-View-Intent way.
  * A {@link MviBasePresenter} is the bridge that is repsonsible to setup the reactive flow between
- * viewState
- * and model
+ * "view" and "model".
+ *
+ * <p>
+ * Thee methods {@link #bindIntents()} and {@link #unbindIntents()} are kind of representing the
+ * lifecycle of this Presenter.
+ * <ul>
+ * <li>{@link #bindIntents()} is called the first time the view is attached </li>
+ * <li>{@link #unbindIntents()} is called once the view is detached permanently because the view
+ * has
+ * been destroyed and hence this presenter is not needed anymore and will also be destroyed
+ * afterwards too.</li>
+ * </ul>
+ * </p>
+ *
+ * <p>
+ * This means that a presenter can survive orientation changes. During orientation changes (or when
+ * the view is put on the back stack because the user navigated to another view) the view
+ * will be detached temporarily and reattached to the presenter afterwards. To avoid memory leaks
+ * this Presenter class offers two methods:
+ * <ul>
+ * <li>{@link #intent(ViewIntentBinder)}</li>: Use this to bind an Observable intent from the view
+ * <li>{@link #subscribeViewState(Observable, ViewStateConsumer)}: Use this to bind the ViewState
+ * (a
+ * viewState is a object (typically a POJO) that holds all the data the view needs to display</li>
+ * </ul>
+ *
+ * By using {@link #intent(ViewIntentBinder)} and {@link #subscribeViewState(Observable,
+ * ViewStateConsumer)}
+ * a relay will be established between the view and this presenter that allows the view to be
+ * temporarily detached, without unsubscribing the underlyings reactive business logic workflow and
+ * without causing memory leaks (caused by recreation of the view).
+ * </p>
+ *
+ * <p>
+ * Please note that the methods {@link #attachView(MvpView)} and {@link #detachView(boolean)}
+ * should
+ * not be overridden unless you have a really good reason to do so. Usually {@link #bindIntents()}
+ * and {@link #unbindIntents()} should be enough.
+ * </p>
  *
  * @param <V> The type of the viewState this presenter responds to
  * @param <VS> The type of the viewState state
@@ -232,7 +269,63 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
     viewAttachedFirstTime = false;
   }
 
+  @Override @CallSuper public void detachView(boolean retainInstance) {
+    if (!retainInstance) {
+      if (viewStateDisposable != null) {
+        // Cancel the overall observable stream
+        viewStateDisposable.dispose();
+      }
+
+      unbindIntents();
+    }
+
+    if (viewRelayConsumerDisposable != null) {
+      // Cancel subscription from View to viewState Relay
+      viewRelayConsumerDisposable.dispose();
+      viewRelayConsumerDisposable = null;
+    }
+
+    if (intentDisposals != null) {
+      // Cancel subscriptons from view intents to intent Relays
+      intentDisposals.dispose();
+      intentDisposals = null;
+    }
+  }
+
+  /**
+   * This method is called one the view is attached for the very first time to this presenter.
+   * It will not called again for instance during screen orientation changes when the view will be
+   * detached temporarily.
+   *
+   * <p>
+   * The counter part of this method is  {@link #unbindIntents()}.
+   * This {@link #bindIntents()} and {@link #unbindIntents()} are kind of representing the
+   * lifecycle of this Presenter.
+   * {@link #bindIntents()} is called the first time the view is attached
+   * and {@link #unbindIntents()} is called once the view is detached permanently because it has
+   * been destroyed and hence this presenter is not needed anymore and will also be destroyed
+   * afterwards
+   * </p>
+   */
   @MainThread abstract protected void bindIntents();
+
+  /**
+   * This metho will be called once the view has been detached permanently and hence the presenter
+   * will be "destroyed" too. This is the correct time for doing some cleanup like unsubscribe from
+   * some RxSubscriptions etc.
+   *
+   * * <p>
+   * The counter part of this method is  {@link #bindIntents()} ()}.
+   * This {@link #bindIntents()} and {@link #unbindIntents()} are kind of representing the
+   * lifecycle of this Presenter.
+   * {@link #bindIntents()} is called the first time the view is attached
+   * and {@link #unbindIntents()} is called once the view is detached permanently because it has
+   * been destroyed and hence this presenter is not needed anymore and will also be destroyed
+   * afterwards
+   * </p>
+   */
+  protected void unbindIntents() {
+  }
 
   /**
    * This method creates a decorator around the original view's "intent". This method ensures that
@@ -288,26 +381,5 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
 
     intentDisposals.add(intent.subscribeWith(new DisposableIntentObserver<I>(intentRelay)));
     return intentRelay;
-  }
-
-  @Override public void detachView(boolean retainInstance) {
-    if (!retainInstance) {
-      if (viewStateDisposable != null) {
-        // Cancel the overall observable stream
-        viewStateDisposable.dispose();
-      }
-    }
-
-    if (viewRelayConsumerDisposable != null) {
-      // Cancel subscription from View to viewState Relay
-      viewRelayConsumerDisposable.dispose();
-      viewRelayConsumerDisposable = null;
-    }
-
-    if (intentDisposals != null) {
-      // Cancel subscriptons from view intents to intent Relays
-      intentDisposals.dispose();
-      intentDisposals = null;
-    }
   }
 }

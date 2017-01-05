@@ -55,11 +55,8 @@ public class SelectedCountToolbarPresenter
     subscribeViewState(selectedCountObservable, SelectedCountToolbarView::render);
   }
 
-  @Override public void detachView(boolean retainInstance) {
-    super.detachView(retainInstance);
-    if (!retainInstance && clearSelectionDisposal != null) {
-      clearSelectionDisposal.dispose();
-      deleteSelectedItemsDisposal.dispose();
-    }
+  @Override protected void unbindIntents() {
+    clearSelectionDisposal.dispose();
+    deleteSelectedItemsDisposal.dispose();
   }
 }

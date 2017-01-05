@@ -62,10 +62,9 @@ public class ShoppingCartOverviewPresenter
     //
 
     deleteDisposable = selectedItemsIntent.switchMap(
-        selectedItems -> deleteSelectedItemsIntent
-            .filter(ignored -> !selectedItems.isEmpty())
+        selectedItems -> deleteSelectedItemsIntent.filter(ignored -> !selectedItems.isEmpty())
             .flatMap(ignore -> shoppingCart.removeProducts(selectedItems).toObservable()))
-            .subscribe();
+        .subscribe();
 
     //
     // Display a list of items in the shopping cart
@@ -92,11 +91,8 @@ public class ShoppingCartOverviewPresenter
 
     subscribeViewState(shoppingCartContentWithSelectedItems, ShoppingCartOverviewView::render);
   }
-
-  @Override public void detachView(boolean retainInstance) {
-    super.detachView(retainInstance);
-    if (!retainInstance) {
-      deleteDisposable.dispose();
-    }
+  
+  @Override protected void unbindIntents() {
+    deleteDisposable.dispose();
   }
 }

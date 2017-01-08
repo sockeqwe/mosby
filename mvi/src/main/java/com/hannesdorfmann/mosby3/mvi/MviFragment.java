@@ -46,6 +46,7 @@ import com.hannesdorfmann.mosby3.mvp.MvpView;
 public abstract class MviFragment<V extends MvpView, P extends MviPresenter<V, ?>> extends Fragment
     implements MvpView, MviDelegateCallback<V, P> {
 
+  private boolean isRestoringViewState = false;
   protected FragmentMviDelegate<V, P> mvpDelegate;
 
   @CallSuper @Override public void onCreate(Bundle savedInstanceState) {
@@ -160,5 +161,13 @@ public abstract class MviFragment<V extends MvpView, P extends MviPresenter<V, ?
           "Couldn't cast the View to the corresponding View interface. Most likely you forgot to add \"Activity implements YourMvpViewInterface\".");
       throw e;
     }
+  }
+
+  @Override public void setRestoringViewState(boolean restoringViewState) {
+    this.isRestoringViewState = restoringViewState;
+  }
+
+  protected boolean isRestoringViewState() {
+    return isRestoringViewState;
   }
 }

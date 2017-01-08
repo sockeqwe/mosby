@@ -93,6 +93,8 @@ public class ActivityMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
   }
 
   @Override public void onStart() {
+    boolean viewStateWillBeRestored = false;
+
     if (mosbyViewId == null) {
       // No presenter available,
       // Activity is starting for the first time (or keepPresenterInstance == false)
@@ -115,6 +117,7 @@ public class ActivityMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
                   + presenter);
         }
       } else {
+        viewStateWillBeRestored = true;
         if (DEBUG) {
           Log.d(DEBUG_TAG, "Presenter instance reused from internal cache: " + presenter);
         }
@@ -127,7 +130,17 @@ public class ActivityMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
       throw new NullPointerException(
           "MvpView returned from getMvpView() is null. Returned by " + activity);
     }
+
+    if (viewStateWillBeRestored) {
+      delegateCallback.setRestoringViewState(true);
+    }
+
     presenter.attachView(view);
+
+    if (viewStateWillBeRestored) {
+      delegateCallback.setRestoringViewState(false);
+    }
+
     if (DEBUG) {
       Log.d(DEBUG_TAG,
           "MvpView attached to Presenter. MvpView: " + view + "   Presenter: " + presenter);

@@ -93,4 +93,8 @@ public class ShoppingCartLabel extends AppCompatButton implements ShoppingCartLa
   @Override public void onRestoreInstanceState(Parcelable state) {
     mviDelegate.onRestoreInstanceState(state);
   }
+
+  @Override public void setRestoringViewState(boolean restoringViewState) {
+    // Not needed for this view
+  }
 }

@@ -12,7 +12,8 @@ import com.hannesdorfmann.mosby3.mvp.MvpView;
 
 /**
  * This abstract class can be used to extend from to implement an Model-View-Intent pattern with
- * this activity as View and a {@link MviPresenter} to coordinate the viewState and the underlying model
+ * this activity as View and a {@link MviPresenter} to coordinate the viewState and the underlying
+ * model
  * (business logic)
  *
  * @author Hannes Dorfmann
@@ -21,6 +22,7 @@ import com.hannesdorfmann.mosby3.mvp.MvpView;
 public abstract class MviActivity<V extends MvpView, P extends MviPresenter<V, ?>>
     extends AppCompatActivity implements MvpView, MviDelegateCallback<V, P> {
 
+  private boolean isRestoringViewState = false;
   protected ActivityMviDelegate<V, P> mvpDelegate;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
@@ -114,5 +116,13 @@ public abstract class MviActivity<V extends MvpView, P extends MviPresenter<V, ?
 
   @Override public final Object onRetainCustomNonConfigurationInstance() {
     return getMvpDelegate().onRetainCustomNonConfigurationInstance();
+  }
+
+  @Override public void setRestoringViewState(boolean restoringViewState) {
+    this.isRestoringViewState = restoringViewState;
+  }
+
+  protected boolean isRestoringViewState() {
+    return isRestoringViewState;
   }
 }

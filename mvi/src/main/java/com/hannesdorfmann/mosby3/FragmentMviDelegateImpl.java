@@ -79,6 +79,7 @@ public class FragmentMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
   }
 
   @Override public void onViewCreated(View v, @Nullable Bundle savedInstanceState) {
+    boolean viewStateWillBeRestored = false;
     onViewCreatedCalled = true;
 
     if (mosbyViewId == null) {
@@ -100,6 +101,7 @@ public class FragmentMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
                   + presenter);
         }
       } else {
+        viewStateWillBeRestored = true;
         if (DEBUG) {
           Log.d(DEBUG_TAG, "Presenter instance reused from internal cache: " + presenter);
         }
@@ -112,7 +114,16 @@ public class FragmentMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
       throw new NullPointerException(
           "MvpView returned from getMvpView() is null. Returned by " + fragment);
     }
+
+    if (viewStateWillBeRestored) {
+      delegateCallback.setRestoringViewState(true);
+    }
+
     presenter.attachView(view);
+
+    if (viewStateWillBeRestored) {
+      delegateCallback.setRestoringViewState(false);
+    }
 
     if (DEBUG) {
       Log.d(DEBUG_TAG,

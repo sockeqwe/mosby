@@ -88,6 +88,8 @@ public class ViewGroupMviDelegateImpl<V extends MvpView, P extends MviPresenter<
   }
 
   @Override public void onAttachedToWindow() {
+    boolean viewStateWillBeRestored = false;
+
     if (mosbyViewId == null) {
       // No presenter available,
       // Activity is starting for the first time (or keepPresenterInstance == false)
@@ -108,6 +110,7 @@ public class ViewGroupMviDelegateImpl<V extends MvpView, P extends MviPresenter<
                   + presenter);
         }
       } else {
+        viewStateWillBeRestored = true;
         if (DEBUG) {
           Log.d(DEBUG_TAG, "Presenter instance reused from internal cache: " + presenter);
         }
@@ -120,7 +123,17 @@ public class ViewGroupMviDelegateImpl<V extends MvpView, P extends MviPresenter<
       throw new NullPointerException(
           "MvpView returned from getMvpView() is null. Returned by " + delegateCallback);
     }
+
+    if (viewStateWillBeRestored) {
+      delegateCallback.setRestoringViewState(true);
+    }
+
     presenter.attachView(view);
+
+    if (viewStateWillBeRestored) {
+      delegateCallback.setRestoringViewState(false);
+    }
+
     if (DEBUG) {
       Log.d(DEBUG_TAG,
           "MvpView attached to Presenter. MvpView: " + view + "   Presenter: " + presenter);
@@ -132,8 +145,7 @@ public class ViewGroupMviDelegateImpl<V extends MvpView, P extends MviPresenter<
     if (keepPresenterDuringScreenOrientationChange) {
       Context context = getContext();
 
-      boolean destroyedPermanently =
-          presenterManager.willViewBeDestroyedPermanently(context);
+      boolean destroyedPermanently = presenterManager.willViewBeDestroyedPermanently(context);
 
       if (destroyedPermanently) {
         // Whole activity will be destroyed

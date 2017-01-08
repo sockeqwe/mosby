@@ -101,4 +101,8 @@ public class CheckoutButton extends Button implements CheckoutButtonView,
   @Override public void onRestoreInstanceState(Parcelable state) {
     mviDelegate.onRestoreInstanceState(state);
   }
+
+  @Override public void setRestoringViewState(boolean restoringViewState) {
+    // Not needed for this view
+  }
 }

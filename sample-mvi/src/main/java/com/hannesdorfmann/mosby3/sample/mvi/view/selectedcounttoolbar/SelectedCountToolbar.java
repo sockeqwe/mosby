@@ -77,7 +77,11 @@ public class SelectedCountToolbar extends Toolbar implements SelectedCountToolba
   @Override public void render(int selectedCount) {
     Timber.d("render %d selected items", selectedCount);
     if (selectedCount == 0) {
-      setVisibility(View.GONE);
+      if (getVisibility() == View.VISIBLE) {
+        animate().alpha(0f).withEndAction(() -> setVisibility(View.GONE)).start();
+      } else {
+        setVisibility(View.GONE);
+      }
     } else {
       // TODO remove hardcoded strings - move to stings.xml with plurals
       if (selectedCount == 1) {
@@ -85,7 +89,12 @@ public class SelectedCountToolbar extends Toolbar implements SelectedCountToolba
       } else {
         setTitle(selectedCount + " Items");
       }
-      setVisibility(View.VISIBLE);
+
+      if (getVisibility() != View.VISIBLE) {
+        animate().alpha(1f).withStartAction(() -> setVisibility(View.VISIBLE)).start();
+      } else {
+        setVisibility(View.VISIBLE);
+      }
     }
   }
 
@@ -114,4 +123,9 @@ public class SelectedCountToolbar extends Toolbar implements SelectedCountToolba
   @Override public void superOnRestoreInstanceState(Parcelable state) {
     super.onRestoreInstanceState(state);
   }
+
+  @Override public void setRestoringViewState(boolean restoringViewState) {
+    // Don't needed for this view
+  }
+
 }

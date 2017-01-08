@@ -39,7 +39,9 @@ import com.hannesdorfmann.mosby3.mvp.MvpView;
 public abstract class MviFrameLayout<V extends MvpView, P extends MviPresenter<V, ?>>
     extends FrameLayout implements ViewGroupMviDelegateCallback<V, P>, MvpView {
 
-  protected P presenter;
+
+  private boolean isRestoringViewState = false;
+
   protected ViewGroupMviDelegate<V, P> mvpDelegate;
 
   public MviFrameLayout(Context context) {
@@ -120,5 +122,14 @@ public abstract class MviFrameLayout<V extends MvpView, P extends MviPresenter<V
 
   @Override public final void superOnRestoreInstanceState(Parcelable state) {
     super.onRestoreInstanceState(state);
+  }
+
+
+  @Override public void setRestoringViewState(boolean restoringViewState) {
+    this.isRestoringViewState = restoringViewState;
+  }
+
+  protected boolean isRestoringViewState() {
+    return isRestoringViewState;
   }
 }

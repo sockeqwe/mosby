@@ -55,35 +55,40 @@ public class ShoppingCartOverviewPresenter
     // Observable that emits a list of selected products over time (or empty list if the selection has been cleared)
     //
     Observable<List<Product>> selectedItemsIntent =
-        intent(ShoppingCartOverviewView::selectItemsIntent).mergeWith(
-            clearSelectionIntent.map(ignore -> Collections.emptyList()))
+        intent(ShoppingCartOverviewView::selectItemsIntent)
+            .mergeWith(clearSelectionIntent.map(ignore -> Collections.emptyList()))
+            .doOnNext(items -> Timber.d("intent: selected items %d", items.size()))
             .startWith(new ArrayList<Product>(0));
 
     //
     // Delete multiple selected Items
     //
 
-    deleteSelectedDisposable = selectedItemsIntent.switchMap(
-        selectedItems -> deleteSelectedItemsIntent.filter(ignored -> !selectedItems.isEmpty())
-            .doOnNext(ignored -> Timber.d("intent: remove %d selected items from shopping cart",
-                selectedItems.size()))
+    deleteSelectedDisposable = selectedItemsIntent
+        .switchMap(selectedItems -> deleteSelectedItemsIntent.filter(ignored -> !selectedItems.isEmpty())
+            .doOnNext(ignored -> Timber.d("intent: remove %d selected items from shopping cart", selectedItems.size()))
             .flatMap(ignore -> shoppingCart.removeProducts(selectedItems).toObservable()))
         .subscribe();
 
     //
     // Delete a single item
     //
-    deleteDisposable = intent(ShoppingCartOverviewView::removeItemIntent).doOnNext(
-        item -> Timber.d("intent: remove item from shopping cart: %s", item))
+    deleteDisposable = intent(ShoppingCartOverviewView::removeItemIntent)
+        .doOnNext(item -> Timber.d("intent: remove item from shopping cart: %s", item))
         .flatMap(productToDelete -> shoppingCart.removeProduct(productToDelete).toObservable())
         .subscribe();
     //
     // Display a list of items in the shopping cart
     //
     Observable<List<Product>> shoppingCartContentObservable =
-        intent(ShoppingCartOverviewView::loadItemsIntent).doOnNext(
-            ignored -> Timber.d("load ShoppingCart intent"))
+        intent(ShoppingCartOverviewView::loadItemsIntent)
+            .doOnNext(ignored -> Timber.d("load ShoppingCart intent"))
             .flatMap(ignored -> shoppingCart.itemsInShoppingCart());
+
+
+    //
+    // Display list of items / view state
+    //
     List<Observable<?>> combiningObservables =
         Arrays.asList(shoppingCartContentObservable, selectedItemsIntent);
 

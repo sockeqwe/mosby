@@ -38,14 +38,13 @@ public class HomePresenter extends MviBasePresenter<HomeView, HomeViewState> {
   private final HomeFeedLoader feedLoader;
 
   public HomePresenter(HomeFeedLoader feedLoader) {
-    super(new HomeViewState.Builder().firstPageLoading(true).build());
     this.feedLoader = feedLoader;
   }
 
   @Override protected void bindIntents() {
 
-    Observable<PartialHomeViewState> loadFirstPage = intent(HomeView::loadFirstPageIntent).doOnNext(
-        ignored -> Timber.d("intent: load first page"))
+    Observable<PartialHomeViewState> loadFirstPage = intent(HomeView::loadFirstPageIntent)
+        .doOnNext(ignored -> Timber.d("intent: load first page"))
         .flatMap(ignored -> feedLoader.loadFirstPage()
             .map(items -> (PartialHomeViewState) new PartialHomeViewState.FirstPageLoaded(items))
             .startWith(new PartialHomeViewState.FirstPageLoading())
@@ -53,7 +52,8 @@ public class HomePresenter extends MviBasePresenter<HomeView, HomeViewState> {
             .subscribeOn(Schedulers.io()));
 
     Observable<PartialHomeViewState> nextPage =
-        intent(HomeView::loadNextPageIntent).doOnNext(ignored -> Timber.d("intent: load next page"))
+        intent(HomeView::loadNextPageIntent)
+            .doOnNext(ignored -> Timber.d("intent: load next page"))
             .flatMap(ignored -> feedLoader.loadNextPage()
                 .map(items -> (PartialHomeViewState) new PartialHomeViewState.NextPageLoaded(items))
                 .startWith(new PartialHomeViewState.NextPageLoading())
@@ -61,8 +61,8 @@ public class HomePresenter extends MviBasePresenter<HomeView, HomeViewState> {
                 .subscribeOn(Schedulers.io()));
 
     Observable<PartialHomeViewState> pullToRefreshObservable =
-        intent(HomeView::pullToRefreshIntent).doOnNext(
-            ignored -> Timber.d("intent: pull to refresh"))
+        intent(HomeView::pullToRefreshIntent)
+            .doOnNext(ignored -> Timber.d("intent: pull to refresh"))
             .flatMap(ignored -> feedLoader.loadNewestPage()
                 .subscribeOn(Schedulers.io())
                 .map(items -> (PartialHomeViewState) new PartialHomeViewState.PullToRefreshLoaded(
@@ -71,8 +71,8 @@ public class HomePresenter extends MviBasePresenter<HomeView, HomeViewState> {
                 .onErrorReturn(PartialHomeViewState.PullToRefeshLoadingError::new));
 
     Observable<PartialHomeViewState> loadMoreFromGroup =
-        intent(HomeView::loadAllProductsFromCategoryIntent).doOnNext(
-            categoryName -> Timber.d("intent: load more from category %s", categoryName))
+        intent(HomeView::loadAllProductsFromCategoryIntent)
+            .doOnNext(categoryName -> Timber.d("intent: load more from category %s", categoryName))
             .flatMap(categoryName -> feedLoader.loadProductsOfGroup(categoryName)
                 .subscribeOn(Schedulers.io())
                 .map(
@@ -87,9 +87,11 @@ public class HomePresenter extends MviBasePresenter<HomeView, HomeViewState> {
         Observable.merge(loadFirstPage, nextPage, pullToRefreshObservable, loadMoreFromGroup)
             .observeOn(AndroidSchedulers.mainThread());
 
+    HomeViewState initialState = new HomeViewState.Builder().firstPageLoading(true).build();
+
     subscribeViewState(
-        partialViewStateFromIntentsObservable.scan(getViewStateObservable().blockingFirst(),
-            this::viewStateReducer), HomeView::render);
+        partialViewStateFromIntentsObservable.scan(initialState, this::viewStateReducer),
+        HomeView::render);
   }
 
   private HomeViewState viewStateReducer(HomeViewState previousState,

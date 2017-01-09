@@ -11,3 +11,9 @@ So basically this example uses the following libraries:
  - Mobsy MVI (obviously) and RxJava 2 (required by Mosby MVI).
  - Retrofit 2 and Moshi (json parser)
  - Glide (for image loading)
+
+## Backend
+This sample app loads data from a "backend" which is not a real http server, but rather some
+static json files hosted in this repository (directory "server") on gihub. Therefore some computational
+stuff like "get all items of a certain category" must be "computed" on the client side. This is done
+in `ProductBackendApiDecorator` class.

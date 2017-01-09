@@ -39,8 +39,8 @@ public class CheckoutButtonPresenter extends MviBasePresenter<CheckoutButtonView
 
   @Override protected void bindIntents() {
     Observable<Double> numberOfItemsInShoppingCart =
-        intent(CheckoutButtonView::loadIntent).doOnNext(
-            ignored -> Timber.d("intent: load number of items in shopping cart"))
+        intent(CheckoutButtonView::loadIntent)
+            .doOnNext(ignored -> Timber.d("intent: load number of items in shopping cart"))
             .flatMap(ignored -> shoppingCart.itemsInShoppingCart())
             .map(items -> {
               double sum = 0;

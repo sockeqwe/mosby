@@ -21,6 +21,7 @@ import com.hannesdorfmann.mosby3.mvi.MviBasePresenter;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.subjects.PublishSubject;
+import timber.log.Timber;
 
 /**
  * @author Hannes Dorfmann
@@ -44,13 +45,15 @@ public class SelectedCountToolbarPresenter
 
   @Override protected void bindIntents() {
 
-    clearSelectionDisposal = intent(SelectedCountToolbarView::clearSelectionIntent).subscribe(
-        aBoolean -> clearSelectionRelay.onNext(aBoolean));
+    clearSelectionDisposal = intent(SelectedCountToolbarView::clearSelectionIntent)
+        .doOnNext(ignore -> Timber.d("intent: clear selection"))
+        .subscribe(aBoolean -> clearSelectionRelay.onNext(aBoolean));
     subscribeViewState(selectedCountObservable, SelectedCountToolbarView::render);
 
     deleteSelectedItemsDisposal =
-        intent(SelectedCountToolbarView::deleteSelectedItemsIntent).subscribe(
-            aBoolean -> deleteSelectedItemsRelay.onNext(aBoolean));
+        intent(SelectedCountToolbarView::deleteSelectedItemsIntent)
+            .doOnNext(items -> Timber.d("intent: delete selected items "+items))
+            .subscribe(aBoolean -> deleteSelectedItemsRelay.onNext(aBoolean));
 
     subscribeViewState(selectedCountObservable, SelectedCountToolbarView::render);
   }

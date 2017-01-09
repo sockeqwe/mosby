@@ -39,18 +39,18 @@ public class ProductDetailsPresenter
 
   @Override protected void bindIntents() {
 
-    intent(ProductDetailsView::addToShoppingCartIntent).doOnNext(
-        product -> Timber.d("intent: add to shopping cart %s", product)).
-        flatMap(product -> interactor.addToShoppingCart(product).toObservable()).subscribe();
+    intent(ProductDetailsView::addToShoppingCartIntent)
+        .doOnNext(product -> Timber.d("intent: add to shopping cart %s", product))
+        .flatMap(product -> interactor.addToShoppingCart(product).toObservable()).subscribe();
 
-    intent(ProductDetailsView::removeFromShoppingCartIntent).doOnNext(
-        product -> Timber.d("intent: remove from shopping cart %s", product))
+    intent(ProductDetailsView::removeFromShoppingCartIntent)
+        .doOnNext(product -> Timber.d("intent: remove from shopping cart %s", product))
         .flatMap(product -> interactor.removeFromShoppingCart(product).toObservable())
         .subscribe();
 
     Observable<ProductDetailsViewState> loadDetails =
-        intent(ProductDetailsView::loadDetailsIntent).doOnNext(
-            productId -> Timber.d("intent: load details for product id = %s", productId))
+        intent(ProductDetailsView::loadDetailsIntent)
+            .doOnNext(productId -> Timber.d("intent: load details for product id = %s", productId))
             .flatMap(productId -> interactor.getDetails(productId)
                 .subscribeOn(Schedulers.io())
                 .map(ProductDetailsViewState.DataState::new)

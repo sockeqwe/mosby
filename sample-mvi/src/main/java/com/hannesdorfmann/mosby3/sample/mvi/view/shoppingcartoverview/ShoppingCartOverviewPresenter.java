@@ -32,7 +32,6 @@ import timber.log.Timber;
 /**
  * @author Hannes Dorfmann
  */
-
 public class ShoppingCartOverviewPresenter
     extends MviBasePresenter<ShoppingCartOverviewView, List<ShoppingCartOverviewItem>> {
 

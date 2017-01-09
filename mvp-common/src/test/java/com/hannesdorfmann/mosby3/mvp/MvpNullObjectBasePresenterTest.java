@@ -41,7 +41,7 @@ public class MvpNullObjectBasePresenterTest {
 
   @Test
   @SuppressWarnings("unchecked")
-  public void testUselessGenericsParamsPresenter() {
+  public void uselessGenericsParamsPresenter() {
     TestMvpView view = newTestView();
     UselessGenericParamsMvpPresenter presenter = new UselessGenericParamsMvpPresenter<>();
 
@@ -55,7 +55,7 @@ public class MvpNullObjectBasePresenterTest {
   }
 
   @Test
-  public void testConstructorGenericParameterless() {
+  public void constructorGenericParameterless() {
     ParameterlessConstructorMvpPresenter<TestData> presenter = new ParameterlessConstructorMvpPresenter<>();
     TestMvpView view = newTestView();
 
@@ -69,7 +69,7 @@ public class MvpNullObjectBasePresenterTest {
   }
 
   @Test
-  public void testConstructorDirectlyBaseClass() {
+  public void constructorDirectlyBaseClass() {
     MvpNullObjectBasePresenter<TestMvpView> presenter = new MvpNullObjectBasePresenter<TestMvpView>() {
     };
     TestMvpView view = newTestView();
@@ -79,7 +79,7 @@ public class MvpNullObjectBasePresenterTest {
   }
 
   @Test
-  public void testConstructorSubClass() {
+  public void constructorSubClass() {
     SubParameterlessConstructorMvpPresenter presenter = new SubParameterlessConstructorMvpPresenter();
     TestMvpView view = newTestView();
 
@@ -93,7 +93,7 @@ public class MvpNullObjectBasePresenterTest {
   }
 
   @Test
-  public void testSubviewInterface() {
+  public void subviewInterface() {
     SubMvpPresenter presenter = new SubMvpPresenter();
     SubMvpView view = newSubTestView();
 

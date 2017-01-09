@@ -17,10 +17,10 @@
 
 package com.hannesdorfmann.mosby3.mvp.test.regression159;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import org.junit.Assert;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 /**
  * Regression test for this issue:
@@ -30,37 +30,34 @@ import org.mockito.Mockito;
  */
 public class MvpNullObjectBasePresenterRegression159Test {
 
-  @Test
-  public void mvpNullObjectPresenterCreatesNullObjectProperly(){
+  @Test public void mvpNullObjectPresenterCreatesNullObjectProperly() {
 
     RecentArticlesPresenter presenter = new RecentArticlesPresenter();
+    final AtomicInteger invocations = new AtomicInteger(0);
 
-    RecentArticles.View view = new RecentArticles.View() {
+    RecentArticles.View spyView = new RecentArticles.View() {
+
       @Override public void updateData(List<Article> data) {
+        invocations.incrementAndGet();
       }
     };
 
-    RecentArticles.View spyView = Mockito.spy(view);
-
     presenter.attachView(spyView);
     presenter.invokeAMethodOnView();
-    Mockito.verify(spyView, Mockito.times(1)).updateData(Collections.<Article>emptyList());
+    Assert.assertEquals(1, invocations.get());
     presenter.detachView(true);
 
     // Invoke a method while view is detached. This should invoke the method on the null view
     presenter.invokeAMethodOnView();
-    Mockito.verify(spyView, Mockito.times(1)).updateData(Collections.<Article>emptyList());
+    Assert.assertEquals(1, invocations.get()); // Not incremented because invoked on null view
 
     presenter.attachView(spyView);
     presenter.invokeAMethodOnView();
-    Mockito.verify(spyView, Mockito.times(2)).updateData(Collections.<Article>emptyList());
+    Assert.assertEquals(2, invocations.get());
     presenter.detachView(false);
-
 
     // Invoke a method while view is detached. This should invoke the method on the null view
     presenter.invokeAMethodOnView();
-    Mockito.verify(spyView, Mockito.times(2)).updateData(Collections.<Article>emptyList());
-
+    Assert.assertEquals(2, invocations.get()); // Not incremented because invoked on null view
   }
-
 }

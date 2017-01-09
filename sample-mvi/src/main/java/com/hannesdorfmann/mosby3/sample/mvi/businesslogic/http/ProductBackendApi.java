@@ -31,7 +31,7 @@ import retrofit2.http.Path;
 public interface ProductBackendApi {
 
   public static final String BASE_URL = "https://raw.githubusercontent.com";
-  public static final String BASE_URL_BRANCH = "mvi"; // TODO switch to master branch
+  public static final String BASE_URL_BRANCH = "master";
   public static final String BASE_IMAGE_URL =
       BASE_URL + "/sockeqwe/mosby/" + ProductBackendApi.BASE_URL_BRANCH + "/sample-mvi/server/images/";
 

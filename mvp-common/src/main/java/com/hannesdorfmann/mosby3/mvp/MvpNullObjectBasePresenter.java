@@ -87,7 +87,7 @@ public abstract class MvpNullObjectBasePresenter<V extends MvpView> implements M
     }
     Class[] superInterfaces = klass.getInterfaces();
     for (int i = 0; i < superInterfaces.length; i++) {
-      if (isSubTypeOfMvpView(superInterfaces[0])) {
+      if (isSubTypeOfMvpView(superInterfaces[i])) {
         return true;
       }
     }

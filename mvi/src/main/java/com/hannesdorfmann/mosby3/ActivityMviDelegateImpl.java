@@ -73,6 +73,11 @@ public class ActivityMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
    */
   public ActivityMviDelegateImpl(@NonNull Activity activity,
       @NonNull MviDelegateCallback<V, P> delegateCallback, boolean keepPresenterInstance) {
+
+    if (activity == null){
+      throw new NullPointerException("Activity is null");
+    }
+
     if (delegateCallback == null) {
       throw new NullPointerException("MvpDelegateCallback is null!");
     }
@@ -177,28 +182,34 @@ public class ActivityMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
     }
   }
 
+  private boolean retainPresenterInstance(){
+    return keepPresenterInstance && activity.isChangingConfigurations();
+  }
+
   @Override public void onStop() {
-    boolean retainPresenterInstance = keepPresenterInstance && activity.isChangingConfigurations();
+    boolean retainPresenterInstance = retainPresenterInstance();
     presenter.detachView(retainPresenterInstance);
-    if (!retainPresenterInstance) {
-      presenterManager.removePresenterAndViewState(mosbyViewId, activity);
-    }
 
     if (DEBUG) {
       Log.d(DEBUG_TAG, "detached MvpView from Presenter. MvpView "
           + delegateCallback.getMvpView()
           + "   Presenter: "
           + presenter);
-      Log.d(DEBUG_TAG, "Retaining presenter instance: "
-          + Boolean.toString(retainPresenterInstance).toUpperCase()
-          + " "
-          + presenter);
+
     }
 
     presenterManager.cleanUp();
   }
 
   @Override public void onDestroy() {
+
+    // A little bit ugly, because presenter will be instantiated in onStart() and not in onCreate()
+    if (!retainPresenterInstance()) {
+      presenterManager.removePresenterAndViewState(mosbyViewId, activity);
+      Log.d(DEBUG_TAG, "Destroying Presenter permanently "
+          + presenter);
+    }
+
     presenterManager = null;
     presenter = null;
     activity = null;

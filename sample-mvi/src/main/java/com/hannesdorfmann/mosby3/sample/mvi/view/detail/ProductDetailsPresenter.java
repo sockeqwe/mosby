@@ -18,10 +18,10 @@
 package com.hannesdorfmann.mosby3.sample.mvi.view.detail;
 
 import com.hannesdorfmann.mosby3.mvi.MviBasePresenter;
-import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.DetailsInteractor;
+import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.interactor.details.DetailsInteractor;
+import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.interactor.details.ProductDetailsViewState;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 /**
@@ -51,12 +51,7 @@ public class ProductDetailsPresenter
     Observable<ProductDetailsViewState> loadDetails =
         intent(ProductDetailsView::loadDetailsIntent)
             .doOnNext(productId -> Timber.d("intent: load details for product id = %s", productId))
-            .flatMap(productId -> interactor.getDetails(productId)
-                .subscribeOn(Schedulers.io())
-                .map(ProductDetailsViewState.DataState::new)
-                .cast(ProductDetailsViewState.class)
-                .startWith(new ProductDetailsViewState.LoadingState())
-                .onErrorReturn(ProductDetailsViewState.ErrorState::new))
+            .flatMap(interactor::getDetails)
             .observeOn(AndroidSchedulers.mainThread());
 
     subscribeViewState(loadDetails, ProductDetailsView::render);

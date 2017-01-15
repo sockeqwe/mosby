@@ -17,13 +17,14 @@
 
 package com.hannesdorfmann.mosby3.sample.mvi.dependencyinjection;
 
-import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.DetailsInteractor;
+import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.interactor.details.DetailsInteractor;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.ShoppingCart;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.feed.GroupedPagedFeedLoader;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.feed.HomeFeedLoader;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.feed.PagingFeedLoader;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.http.ProductBackendApi;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.http.ProductBackendApiDecorator;
+import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.interactor.search.SearchInteractor;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.searchengine.SearchEngine;
 import com.hannesdorfmann.mosby3.sample.mvi.view.category.CategoryPresenter;
 import com.hannesdorfmann.mosby3.sample.mvi.view.checkoutbutton.CheckoutButtonPresenter;
@@ -68,8 +69,12 @@ public class DependencyInjection {
   private final ShoppingCartOverviewPresenter shoppingCartPresenter =
       new ShoppingCartOverviewPresenter(shoppingCart, deleteSelectionRelay, clearSelectionRelay);
 
-  SearchEngine newSearchEngine() {
+  private SearchEngine newSearchEngine() {
     return new SearchEngine(backendApiDecorator);
+  }
+
+  private SearchInteractor newSearchInteractor() {
+    return new SearchInteractor(newSearchEngine());
   }
 
   PagingFeedLoader newPagingFeedLoader() {
@@ -85,7 +90,7 @@ public class DependencyInjection {
   }
 
   public SearchPresenter newSearchPresenter() {
-    return new SearchPresenter(newSearchEngine());
+    return new SearchPresenter(newSearchInteractor());
   }
 
   public HomePresenter newHomePresenter() {

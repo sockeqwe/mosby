@@ -36,6 +36,7 @@ import com.hannesdorfmann.mosby3.mvi.MviActivity;
 import com.hannesdorfmann.mosby3.sample.mvi.R;
 import com.hannesdorfmann.mosby3.sample.mvi.SampleApplication;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.http.ProductBackendApi;
+import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.interactor.details.ProductDetailsViewState;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model.Product;
 import com.jakewharton.rxbinding.view.RxView;
 import hu.akarnokd.rxjava.interop.RxJavaInterop;

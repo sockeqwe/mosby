@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Hannes Dorfmann.
+ * Copyright 2017 Hannes Dorfmann.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  *
  */
 
-package com.hannesdorfmann.mosby3.sample.mvi.view.detail;
+package com.hannesdorfmann.mosby3.sample.mvi.businesslogic.interactor.details;
 
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model.ProductDetail;
 

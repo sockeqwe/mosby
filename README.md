@@ -16,8 +16,9 @@ dependencies {
 SNAPSHOT:
 ```groovy
 dependencies {
-	compile 'com.hannesdorfmann.mosby:mvp:3.0.0-SNAPSHOT'
-	compile 'com.hannesdorfmann.mosby:viewstate:3.0.0-SNAPSHOT'
+	compile 'com.hannesdorfmann.mosby3:mvp:3.0.0-SNAPSHOT'
+	compile 'com.hannesdorfmann.mosby3:viewstate:3.0.0-SNAPSHOT'
+	compile 'com.hannesdorfmann.mosby3:mvi:3.0.0-SNAPSHOT'
 }
 ```
 

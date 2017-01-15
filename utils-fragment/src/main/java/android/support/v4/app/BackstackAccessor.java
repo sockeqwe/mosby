@@ -25,32 +25,30 @@ package android.support.v4.app;
 public class BackstackAccessor {
 
   private BackstackAccessor() {
-    throw new IllegalStateException("Not instantiateable");
+    throw new IllegalStateException("Not instantiatable");
   }
 
   /**
    * Checks whether or not a given fragment is on the backstack of the fragment manager (could also
    * be on top of the backstack and hence visible)
    *
-   * @param fragment The fragment you want to check if its on the backstack
-   * @return true, if the given Fragment is on the backstack, otherwise false (not on the backstack)
+   * @param fragment The fragment you want to check if its on the back stack
+   * @return true, if the given Fragment is on the back stack, otherwise false (not on the back
+   * stack)
    */
   public static boolean isFragmentOnBackStack(Fragment fragment) {
+    return fragment.isInBackStack();
+  }
+/*
+  public static boolean isFragmentOnBackStack(Fragment fragment) {
+
     FragmentManager fragmentManager = fragment.getFragmentManager();
     int backStackSize = fragmentManager.getBackStackEntryCount();
     for (int i = 0; i < backStackSize; i++) {
       BackStackRecord stackEntry = (BackStackRecord) fragmentManager.getBackStackEntryAt(i);
       int opsCount = stackEntry.mOps == null ? 0 : stackEntry.mOps.size();
-      /*
-      for (int j = 0; j < opsCount; j++) {
-        BackStackRecord.Op op = stackEntry.mOps.get(j);
-        if (op.fragment == fragment) {
-          return true;
-        }
-      }
-        */
       if (opsCount > 0) {
-        BackStackRecord.Op op = stackEntry.mOps.get(0);
+        BackStackRecord.Op op = stackEntry.mOps.get(opsCount-1);
         if (op.fragment == fragment) {
           return true;
         }
@@ -59,6 +57,8 @@ public class BackstackAccessor {
 
     return false;
   }
+*/
+
 /*
   private static boolean findNext(@NonNull Fragment toFind, @Nullable BackStackRecord.Op next) {
     if (next == null) {

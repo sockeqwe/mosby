@@ -38,6 +38,7 @@ public class CheckoutButtonPresenter extends MviBasePresenter<CheckoutButtonView
   }
 
   @Override protected void bindIntents() {
+    // This could be done with a Interactor in a real world application
     Observable<Double> numberOfItemsInShoppingCart =
         intent(CheckoutButtonView::loadIntent)
             .doOnNext(ignored -> Timber.d("intent: load number of items in shopping cart"))

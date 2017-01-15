@@ -62,7 +62,7 @@ dependencies {
   compile 'com.sothree.slidinguppanel:library:3.3.1'
 
   compile 'com.squareup.leakcanary:leakcanary-android:' + rootProject.ext.leakcanaryVersion
-  compile 'com.jakewharton.timber:timber:4.4.0'
+  compile 'com.jakewharton.timber:timber:4.5.0'
 
 
   testCompile 'junit:junit:4.12'

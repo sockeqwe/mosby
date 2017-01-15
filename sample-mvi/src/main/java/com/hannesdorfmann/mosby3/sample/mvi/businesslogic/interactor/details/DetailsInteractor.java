@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Hannes Dorfmann.
+ * Copyright 2017 Hannes Dorfmann.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,13 +15,15 @@
  *
  */
 
-package com.hannesdorfmann.mosby3.sample.mvi.businesslogic;
+package com.hannesdorfmann.mosby3.sample.mvi.businesslogic.interactor.details;
 
+import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.ShoppingCart;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.http.ProductBackendApiDecorator;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model.Product;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model.ProductDetail;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
+import io.reactivex.schedulers.Schedulers;
 import java.util.Arrays;
 import java.util.List;
 
@@ -39,10 +41,8 @@ public class DetailsInteractor {
     this.shoppingCart = shoppingCart;
   }
 
-  /**
-   * Get the details of a given product
-   */
-  public Observable<ProductDetail> getDetails(int productId) {
+
+  private Observable<ProductDetail> getProductWithShoppingCartInfo(int productId) {
     List<Observable<?>> observables =
         Arrays.asList(backendApi.getProduct(productId), shoppingCart.itemsInShoppingCart());
 
@@ -59,6 +59,18 @@ public class DetailsInteractor {
 
       return new ProductDetail(product, inShoppingCart);
     });
+  }
+
+  /**
+   * Get the details of a given product
+   */
+  public Observable<ProductDetailsViewState> getDetails(int productId) {
+    return getProductWithShoppingCartInfo(productId)
+        .subscribeOn(Schedulers.io())
+        .map(ProductDetailsViewState.DataState::new)
+        .cast(ProductDetailsViewState.class)
+        .startWith(new ProductDetailsViewState.LoadingState())
+        .onErrorReturn(ProductDetailsViewState.ErrorState::new);
   }
 
   public Completable addToShoppingCart(Product product) {

@@ -18,7 +18,8 @@
 package com.hannesdorfmann.mosby3.sample.mvi.view.search;
 
 import com.hannesdorfmann.mosby3.mvi.MviBasePresenter;
-import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.searchengine.SearchEngine;
+import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.interactor.search.SearchInteractor;
+import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.interactor.search.SearchViewState;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import timber.log.Timber;
@@ -29,35 +30,19 @@ import timber.log.Timber;
  * @author Hannes Dorfmann
  */
 public class SearchPresenter extends MviBasePresenter<SearchView, SearchViewState> {
-  private final SearchEngine searchEngine;
+  private final SearchInteractor searchInteractor;
 
-  public SearchPresenter(SearchEngine searchEngine) {
+  public SearchPresenter(SearchInteractor interactor) {
     super(new SearchViewState.SearchNotStartedYet());
-    this.searchEngine = searchEngine;
+    this.searchInteractor = interactor;
   }
 
   @Override protected void bindIntents() {
     Observable<SearchViewState> search =
         intent(SearchView::searchIntent)
             .doOnNext(s -> Timber.d("intent: Search '%s'", s))
-            .switchMap(searchString -> {
-          // Empty String, so no search
-          if (searchString.isEmpty()) {
-            return Observable.just(new SearchViewState.SearchNotStartedYet());
-          }
-
-          // search for product
-          return searchEngine.searchFor(searchString)
-              .map(products -> {
-                if (products.isEmpty()) {
-                  return new SearchViewState.EmptyResult(searchString);
-                } else {
-                  return new SearchViewState.SearchResult(searchString, products);
-                }
-              })
-              .startWith(new SearchViewState.Loading())
-              .onErrorReturn(error -> new SearchViewState.Error(searchString, error));
-        }).observeOn(AndroidSchedulers.mainThread());
+            .switchMap(searchInteractor::search)
+            .observeOn(AndroidSchedulers.mainThread());
 
     subscribeViewState(search, SearchView::render);
   }

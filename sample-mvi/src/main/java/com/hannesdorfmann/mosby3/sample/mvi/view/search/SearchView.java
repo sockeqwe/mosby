@@ -18,6 +18,7 @@
 package com.hannesdorfmann.mosby3.sample.mvi.view.search;
 
 import com.hannesdorfmann.mosby3.mvp.MvpView;
+import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.interactor.search.SearchViewState;
 import io.reactivex.Observable;
 
 /**

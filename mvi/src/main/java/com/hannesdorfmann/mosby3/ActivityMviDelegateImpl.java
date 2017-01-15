@@ -196,13 +196,13 @@ public class ActivityMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
     }
 
     presenterManager.cleanUp();
+  }
+
+  @Override public void onDestroy() {
     presenterManager = null;
     presenter = null;
     activity = null;
     delegateCallback = null;
-  }
-
-  @Override public void onDestroy() {
   }
 
   @Override public void onPostCreate(Bundle savedInstanceState) {

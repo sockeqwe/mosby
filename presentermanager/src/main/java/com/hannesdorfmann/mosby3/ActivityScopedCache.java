@@ -20,6 +20,7 @@ package com.hannesdorfmann.mosby3;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.util.ArrayMap;
+import android.util.Log;
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 import java.util.Map;
@@ -41,6 +42,18 @@ class ActivityScopedCache {
   }
 
   public void clear() {
+    for (PresenterHolder holder : presenterMap.values()) {
+      // This should never be the case: If there were some presenters left in the internal cache,
+      // a delegate didn't work correctly as expected
+      if (holder.presenter != null) {
+        holder.presenter.detachView(false);
+        if (PresenterManager.DEBUG) {
+          Log.w(PresenterManager.DEBUG_TAG,
+              "Found a Presenter that is still alive. This should never happen. It seems that a MvpDelegate / MviDelegate didn't work correctly because this Delegate should have removed the presenter. The Presenter was "
+                  + holder.presenter);
+        }
+      }
+    }
     presenterMap.clear();
   }
 
@@ -51,8 +64,7 @@ class ActivityScopedCache {
    * @param <P> The type tof the {@link MvpPresenter}
    * @return The Presenter for the given view id or <code>null</code>
    */
-  @Nullable public <P> P getPresenter(
-      @NonNull String viewId) {
+  @Nullable public <P> P getPresenter(@NonNull String viewId) {
     PresenterHolder holder = presenterMap.get(viewId);
     return holder == null ? null : (P) holder.presenter;
   }
@@ -64,7 +76,8 @@ class ActivityScopedCache {
    * associated to.
    * @param presenter The Presenter
    */
-  public void putPresenter(@NonNull String viewId, @NonNull MvpPresenter<? extends MvpView> presenter) {
+  public void putPresenter(@NonNull String viewId,
+      @NonNull MvpPresenter<? extends MvpView> presenter) {
 
     if (viewId == null) {
       throw new NullPointerException("ViewId is null");

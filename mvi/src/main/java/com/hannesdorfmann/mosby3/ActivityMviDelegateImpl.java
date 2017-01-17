@@ -182,12 +182,18 @@ public class ActivityMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
     }
   }
 
-  private boolean retainPresenterInstance(){
-    return keepPresenterInstance && activity.isChangingConfigurations();
+  /**
+   * Determines whether or not a Presenter Instance should be kept
+   * @param keepPresenterInstance true, if the delegate has enabled keep
+   * @param activity
+   * @return
+   */
+  static boolean retainPresenterInstance(boolean keepPresenterInstance,Activity activity){
+    return keepPresenterInstance && (activity.isChangingConfigurations() || !activity.isFinishing());
   }
 
   @Override public void onStop() {
-    boolean retainPresenterInstance = retainPresenterInstance();
+    boolean retainPresenterInstance = retainPresenterInstance(keepPresenterInstance, activity);
     presenter.detachView(retainPresenterInstance);
 
     if (DEBUG) {
@@ -202,7 +208,7 @@ public class ActivityMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
   @Override public void onDestroy() {
 
     // A little bit ugly, because presenter will be instantiated in onStart() and not in onCreate()
-    if (!retainPresenterInstance()) {
+    if (!retainPresenterInstance(keepPresenterInstance, activity)) {
       PresenterManager.remove(activity, mosbyViewId);
       Log.d(DEBUG_TAG, "Destroying Presenter permanently "
           + presenter);

@@ -62,7 +62,7 @@ public class LifecycleTestPresenter extends MviBasePresenter<LifecycleTestView, 
       throw new IllegalStateException(
           "unbindIntents() is called more than once. Invokations: " + unbindIntentInvocations);
     }
-    
+
     unbindIntentInvocations++;
   }
 }

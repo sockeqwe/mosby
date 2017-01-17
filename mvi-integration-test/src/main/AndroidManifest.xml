@@ -24,11 +24,16 @@
       android:label="@string/app_name"
       android:supportsRtl="true"
       android:theme="@style/AppTheme">
-    <activity android:name=".lifecycle.activity.MviLifecycleActivity"/>
-    <activity android:name=".lifecycle.fragment.SimpleFragmentContainerActivity" />
-    <activity android:name=".lifecycle.fragment.RetainingFragmentContainerActivity" />
-    <activity android:name=".lifecycle.fragment.childfragment.MviLifecycleChildFragmentActivity" />
-    <activity android:name=".lifecycle.fragment.backstack.MviLifecycleBackstackActivity" />
+    <activity android:name=".lifecycle.activity.MviLifecycleActivity">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+      </intent-filter>
+    </activity>
+    <activity android:name=".lifecycle.fragment.SimpleFragmentContainerActivity"/>
+    <activity android:name=".lifecycle.fragment.RetainingFragmentContainerActivity"/>
+    <activity android:name=".lifecycle.fragment.childfragment.MviLifecycleChildFragmentActivity"/>
+    <activity android:name=".lifecycle.fragment.backstack.MviLifecycleBackstackActivity"/>
   </application>
 
 </manifest>

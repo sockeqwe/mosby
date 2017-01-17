@@ -21,6 +21,7 @@ import android.content.pm.ActivityInfo;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import junit.framework.Assert;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,6 +36,7 @@ import org.junit.runner.RunWith;
   @Rule public ActivityTestRule<ReplaceFragmentTransactionActivity> rule =
       new ActivityTestRule<>(ReplaceFragmentTransactionActivity.class);
 
+  @Ignore("We trust that FragmentManager implementation runs as expected")
   @Test public void fragmentsOnBackstack() throws Exception {
     // Context of the app under test.
     ReplaceFragmentTransactionActivity activity = rule.getActivity();

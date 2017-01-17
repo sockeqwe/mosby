@@ -36,7 +36,7 @@ public class ViewGroupMviDelegateImpl<V extends MvpView, P extends MviPresenter<
     implements ViewGroupMviDelegate<V, P> {
 
   // TODO allow custom save state hook in
-  public static final boolean DEBUG = false;
+  public static final boolean DEBUG = true;
   private static final String DEBUG_TAG = "ViewGroupMviDelegateImp";
 
   private ViewGroupMviDelegateCallback<V, P> delegateCallback;

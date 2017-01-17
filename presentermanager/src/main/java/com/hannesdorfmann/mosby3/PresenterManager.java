@@ -1,15 +1,14 @@
 package com.hannesdorfmann.mosby3;
 
+import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.os.Bundle;
+import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.UiThread;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.util.ArrayMap;
-import android.util.Log;
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 import java.util.Map;
@@ -29,323 +28,204 @@ import java.util.UUID;
  * @author Hannes Dorfmann
  * @since 3.0
  */
-final class PresenterManager<V extends MvpView, P extends MvpPresenter<V>> {
+final class PresenterManager {
 
-  private static final String FRAGMENT_TAG =
-      "com.hannesdorfmann.mosby3.mvp.PresenterManagerFragment";
+  final static String KEY_ACTIVITY_ID = "com.hannesdorfmann.mosby3.MosbyPresenterManagerActivityId";
 
-  public static final boolean DEBUG = true;
-  private static final String DEBUG_TAG = "PresenterManager";
-  /**
-   * Never use this directly. Always use {@link #getFragmentOrCreate(Context)}
-   */
-  private PresenterManagerFragment internalFragment = null;
+  private final static Map<Activity, String> activityIdMap = new ArrayMap<>();
+  private final static Map<String, ActivityScopedCache> activityScopedCacheMap = new ArrayMap<>();
 
-  // package private constructor
-  PresenterManager() {
+  static final Application.ActivityLifecycleCallbacks activityLifecycleCallbacks =
+      new Application.ActivityLifecycleCallbacks() {
+        @Override public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+          if (savedInstanceState != null) {
+            String activityId = savedInstanceState.getString(KEY_ACTIVITY_ID);
+            if (activityId != null) {
+              // After a screen orientation change we map the newly created Activity to the same
+              // Activity ID as the previous activity has had (before screen orientation change)
+              activityIdMap.put(activity, activityId);
+            }
+          }
+        }
+
+        @Override public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+          // Save the activityId into bundle so that the other
+          String activityId = activityIdMap.get(activity);
+          if (activityId != null) {
+            outState.putString(KEY_ACTIVITY_ID, activityId);
+          }
+        }
+
+        @Override public void onActivityStarted(Activity activity) {
+        }
+
+        @Override public void onActivityResumed(Activity activity) {
+        }
+
+        @Override public void onActivityPaused(Activity activity) {
+
+        }
+
+        @Override public void onActivityStopped(Activity activity) {
+        }
+
+        @Override public void onActivityDestroyed(Activity activity) {
+          if (!activity.isChangingConfigurations()) {
+            // Activity will be destroyed permanently, so reset the cache
+            String activityId = activityIdMap.get(activity);
+            if (activityId != null) {
+              ActivityScopedCache scopedCache = activityScopedCacheMap.get(activityId);
+              if (scopedCache != null) {
+                scopedCache.clear();
+                activityScopedCacheMap.remove(activityId);
+              }
+
+              // No Activity Scoped cache available, so unregister
+              if (activityScopedCacheMap.isEmpty()) {
+                // All Mosby related activities are destroyed, so we can remove the activity lifecylce listener
+                activity.getApplication()
+                    .unregisterActivityLifecycleCallbacks(activityLifecycleCallbacks);
+              }
+            }
+          }
+          activityIdMap.remove(activity);
+        }
+      };
+
+  private PresenterManager() {
   }
 
   /**
-   * Get the next (mosby internal) view id
+   * Get an already existing {@link ActivityScopedCache} or creates a new one if not existing yet
    *
-   * @param context The context
-   * @return the view id
+   * @param activity The Activitiy for which you want to get the activity scope for
+   * @return The {@link ActivityScopedCache} for the given Activity
    */
-  @UiThread @NonNull String nextViewId(Context context) {
-    return getFragmentOrCreate(context).nextViewId();
+  @NonNull @MainThread static ActivityScopedCache getOrCreateActivityScopedCache(
+      @NonNull Activity activity) {
+    if (activity == null) {
+      throw new NullPointerException("Activity is null");
+    }
+
+    String activityId = activityIdMap.get(activity);
+    if (activityId == null) {
+      // Activity not registered yet
+      activityId = UUID.randomUUID().toString();
+      activityIdMap.put(activity, activityId);
+
+      if (activityIdMap.size() == 1) {
+        // Added the an Activity for the first time so register Activity LifecycleListener
+        activity.getApplication().registerActivityLifecycleCallbacks(activityLifecycleCallbacks);
+      }
+    }
+
+    ActivityScopedCache activityScopedCache = activityScopedCacheMap.get(activityId);
+    if (activityScopedCache == null) {
+      activityScopedCache = new ActivityScopedCache();
+      activityScopedCacheMap.put(activityId, activityScopedCache);
+    }
+
+    return activityScopedCache;
   }
 
-  @NonNull private FragmentActivity getActivity(@NonNull Context context) {
+  /**
+   * Get the  {@link ActivityScopedCache} for the given Activity or <code>null</code> if no {@link
+   * ActivityScopedCache} exists for the given Activity
+   *
+   * @param activity The activity
+   * @return The {@link ActivityScopedCache} or null
+   * @see #getOrCreateActivityScopedCache(Activity)
+   */
+  @Nullable @MainThread static ActivityScopedCache getActivityScope(@NonNull Activity activity) {
+    if (activity == null) {
+      throw new NullPointerException("Activity is null");
+    }
+    String activityId = activityIdMap.get(activity);
+    if (activityId == null) {
+      return null;
+    }
+
+    return activityScopedCacheMap.get(activityId);
+  }
+
+  /**
+   * Get the presenter for the View with the given (Mosby - internal) view Id or <code>null</code>
+   * if no presenter for the given view (via view id) exists.
+   *
+   * @param activity The Activity (used for scoping)
+   * @param viewId The mosby internal View Id (unique among all {@link MvpView}
+   * @param <V> The view type
+   * @param <P> The Presenter type
+   * @return The Presenter or <code>null</code>
+   */
+  @Nullable public static <V extends MvpView, P extends MvpPresenter<V>> P getPresenter(
+      @NonNull Activity activity, @NonNull String viewId) {
+    if (activity == null) {
+      throw new NullPointerException("Activity is null");
+    }
+
+    if (viewId == null){
+      throw new NullPointerException("View id is null");
+    }
+
+    ActivityScopedCache scopedCache = getActivityScope(activity);
+    return scopedCache == null ? null : (P) scopedCache.getPresenter(viewId);
+  }
+
+  @NonNull private Activity getActivity(@NonNull Context context) {
     if (context == null) {
       throw new NullPointerException("context == null");
     }
-    if (context instanceof FragmentActivity) {
-      return (FragmentActivity) context;
+    if (context instanceof Activity) {
+      return (Activity) context;
     }
 
     while (context instanceof ContextWrapper) {
-      if (context instanceof FragmentActivity) {
-        return (FragmentActivity) context;
+      if (context instanceof Activity) {
+        return (Activity) context;
       }
       context = ((ContextWrapper) context).getBaseContext();
     }
-    throw new IllegalStateException(
-        "Could not find the surrounding FragmentActivity. Does your activity extends from android.support.v4.app.FragmentActivity like android.support.v7.app.AppCompatActivity ?");
-  }
-
-  @Nullable @UiThread
-  private PresenterManagerFragment getFragmentIfNotClearedYet(@NonNull Context context) {
-
-    if (internalFragment != null) {
-      if (DEBUG) {
-        Log.d(DEBUG_TAG, "internalFragment precached " + internalFragment);
-      }
-      return internalFragment;
-    }
-
-    FragmentActivity activity = getActivity(context);
-
-    PresenterManagerFragment fragment =
-        (PresenterManagerFragment) activity.getSupportFragmentManager()
-            .findFragmentByTag(FRAGMENT_TAG);
-
-    // Already existing Fragment found
-    if (fragment != null) {
-      this.internalFragment = fragment;
-      if (DEBUG) {
-        Log.d(DEBUG_TAG, "internalFragment found in FragmentManager " + internalFragment);
-      }
-      return fragment;
-    }
-
-    return null;
+    throw new IllegalStateException("Could not find the surrounding Activity");
   }
 
   /**
-   * Get the internalFragment or creates a new one
+   * Clears the internal (static) state. Used for testing.
+   */
+  static void reset() {
+    activityIdMap.clear();
+    for (ActivityScopedCache scopedCache : activityScopedCacheMap.values()) {
+      scopedCache.clear();
+    }
+
+    activityScopedCacheMap.clear();
+  }
+
+  public static void putPresenter(@NonNull Activity activity, @NonNull String viewId,
+      @NonNull MvpPresenter<MvpView> presenter) {
+    if (activity == null) {
+      throw new NullPointerException("Activity is null");
+    }
+
+    ActivityScopedCache scopedCache = getOrCreateActivityScopedCache(activity);
+    scopedCache.putPresenter(viewId, presenter);
+  }
+
+  /**
+   * Removes the Presenter (and ViewState) for the given View. Does nothing if no Presenter is
+   * stored internally with the given viewId
    *
-   * @param context The context
-   * @return The internalFragment
+   * @param activity The activity
+   * @param viewId The mosby internal view id
    */
-  @UiThread @NonNull private PresenterManagerFragment getFragmentOrCreate(Context context) {
-
-    PresenterManagerFragment fragment = getFragmentIfNotClearedYet(context);
-    if (fragment != null) {
-      return fragment;
+  public static void remove(@NonNull Activity activity, @NonNull String viewId) {
+    if (activity == null) {
+      throw new NullPointerException("Activity is null");
     }
 
-    // No internalFragment found, so create a new one
-    this.internalFragment = new PresenterManagerFragment();
-    FragmentActivity activity = getActivity(context);
-    activity.getSupportFragmentManager()
-        .beginTransaction()
-        .add(internalFragment, FRAGMENT_TAG)
-        .commit(); // TODO should be commitNow() ?
-
-    if (DEBUG) {
-      Log.d(DEBUG_TAG,
-          "internalFragment new created and put to FragmentManager " + internalFragment);
-    }
-    return this.internalFragment;
-  }
-
-  /**
-   * Get the presenter for the given view id
-   *
-   * @param viewId the id of the view (assigned internally)
-   * @param context the context
-   * @return The Presenter or null
-   */
-  @UiThread P getPresenter(String viewId, @NonNull Context context) {
-
-    PresenterManagerFragment fragment = getFragmentOrCreate(context);
-
-    CacheEntry<V, P> entry = fragment.get(viewId);
-    return entry == null ? null : entry.presenter;
-  }
-
-  /**
-   * Get the presenter for the given view id
-   *
-   * @param viewId the id of the view (assigned internally)
-   * @param context the context
-   * @return The Presenter or null
-   */
-  @UiThread public <T> T getViewState(String viewId, @NonNull Context context) {
-
-    PresenterManagerFragment fragment = getFragmentOrCreate(context);
-
-    CacheEntry<V, P> entry = fragment.get(viewId);
-    return entry == null ? null : (T) entry.viewState;
-  }
-
-  /**
-   * Very important to avoid memory leaks!
-   */
-  @UiThread public void cleanUp() {
-    internalFragment = null;
-  }
-
-  /**
-   * Determines if the view will be destroyed permanently, because the whole activity will be
-   * destroyed.
-   *
-   * @param context the context
-   * @return true, if destroyed permanently, otherwise false
-   */
-  public boolean willViewBeDestroyedPermanently(Context context) {
-    return !getActivity(context).isChangingConfigurations();
-  }
-
-  /**
-   * Determines if the view will be detached from window (destroyed) because of an orientation
-   * change
-   *
-   * @param context the context
-   * @return true, if detached because of an orientation change. Otherwise, false
-   */
-  public boolean willViewBeDetachedBecauseOrientationChange(Context context) {
-    return getActivity(context).isChangingConfigurations();
-  }
-
-  /**
-   * Remove the Presenter and ViewState from internal {@link PresenterManagerFragment}
-   *
-   * @param viewId The (internal) view's id
-   * @param context The context
-   */
-  public void removePresenterAndViewState(String viewId, Context context) {
-    PresenterManagerFragment fragment = getFragmentIfNotClearedYet(context);
-    if (fragment != null) {
-      fragment.remove(viewId);
-    }
-    // Otherwise presenter cache has already been cleared by the fragment itself
-    // and therefore the presenter is already removed from internal cache
-  }
-
-  /**
-   * Puts the presenter in the internal cache "associated" with the given view id
-   *
-   * @param viewId The (interals) view id
-   * @param presenter The presenter
-   * @param context the context
-   */
-  public void putPresenter(String viewId, P presenter, Context context) {
-    PresenterManagerFragment fragment = getFragmentOrCreate(context);
-    CacheEntry<V, P> entry = fragment.get(viewId);
-    if (entry == null) {
-      entry = new CacheEntry<V, P>(presenter);
-      fragment.put(viewId, entry);
-    } else {
-      entry.presenter = presenter;
-    }
-  }
-
-  /**
-   * Save the view state "in memory cache" during screen orientation changes
-   *
-   * @param viewId The view id (mosby internal)
-   * @param viewState The view state to save
-   * @param context The context
-   */
-  public void putViewState(String viewId, Object viewState, Context context) {
-    PresenterManagerFragment fragment = getFragmentOrCreate(context);
-    CacheEntry<V, P> entry = fragment.get(viewId);
-    if (entry == null) {
-      throw new IllegalStateException(
-          "Try to put the ViewState into cache. However, the presenter hasn't been put into cache before. This is not allowed. Ensure that the presenter is saved before putting the ViewState into cache.");
-    } else {
-      entry.viewState = viewState;
-    }
-  }
-
-  /**
-   * Internal config change Cache entry
-   */
-  static final class CacheEntry<V extends MvpView, P extends MvpPresenter<V>> {
-    P presenter;
-    Object viewState; // workaround: dont want to introduce dependency to viewstate module
-
-    public CacheEntry(P presenter) {
-      this.presenter = presenter;
-    }
-  }
-
-  /**
-   * Fragment internally used to deal with screen orientation changes
-   *
-   * @author Hannes Dorfmann
-   * @since 3.0
-   */
-  public static final class PresenterManagerFragment extends Fragment {
-    private Map<String, CacheEntry> cache = new ArrayMap<>();
-
-    /**
-     * Get a value from cache
-     *
-     * @param key the key
-     * @param <T> The retrurn type
-     * @return the cache entry. Is <code>null</code> if no entry found for the given key
-     */
-    <T> T get(String key) {
-      return (T) cache.get(key);
-    }
-
-    /**
-     * Put value into the cache
-     *
-     * @param key the key
-     * @param entry the cache entry
-     */
-    void put(String key, CacheEntry entry) {
-      cache.put(key, entry);
-    }
-
-    /**
-     * Remove value from key
-     *
-     * @param key The key
-     */
-    void remove(String key) {
-      if (cache != null) { // check if cache has already been cleared
-        cache.remove(key);
-      }
-    }
-
-    @Override public void onCreate(@Nullable Bundle savedInstanceState) {
-      super.onCreate(savedInstanceState);
-      setRetainInstance(true);
-    }
-
-    @Override public void onDestroy() {
-      //destroyed = true;
-      cache.clear();
-      cache = null;
-
-      if (DEBUG) {
-        Log.d(DEBUG_TAG, toString() + " internalFragment onDestroy() - clearing cache - " + this);
-      }
-
-      super.onDestroy();
-    }
-
-    @Override public void onStart() {
-      super.onStart();
-     /*
-      if (DEBUG) {
-        Log.d(DEBUG_TAG, toString() + " internalFragment onStart() " + this);
-      }
-      */
-    }
-
-    @Override public void onStop() {
-      super.onStop();
-
-      /*
-      if (DEBUG) {
-        Log.d(DEBUG_TAG, toString() + " internalFragment onStop() " + this);
-      }
-      */
-    }
-
-    /**
-     * Get the next (mosby internal) view id
-     *
-     * @return view id
-     */
-    @NonNull String nextViewId() {
-      String uuid;
-      do {
-        uuid = UUID.randomUUID().toString();
-      } while (cache.get(uuid) != null);
-      // Should never be the case because UUID is supposed to be "cryptographically strong",
-      // but it won't hurt to check that in a do-while loop
-
-      if (uuid == null || uuid.length() == 0) {
-        throw new NullPointerException(
-            "Oops, generated View Id is null. This should never be the case! Please file an issue at https://github.com/sockeqwe/mosby/issues");
-      }
-      return uuid;
+    ActivityScopedCache activityScope = getActivityScope(activity);
+    if (activityScope != null) {
+      activityScope.remove(viewId);
     }
   }
 }

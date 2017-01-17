@@ -42,7 +42,7 @@ import com.hannesdorfmann.mosby3.mvp.MvpView;
 public class FragmentMviDelegateImpl<V extends MvpView, P extends MviPresenter<V, ?>>
     implements FragmentMviDelegate<V, P> {
 
-  public static final boolean DEBUG = false;
+  public static final boolean DEBUG = true;
   private static final String DEBUG_TAG = "FragmentMviDelegateImpl";
   private static final String KEY_MOSBY_VIEW_ID = "com.hannesdorfmann.mosby3.activity.viewState.id";
 

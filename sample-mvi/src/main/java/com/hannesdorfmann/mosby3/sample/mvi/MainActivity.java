@@ -53,7 +53,10 @@ public class MainActivity extends AppCompatActivity {
   private PublishSubject<Boolean> clearSelectionRelay;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
+
+    Timber.d("Activity before onCreate()");
     super.onCreate(savedInstanceState);
+    Timber.d("Activity onCreate()");
     setContentView(R.layout.activity_main);
     unbinder = ButterKnife.bind(this);
     toolbar.setTitle("Mosby MVI");
@@ -97,11 +100,13 @@ public class MainActivity extends AppCompatActivity {
     super.onDestroy();
     unbinder.unbind();
     disposable.dispose();
-    Timber.d("------- Destoryed -------");
+    Timber.d("------- Destroyed -------");
   }
 
   @Override protected void onSaveInstanceState(Bundle outState) {
     super.onSaveInstanceState(outState);
+
+    Timber.d("Activity onSaveInstanceState()");
     outState.putString(KEY_TOOLBAR_TITLE, toolbar.getTitle().toString());
   }
 

@@ -9,6 +9,7 @@ import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.util.ArrayMap;
+import android.util.Log;
 import android.view.View;
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
@@ -31,6 +32,8 @@ import java.util.UUID;
  */
 final class PresenterManager {
 
+  public static boolean DEBUG = true;
+  public static final String DEBUG_TAG = "PresenterManater";
   final static String KEY_ACTIVITY_ID = "com.hannesdorfmann.mosby3.MosbyPresenterManagerActivityId";
 
   private final static Map<Activity, String> activityIdMap = new ArrayMap<>();
@@ -86,6 +89,9 @@ final class PresenterManager {
                 // All Mosby related activities are destroyed, so we can remove the activity lifecylce listener
                 activity.getApplication()
                     .unregisterActivityLifecycleCallbacks(activityLifecycleCallbacks);
+                if (DEBUG){
+                  Log.d(DEBUG_TAG, "Unregistering ActivityLifecycleCallbacks");
+                }
               }
             }
           }
@@ -95,7 +101,7 @@ final class PresenterManager {
 
   private PresenterManager() {
     throw new RuntimeException("Not instantiatable!");
- }
+  }
 
   /**
    * Get an already existing {@link ActivityScopedCache} or creates a new one if not existing yet
@@ -118,6 +124,9 @@ final class PresenterManager {
       if (activityIdMap.size() == 1) {
         // Added the an Activity for the first time so register Activity LifecycleListener
         activity.getApplication().registerActivityLifecycleCallbacks(activityLifecycleCallbacks);
+        if (DEBUG) {
+          Log.d(DEBUG_TAG, "Registering ActivityLifecycleCallbacks");
+        }
       }
     }
 
@@ -159,13 +168,12 @@ final class PresenterManager {
    * @param <P> The Presenter type
    * @return The Presenter or <code>null</code>
    */
-  @Nullable public static <P> P getPresenter(
-      @NonNull Activity activity, @NonNull String viewId) {
+  @Nullable public static <P> P getPresenter(@NonNull Activity activity, @NonNull String viewId) {
     if (activity == null) {
       throw new NullPointerException("Activity is null");
     }
 
-    if (viewId == null){
+    if (viewId == null) {
       throw new NullPointerException("View id is null");
     }
 
@@ -174,7 +182,9 @@ final class PresenterManager {
   }
 
   /**
-   * Get the Activity of a context. This is typically used to determine the hosting activity of a {@link View}
+   * Get the Activity of a context. This is typically used to determine the hosting activity of a
+   * {@link View}
+   *
    * @param context The context
    * @return The Activity or throws an Exception if Activity couldnt be determined
    */

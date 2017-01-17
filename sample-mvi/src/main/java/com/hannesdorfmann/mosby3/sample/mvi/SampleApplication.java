@@ -17,10 +17,8 @@
 
 package com.hannesdorfmann.mosby3.sample.mvi;
 
-import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
-import android.os.Bundle;
 import com.hannesdorfmann.mosby3.sample.mvi.dependencyinjection.DependencyInjection;
 import timber.log.Timber;
 
@@ -39,38 +37,5 @@ public class SampleApplication extends Application {
 
   public static DependencyInjection getDependencyInjection(Context context) {
     return ((SampleApplication) context.getApplicationContext()).dependencyInjection;
-  }
-
-  @Override public void onCreate() {
-    super.onCreate();
-    registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
-      @Override public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-        Timber.d("Activity created %s", savedInstanceState);
-      }
-
-      @Override public void onActivityStarted(Activity activity) {
-
-      }
-
-      @Override public void onActivityResumed(Activity activity) {
-
-      }
-
-      @Override public void onActivityPaused(Activity activity) {
-
-      }
-
-      @Override public void onActivityStopped(Activity activity) {
-
-      }
-
-      @Override public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
-        Timber.d("Activity save state");
-      }
-
-      @Override public void onActivityDestroyed(Activity activity) {
-        Timber.d("Activity destroyed‚");
-      }
-    });
   }
 }

@@ -17,6 +17,7 @@
 
 package com.hannesdorfmann.mosby3;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -24,6 +25,7 @@ import android.util.Log;
 import android.view.View;
 import com.hannesdorfmann.mosby3.mvi.MviPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
+import java.util.UUID;
 
 /**
  * The default implementation of {@link ViewGroupMviDelegate}
@@ -42,8 +44,8 @@ public class ViewGroupMviDelegateImpl<V extends MvpView, P extends MviPresenter<
   private ViewGroupMviDelegateCallback<V, P> delegateCallback;
   private String mosbyViewId;
   private final boolean keepPresenterDuringScreenOrientationChange;
-  private PresenterManager<V, P> presenterManager = new PresenterManager<V, P>();
   private P presenter;
+  private final Activity activity;
 
   public ViewGroupMviDelegateImpl(ViewGroupMviDelegateCallback<V, P> delegateCallback) {
     this(delegateCallback, true);
@@ -56,6 +58,7 @@ public class ViewGroupMviDelegateImpl<V extends MvpView, P extends MviPresenter<
     }
     this.delegateCallback = delegateCallback;
     this.keepPresenterDuringScreenOrientationChange = keepPresenterDuringScreenOrientationChange;
+    this.activity = PresenterManager.getActivity(delegateCallback.getContext());
   }
 
   /**
@@ -73,8 +76,8 @@ public class ViewGroupMviDelegateImpl<V extends MvpView, P extends MviPresenter<
     }
     if (keepPresenterDuringScreenOrientationChange) {
       Context context = delegateCallback.getContext();
-      mosbyViewId = presenterManager.nextViewId(context);
-      presenterManager.putPresenter(mosbyViewId, presenter, context);
+      mosbyViewId = UUID.randomUUID().toString();
+      PresenterManager.putPresenter(PresenterManager.getActivity(context), mosbyViewId, presenter);
     }
     return presenter;
   }
@@ -99,7 +102,7 @@ public class ViewGroupMviDelegateImpl<V extends MvpView, P extends MviPresenter<
       }
     } else {
       Context context = getContext();
-      presenter = presenterManager.getPresenter(mosbyViewId, context);
+      presenter = PresenterManager.getPresenter(activity, mosbyViewId);
       if (presenter == null) {
         // Process death,
         // hence no presenter with the given viewState id stored, although we have a viewState id
@@ -143,9 +146,8 @@ public class ViewGroupMviDelegateImpl<V extends MvpView, P extends MviPresenter<
   @Override public void onDetachedFromWindow() {
 
     if (keepPresenterDuringScreenOrientationChange) {
-      Context context = getContext();
 
-      boolean destroyedPermanently = presenterManager.willViewBeDestroyedPermanently(context);
+      boolean destroyedPermanently = !activity.isChangingConfigurations();
 
       if (destroyedPermanently) {
         // Whole activity will be destroyed
@@ -158,12 +160,12 @@ public class ViewGroupMviDelegateImpl<V extends MvpView, P extends MviPresenter<
               + " and removing presenter permanently from internal cache because the hosting Activity will be destroyed permanently");
         }
 
-        presenterManager.removePresenterAndViewState(mosbyViewId, context);
+        PresenterManager.remove(activity, mosbyViewId);
         mosbyViewId = null;
         presenter.detachView(false);
       } else {
-        boolean detachedBecauseOrientationChange =
-            presenterManager.willViewBeDetachedBecauseOrientationChange(context);
+        boolean detachedBecauseOrientationChange =activity.isChangingConfigurations();
+
         if (detachedBecauseOrientationChange) {
           // Simple orientation change
           if (DEBUG) {
@@ -183,7 +185,7 @@ public class ViewGroupMviDelegateImpl<V extends MvpView, P extends MviPresenter<
                 + presenter
                 + " because view has been destroyed. Also Presenter is removed permanently from internal cache.");
           }
-          presenterManager.removePresenterAndViewState(mosbyViewId, context);
+          PresenterManager.remove(activity, mosbyViewId);
           mosbyViewId = null;
           presenter.detachView(false);
         }
@@ -192,9 +194,6 @@ public class ViewGroupMviDelegateImpl<V extends MvpView, P extends MviPresenter<
       // retain instance feature disabled
       presenter.detachView(false);
     }
-
-    // Important cleanup to avoid memory leaks
-    presenterManager.cleanUp();
   }
 
   /**

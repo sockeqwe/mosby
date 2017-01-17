@@ -24,6 +24,7 @@ import android.util.Log;
 import com.hannesdorfmann.mosby3.mvi.MviPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
+import java.util.UUID;
 
 /**
  * The concrete implementation of {@link ActivityMviDelegate}.
@@ -46,7 +47,6 @@ public class ActivityMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
   private String mosbyViewId = null;
 
   private MviDelegateCallback<V, P> delegateCallback;
-  private PresenterManager<V, P> presenterManager = new PresenterManager<V, P>();
   private Activity activity;
   private boolean keepPresenterInstance;
   private P presenter;
@@ -111,7 +111,7 @@ public class ActivityMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
             + delegateCallback.getMvpView());
       }
     } else {
-      presenter = presenterManager.getPresenter(mosbyViewId, activity);
+      presenter = PresenterManager.getPresenter(activity, mosbyViewId);
       if (presenter == null) {
         // Process death,
         // hence no presenter with the given viewState id stored, although we have a viewState id
@@ -167,8 +167,8 @@ public class ActivityMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
           "Presenter returned from createPresenter() is null. Activity is " + activity);
     }
     if (keepPresenterInstance) {
-      mosbyViewId = presenterManager.nextViewId(activity);
-      presenterManager.putPresenter(mosbyViewId, presenter, activity);
+      mosbyViewId = UUID.randomUUID().toString();
+      PresenterManager.putPresenter(activity, mosbyViewId, presenter);
     }
     return presenter;
   }
@@ -197,20 +197,17 @@ public class ActivityMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
           + presenter);
 
     }
-
-    presenterManager.cleanUp();
   }
 
   @Override public void onDestroy() {
 
     // A little bit ugly, because presenter will be instantiated in onStart() and not in onCreate()
     if (!retainPresenterInstance()) {
-      presenterManager.removePresenterAndViewState(mosbyViewId, activity);
+      PresenterManager.remove(activity, mosbyViewId);
       Log.d(DEBUG_TAG, "Destroying Presenter permanently "
           + presenter);
     }
 
-    presenterManager = null;
     presenter = null;
     activity = null;
     delegateCallback = null;

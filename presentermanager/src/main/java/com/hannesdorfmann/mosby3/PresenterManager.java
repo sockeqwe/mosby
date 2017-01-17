@@ -9,6 +9,7 @@ import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.util.ArrayMap;
+import android.view.View;
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 import java.util.Map;
@@ -93,7 +94,8 @@ final class PresenterManager {
       };
 
   private PresenterManager() {
-  }
+    throw new RuntimeException("Not instantiatable!");
+ }
 
   /**
    * Get an already existing {@link ActivityScopedCache} or creates a new one if not existing yet
@@ -154,11 +156,10 @@ final class PresenterManager {
    *
    * @param activity The Activity (used for scoping)
    * @param viewId The mosby internal View Id (unique among all {@link MvpView}
-   * @param <V> The view type
    * @param <P> The Presenter type
    * @return The Presenter or <code>null</code>
    */
-  @Nullable public static <V extends MvpView, P extends MvpPresenter<V>> P getPresenter(
+  @Nullable public static <P> P getPresenter(
       @NonNull Activity activity, @NonNull String viewId) {
     if (activity == null) {
       throw new NullPointerException("Activity is null");
@@ -172,7 +173,12 @@ final class PresenterManager {
     return scopedCache == null ? null : (P) scopedCache.getPresenter(viewId);
   }
 
-  @NonNull private Activity getActivity(@NonNull Context context) {
+  /**
+   * Get the Activity of a context. This is typically used to determine the hosting activity of a {@link View}
+   * @param context The context
+   * @return The Activity or throws an Exception if Activity couldnt be determined
+   */
+  @NonNull public static Activity getActivity(@NonNull Context context) {
     if (context == null) {
       throw new NullPointerException("context == null");
     }
@@ -202,7 +208,7 @@ final class PresenterManager {
   }
 
   public static void putPresenter(@NonNull Activity activity, @NonNull String viewId,
-      @NonNull MvpPresenter<MvpView> presenter) {
+      @NonNull MvpPresenter<? extends MvpView> presenter) {
     if (activity == null) {
       throw new NullPointerException("Activity is null");
     }

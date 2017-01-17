@@ -29,6 +29,7 @@ import android.util.Log;
 import android.view.View;
 import com.hannesdorfmann.mosby3.mvi.MviPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
+import java.util.UUID;
 
 /**
  * The default implementation of {@link FragmentMviDelegate}
@@ -47,9 +48,6 @@ public class FragmentMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
   private static final String KEY_MOSBY_VIEW_ID = "com.hannesdorfmann.mosby3.activity.viewState.id";
 
   private String mosbyViewId = null;
-
-  private PresenterManager<V, P> presenterManager = new PresenterManager<V, P>();
-
   private MviDelegateCallback<V, P> delegateCallback;
   private Fragment fragment;
   private boolean onViewCreatedCalled = false;
@@ -90,7 +88,7 @@ public class FragmentMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
         Log.d(DEBUG_TAG, "new Presenter instance created: " + presenter);
       }
     } else {
-      presenter = presenterManager.getPresenter(mosbyViewId, getActivity());
+      presenter = PresenterManager.getPresenter(getActivity(), mosbyViewId);
       if (presenter == null) {
         // Process death,
         // hence no presenter with the given viewState id stored, although we have a viewState id
@@ -150,10 +148,8 @@ public class FragmentMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
 
     presenter.detachView(retainPresenterInstance);
     if (!retainPresenterInstance) {
-      presenterManager.removePresenterAndViewState(mosbyViewId, activity);
+      PresenterManager.remove(activity, mosbyViewId);
     }
-
-    presenterManager.cleanUp();
 
     if (DEBUG) {
       Log.d(DEBUG_TAG, "detached MvpView from Presenter. MvpView "
@@ -180,7 +176,6 @@ public class FragmentMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
   }
 
   @Override public void onDestroy() {
-    presenterManager = null;
     presenter = null;
     delegateCallback = null;
     fragment = null;
@@ -220,9 +215,9 @@ public class FragmentMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
           "Presenter returned from createPresenter() is null. Fragment is " + fragment);
     }
     if (keepPresenterDuringScreenOrientationChange || keepPresenterOnBackstack) {
-      Context context = getActivity();
-      mosbyViewId = presenterManager.nextViewId(context);
-      presenterManager.putPresenter(mosbyViewId, presenter, context);
+      Activity activity = getActivity();
+      mosbyViewId = UUID.randomUUID().toString();
+      PresenterManager.putPresenter(activity, mosbyViewId, presenter);
     }
     return presenter;
   }

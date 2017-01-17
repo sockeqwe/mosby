@@ -48,11 +48,10 @@ class ActivityScopedCache {
    * Get the Presenter for a given {@link MvpView} if exists or <code>null</code>
    *
    * @param viewId The mosby internal view id
-   * @param <V> The type of the {@link MvpView}
    * @param <P> The type tof the {@link MvpPresenter}
    * @return The Presenter for the given view id or <code>null</code>
    */
-  @Nullable public <V extends MvpView, P extends MvpPresenter<V>> P getPresenter(
+  @Nullable public <P> P getPresenter(
       @NonNull String viewId) {
     PresenterHolder holder = presenterMap.get(viewId);
     return holder == null ? null : (P) holder.presenter;
@@ -65,7 +64,7 @@ class ActivityScopedCache {
    * associated to.
    * @param presenter The Presenter
    */
-  public void putPresenter(@NonNull String viewId, @NonNull MvpPresenter<MvpView> presenter) {
+  public void putPresenter(@NonNull String viewId, @NonNull MvpPresenter<? extends MvpView> presenter) {
 
     if (viewId == null) {
       throw new NullPointerException("ViewId is null");

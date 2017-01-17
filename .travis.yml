@@ -8,8 +8,7 @@ android:
   - android-25
   - sys-img-armeabi-v7a-android-17
 
-before_install:
-- chmod +x .buildscript/deploy_snapshot.sh
+  
 # Emulator Management: Create, Start and Wait
 before_script:
   - echo no | android create avd --force -n test -t android-17 --abi armeabi-v7a
@@ -32,9 +31,7 @@ branches:
 notifications:
   email: false
 sudo: required
-script: ./gradlew build cAT --stacktrace
-# after_success:
-# - ".buildscript/deploy_snapshot.sh"
+script: ./gradlew build cAT
 cache:
   directories:
   - "$HOME/.gradle"
@@ -43,4 +40,8 @@ cache:
 after_failure:
   - cat /home/travis/build/sockeqwe/mosby/mvp/build/outputs/lint-results-debug.xml
   - cat /home/travis/build/sockeqwe/mosby/viewstate/build/outputs/lint-results-debug.xml
+  - cat /home/travis/build/sockeqwe/mosby/mvi/build/outputs/lint-results-debug.xml
 
+
+after_success:
+ - ".buildscript/deploy_snapshot.sh"

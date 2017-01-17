@@ -137,14 +137,28 @@ public class FragmentMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
     }
   }
 
+  private boolean retainPresenterInstance(boolean keepPresenterOnBackstack, Activity activity, Fragment fragment){
+
+    if (activity.isChangingConfigurations()) {
+      return true;
+    }
+
+    if (activity.isFinishing()){
+      return false;
+    }
+
+    if (keepPresenterOnBackstack && BackstackAccessor.isFragmentOnBackStack(fragment)){
+      return true;
+    }
+
+    return !fragment.isRemoving();
+  }
+
   @Override public void onDestroyView() {
     onViewCreatedCalled = false;
 
     Activity activity = getActivity();
-    boolean retainPresenterInstance =
-        ( ActivityMviDelegateImpl.retainPresenterInstance(keepPresenterDuringScreenOrientationChange, activity)) || (
-            BackstackAccessor.isFragmentOnBackStack(fragment)
-                && keepPresenterOnBackstack);
+    boolean retainPresenterInstance = retainPresenterInstance(keepPresenterOnBackstack, activity, fragment);
 
     presenter.detachView(retainPresenterInstance);
     if (!retainPresenterInstance) {

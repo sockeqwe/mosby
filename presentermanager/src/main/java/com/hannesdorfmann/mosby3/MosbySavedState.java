@@ -41,8 +41,9 @@ public class MosbySavedState extends View.BaseSavedState {
 
   private String mosbyViewId;
 
-  public MosbySavedState(Parcelable superState) {
+  public MosbySavedState(Parcelable superState, String mosbyViewId) {
     super(superState);
+    this.mosbyViewId = mosbyViewId;
   }
 
   protected MosbySavedState(Parcel in) {
@@ -59,7 +60,4 @@ public class MosbySavedState extends View.BaseSavedState {
     return mosbyViewId;
   }
 
-  public void setMosbyViewId(String mosbyViewId) {
-    this.mosbyViewId = mosbyViewId;
-  }
 }

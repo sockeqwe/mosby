@@ -208,22 +208,12 @@ public class ViewGroupMviDelegateImpl<V extends MvpView, P extends MviPresenter<
     Parcelable superState = delegateCallback.superOnSaveInstanceState();
 
     if (keepPresenterDuringScreenOrientationChange) {
-      return createSavedState(superState);
+      return new MosbySavedState(superState, mosbyViewId);
     } else {
       return superState;
     }
   }
 
-  /**
-   * Create a MosbySavedState
-   *
-   * @return The saved state
-   */
-  private MosbySavedState createSavedState(Parcelable superState) {
-    MosbySavedState state = new MosbySavedState(superState);
-    state.setMosbyViewId(mosbyViewId);
-    return state;
-  }
 
   /**
    * Restore the data from SavedState

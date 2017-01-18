@@ -42,6 +42,8 @@ class ActivityScopedCache {
   }
 
   public void clear() {
+    /*
+    // TODO: can this check if there are still Presenters in the internal cache that must be detached? Maybe post() / postDelayed() on the  MainThreadLooper()
     for (PresenterHolder holder : presenterMap.values()) {
       // This should never be the case: If there were some presenters left in the internal cache,
       // a delegate didn't work correctly as expected
@@ -54,6 +56,7 @@ class ActivityScopedCache {
         }
       }
     }
+    */
     presenterMap.clear();
   }
 

@@ -22,6 +22,7 @@ import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.http.ProductBackendApi
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model.Product;
 import io.reactivex.Observable;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * With this class you can search for products
@@ -46,6 +47,7 @@ public class SearchEngine {
     }
 
     return backend.getAllProducts()
+        .delay(1000, TimeUnit.MILLISECONDS)
         .flatMap(Observable::fromIterable)
         .filter(product -> isProductMatchingSearchCriteria(product, searchQueryText))
         .toList()

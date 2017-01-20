@@ -43,6 +43,9 @@ public class HomePresenter extends MviBasePresenter<HomeView, HomeViewState> {
 
   @Override protected void bindIntents() {
 
+    //
+    // In a real app this code would rather be moved to an Interactor
+    //
     Observable<PartialHomeViewState> loadFirstPage = intent(HomeView::loadFirstPageIntent)
         .doOnNext(ignored -> Timber.d("intent: load first page"))
         .flatMap(ignored -> feedLoader.loadFirstPage()

@@ -65,7 +65,7 @@ public class HomeFeedLoader {
    *
    * @param categoryName the category name
    */
-  public Observable<List<Product>> loadProductsOfGroup(String categoryName) {
+  public Observable<List<Product>> loadProductsOfCategory(String categoryName) {
     return backendApi.getAllProductsOfCategory(categoryName).delay(3, TimeUnit.SECONDS);
   }
 }

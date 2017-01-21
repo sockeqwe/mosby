@@ -31,6 +31,19 @@ dependencies {
 }
 ```
 
+
+You also have to add the url to the snapshot repository:
+
+```gradle
+allprojects {
+  repositories {
+    ...
+
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+}
+```
+
+
 # Sample APK
 You can find the sample apk files in the [release section](https://github.com/sockeqwe/mosby/releases)
 

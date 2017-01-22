@@ -25,12 +25,12 @@ import java.util.List;
  * @author Hannes Dorfmann
  */
 
-public interface PartialHomeViewState {
+public interface PartialStateChanges {
 
   /**
    * Indicates that the first page is loading
    */
-  public final class FirstPageLoading implements PartialHomeViewState {
+  public final class FirstPageLoading implements PartialStateChanges {
 
     @Override public String toString() {
       return "FirstPageLoadingState{}";
@@ -40,7 +40,7 @@ public interface PartialHomeViewState {
   /**
    * Indicates that an error has occurred while loading the first page
    */
-  public final class FirstPageError implements PartialHomeViewState {
+  public final class FirstPageError implements PartialStateChanges {
     private final Throwable error;
 
     public FirstPageError(Throwable error) {
@@ -61,7 +61,7 @@ public interface PartialHomeViewState {
   /**
    * Indicates that the first page data has been loaded successfully
    */
-  public final class FirstPageLoaded implements PartialHomeViewState {
+  public final class FirstPageLoaded implements PartialStateChanges {
     private final List<FeedItem> data;
 
     public FirstPageLoaded(List<FeedItem> data) {
@@ -76,7 +76,7 @@ public interface PartialHomeViewState {
   /**
    * Next Page has been loaded successfully
    */
-  public final class NextPageLoaded implements PartialHomeViewState {
+  public final class NextPageLoaded implements PartialStateChanges {
     private final List<FeedItem> data;
 
     public NextPageLoaded(List<FeedItem> data) {
@@ -91,7 +91,7 @@ public interface PartialHomeViewState {
   /**
    * Error while loading new page
    */
-  public final class NexPageLoadingError implements PartialHomeViewState {
+  public final class NexPageLoadingError implements PartialStateChanges {
     private final Throwable error;
 
     public NexPageLoadingError(Throwable error) {
@@ -106,19 +106,19 @@ public interface PartialHomeViewState {
   /**
    * Indicates that loading the next page has started
    */
-  public final class NextPageLoading implements PartialHomeViewState {
+  public final class NextPageLoading implements PartialStateChanges {
   }
 
   /**
    * Indicates that loading the newest items via pull to refresh has started
    */
-  public final class PullToRefreshLoading implements PartialHomeViewState {
+  public final class PullToRefreshLoading implements PartialStateChanges {
   }
 
   /**
    * Indicates that an error while loading the newest items via pull to refresh has occurred
    */
-  public final class PullToRefeshLoadingError implements PartialHomeViewState {
+  public final class PullToRefeshLoadingError implements PartialStateChanges {
     private final Throwable error;
 
     public PullToRefeshLoadingError(Throwable error) {
@@ -133,7 +133,7 @@ public interface PartialHomeViewState {
   /**
    * Indicates that data has been loaded successfully over pull-to-refresh
    */
-  public final class PullToRefreshLoaded implements PartialHomeViewState {
+  public final class PullToRefreshLoaded implements PartialStateChanges {
     private final List<FeedItem> data;
 
     public PullToRefreshLoaded(List<FeedItem> data) {
@@ -148,10 +148,10 @@ public interface PartialHomeViewState {
   /**
    * Loading all Products of a given category has been started
    */
-  public final class ProductsOfCategoriesLoading implements PartialHomeViewState {
+  public final class ProductsOfCategoryLoading implements PartialStateChanges {
     private final String categoryName;
 
-    public ProductsOfCategoriesLoading(String categoryName) {
+    public ProductsOfCategoryLoading(String categoryName) {
       this.categoryName = categoryName;
     }
 
@@ -163,11 +163,11 @@ public interface PartialHomeViewState {
   /**
    * An error while loading all products has been occurred
    */
-  public final class ProductsOfCategoriesLoadingError implements PartialHomeViewState {
+  public final class ProductsOfCategoryLoadingError implements PartialStateChanges {
     private final String categoryName;
     private final Throwable error;
 
-    public ProductsOfCategoriesLoadingError(String categoryName, Throwable error) {
+    public ProductsOfCategoryLoadingError(String categoryName, Throwable error) {
       this.categoryName = categoryName;
       this.error = error;
     }
@@ -184,11 +184,11 @@ public interface PartialHomeViewState {
   /**
    * Products of a given Category has been loaded
    */
-  public final class ProductsOfCategoriesLoaded implements PartialHomeViewState {
+  public final class ProductsOfCategoryLoaded implements PartialStateChanges {
     private final List<Product> data;
     private final String categoryName;
 
-    public ProductsOfCategoriesLoaded(String categoryName, List<Product> data) {
+    public ProductsOfCategoryLoaded(String categoryName, List<Product> data) {
       this.data = data;
       this.categoryName = categoryName;
     }

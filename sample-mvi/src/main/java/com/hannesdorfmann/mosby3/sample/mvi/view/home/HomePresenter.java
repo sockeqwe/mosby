@@ -46,45 +46,45 @@ public class HomePresenter extends MviBasePresenter<HomeView, HomeViewState> {
     //
     // In a real app this code would rather be moved to an Interactor
     //
-    Observable<PartialHomeViewState> loadFirstPage = intent(HomeView::loadFirstPageIntent).doOnNext(
+    Observable<PartialStateChanges> loadFirstPage = intent(HomeView::loadFirstPageIntent).doOnNext(
         ignored -> Timber.d("intent: load first page"))
         .flatMap(ignored -> feedLoader.loadFirstPage()
-            .map(items -> (PartialHomeViewState) new PartialHomeViewState.FirstPageLoaded(items))
-            .startWith(new PartialHomeViewState.FirstPageLoading())
-            .onErrorReturn(PartialHomeViewState.FirstPageError::new)
+            .map(items -> (PartialStateChanges) new PartialStateChanges.FirstPageLoaded(items))
+            .startWith(new PartialStateChanges.FirstPageLoading())
+            .onErrorReturn(PartialStateChanges.FirstPageError::new)
             .subscribeOn(Schedulers.io()));
 
-    Observable<PartialHomeViewState> nextPage =
+    Observable<PartialStateChanges> nextPage =
         intent(HomeView::loadNextPageIntent).doOnNext(ignored -> Timber.d("intent: load next page"))
             .flatMap(ignored -> feedLoader.loadNextPage()
-                .map(items -> (PartialHomeViewState) new PartialHomeViewState.NextPageLoaded(items))
-                .startWith(new PartialHomeViewState.NextPageLoading())
-                .onErrorReturn(PartialHomeViewState.NexPageLoadingError::new)
+                .map(items -> (PartialStateChanges) new PartialStateChanges.NextPageLoaded(items))
+                .startWith(new PartialStateChanges.NextPageLoading())
+                .onErrorReturn(PartialStateChanges.NexPageLoadingError::new)
                 .subscribeOn(Schedulers.io()));
 
-    Observable<PartialHomeViewState> pullToRefresh = intent(HomeView::pullToRefreshIntent).doOnNext(
+    Observable<PartialStateChanges> pullToRefresh = intent(HomeView::pullToRefreshIntent).doOnNext(
         ignored -> Timber.d("intent: pull to refresh"))
         .flatMap(ignored -> feedLoader.loadNewestPage()
             .subscribeOn(Schedulers.io())
             .map(
-                items -> (PartialHomeViewState) new PartialHomeViewState.PullToRefreshLoaded(items))
-            .startWith(new PartialHomeViewState.PullToRefreshLoading())
-            .onErrorReturn(PartialHomeViewState.PullToRefeshLoadingError::new));
+                items -> (PartialStateChanges) new PartialStateChanges.PullToRefreshLoaded(items))
+            .startWith(new PartialStateChanges.PullToRefreshLoading())
+            .onErrorReturn(PartialStateChanges.PullToRefeshLoadingError::new));
 
-    Observable<PartialHomeViewState> loadMoreFromGroup =
+    Observable<PartialStateChanges> loadMoreFromGroup =
         intent(HomeView::loadAllProductsFromCategoryIntent).doOnNext(
             categoryName -> Timber.d("intent: load more from category %s", categoryName))
             .flatMap(categoryName -> feedLoader.loadProductsOfCategory(categoryName)
                 .subscribeOn(Schedulers.io())
                 .map(
-                    products -> (PartialHomeViewState) new PartialHomeViewState.ProductsOfCategoriesLoaded(
+                    products -> (PartialStateChanges) new PartialStateChanges.ProductsOfCategoryLoaded(
                         categoryName, products))
-                .startWith(new PartialHomeViewState.ProductsOfCategoriesLoading(categoryName))
+                .startWith(new PartialStateChanges.ProductsOfCategoryLoading(categoryName))
                 .onErrorReturn(
-                    error -> new PartialHomeViewState.ProductsOfCategoriesLoadingError(categoryName,
+                    error -> new PartialStateChanges.ProductsOfCategoryLoadingError(categoryName,
                         error)));
 
-    Observable<PartialHomeViewState> allIntentsObservable =
+    Observable<PartialStateChanges> allIntentsObservable =
         Observable.merge(loadFirstPage, nextPage, pullToRefresh, loadMoreFromGroup)
             .observeOn(AndroidSchedulers.mainThread());
 
@@ -95,62 +95,62 @@ public class HomePresenter extends MviBasePresenter<HomeView, HomeViewState> {
   }
 
   private HomeViewState viewStateReducer(HomeViewState previousState,
-      PartialHomeViewState newState) {
+      PartialStateChanges partialChanges) {
 
-    if (newState instanceof PartialHomeViewState.FirstPageLoading) {
+    if (partialChanges instanceof PartialStateChanges.FirstPageLoading) {
       return previousState.builder().firstPageLoading(true).firstPageError(null).build();
     }
 
-    if (newState instanceof PartialHomeViewState.FirstPageError) {
+    if (partialChanges instanceof PartialStateChanges.FirstPageError) {
       return previousState.builder()
           .firstPageLoading(false)
-          .firstPageError(((PartialHomeViewState.FirstPageError) newState).getError())
+          .firstPageError(((PartialStateChanges.FirstPageError) partialChanges).getError())
           .build();
     }
 
-    if (newState instanceof PartialHomeViewState.FirstPageLoaded) {
+    if (partialChanges instanceof PartialStateChanges.FirstPageLoaded) {
       return previousState.builder()
           .firstPageLoading(false)
           .firstPageError(null)
-          .data(((PartialHomeViewState.FirstPageLoaded) newState).getData())
+          .data(((PartialStateChanges.FirstPageLoaded) partialChanges).getData())
           .build();
     }
 
-    if (newState instanceof PartialHomeViewState.NextPageLoading) {
+    if (partialChanges instanceof PartialStateChanges.NextPageLoading) {
       return previousState.builder().nextPageLoading(true).nextPageError(null).build();
     }
 
-    if (newState instanceof PartialHomeViewState.NexPageLoadingError) {
+    if (partialChanges instanceof PartialStateChanges.NexPageLoadingError) {
       return previousState.builder()
           .nextPageLoading(false)
-          .nextPageError(((PartialHomeViewState.NexPageLoadingError) newState).getError())
+          .nextPageError(((PartialStateChanges.NexPageLoadingError) partialChanges).getError())
           .build();
     }
 
-    if (newState instanceof PartialHomeViewState.NextPageLoaded) {
+    if (partialChanges instanceof PartialStateChanges.NextPageLoaded) {
       List<FeedItem> data = new ArrayList<>(previousState.getData().size()
-          + ((PartialHomeViewState.NextPageLoaded) newState).getData().size());
+          + ((PartialStateChanges.NextPageLoaded) partialChanges).getData().size());
       data.addAll(previousState.getData());
-      data.addAll(((PartialHomeViewState.NextPageLoaded) newState).getData());
+      data.addAll(((PartialStateChanges.NextPageLoaded) partialChanges).getData());
 
       return previousState.builder().nextPageLoading(false).nextPageError(null).data(data).build();
     }
 
-    if (newState instanceof PartialHomeViewState.PullToRefreshLoading) {
+    if (partialChanges instanceof PartialStateChanges.PullToRefreshLoading) {
       return previousState.builder().pullToRefreshLoading(true).pullToRefreshError(null).build();
     }
 
-    if (newState instanceof PartialHomeViewState.PullToRefeshLoadingError) {
+    if (partialChanges instanceof PartialStateChanges.PullToRefeshLoadingError) {
       return previousState.builder()
           .pullToRefreshLoading(false)
-          .pullToRefreshError(((PartialHomeViewState.PullToRefeshLoadingError) newState).getError())
+          .pullToRefreshError(((PartialStateChanges.PullToRefeshLoadingError) partialChanges).getError())
           .build();
     }
 
-    if (newState instanceof PartialHomeViewState.PullToRefreshLoaded) {
+    if (partialChanges instanceof PartialStateChanges.PullToRefreshLoaded) {
       List<FeedItem> data = new ArrayList<>(previousState.getData().size()
-          + ((PartialHomeViewState.PullToRefreshLoaded) newState).getData().size());
-      data.addAll(((PartialHomeViewState.PullToRefreshLoaded) newState).getData());
+          + ((PartialStateChanges.PullToRefreshLoaded) partialChanges).getData().size());
+      data.addAll(((PartialStateChanges.PullToRefreshLoaded) partialChanges).getData());
       data.addAll(previousState.getData());
       return previousState.builder()
           .pullToRefreshLoading(false)
@@ -159,9 +159,9 @@ public class HomePresenter extends MviBasePresenter<HomeView, HomeViewState> {
           .build();
     }
 
-    if (newState instanceof PartialHomeViewState.ProductsOfCategoriesLoading) {
+    if (partialChanges instanceof PartialStateChanges.ProductsOfCategoryLoading) {
       Pair<Integer, AdditionalItemsLoadable> found = findAdditionalItems(
-          ((PartialHomeViewState.ProductsOfCategoriesLoading) newState).getCategoryName(),
+          ((PartialStateChanges.ProductsOfCategoryLoading) partialChanges).getCategoryName(),
           previousState.getData());
       AdditionalItemsLoadable foundItem = found.second;
       AdditionalItemsLoadable toInsert =
@@ -175,16 +175,16 @@ public class HomePresenter extends MviBasePresenter<HomeView, HomeViewState> {
       return previousState.builder().data(data).build();
     }
 
-    if (newState instanceof PartialHomeViewState.ProductsOfCategoriesLoadingError) {
+    if (partialChanges instanceof PartialStateChanges.ProductsOfCategoryLoadingError) {
       Pair<Integer, AdditionalItemsLoadable> found = findAdditionalItems(
-          ((PartialHomeViewState.ProductsOfCategoriesLoadingError) newState).getCategoryName(),
+          ((PartialStateChanges.ProductsOfCategoryLoadingError) partialChanges).getCategoryName(),
           previousState.getData());
 
       AdditionalItemsLoadable foundItem = found.second;
       AdditionalItemsLoadable toInsert =
           new AdditionalItemsLoadable(foundItem.getMoreItemsAvailableCount(),
               foundItem.getCategoryName(), false,
-              ((PartialHomeViewState.ProductsOfCategoriesLoadingError) newState).getError());
+              ((PartialStateChanges.ProductsOfCategoryLoadingError) partialChanges).getError());
 
       List<FeedItem> data = new ArrayList<>(previousState.getData().size());
       data.addAll(previousState.getData());
@@ -193,13 +193,13 @@ public class HomePresenter extends MviBasePresenter<HomeView, HomeViewState> {
       return previousState.builder().data(data).build();
     }
 
-    if (newState instanceof PartialHomeViewState.ProductsOfCategoriesLoaded) {
+    if (partialChanges instanceof PartialStateChanges.ProductsOfCategoryLoaded) {
       Pair<Integer, AdditionalItemsLoadable> found = findAdditionalItems(
-          ((PartialHomeViewState.ProductsOfCategoriesLoaded) newState).getCategoryName(),
+          ((PartialStateChanges.ProductsOfCategoryLoaded) partialChanges).getCategoryName(),
           previousState.getData());
 
       List<FeedItem> data = new ArrayList<>(previousState.getData().size()
-          + ((PartialHomeViewState.ProductsOfCategoriesLoaded) newState).getData().size());
+          + ((PartialStateChanges.ProductsOfCategoryLoaded) partialChanges).getData().size());
       data.addAll(previousState.getData());
 
       // Search for the section header
@@ -208,7 +208,7 @@ public class HomePresenter extends MviBasePresenter<HomeView, HomeViewState> {
         FeedItem item = previousState.getData().get(i);
         if (item instanceof SectionHeader && ((SectionHeader) item).getName()
             .equals(
-                ((PartialHomeViewState.ProductsOfCategoriesLoaded) newState).getCategoryName())) {
+                ((PartialStateChanges.ProductsOfCategoryLoaded) partialChanges).getCategoryName())) {
           sectionHeaderIndex = i;
           break;
         }
@@ -219,16 +219,16 @@ public class HomePresenter extends MviBasePresenter<HomeView, HomeViewState> {
 
       if (sectionHeaderIndex < 0) {
         throw new RuntimeException("Couldn't find the section header for category "
-            + ((PartialHomeViewState.ProductsOfCategoriesLoaded) newState).getCategoryName());
+            + ((PartialStateChanges.ProductsOfCategoryLoaded) partialChanges).getCategoryName());
       }
 
       data.addAll(sectionHeaderIndex + 1,
-          ((PartialHomeViewState.ProductsOfCategoriesLoaded) newState).getData());
+          ((PartialStateChanges.ProductsOfCategoryLoaded) partialChanges).getData());
 
       return previousState.builder().data(data).build();
     }
 
-    throw new IllegalStateException("Don't know how to reduce the partial state " + newState);
+    throw new IllegalStateException("Don't know how to reduce the partial state " + partialChanges);
   }
 
   /**

@@ -36,7 +36,7 @@ import com.hannesdorfmann.mosby3.mvp.MvpView;
  * @author Hannes Dorfmann
  * @since 3.0.0
  */
-public abstract class MviLinearLayout<V extends MvpView, P extends MviPresenter<V, P>>
+public abstract class MviLinearLayout<V extends MvpView, P extends MviPresenter<V, ?>>
     extends LinearLayout implements MvpView, ViewGroupMviDelegateCallback<V, P> {
 
   private boolean isRestoringViewState = false;

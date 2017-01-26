@@ -20,6 +20,8 @@ package com.hannesdorfmann.mosby3.sample.mvi;
 import android.app.Application;
 import android.content.Context;
 import com.hannesdorfmann.mosby3.sample.mvi.dependencyinjection.DependencyInjection;
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 import timber.log.Timber;
 
 /**
@@ -37,5 +39,23 @@ public class SampleApplication extends Application {
 
   public static DependencyInjection getDependencyInjection(Context context) {
     return ((SampleApplication) context.getApplicationContext()).dependencyInjection;
+  }
+
+
+  public static RefWatcher getRefWatcher(Context context) {
+    SampleApplication application = (SampleApplication) context.getApplicationContext();
+    return application.refWatcher;
+  }
+
+  private RefWatcher refWatcher;
+
+  @Override public void onCreate() {
+    super.onCreate();
+    if (LeakCanary.isInAnalyzerProcess(this)) {
+      // This process is dedicated to LeakCanary for heap analysis.
+      // You should not init your app in this process.
+      return;
+    }
+    refWatcher = LeakCanary.install(this);
   }
 }

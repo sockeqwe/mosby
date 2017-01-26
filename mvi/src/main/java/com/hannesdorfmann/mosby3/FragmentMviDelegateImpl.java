@@ -171,7 +171,7 @@ public class FragmentMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
           + "   Presenter: "
           + presenter);
       Log.d(DEBUG_TAG, "Retaining presenter instance: "
-          + Boolean.toString(retainPresenterInstance).toUpperCase()
+          + Boolean.toString(retainPresenterInstance)
           + " "
           + presenter);
     }

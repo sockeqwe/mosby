@@ -19,6 +19,7 @@ package com.hannesdorfmann.mosby3.mvi;
 
 import android.support.annotation.NonNull;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.subjects.PublishSubject;
@@ -33,7 +34,7 @@ import org.omg.CORBA.Object;
 /**
  * @author Hannes Dorfmann
  */
-
+@SuppressFBWarnings({"RV_RETURN_VALUE_IGNORED", "SIC_INNER_SHOULD_BE_STATIC"})
 public class MviBasePresenterTest {
 
   @Test public void bindIntentsAndUnbindIntentsOnlyOnce() {
@@ -137,7 +138,7 @@ public class MviBasePresenterTest {
 
   }
 
-  class KeepUndelyingSubscriptionsView implements MvpView {
+  private static class KeepUndelyingSubscriptionsView implements MvpView {
 
     List<String> renderedModels = new ArrayList<>();
 

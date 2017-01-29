@@ -61,7 +61,6 @@ dependencies {
 
   compile 'com.sothree.slidinguppanel:library:3.3.1'
 
-  compile 'com.squareup.leakcanary:leakcanary-android:' + rootProject.ext.leakcanaryVersion
   compile 'com.jakewharton.timber:timber:4.5.0'
 
 
@@ -81,10 +80,9 @@ dependencies {
 
   compile "com.github.akarnokd:rxjava2-interop:0.7.2"
 
-
-  debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
-  releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
-  testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+  debugCompile 'com.squareup.leakcanary:leakcanary-android:'+ rootProject.ext.leakcanaryVersion
+  releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:'+ rootProject.ext.leakcanaryVersion
+  testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:'+ rootProject.ext.leakcanaryVersion
 
   compile "com.jakewharton.rxbinding:rxbinding:$rxbindingVersion"
   compile "com.jakewharton.rxbinding:rxbinding-support-v4:$rxbindingVersion"

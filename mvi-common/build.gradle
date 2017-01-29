@@ -37,5 +37,5 @@ dependencies {
   compile 'com.android.support:support-annotations:' + rootProject.ext.supportAnnotations
 
   testCompile 'junit:junit:' + rootProject.ext.junitVersion
-  testCompile 'org.mockito:mockito-core:' + rootProject.ext.mockitoVersion
+  testCompile 'com.google.code.findbugs:annotations:'+rootProject.ext.findbugsAnnotations
 }

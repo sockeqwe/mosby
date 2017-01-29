@@ -16,9 +16,9 @@ dependencies {
 Mosby3 preview:
 ```groovy
 dependencies {
-	compile 'com.hannesdorfmann.mosby3:mvp:3.0.0-alpha2'
-	compile 'com.hannesdorfmann.mosby3:viewstate:3.0.0-alpha2'
-	compile 'com.hannesdorfmann.mosby3:mvi:3.0.0-alpha2'
+	compile 'com.hannesdorfmann.mosby3:mvp:3.0.0-alpha3'
+	compile 'com.hannesdorfmann.mosby3:viewstate:3.0.0-alpha3'
+	compile 'com.hannesdorfmann.mosby3:mvi:3.0.0-alpha3'
 }
 ```
 

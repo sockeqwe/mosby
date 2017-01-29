@@ -112,4 +112,9 @@ public class ShoppingCartOverviewPresenter
     deleteDisposable.dispose();
     deleteSelectedDisposable.dispose();
   }
+
+
+  @Override public Observable<List<ShoppingCartOverviewItem>> getViewStateObservable() {
+    return super.getViewStateObservable();
+  }
 }

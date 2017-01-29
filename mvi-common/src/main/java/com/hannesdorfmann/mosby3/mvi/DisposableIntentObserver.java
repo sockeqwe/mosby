@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Hannes Dorfmann.
+ * Copyright 2017 Hannes Dorfmann.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ class DisposableIntentObserver<I> extends DisposableObserver<I> {
   }
 
   @Override public void onError(Throwable e) {
-    throw new IllegalStateException("View intents must not throw errors.", e);
+    throw new IllegalStateException("View intents must not throw errors", e);
   }
 
   @Override public void onComplete() {

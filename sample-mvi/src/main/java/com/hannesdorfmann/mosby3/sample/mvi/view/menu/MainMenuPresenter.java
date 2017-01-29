@@ -75,4 +75,8 @@ public class MainMenuPresenter extends MviBasePresenter<MainMenuView, MenuViewSt
 
     subscribeViewState(menuViewStateObservable, MainMenuView::render);
   }
+
+  @Override public Observable<MenuViewState> getViewStateObservable() {
+    return super.getViewStateObservable();
+  }
 }

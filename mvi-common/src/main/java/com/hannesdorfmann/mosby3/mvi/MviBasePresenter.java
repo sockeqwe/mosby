@@ -1,3 +1,20 @@
+/*
+ * Copyright 2017 Hannes Dorfmann.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package com.hannesdorfmann.mosby3.mvi;
 
 import android.support.annotation.CallSuper;
@@ -55,6 +72,11 @@ import java.util.List;
  * should
  * not be overridden unless you have a really good reason to do so. Usually {@link #bindIntents()}
  * and {@link #unbindIntents()} should be enough.
+ * </p>
+ *
+ * <p>
+ * In very rare cases you could also use {@link #getViewStateObservable()} to offer an observable
+ * to other components you can make this method public.
  * </p>
  *
  * @param <V> The type of the viewState this presenter responds to
@@ -175,7 +197,7 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
     viewRelay = BehaviorSubject.createDefault(initialViewState);
   }
 
-  @Override public Observable<VS> getViewStateObservable() {
+  protected Observable<VS> getViewStateObservable() {
     return viewRelay;
   }
 

@@ -39,7 +39,7 @@ android {
 
 dependencies {
 
-  compile project(':mvp-common')
+  compile project(':mvi-common')
   compile project(':presentermanager')
   compile project(':utils-fragment')
   compile 'io.reactivex.rxjava2:rxjava:' + rootProject.ext.rxjava2Version

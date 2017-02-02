@@ -79,6 +79,14 @@ import java.util.List;
  * to other components you can make this method public.
  * </p>
  *
+ * <p>
+ * <b>Please note that you should not reuse a MviBasePresenter once the View who originally has
+ * instantiated this Presenter has been destroyed permanently</b>. App wide singletons for
+ * Presenters is not a good idea in Model-View-Intent. Reusing singleton scoped Presenters for
+ * different view instances may cause emitting the previous state of the previous attached view
+ * (which already has been destroyed permanently).
+ * </p>
+ *
  * @param <V> The type of the viewState this presenter responds to
  * @param <VS> The type of the viewState state
  * @author Hannes Dorfmann
@@ -143,7 +151,7 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
    * List of internal relays, bridging the gap between intents coming from the viewState (will be
    * unsubscribed temporarly when viewState is detached i.e. during config changes)
    */
-  private List<IntentRelayBinderPair<?>> intentRelays = new ArrayList<>(4);
+  private List<IntentRelayBinderPair<?>> intentRelaysBinders = new ArrayList<>(4);
 
   /**
    * Composite Desposals holding subscriptions to all intents observable offered by the viewState.
@@ -278,9 +286,9 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
     if (viewAttachedFirstTime) {
       bindIntents();
     }
-    int intentsSize = intentRelays.size();
+    int intentsSize = intentRelaysBinders.size();
     for (int i = 0; i < intentsSize; i++) {
-      IntentRelayBinderPair<?> intentRelayBinderPair = intentRelays.get(i);
+      IntentRelayBinderPair<?> intentRelayBinderPair = intentRelaysBinders.get(i);
       bindIntentActually(view, intentRelayBinderPair);
     }
 
@@ -299,6 +307,9 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
       }
 
       unbindIntents();
+      viewAttachedFirstTime = true;
+      intentRelaysBinders.clear();
+      // TODO should we re emit the inital state? What if no initial state has been set.
     }
 
     if (viewRelayConsumerDisposable != null) {
@@ -363,7 +374,7 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
    */
   @MainThread protected <I> Observable<I> intent(ViewIntentBinder<V, I> binder) {
     PublishSubject<I> intentRelay = PublishSubject.create();
-    intentRelays.add(new IntentRelayBinderPair<I>(intentRelay, binder));
+    intentRelaysBinders.add(new IntentRelayBinderPair<I>(intentRelay, binder));
     return intentRelay;
   }
 

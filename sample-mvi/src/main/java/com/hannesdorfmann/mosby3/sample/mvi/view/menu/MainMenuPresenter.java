@@ -40,14 +40,13 @@ public class MainMenuPresenter extends MviBasePresenter<MainMenuView, MenuViewSt
 
   @Override protected void bindIntents() {
 
-    Observable<List<String>> loadCategories = intent(MainMenuView::loadCategoriesIntent)
-        .doOnNext(categoryName -> Timber.d("intent: load category %s", categoryName))
+    Observable<List<String>> loadCategories = intent(MainMenuView::loadCategoriesIntent).doOnNext(
+        categoryName -> Timber.d("intent: load category %s", categoryName))
         .flatMap(ignored -> backendApi.getAllCategories().subscribeOn(Schedulers.io()));
 
-    Observable<String> selectCategory =
-        intent(MainMenuView::selectCategoryIntent)
-            .doOnNext(categoryName -> Timber.d("intent: select category %s", categoryName))
-            .startWith(MainMenuItem.HOME);
+    Observable<String> selectCategory = intent(MainMenuView::selectCategoryIntent).doOnNext(
+        categoryName -> Timber.d("intent: select category %s", categoryName))
+        .startWith(MainMenuItem.HOME);
 
     List<Observable<?>> allIntents = new ArrayList<>(2);
     allIntents.add(loadCategories);

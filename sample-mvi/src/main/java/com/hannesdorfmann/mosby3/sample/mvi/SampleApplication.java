@@ -57,5 +57,6 @@ public class SampleApplication extends Application {
       return;
     }
     refWatcher = LeakCanary.install(this);
+    Timber.d("Starting Application");
   }
 }

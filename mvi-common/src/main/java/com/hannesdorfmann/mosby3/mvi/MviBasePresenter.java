@@ -20,16 +20,18 @@ package com.hannesdorfmann.mosby3.mvi;
 import android.support.annotation.CallSuper;
 import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
+
 import com.hannesdorfmann.mosby3.mvp.MvpView;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
-import io.reactivex.observers.DisposableObserver;
 import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.PublishSubject;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This type of presenter is responsible to interact with the viewState in a Model-View-Intent way.
@@ -309,20 +311,7 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
 
     this.viewStateConsumer = consumer;
 
-    viewStateDisposable = viewStateObservable.subscribeWith(new DisposableObserver<VS>() {
-      @Override public void onNext(VS value) {
-        viewStateBehaviorSubject.onNext(value);
-      }
-
-      @Override public void onError(Throwable e) {
-        throw new IllegalStateException(
-            "ViewState observable must not reach error state - onError()", e);
-      }
-
-      @Override public void onComplete() {
-        // ViewState observable never completes so ignore any complete event
-      }
-    });
+    viewStateDisposable = viewStateObservable.subscribeWith(new DisposableViewStateObserver<>(viewStateBehaviorSubject));
   }
 
   /**

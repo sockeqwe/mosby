@@ -141,7 +141,7 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
    * latest
    * state will be reemitted.
    */
-  private final BehaviorSubject<VS> viewRelay;
+  private final BehaviorSubject<VS> viewStateBehaviorSubject;
 
   /**
    * We only allow to cal {@link #subscribeViewState(Observable, ViewStateConsumer)} method once
@@ -168,7 +168,7 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
   /**
    * Disposable between the viewState observable returned from {@link #intent(ViewIntentBinder)}
    * and
-   * {@link #viewRelay}
+   * {@link #viewStateBehaviorSubject}
    */
   private Disposable viewStateDisposable;
 
@@ -189,7 +189,7 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
    * Creates a new Presenter without an initial view state
    */
   public MviBasePresenter() {
-    viewRelay = BehaviorSubject.create();
+    viewStateBehaviorSubject = BehaviorSubject.create();
     reset();
   }
 
@@ -203,7 +203,7 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
       throw new NullPointerException("Initial ViewState == null");
     }
 
-    viewRelay = BehaviorSubject.createDefault(initialViewState);
+    viewStateBehaviorSubject = BehaviorSubject.createDefault(initialViewState);
     reset();
   }
 
@@ -218,7 +218,7 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
    * @return Observable
    */
   protected Observable<VS> getViewStateObservable() {
-    return viewRelay;
+    return viewStateBehaviorSubject;
   }
 
   @CallSuper @Override public void attachView(@NonNull V view) {
@@ -272,6 +272,7 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
   private void reset() {
     viewAttachedFirstTime = true;
     intentRelaysBinders.clear();
+    subscribeViewStateMethodCalled = false;
   }
 
   /**
@@ -296,6 +297,7 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
       throw new IllegalStateException(
           "subscribeViewState() method is only allowed to be called once");
     }
+    subscribeViewStateMethodCalled = true;
 
     if (viewStateObservable == null) {
       throw new NullPointerException("ViewState Observable is null");
@@ -309,7 +311,7 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
 
     viewStateDisposable = viewStateObservable.subscribeWith(new DisposableObserver<VS>() {
       @Override public void onNext(VS value) {
-        viewRelay.onNext(value);
+        viewStateBehaviorSubject.onNext(value);
       }
 
       @Override public void onError(Throwable e) {
@@ -334,13 +336,12 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
       throw new NullPointerException("View is null");
     }
 
-    ViewStateConsumer<V, VS> vsb = viewStateConsumer;
-    if (vsb == null) {
+    if (viewStateConsumer == null) {
       throw new NullPointerException(ViewStateConsumer.class.getSimpleName()
           + " is null. This is a mosby internal bug. Please file an issue at https://github.com/sockeqwe/mosby/issues");
     }
 
-    viewRelayConsumerDisposable = viewRelay.subscribe(new Consumer<VS>() {
+    viewRelayConsumerDisposable = viewStateBehaviorSubject.subscribe(new Consumer<VS>() {
       @Override public void accept(VS vs) throws Exception {
         viewStateConsumer.accept(view, vs);
       }

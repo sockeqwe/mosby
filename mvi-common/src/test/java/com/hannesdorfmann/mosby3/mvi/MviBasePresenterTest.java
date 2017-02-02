@@ -138,6 +138,36 @@ public class MviBasePresenterTest {
 
   }
 
+  @Test
+  public void resetOnViewDetachedPermanently(){
+    final AtomicInteger bindInvocations = new AtomicInteger(0);
+    final AtomicInteger unbindInvocations = new AtomicInteger(0);
+
+    MvpView view = new MvpView() {
+    };
+
+    MviBasePresenter<MvpView, Object> presenter = new MviBasePresenter<MvpView, Object>() {
+      @Override protected void bindIntents() {
+        bindInvocations.incrementAndGet();
+      }
+
+      @Override protected void unbindIntents() {
+        super.unbindIntents();
+        unbindInvocations.incrementAndGet();
+      }
+    };
+
+    presenter.attachView(view);
+    presenter.detachView(false);
+    presenter.attachView(view);
+    presenter.detachView(true);
+    presenter.attachView(view);
+    presenter.detachView(false);
+
+    Assert.assertEquals(2, bindInvocations.get());
+    Assert.assertEquals(2, unbindInvocations.get());
+  }
+
   private static class KeepUndelyingSubscriptionsView implements MvpView {
 
     List<String> renderedModels = new ArrayList<>();

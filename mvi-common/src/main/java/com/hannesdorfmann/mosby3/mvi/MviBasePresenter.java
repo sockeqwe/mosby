@@ -190,6 +190,7 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
    */
   public MviBasePresenter() {
     viewRelay = BehaviorSubject.create();
+    reset();
   }
 
   /**
@@ -203,10 +204,74 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
     }
 
     viewRelay = BehaviorSubject.createDefault(initialViewState);
+    reset();
   }
 
+  /**
+   * Get the view state observable. In some very rare case it could be useful to provide other
+   * components, like other presenters,
+   * access to the state. This observable contains the same value as got from {@link
+   * #subscribeViewState(Observable, ViewStateConsumer)} which is also used to render the view.
+   * In other words, this Observable also represents the state of the View, so you could subscribe
+   * via this observable to the view's state.
+   *
+   * @return Observable
+   */
   protected Observable<VS> getViewStateObservable() {
     return viewRelay;
+  }
+
+  @CallSuper @Override public void attachView(@NonNull V view) {
+    if (viewAttachedFirstTime) {
+      bindIntents();
+    }
+    int intentsSize = intentRelaysBinders.size();
+    for (int i = 0; i < intentsSize; i++) {
+      IntentRelayBinderPair<?> intentRelayBinderPair = intentRelaysBinders.get(i);
+      bindIntentActually(view, intentRelayBinderPair);
+    }
+
+    if (viewStateConsumer != null) {
+      subscribeViewStateConsumerActually(view);
+    }
+
+    viewAttachedFirstTime = false;
+  }
+
+  @Override @CallSuper public void detachView(boolean retainInstance) {
+    if (!retainInstance) {
+      if (viewStateDisposable != null) {
+        // Cancel the overall observable stream
+        viewStateDisposable.dispose();
+      }
+
+      unbindIntents();
+      reset();
+      // TODO should we re emit the inital state? What if no initial state has been set.
+      // TODO should we rather throw an exception if presenter is reused after view has been detached permanently
+    }
+
+    if (viewRelayConsumerDisposable != null) {
+      // Cancel subscription from View to viewState Relay
+      viewRelayConsumerDisposable.dispose();
+      viewRelayConsumerDisposable = null;
+    }
+
+    if (intentDisposals != null) {
+      // Cancel subscriptons from view intents to intent Relays
+      intentDisposals.dispose();
+      intentDisposals = null;
+    }
+  }
+
+  /**
+   * This is called when the View has been detached permantently (view is destroyed permanently)
+   * to reset the internal state of this Presenter to be ready for being reused (even thought
+   * reusing presenters after their view has been destroy is BAD)
+   */
+  private void reset() {
+    viewAttachedFirstTime = true;
+    intentRelaysBinders.clear();
   }
 
   /**
@@ -280,49 +345,6 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
         viewStateConsumer.accept(view, vs);
       }
     });
-  }
-
-  @CallSuper @Override public void attachView(@NonNull V view) {
-    if (viewAttachedFirstTime) {
-      bindIntents();
-    }
-    int intentsSize = intentRelaysBinders.size();
-    for (int i = 0; i < intentsSize; i++) {
-      IntentRelayBinderPair<?> intentRelayBinderPair = intentRelaysBinders.get(i);
-      bindIntentActually(view, intentRelayBinderPair);
-    }
-
-    if (viewStateConsumer != null) {
-      subscribeViewStateConsumerActually(view);
-    }
-
-    viewAttachedFirstTime = false;
-  }
-
-  @Override @CallSuper public void detachView(boolean retainInstance) {
-    if (!retainInstance) {
-      if (viewStateDisposable != null) {
-        // Cancel the overall observable stream
-        viewStateDisposable.dispose();
-      }
-
-      unbindIntents();
-      viewAttachedFirstTime = true;
-      intentRelaysBinders.clear();
-      // TODO should we re emit the inital state? What if no initial state has been set.
-    }
-
-    if (viewRelayConsumerDisposable != null) {
-      // Cancel subscription from View to viewState Relay
-      viewRelayConsumerDisposable.dispose();
-      viewRelayConsumerDisposable = null;
-    }
-
-    if (intentDisposals != null) {
-      // Cancel subscriptons from view intents to intent Relays
-      intentDisposals.dispose();
-      intentDisposals = null;
-    }
   }
 
   /**

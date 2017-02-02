@@ -63,7 +63,7 @@ import java.util.List;
  * By using {@link #intent(ViewIntentBinder)} and {@link #subscribeViewState(Observable,
  * ViewStateConsumer)}
  * a relay will be established between the view and this presenter that allows the view to be
- * temporarily detached, without unsubscribing the underlyings reactive business logic workflow and
+ * temporarily detached, without unsubscribing the underlying reactive business logic workflow and
  * without causing memory leaks (caused by recreation of the view).
  * </p>
  *
@@ -149,12 +149,12 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
   private boolean subscribeViewStateMethodCalled = false;
   /**
    * List of internal relays, bridging the gap between intents coming from the viewState (will be
-   * unsubscribed temporarly when viewState is detached i.e. during config changes)
+   * unsubscribed temporarily when viewState is detached i.e. during config changes)
    */
   private List<IntentRelayBinderPair<?>> intentRelaysBinders = new ArrayList<>(4);
 
   /**
-   * Composite Desposals holding subscriptions to all intents observable offered by the viewState.
+   * Composite Disposals holding subscriptions to all intents observable offered by the viewState.
    */
   private CompositeDisposable intentDisposals;
 
@@ -199,7 +199,7 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
    */
   public MviBasePresenter(@NonNull VS initialViewState) {
     if (initialViewState == null) {
-      throw new NullPointerException("Initia ViewState == null");
+      throw new NullPointerException("Initial ViewState == null");
     }
 
     viewRelay = BehaviorSubject.createDefault(initialViewState);
@@ -221,7 +221,7 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
    * </p>
    *
    * @param viewStateObservable The Observable emitting new ViewState. Typically an intent {@link
-   * #intent(ViewIntentBinder)} causes the underyling business logic to do a change and eventually
+   * #intent(ViewIntentBinder)} causes the underlying business logic to do a change and eventually
    * create a new ViewState.
    * @param consumer {@link ViewStateConsumer} The consumer that will update ("render") the view.
    */
@@ -259,7 +259,7 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
   }
 
   /**
-   * Actually subscribes the view as consumer to the internaly view relay
+   * Actually subscribes the view as consumer to the internally view relay
    *
    * @param view The mvp view
    */
@@ -309,7 +309,7 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
       unbindIntents();
       viewAttachedFirstTime = true;
       intentRelaysBinders.clear();
-      // TODO should we re emit the inital state? What if no initial state has been set.
+      // TODO should we re emit the initial state? What if no initial state has been set.
     }
 
     if (viewRelayConsumerDisposable != null) {
@@ -319,7 +319,7 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
     }
 
     if (intentDisposals != null) {
-      // Cancel subscriptons from view intents to intent Relays
+      // Cancel subscriptions from view intents to intent Relays
       intentDisposals.dispose();
       intentDisposals = null;
     }

@@ -48,7 +48,6 @@ public class SelectedCountToolbarPresenter
     clearSelectionDisposal = intent(SelectedCountToolbarView::clearSelectionIntent)
         .doOnNext(ignore -> Timber.d("intent: clear selection"))
         .subscribe(aBoolean -> clearSelectionRelay.onNext(aBoolean));
-    subscribeViewState(selectedCountObservable, SelectedCountToolbarView::render);
 
     deleteSelectedItemsDisposal =
         intent(SelectedCountToolbarView::deleteSelectedItemsIntent)

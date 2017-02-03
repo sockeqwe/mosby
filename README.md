@@ -9,6 +9,7 @@ Check the [project website](http://hannesdorfmann.com/mosby/) for more informati
 ```groovy
 dependencies {
 	compile 'com.hannesdorfmann.mosby:mvp:2.0.1'
+	// or
 	compile 'com.hannesdorfmann.mosby:viewstate:2.0.1' // optional viewstate feature
 }
 ```
@@ -16,9 +17,11 @@ dependencies {
 Mosby3 preview:
 ```groovy
 dependencies {
-	compile 'com.hannesdorfmann.mosby3:mvp:3.0.0-alpha3'
-	compile 'com.hannesdorfmann.mosby3:viewstate:3.0.0-alpha3'
-	compile 'com.hannesdorfmann.mosby3:mvi:3.0.0-alpha3'
+	compile 'com.hannesdorfmann.mosby3:mvp:3.0.0-alpha4'
+
+	compile 'com.hannesdorfmann.mosby3:viewstate:3.0.0-alpha4'
+	// or
+	compile 'com.hannesdorfmann.mosby3:mvi:3.0.0-alpha4'
 }
 ```
 
@@ -26,7 +29,9 @@ SNAPSHOT:
 ```groovy
 dependencies {
 	compile 'com.hannesdorfmann.mosby3:mvp:3.0.0-SNAPSHOT'
+	// or
 	compile 'com.hannesdorfmann.mosby3:viewstate:3.0.0-SNAPSHOT'
+	// or
 	compile 'com.hannesdorfmann.mosby3:mvi:3.0.0-SNAPSHOT'
 }
 ```

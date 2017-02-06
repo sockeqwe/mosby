@@ -157,9 +157,10 @@ public abstract class MviFragment<V extends MvpView, P extends MviPresenter<V, ?
     try {
       return (V) this;
     } catch (ClassCastException e) {
-      Log.e(this.toString(),
-          "Couldn't cast the View to the corresponding View interface. Most likely you forgot to add \"Activity implements YourMvpViewInterface\".");
-      throw e;
+      String msg =
+          "Couldn't cast the View to the corresponding View interface. Most likely you forgot to add \"Activity implements YourMvpViewInterface\".\"";
+      Log.e(this.toString(), msg);
+      throw new RuntimeException(msg, e);
     }
   }
 

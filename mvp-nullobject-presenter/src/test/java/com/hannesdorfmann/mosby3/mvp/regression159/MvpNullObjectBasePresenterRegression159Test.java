@@ -15,7 +15,7 @@
  *
  */
 
-package com.hannesdorfmann.mosby3.mvp.test.regression159;
+package com.hannesdorfmann.mosby3.mvp.regression159;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;

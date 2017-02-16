@@ -15,13 +15,11 @@
  *
  */
 
-package com.hannesdorfmann.mosby3.mvp.test.regression159;
-
-import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
+package com.hannesdorfmann.mosby3.mvp.regression159;
 
 /**
  * @author Hannes Dorfmann
  */
 
-public interface BaseDataPresenter<V extends BaseMvpView> extends MvpPresenter<V> {
+public class Article {
 }

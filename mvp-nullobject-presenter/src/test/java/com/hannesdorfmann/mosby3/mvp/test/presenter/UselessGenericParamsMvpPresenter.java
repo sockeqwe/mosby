@@ -15,13 +15,15 @@
  *
  */
 
-package com.hannesdorfmann.mosby3.mvp.test.regression159;
+package com.hannesdorfmann.mosby3.mvp.test.presenter;
 
 import com.hannesdorfmann.mosby3.mvp.MvpNullObjectBasePresenter;
+import com.hannesdorfmann.mosby3.mvp.test.view.TestMvpView;
 
-/**
- * @author Hannes Dorfmann
- */
+public class UselessGenericParamsMvpPresenter<M, I>
+        extends MvpNullObjectBasePresenter<TestMvpView> {
 
-public class BasePresenter<V extends BaseMvpView> extends MvpNullObjectBasePresenter<V> {
+  public void viewShowThat() {
+    getView().showThat();
+  }
 }

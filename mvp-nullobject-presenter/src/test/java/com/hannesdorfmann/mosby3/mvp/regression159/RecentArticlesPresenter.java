@@ -15,13 +15,14 @@
  *
  */
 
-package com.hannesdorfmann.mosby3.mvp.test.regression159;
+package com.hannesdorfmann.mosby3.mvp.regression159;
 
-import com.hannesdorfmann.mosby3.mvp.MvpView;
+import java.util.Collections;
 
-/**
- * @author Hannes Dorfmann
- */
+public class RecentArticlesPresenter extends BaseListArticlesPresenter<Article, RecentArticles.View>
+    implements RecentArticles.Presenter {
 
-public interface BaseMvpView extends MvpView {
+  public void invokeAMethodOnView() {
+    getView().updateData(Collections.<Article>emptyList());
+  }
 }

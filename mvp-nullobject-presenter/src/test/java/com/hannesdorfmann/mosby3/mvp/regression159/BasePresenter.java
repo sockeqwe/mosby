@@ -15,16 +15,13 @@
  *
  */
 
-package com.hannesdorfmann.mosby3.mvp.test.regression159;
+package com.hannesdorfmann.mosby3.mvp.regression159;
 
-import java.util.List;
+import com.hannesdorfmann.mosby3.mvp.MvpNullObjectBasePresenter;
 
-public interface BaseListMvp {
-    interface View<D> extends BaseMvpView {
-        void updateData(List<D> data);
-    }
+/**
+ * @author Hannes Dorfmann
+ */
 
-    interface Presenter<D, V extends View> extends BaseDataPresenter<V> {
-        List<D> getData();
-    }
+public class BasePresenter<V extends BaseMvpView> extends MvpNullObjectBasePresenter<V> {
 }

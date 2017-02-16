@@ -15,14 +15,15 @@
  *
  */
 
-package com.hannesdorfmann.mosby3.mvp.test.regression159;
+package com.hannesdorfmann.mosby3.mvp.regression159;
 
 import java.util.Collections;
+import java.util.List;
 
-public class RecentArticlesPresenter extends BaseListArticlesPresenter<Article, RecentArticles.View>
-    implements RecentArticles.Presenter {
+public abstract class BaseListArticlesPresenter<D, V extends BaseListMvp.View<D>>
+    extends BasePresenter<V> implements BaseListMvp.Presenter<D, V> {
 
-  public void invokeAMethodOnView() {
-    getView().updateData(Collections.<Article>emptyList());
+  @Override public List<D> getData() {
+    return Collections.emptyList();
   }
 }

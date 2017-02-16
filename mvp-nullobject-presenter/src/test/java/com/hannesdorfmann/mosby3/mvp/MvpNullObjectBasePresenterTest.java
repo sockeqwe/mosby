@@ -1,11 +1,11 @@
 /*
- *  Copyright 2015. Hannes Dorfmann.
+ * Copyright 2017 Hannes Dorfmann.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -100,7 +100,7 @@ public class MvpNullObjectBasePresenterTest {
 
   private <V extends MvpView> void testAttachDetachView(
       final MvpNullObjectBasePresenter<V> presenter, final V view) {
-    assertNotNull(presenter.getView());
+    Assert.assertNotNull(presenter.getView());
 
     testAttachView(presenter, view);
     testDetachNonRetain(presenter, view);
@@ -111,22 +111,22 @@ public class MvpNullObjectBasePresenterTest {
   private <V extends MvpView> void testAttachView(final MvpNullObjectBasePresenter<V> presenter,
       final V view) {
     presenter.attachView(view);
-    assertNotNull(presenter.getView());
-    assertTrue(presenter.getView() == view);
+    Assert.assertNotNull(presenter.getView());
+    Assert.assertTrue(presenter.getView() == view);
   }
 
   private <V extends MvpView> void testDetachNonRetain(
       final MvpNullObjectBasePresenter<V> presenter, final V view) {
     presenter.detachView(false);
-    assertNotNull(presenter.getView());
-    assertTrue(presenter.getView() != view); // Null Object view;
+    Assert.assertNotNull(presenter.getView());
+    Assert.assertTrue(presenter.getView() != view); // Null Object view;
   }
 
   private <V extends MvpView> void testDetachRetain(final MvpNullObjectBasePresenter<V> presenter,
       final V view) {
     presenter.detachView(true);
-    assertNotNull(presenter.getView());
-    assertTrue(presenter.getView() != view); // Null Object view;
+    Assert.assertNotNull(presenter.getView());
+    Assert.assertTrue(presenter.getView() != view); // Null Object view;
   }
 
   private void testPickingCorrectViewInterface(
@@ -134,11 +134,11 @@ public class MvpNullObjectBasePresenterTest {
     TestMvpViewWithMultipleInterfaces view = new TestMvpViewWithMultipleInterfaces();
 
     presenter.attachView(view);
-    assertNotNull(presenter.getView());
-    assertTrue(view == presenter.getView());
+    Assert.assertNotNull(presenter.getView());
+    Assert.assertTrue(view == presenter.getView());
 
     presenter.detachView(false);
-    assertNotNull(presenter.getView());
+    Assert.assertNotNull(presenter.getView());
     Assert.assertFalse(presenter.getView() == view);
 
     // Invoke methods on null object

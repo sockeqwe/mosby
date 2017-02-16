@@ -1,5 +1,7 @@
 package com.hannesdorfmann.mosby3.sample.mvi;
 
+import io.reactivex.observers.TestObserver;
+import io.reactivex.subscribers.TestSubscriber;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

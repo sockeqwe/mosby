@@ -33,6 +33,9 @@ dependencies {
 	compile 'com.hannesdorfmann.mosby3:viewstate:3.0.0-SNAPSHOT'
 	// or
 	compile 'com.hannesdorfmann.mosby3:mvi:3.0.0-SNAPSHOT'
+
+	// only include this if you want to use MvpNullObjectPresenter
+	compile 'com.hannesdorfmann.mosby3:mvp-nullobject-presenter:3.0.0-SNAPSHOT'
 }
 ```
 

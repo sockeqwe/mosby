@@ -43,7 +43,7 @@ public class ActivityMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
 
   public static final boolean DEBUG = false;
   private static final String DEBUG_TAG = "ActivityMviDelegateImpl";
-  private static final String KEY_MOSBY_VIEW_ID = "com.hannesdorfmann.mosby3.activity.viewState.id";
+  private static final String KEY_MOSBY_VIEW_ID = "com.hannesdorfmann.mosby3.activity.mvi.id";
   private String mosbyViewId = null;
 
   private MviDelegateCallback<V, P> delegateCallback;
@@ -153,7 +153,7 @@ public class ActivityMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
   }
 
   /**
-   * Generates the unique (mosby internal) viewState id and calls {@link
+   * Generates the unique (mosby internal) view id and calls {@link
    * MviDelegateCallback#createPresenter()}
    * to create a new presenter instance
    *

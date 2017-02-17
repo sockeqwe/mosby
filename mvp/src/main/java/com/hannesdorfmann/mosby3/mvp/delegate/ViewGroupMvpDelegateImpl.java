@@ -1,114 +1,231 @@
 /*
- * Copyright 2015 Hannes Dorfmann.
+ * Copyright 2017 Hannes Dorfmann.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
  */
 
 package com.hannesdorfmann.mosby3.mvp.delegate;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
+import com.hannesdorfmann.mosby3.MosbySavedState;
+import com.hannesdorfmann.mosby3.PresenterManager;
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
+import java.util.UUID;
 
 /**
- * The default implementation of {@link ViewGroupMvpDelegate}
+ * The mvp delegate used for everything that derives from {@link View} like {@link FrameLayout}
+ * etc.
+ *
+ * <p>
+ * The following methods must be called from the corresponding View lifecycle method:
+ * <ul>
+ * <li>{@link #onAttachedToWindow()}</li>
+ * <li>{@link #onDetachedFromWindow()}</li>
+ * </ul>
+ * </p>
  *
  * @author Hannes Dorfmann
- * @see ViewGroupMvpDelegate
  * @since 1.1.0
  */
 public class ViewGroupMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<V>>
     implements ViewGroupMvpDelegate<V, P> {
 
   // TODO allow custom save state hook in
+  public static final boolean DEBUG = true;
+  private static final String DEBUG_TAG = "ViewGroupMvpDelegateImp";
 
-  protected ViewGroupDelegateCallback<V, P> delegateCallback;
-  protected PresenterManager<V, P> orientationChangeManager =
-      new PresenterManager<>();
-  protected int viewId = -1;
+  private ViewGroupDelegateCallback<V, P> delegateCallback;
+  private String mosbyViewId;
+  private final boolean keepPresenterDuringScreenOrientationChange;
+  private final Activity activity;
 
   public ViewGroupMvpDelegateImpl(ViewGroupDelegateCallback<V, P> delegateCallback) {
+    this(delegateCallback, true);
+  }
+
+  public ViewGroupMvpDelegateImpl(@NonNull ViewGroupDelegateCallback<V, P> delegateCallback,
+      boolean keepPresenterDuringScreenOrientationChange) {
     if (delegateCallback == null) {
       throw new NullPointerException("MvpDelegateCallback is null!");
     }
     this.delegateCallback = delegateCallback;
+    this.keepPresenterDuringScreenOrientationChange = keepPresenterDuringScreenOrientationChange;
+    this.activity = PresenterManager.getActivity(delegateCallback.getContext());
+  }
+
+  /**
+   * Generates the unique (mosby internal) viewState id and calls {@link
+   * MvpDelegateCallback#createPresenter()}
+   * to create a new presenter instance
+   *
+   * @return The new created presenter instance
+   */
+  private P createViewIdAndCreatePresenter() {
+
+    P presenter = delegateCallback.createPresenter();
+    if (presenter == null) {
+      throw new NullPointerException("Presenter returned from createPresenter() is null.");
+    }
+    if (keepPresenterDuringScreenOrientationChange) {
+      Context context = delegateCallback.getContext();
+      mosbyViewId = UUID.randomUUID().toString();
+      PresenterManager.putPresenter(PresenterManager.getActivity(context), mosbyViewId, presenter);
+    }
+    return presenter;
+  }
+
+  @NonNull private Context getContext() {
+    Context c = delegateCallback.getContext();
+    if (c == null) {
+      throw new NullPointerException("Context returned from " + delegateCallback + " is null");
+    }
+    return c;
   }
 
   @Override public void onAttachedToWindow() {
+    boolean viewStateWillBeRestored = false;
 
-    // Try to reuse presenter instance from (before screen orientation changes)
-    if (delegateCallback.isRetainInstance()) {
-      P presenter = orientationChangeManager.getPresenter(viewId, delegateCallback.getContext());
-      if (presenter != null) {
-        delegateCallback.setPresenter(presenter);
-        presenter.attachView(delegateCallback.getMvpView());
-        return;
+    P presenter = null;
+    if (mosbyViewId == null) {
+      // No presenter available,
+      // Activity is starting for the first time (or keepPresenterInstance == false)
+      presenter = createViewIdAndCreatePresenter();
+      if (DEBUG) {
+        Log.d(DEBUG_TAG, "new Presenter instance created: " + presenter);
+      }
+    } else {
+      presenter = PresenterManager.getPresenter(activity, mosbyViewId);
+      if (presenter == null) {
+        // Process death,
+        // hence no presenter with the given viewState id stored, although we have a viewState id
+        presenter = createViewIdAndCreatePresenter();
+        if (DEBUG) {
+          Log.d(DEBUG_TAG,
+              "No Presenter instance found in cache, although MosbyView ID present. This was caused by process death, therefore new Presenter instance created: "
+                  + presenter);
+        }
+      } else {
+        viewStateWillBeRestored = true;
+        if (DEBUG) {
+          Log.d(DEBUG_TAG, "Presenter instance reused from internal cache: " + presenter);
+        }
       }
     }
 
-    // TODO clean up that part (double getPresenter check)
-    P presenter = delegateCallback.getPresenter();
-    if (presenter == null) {
-      presenter = delegateCallback.createPresenter();
+    // presenter is ready, so attach viewState
+    V view = delegateCallback.getMvpView();
+    if (view == null) {
+      throw new NullPointerException(
+          "MvpView returned from getMvpView() is null. Returned by " + delegateCallback);
     }
+
     if (presenter == null) {
-      throw new NullPointerException("Presenter is null! Do you return null in createPresenter()?");
+      throw new IllegalStateException(
+          "Oops, Presenter is null. This seems to be a Mosby internal bug. Please report this issue here: https://github.com/sockeqwe/mosby/issues");
     }
+
+    /*
+    if (viewStateWillBeRestored) {
+      delegateCallback.setRestoringViewState(true);
+    }
+    */
 
     delegateCallback.setPresenter(presenter);
-    if (delegateCallback.isRetainInstance()) {
-      viewId = orientationChangeManager.nextViewId(delegateCallback.getContext());
-      orientationChangeManager.putPresenter(viewId, presenter, delegateCallback.getContext());
-    }
+    presenter.attachView(view);
 
-    presenter.attachView(delegateCallback.getMvpView());
+    /*
+    if (viewStateWillBeRestored) {
+      delegateCallback.setRestoringViewState(false);
+    }
+    */
+
+    if (DEBUG) {
+      Log.d(DEBUG_TAG,
+          "MvpView attached to Presenter. MvpView: " + view + "   Presenter: " + presenter);
+    }
   }
 
   @Override public void onDetachedFromWindow() {
 
-    if (delegateCallback.isRetainInstance()) {
-      Context context = delegateCallback.getContext();
+    P presenter = delegateCallback.getPresenter();
+    if (presenter == null) {
+      throw new NullPointerException(
+          "Presenter returned from delegateCallback.getPresenter() is null");
+    }
 
-      boolean destroyedPermanently =
-          orientationChangeManager.willViewBeDestroyedPermanently(context);
+    if (keepPresenterDuringScreenOrientationChange) {
+
+      boolean destroyedPermanently = !ActivityMvpDelegateImpl.retainPresenterInstance(
+          keepPresenterDuringScreenOrientationChange, activity);
 
       if (destroyedPermanently) {
         // Whole activity will be destroyed
         // Internally Orientation manager already does the clean up
-        viewId = 0;
-        delegateCallback.getPresenter().detachView(false);
+        if (DEBUG) {
+          Log.d(DEBUG_TAG, "Detaching View "
+              + delegateCallback.getMvpView()
+              + " from Presenter "
+              + presenter
+              + " and removing presenter permanently from internal cache because the hosting Activity will be destroyed permanently");
+        }
+
+        PresenterManager.remove(activity, mosbyViewId);
+        mosbyViewId = null;
+        presenter.detachView(false);
       } else {
-        boolean detachedBecauseOrientationChange =
-            orientationChangeManager.willViewBeDetachedBecauseOrientationChange(context);
+        boolean detachedBecauseOrientationChange = ActivityMvpDelegateImpl.retainPresenterInstance(
+            keepPresenterDuringScreenOrientationChange, activity);
+
         if (detachedBecauseOrientationChange) {
           // Simple orientation change
-          delegateCallback.getPresenter().detachView(true);
+          if (DEBUG) {
+            Log.d(DEBUG_TAG, "Detaching View "
+                + delegateCallback.getMvpView()
+                + " from Presenter "
+                + presenter
+                + " temporarily because of orientation change");
+          }
+          presenter.detachView(true);
         } else {
           // view detached, i.e. because of back stack / navigation
-          orientationChangeManager.removePresenterAndViewState(viewId, context);
-          viewId = 0;
-          delegateCallback.getPresenter().detachView(false);
+          /*
+          if (DEBUG) {
+            Log.d(DEBUG_TAG, "Detaching View "
+                + delegateCallback.getMvpView()
+                + " from Presenter "
+                + presenter
+                + " because view has been destroyed. Also Presenter is removed permanently from internal cache.");
+          }
+          PresenterManager.remove(activity, mosbyViewId);
+          mosbyViewId = null;
+          presenter.detachView(false);
+          */
         }
       }
     } else {
       // retain instance feature disabled
-      delegateCallback.getPresenter().detachView(false);
+      presenter.detachView(false);
+      PresenterManager.remove(activity, mosbyViewId);
+      mosbyViewId = null;
     }
-
-    // Important cleanup to avoid memory leaks
-    orientationChangeManager.cleanUp();
   }
 
   /**
@@ -118,22 +235,11 @@ public class ViewGroupMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<
 
     Parcelable superState = delegateCallback.superOnSaveInstanceState();
 
-    if (delegateCallback.isRetainInstance()) {
-      return createSavedState(superState);
+    if (keepPresenterDuringScreenOrientationChange) {
+      return new MosbySavedState(superState, mosbyViewId);
     } else {
       return superState;
     }
-  }
-
-  /**
-   * Create a MosbySavedState
-   *
-   * @return The saved state
-   */
-  protected MosbySavedState createSavedState(Parcelable superState) {
-    MosbySavedState state = new MosbySavedState(superState);
-    state.setMosbyViewId(viewId);
-    return state;
   }
 
   /**
@@ -141,8 +247,8 @@ public class ViewGroupMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<
    *
    * @param state The state to read data from
    */
-  protected void restoreSavedState(MosbySavedState state) {
-    viewId = state.getMosbyViewId();
+  private void restoreSavedState(MosbySavedState state) {
+    mosbyViewId = state.getMosbyViewId();
   }
 
   /**

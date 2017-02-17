@@ -68,7 +68,7 @@ public abstract class MvpFragment<V extends MvpView, P extends MvpPresenter<V>> 
    */
   @NonNull protected FragmentMvpDelegate<V, P> getMvpDelegate() {
     if (mvpDelegate == null) {
-      mvpDelegate = new FragmentMvpDelegateImpl<>(this);
+      mvpDelegate = new FragmentMvpDelegateImpl<>(this, this);
     }
 
     return mvpDelegate;
@@ -80,16 +80,6 @@ public abstract class MvpFragment<V extends MvpView, P extends MvpPresenter<V>> 
 
   @Override public void setPresenter(@NonNull P presenter) {
     this.presenter = presenter;
-  }
-
-  @Override public boolean isRetainInstance() {
-    return getRetainInstance();
-  }
-
-  @Override public boolean shouldInstanceBeRetained() {
-    FragmentActivity activity = getActivity();
-    boolean changingConfig = activity != null && activity.isChangingConfigurations();
-    return getRetainInstance() && changingConfig;
   }
 
   @NonNull @Override public V getMvpView() {

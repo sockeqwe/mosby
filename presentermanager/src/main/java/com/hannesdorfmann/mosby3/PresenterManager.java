@@ -30,9 +30,9 @@ import java.util.UUID;
  * @author Hannes Dorfmann
  * @since 3.0
  */
-final class PresenterManager {
+final public class PresenterManager {
 
-  public static boolean DEBUG = true;
+  public static boolean DEBUG = false;
   public static final String DEBUG_TAG = "PresenterManater";
   final static String KEY_ACTIVITY_ID = "com.hannesdorfmann.mosby3.MosbyPresenterManagerActivityId";
 

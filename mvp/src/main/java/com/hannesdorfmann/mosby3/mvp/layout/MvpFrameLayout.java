@@ -118,18 +118,6 @@ public abstract class MvpFrameLayout<V extends MvpView, P extends MvpPresenter<V
     return (V) this;
   }
 
-  @Override public boolean isRetainInstance() {
-    return retainInstance;
-  }
-
-  @Override public void setRetainInstance(boolean retainingInstance) {
-    this.retainInstance = retainingInstance;
-  }
-
-  @Override public boolean shouldInstanceBeRetained() {
-    return false;
-  }
-
 
   @Override public final Parcelable superOnSaveInstanceState() {
     return super.onSaveInstanceState();

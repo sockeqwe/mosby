@@ -70,6 +70,13 @@ public class FragmentMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
     if (fragment == null) {
       throw new NullPointerException("fragment == null");
     }
+
+    if (!keepPresenterDuringScreenOrientationChange && keepPresenterOnBackstack) {
+      throw new IllegalArgumentException("It is not possible to keep the presenter on backstack, "
+          + "but NOT keep presenter through screen orientation changes. Keep presenter on backstack also "
+          + "requires keep presenter through screen orientation changes to be enabled");
+    }
+
     this.delegateCallback = delegateCallback;
     this.fragment = fragment;
     this.keepPresenterDuringScreenOrientationChange = keepPresenterDuringScreenOrientationChange;
@@ -113,6 +120,11 @@ public class FragmentMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
           "MvpView returned from getMvpView() is null. Returned by " + fragment);
     }
 
+    if (presenter == null) {
+      throw new IllegalStateException(
+          "Oops, Presenter is null. This seems to be a Mosby internal bug. Please report this issue here: https://github.com/sockeqwe/mosby/issues");
+    }
+
     if (viewStateWillBeRestored) {
       delegateCallback.setRestoringViewState(true);
     }
@@ -137,17 +149,21 @@ public class FragmentMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
     }
   }
 
-  private boolean retainPresenterInstance(boolean keepPresenterOnBackstack, Activity activity, Fragment fragment){
+  private boolean retainPresenterInstance(boolean keepPresenterOnBackstack, Activity activity,
+      Fragment fragment) {
 
     if (activity.isChangingConfigurations()) {
-      return true;
-    }
-
-    if (activity.isFinishing()){
+      if (keepPresenterDuringScreenOrientationChange) {
+        return true;
+      }
       return false;
     }
 
-    if (keepPresenterOnBackstack && BackstackAccessor.isFragmentOnBackStack(fragment)){
+    if (activity.isFinishing()) {
+      return false;
+    }
+
+    if (keepPresenterOnBackstack && BackstackAccessor.isFragmentOnBackStack(fragment)) {
       return true;
     }
 
@@ -158,7 +174,8 @@ public class FragmentMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
     onViewCreatedCalled = false;
 
     Activity activity = getActivity();
-    boolean retainPresenterInstance = retainPresenterInstance(keepPresenterOnBackstack, activity, fragment);
+    boolean retainPresenterInstance =
+        retainPresenterInstance(keepPresenterOnBackstack, activity, fragment);
 
     presenter.detachView(retainPresenterInstance);
     if (!retainPresenterInstance) {

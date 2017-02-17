@@ -110,7 +110,7 @@ public abstract class MvpActivity<V extends MvpView, P extends MvpPresenter<V>>
    */
   @NonNull protected ActivityMvpDelegate<V, P> getMvpDelegate() {
     if (mvpDelegate == null) {
-      mvpDelegate = new ActivityMvpDelegateImpl(this);
+      mvpDelegate = new ActivityMvpDelegateImpl(this, this);
     }
 
     return mvpDelegate;
@@ -126,33 +126,5 @@ public abstract class MvpActivity<V extends MvpView, P extends MvpPresenter<V>>
 
   @NonNull @Override public V getMvpView() {
     return (V) this;
-  }
-
-  @Override public boolean isRetainInstance() {
-    return retainInstance;
-  }
-
-  @Override public boolean shouldInstanceBeRetained() {
-    return retainInstance && isChangingConfigurations();
-  }
-
-  @Override public void setRetainInstance(boolean retainInstance) {
-    this.retainInstance = retainInstance;
-  }
-
-  @Override public Object onRetainNonMosbyCustomNonConfigurationInstance() {
-    return null;
-  }
-
-  /**
-   * Internally used by Mosby. Use {@link #onRetainNonMosbyCustomNonConfigurationInstance()} and
-   * {@link #getNonMosbyLastCustomNonConfigurationInstance()}
-   */
-  @Override public final Object onRetainCustomNonConfigurationInstance() {
-    return getMvpDelegate().onRetainCustomNonConfigurationInstance();
-  }
-
-  @Override public final Object getNonMosbyLastCustomNonConfigurationInstance() {
-    return getMvpDelegate().getNonMosbyLastCustomNonConfigurationInstance();
   }
 }

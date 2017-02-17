@@ -101,15 +101,4 @@ public interface ActivityMvpDelegate<V extends MvpView, P extends MvpPresenter<V
    */
   public void onPostCreate(Bundle savedInstanceState);
 
-  /**
-   * This method must be called from {@link FragmentActivity#onRetainCustomNonConfigurationInstance()}
-   *
-   * @return Don't forget to return the value returned by this delegate method
-   */
-  public Object onRetainCustomNonConfigurationInstance();
-
-  /**
-   * @return the value returned from {@link ActivityMvpDelegateCallback#onRetainNonMosbyCustomNonConfigurationInstance()}
-   */
-  public Object getNonMosbyLastCustomNonConfigurationInstance();
 }

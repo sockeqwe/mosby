@@ -17,6 +17,9 @@ package com.hannesdorfmann.mosby3.mvp.delegate;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.v4.os.ParcelableCompat;
+import android.support.v4.os.ParcelableCompatCreatorCallbacks;
+
 import com.hannesdorfmann.mosby3.mvp.viewstate.RestorableParcelableViewState;
 
 /**
@@ -28,15 +31,18 @@ import com.hannesdorfmann.mosby3.mvp.viewstate.RestorableParcelableViewState;
 public class MosbyViewStateSavedState extends MosbySavedState {
 
   public static final Parcelable.Creator<MosbyViewStateSavedState> CREATOR =
-      new Parcelable.Creator<MosbyViewStateSavedState>() {
-        public MosbyViewStateSavedState createFromParcel(Parcel in) {
-          return new MosbyViewStateSavedState(in);
+      ParcelableCompat.newCreator(new ParcelableCompatCreatorCallbacks<MosbyViewStateSavedState>() {
+        public MosbyViewStateSavedState createFromParcel(Parcel in, ClassLoader loader) {
+          if (loader == null) {
+            loader = RestorableParcelableViewState.class.getClassLoader();
+          }
+          return new MosbyViewStateSavedState(in, loader);
         }
 
         public MosbyViewStateSavedState[] newArray(int size) {
           return new MosbyViewStateSavedState[size];
         }
-      };
+      });
 
   private RestorableParcelableViewState mosbyViewState;
 
@@ -44,9 +50,9 @@ public class MosbyViewStateSavedState extends MosbySavedState {
     super(superState);
   }
 
-  protected MosbyViewStateSavedState(Parcel in) {
-    super(in);
-    this.mosbyViewState = in.readParcelable(RestorableParcelableViewState.class.getClassLoader());
+  protected MosbyViewStateSavedState(Parcel in, ClassLoader loader) {
+    super(in, loader);
+    this.mosbyViewState = in.readParcelable(loader);
   }
 
   @Override public void writeToParcel(Parcel out, int flags) {

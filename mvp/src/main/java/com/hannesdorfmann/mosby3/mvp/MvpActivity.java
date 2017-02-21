@@ -20,7 +20,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import com.hannesdorfmann.mosby3.mvp.delegate.ActivityMvpDelegate;
-import com.hannesdorfmann.mosby3.mvp.delegate.ActivityMvpDelegateCallback;
 import com.hannesdorfmann.mosby3.mvp.delegate.ActivityMvpDelegateImpl;
 
 /**
@@ -31,7 +30,8 @@ import com.hannesdorfmann.mosby3.mvp.delegate.ActivityMvpDelegateImpl;
  * @since 1.0.0
  */
 public abstract class MvpActivity<V extends MvpView, P extends MvpPresenter<V>>
-    extends AppCompatActivity implements ActivityMvpDelegateCallback<V, P>, MvpView {
+    extends AppCompatActivity implements MvpView,
+    com.hannesdorfmann.mosby3.mvp.delegate.MvpDelegateCallback<V,P> {
 
   protected ActivityMvpDelegate mvpDelegate;
   protected P presenter;
@@ -110,7 +110,7 @@ public abstract class MvpActivity<V extends MvpView, P extends MvpPresenter<V>>
    */
   @NonNull protected ActivityMvpDelegate<V, P> getMvpDelegate() {
     if (mvpDelegate == null) {
-      mvpDelegate = new ActivityMvpDelegateImpl(this, this);
+      mvpDelegate = new ActivityMvpDelegateImpl(this, this, true);
     }
 
     return mvpDelegate;

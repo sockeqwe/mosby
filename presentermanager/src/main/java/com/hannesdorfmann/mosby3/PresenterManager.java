@@ -33,7 +33,7 @@ import java.util.UUID;
 final public class PresenterManager {
 
   public static boolean DEBUG = false;
-  public static final String DEBUG_TAG = "PresenterManater";
+  public static final String DEBUG_TAG = "PresenterManager";
   final static String KEY_ACTIVITY_ID = "com.hannesdorfmann.mosby3.MosbyPresenterManagerActivityId";
 
   private final static Map<Activity, String> activityIdMap = new ArrayMap<>();
@@ -89,7 +89,7 @@ final public class PresenterManager {
                 // All Mosby related activities are destroyed, so we can remove the activity lifecylce listener
                 activity.getApplication()
                     .unregisterActivityLifecycleCallbacks(activityLifecycleCallbacks);
-                if (DEBUG){
+                if (DEBUG) {
                   Log.d(DEBUG_TAG, "Unregistering ActivityLifecycleCallbacks");
                 }
               }
@@ -182,6 +182,29 @@ final public class PresenterManager {
   }
 
   /**
+   * Get the ViewState (see mosby viestate modlue) for the View with the given (Mosby - internal)
+   * view Id or <code>null</code>
+   * if no viewstate for the given view exists.
+   *
+   * @param activity The Activity (used for scoping)
+   * @param viewId The mosby internal View Id (unique among all {@link MvpView}
+   * @param <VS> The type of the ViewState type
+   * @return The Presenter or <code>null</code>
+   */
+  @Nullable public static <VS> VS getViewState(@NonNull Activity activity, @NonNull String viewId) {
+    if (activity == null) {
+      throw new NullPointerException("Activity is null");
+    }
+
+    if (viewId == null) {
+      throw new NullPointerException("View id is null");
+    }
+
+    ActivityScopedCache scopedCache = getActivityScope(activity);
+    return scopedCache == null ? null : (VS) scopedCache.getViewState(viewId);
+  }
+
+  /**
    * Get the Activity of a context. This is typically used to determine the hosting activity of a
    * {@link View}
    *
@@ -217,6 +240,13 @@ final public class PresenterManager {
     activityScopedCacheMap.clear();
   }
 
+  /**
+   * Puts the presenter into the internal cache
+   *
+   * @param activity The parent activity
+   * @param viewId the view id (mosby internal)
+   * @param presenter the presenter
+   */
   public static void putPresenter(@NonNull Activity activity, @NonNull String viewId,
       @NonNull MvpPresenter<? extends MvpView> presenter) {
     if (activity == null) {
@@ -225,6 +255,24 @@ final public class PresenterManager {
 
     ActivityScopedCache scopedCache = getOrCreateActivityScopedCache(activity);
     scopedCache.putPresenter(viewId, presenter);
+  }
+
+
+  /**
+   * Puts the presenter into the internal cache
+   *
+   * @param activity The parent activity
+   * @param viewId the view id (mosby internal)
+   * @param viewState the presenter
+   */
+  public static void putViewState(@NonNull Activity activity, @NonNull String viewId,
+      @NonNull Object viewState) {
+    if (activity == null) {
+      throw new NullPointerException("Activity is null");
+    }
+
+    ActivityScopedCache scopedCache = getOrCreateActivityScopedCache(activity);
+    scopedCache.putViewState(viewId, viewState);
   }
 
   /**

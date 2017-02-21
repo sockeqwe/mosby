@@ -57,7 +57,7 @@ public class ViewGroupMvpDelegateImplTest {
     Mockito.when(callback.getContext()).thenReturn(activity);
     Mockito.when(activity.getApplication()).thenReturn(application);
 
-    delegate = new ViewGroupMvpDelegateImpl<>(callback);
+    delegate = new ViewGroupMvpDelegateImpl<>(callback, true);
   }
 
   @Test public void appStartWithScreenOrientationChangeAndFinallyFinishing() {

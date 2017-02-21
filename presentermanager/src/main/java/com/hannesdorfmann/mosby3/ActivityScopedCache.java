@@ -20,7 +20,6 @@ package com.hannesdorfmann.mosby3;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.util.ArrayMap;
-import android.util.Log;
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 import java.util.Map;
@@ -75,6 +74,18 @@ class ActivityScopedCache {
   }
 
   /**
+   * Get the ViewState for a given {@link MvpView} if exists or <code>null</code>
+   *
+   * @param viewId The mosby internal view id
+   * @param <VS> The type tof the {@link MvpPresenter}
+   * @return The ViewState for the given view id or <code>null</code>
+   */
+  @Nullable public <VS> VS getViewState(@NonNull String viewId) {
+    PresenterHolder holder = presenterMap.get(viewId);
+    return holder == null ? null : (VS) holder.viewState;
+  }
+
+  /**
    * Put the presenter in the internal cache
    *
    * @param viewId The mosby internal View id of the {@link MvpView} which the presenter is
@@ -102,6 +113,35 @@ class ActivityScopedCache {
     }
   }
 
+
+  /**
+   * Put the viewstate in the internal cache
+   *
+   * @param viewId The mosby internal View id of the {@link MvpView} which the presenter is
+   * associated to.
+   * @param viewState The Viewstate
+   */
+  public void putViewState(@NonNull String viewId,
+      @NonNull Object viewState) {
+
+    if (viewId == null) {
+      throw new NullPointerException("ViewId is null");
+    }
+
+    if (viewState == null) {
+      throw new NullPointerException("ViewState is null");
+    }
+
+    PresenterHolder presenterHolder = presenterMap.get(viewId);
+    if (presenterHolder == null) {
+      presenterHolder = new PresenterHolder();
+      presenterHolder.viewState = viewState;
+      presenterMap.put(viewId, presenterHolder);
+    } else {
+      presenterHolder.viewState = viewState;
+    }
+  }
+
   /**
    * Removes the Presenter (and ViewState) from the internal storage
    *
@@ -120,7 +160,7 @@ class ActivityScopedCache {
    * Internal config change Cache entry
    */
   static final class PresenterHolder {
-    MvpPresenter<?> presenter;
-    Object viewState; // workaround: didn't want to introduce dependency to viewstate module
+    private MvpPresenter<?> presenter;
+    private Object viewState; // workaround: didn't want to introduce dependency to viewstate module
   }
 }

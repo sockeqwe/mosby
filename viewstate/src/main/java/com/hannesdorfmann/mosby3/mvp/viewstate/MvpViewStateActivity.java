@@ -20,7 +20,6 @@ import com.hannesdorfmann.mosby3.mvp.MvpActivity;
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 import com.hannesdorfmann.mosby3.mvp.delegate.ActivityMvpDelegate;
-import com.hannesdorfmann.mosby3.mvp.delegate.ActivityMvpViewStateDelegateCallback;
 import com.hannesdorfmann.mosby3.mvp.delegate.ActivityMvpViewStateDelegateImpl;
 
 /**
@@ -36,7 +35,9 @@ import com.hannesdorfmann.mosby3.mvp.delegate.ActivityMvpViewStateDelegateImpl;
  * @since 1.0.0
  */
 public abstract class MvpViewStateActivity<V extends MvpView, P extends MvpPresenter<V>>
-    extends MvpActivity<V, P> implements ActivityMvpViewStateDelegateCallback<V, P> {
+    extends MvpActivity<V, P> implements
+    com.hannesdorfmann.mosby3.mvp.delegate.MvpViewStateDelegateCallback<V,P>,
+    com.hannesdorfmann.mosby3.mvp.delegate.MvpDelegateCallback<V,P> {
 
   protected ViewState<V> viewState;
 

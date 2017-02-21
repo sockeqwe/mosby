@@ -41,25 +41,16 @@ import java.util.UUID;
 public class FragmentMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<V>>
     implements FragmentMvpDelegate<V, P> {
 
-  private static final String KEY_MOSBY_VIEW_ID = "com.hannesdorfmann.mosby3.activity.mvp.id";
+  protected static final String KEY_MOSBY_VIEW_ID = "com.hannesdorfmann.mosby3.fragment.mvp.id";
   public static final boolean DEBUG = false;
-  private static final String DEBUG_TAG = "FragmentMvpDelegateImpl";
+  private static final String DEBUG_TAG = "FragmentMvpVSDelegate";
 
-  protected MvpDelegateCallback<V, P> delegateCallback;
-  private Fragment fragment;
-  private final boolean keepPresenterInstanceDuringScreenOrientationChanges;
-  private final boolean keepPresenterOnBackstack;
+  private MvpDelegateCallback<V, P> delegateCallback;
+  protected Fragment fragment;
+  protected final boolean keepPresenterInstanceDuringScreenOrientationChanges;
+  protected final boolean keepPresenterOnBackstack;
   private boolean onViewCreatedCalled = false;
-  private String mosbyViewId;
-
-  /**
-   * Calls {@link #FragmentMvpDelegateImpl(Fragment, MvpDelegateCallback, boolean, boolean)}
-   * with true for keepPresenterInstanceDuringScreenOrientationChanges and keepPresenterOnBackstack
-   */
-  public FragmentMvpDelegateImpl(@NonNull Fragment fragment,
-      @NonNull MvpDelegateCallback<V, P> delegateCallback) {
-    this(fragment, delegateCallback, true, true);
-  }
+  protected String mosbyViewId;
 
   /**
    * @param fragment The Fragment
@@ -202,15 +193,11 @@ public class FragmentMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<V
     return view;
   }
 
-  private boolean retainPresenterInstance(boolean keepPresenterOnBackstack, Activity activity,
-      Fragment fragment) {
+  protected boolean retainPresenterInstance() {
 
+    Activity activity = getActivity();
     if (activity.isChangingConfigurations()) {
-      if (keepPresenterInstanceDuringScreenOrientationChanges) {
-        return true;
-      } else {
-        return false;
-      }
+      return keepPresenterInstanceDuringScreenOrientationChanges;
     }
 
     if (activity.isFinishing()) {
@@ -228,11 +215,8 @@ public class FragmentMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<V
 
     onViewCreatedCalled = false;
 
-    // TODO keep presenter instance booleans
-
     Activity activity = getActivity();
-    boolean retainPresenterInstance =
-        retainPresenterInstance(keepPresenterOnBackstack, activity, fragment);
+    boolean retainPresenterInstance = retainPresenterInstance();
 
     P presenter = getPresenter();
     presenter.detachView(retainPresenterInstance);

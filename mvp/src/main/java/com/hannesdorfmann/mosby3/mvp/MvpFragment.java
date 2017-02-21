@@ -68,7 +68,7 @@ public abstract class MvpFragment<V extends MvpView, P extends MvpPresenter<V>> 
    */
   @NonNull protected FragmentMvpDelegate<V, P> getMvpDelegate() {
     if (mvpDelegate == null) {
-      mvpDelegate = new FragmentMvpDelegateImpl<>(this, this);
+      mvpDelegate = new FragmentMvpDelegateImpl<>(this, this, true, true);
     }
 
     return mvpDelegate;

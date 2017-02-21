@@ -41,6 +41,8 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest({Fragment.class})
 public class FragmentMvpDelegateImplTest {
 
+  // TODO write test for retaining fragment
+
   private MvpView view;
   private MvpPresenter<MvpView> presenter;
   private MvpDelegateCallback<MvpView, MvpPresenter<MvpView>> callback;
@@ -67,7 +69,7 @@ public class FragmentMvpDelegateImplTest {
 
     Mockito.when(activity.getApplication()).thenReturn(application);
 
-    delegate = new FragmentMvpDelegateImpl<>(fragment, callback);
+    delegate = new FragmentMvpDelegateImpl<>(fragment, callback, true, true);
   }
 
   @Test public void appStartWithScreenOrientationChangeAndFinallyFinishing() {

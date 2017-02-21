@@ -38,7 +38,7 @@ public class ActivityMvpDelegateImplTest {
 
   private MvpView view;
   private MvpPresenter<MvpView> presenter;
-  private PartialActivityMvpDelegateCallbackImpl callback;
+  private PartialMvpDelegateCallbackImpl callback;
   private Activity activity;
   private Application application;
 
@@ -47,7 +47,7 @@ public class ActivityMvpDelegateImplTest {
     };
 
     presenter = Mockito.mock(MvpPresenter.class);
-    callback = Mockito.mock(PartialActivityMvpDelegateCallbackImpl.class);
+    callback = Mockito.mock(PartialMvpDelegateCallbackImpl.class);
     activity = Mockito.mock(Activity.class);
     application = Mockito.mock(Application.class);
 
@@ -62,7 +62,7 @@ public class ActivityMvpDelegateImplTest {
   @Test public void appStartWithScreenOrientationChangeAndFinallyFinishing() {
 
     ActivityMvpDelegateImpl<MvpView, MvpPresenter<MvpView>> delegate =
-        new ActivityMvpDelegateImpl<>(activity, callback);
+        new ActivityMvpDelegateImpl<>(activity, callback, true);
 
     startActivity(delegate, null, 1, 1, 1);
     Bundle bundle = BundleMocker.create();
@@ -73,7 +73,7 @@ public class ActivityMvpDelegateImplTest {
 
   @Test public void appStartFinishing() {
     ActivityMvpDelegateImpl<MvpView, MvpPresenter<MvpView>> delegate =
-        new ActivityMvpDelegateImpl<>(activity, callback);
+        new ActivityMvpDelegateImpl<>(activity, callback, true);
 
     startActivity(delegate, null, 1, 1, 1);
     Bundle bundle = BundleMocker.create();

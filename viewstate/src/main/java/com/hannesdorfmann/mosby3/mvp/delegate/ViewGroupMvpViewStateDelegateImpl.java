@@ -28,13 +28,13 @@ import com.hannesdorfmann.mosby3.mvp.viewstate.ViewState;
  * @author Hannes Dorfmann
  * @since 1.1.0
  */
-public class ViewGroupMvpViewStateDelegateImpl<V extends MvpView, P extends MvpPresenter<V>>
+public class ViewGroupMvpViewStateDelegateImpl<V extends MvpView, P extends MvpPresenter<V>, VS extends ViewState<V>>
     extends ViewGroupMvpDelegateImpl<V, P> {
 
   private ViewState<V> restoredParcelableViewState = null;
 
   public ViewGroupMvpViewStateDelegateImpl(
-      ViewGroupViewStateDelegateCallback<V, P> delegateCallback) {
+      ViewGroupViewStateDelegateCallback<V, P, VS> delegateCallback) {
     super(delegateCallback);
   }
 

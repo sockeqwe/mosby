@@ -57,10 +57,6 @@ public class ViewGroupMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<
   private final boolean keepPresenterDuringScreenOrientationChange;
   private final Activity activity;
 
-  public ViewGroupMvpDelegateImpl(ViewGroupDelegateCallback<V, P> delegateCallback) {
-    this(delegateCallback, true);
-  }
-
   public ViewGroupMvpDelegateImpl(@NonNull ViewGroupDelegateCallback<V, P> delegateCallback,
       boolean keepPresenterDuringScreenOrientationChange) {
     if (delegateCallback == null) {

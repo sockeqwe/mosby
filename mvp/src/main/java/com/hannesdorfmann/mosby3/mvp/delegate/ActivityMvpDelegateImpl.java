@@ -37,14 +37,14 @@ import java.util.UUID;
 public class ActivityMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<V>>
     implements ActivityMvpDelegate {
 
-  private static final String KEY_MOSBY_VIEW_ID = "com.hannesdorfmann.mosby3.activity.mvp.id";
+  protected static final String KEY_MOSBY_VIEW_ID = "com.hannesdorfmann.mosby3.activity.mvp.id";
   public static final boolean DEBUG = false;
   private static final String DEBUG_TAG = "ActivityMvpDelegateImpl";
 
-  protected ActivityMvpDelegateCallback<V, P> delegateCallback;
+  private MvpDelegateCallback<V, P> delegateCallback;
   protected boolean keepPresenterInstance;
   protected Activity activity;
-  private String mosbyViewId = null;
+  protected String mosbyViewId = null;
 
   /**
    * @param activity The Activity
@@ -53,7 +53,7 @@ public class ActivityMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<V
    * orientation changes. Otherwise false.
    */
   public ActivityMvpDelegateImpl(@NonNull Activity activity,
-      @NonNull ActivityMvpDelegateCallback<V, P> delegateCallback, boolean keepPresenterInstance) {
+      @NonNull MvpDelegateCallback<V, P> delegateCallback, boolean keepPresenterInstance) {
 
     if (activity == null) {
       throw new NullPointerException("Activity is null!");
@@ -65,15 +65,6 @@ public class ActivityMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<V
     this.delegateCallback = delegateCallback;
     this.activity = activity;
     this.keepPresenterInstance = keepPresenterInstance;
-  }
-
-  /**
-   * Calls {@link #ActivityMvpDelegateImpl(Activity, ActivityMvpDelegateCallback, boolean)} with
-   * keepPresenterInstance = true
-   */
-  public ActivityMvpDelegateImpl(@NonNull Activity activity,
-      @NonNull ActivityMvpDelegateCallback<V, P> delegateCallback) {
-    this(activity, delegateCallback, true);
   }
 
   /**

@@ -44,7 +44,7 @@ public class PresenterManagerTest {
     }
   }
 
-  @Test public void getPresenterThrowsNullPointerExceptino() {
+  @Test public void getPresenterThrowsNullPointerException() {
     try {
       PresenterManager.getPresenter(null, "123");
       Assert.fail("Exception expected");
@@ -62,7 +62,25 @@ public class PresenterManagerTest {
     }
   }
 
-  @Test public void putPresenterThrowsNullPointerExceptino() {
+  @Test public void getViewStateThrowsNullPointerException() {
+    try {
+      PresenterManager.getViewState(null, "123");
+      Assert.fail("Exception expected");
+    } catch (NullPointerException e) {
+    }
+
+    try {
+      Activity activity = Mockito.mock(Activity.class);
+      Application application = Mockito.mock(Application.class);
+      Mockito.when(activity.getApplication()).thenReturn(application);
+
+      PresenterManager.getViewState(activity, null);
+      Assert.fail("Exception expected");
+    } catch (NullPointerException e) {
+    }
+  }
+
+  @Test public void putNullPresenterThrowsNullPointerExceptino() {
     MvpPresenter presenter = Mockito.mock(MvpPresenter.class);
 
     Activity activity = Mockito.mock(Activity.class);
@@ -87,6 +105,32 @@ public class PresenterManagerTest {
     } catch (NullPointerException e) {
     }
 
+  }
+
+  @Test public void putNullViewStateThrowNullPointerException() {
+    Object viewState = new Object();
+
+    Activity activity = Mockito.mock(Activity.class);
+    Application application = Mockito.mock(Application.class);
+    Mockito.when(activity.getApplication()).thenReturn(application);
+
+    try {
+      PresenterManager.putViewState(null, "123", viewState);
+      Assert.fail("Exception expected");
+    } catch (NullPointerException e) {
+    }
+
+    try {
+      PresenterManager.putViewState(activity, null, viewState);
+      Assert.fail("Exception expected");
+    } catch (NullPointerException e) {
+    }
+
+    try {
+      PresenterManager.putViewState(activity, "123", null);
+      Assert.fail("Exception expected");
+    } catch (NullPointerException e) {
+    }
   }
 
 
@@ -339,6 +383,15 @@ public class PresenterManagerTest {
   }
 
   @Test
+  public void getViewStateReturnsNull(){
+    Activity activity = Mockito.mock(Activity.class);
+    Application application = Mockito.mock(Application.class);
+    Mockito.when(activity.getApplication()).thenReturn(application);
+
+    Assert.assertNull(PresenterManager.getViewState(activity, "viewId123"));
+  }
+
+  @Test
   public void putGetRemovePresenter(){
     Activity activity = Mockito.mock(Activity.class);
     Application application = Mockito.mock(Application.class);
@@ -363,5 +416,21 @@ public class PresenterManagerTest {
   }
 
 
+  @Test
+  public void putGetRemoveViewState(){
+    Activity activity = Mockito.mock(Activity.class);
+    Application application = Mockito.mock(Application.class);
+    Mockito.when(activity.getApplication()).thenReturn(application);
 
+    Object viewState = new Object();
+
+    String viewId ="123";
+    Assert.assertNull(PresenterManager.getViewState(activity, viewId));
+
+    PresenterManager.putViewState(activity, viewId, viewState);
+    Assert.assertTrue(viewState == PresenterManager.getViewState(activity, viewId));
+
+    PresenterManager.remove(activity, viewId);
+    Assert.assertNull(PresenterManager.getPresenter(activity, viewId));
+  }
 }

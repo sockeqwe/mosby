@@ -32,23 +32,23 @@ import com.hannesdorfmann.mosby3.mvp.viewstate.ViewState;
  * @see ViewGroupViewStateDelegateCallback
  * @since 1.0.0
  */
-public interface MvpViewStateDelegateCallback<V extends MvpView, P extends MvpPresenter<V>>
+public interface MvpViewStateDelegateCallback<V extends MvpView, P extends MvpPresenter<V>, VS extends ViewState<V>>
     extends MvpDelegateCallback<V, P> {
 
   /**
    * Get the viewState
    */
-  public ViewState<V> getViewState();
+  public VS getViewState();
 
   /**
    * Set the viewstate. <b>Should only be called by {@link MvpViewStateInternalDelegate}</b>
    */
-  public void setViewState(ViewState<V> viewState);
+  public void setViewState(VS viewState);
 
   /**
-   * Create the viewstate. Will be called by the {@link MvpViewStateInternalDelegate}.
+   * Create the viewstate.
    */
-  @NonNull public ViewState<V> createViewState();
+  @NonNull public VS createViewState();
 
   /**
    * This method will be called by {@link MvpViewStateInternalDelegate} to inform that restoring

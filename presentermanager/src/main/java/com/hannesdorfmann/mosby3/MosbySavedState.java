@@ -18,7 +18,9 @@ package com.hannesdorfmann.mosby3;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.view.View;
+import android.support.v4.os.ParcelableCompat;
+import android.support.v4.os.ParcelableCompatCreatorCallbacks;
+import android.support.v4.view.AbsSavedState;
 
 /**
  * The SavedState implementation to store the view's internal id to
@@ -26,18 +28,21 @@ import android.view.View;
  * @author Hannes Dorfmann
  * @since 3.0
  */
-public class MosbySavedState extends View.BaseSavedState {
+public class MosbySavedState extends AbsSavedState {
 
   public static final Creator<MosbySavedState> CREATOR =
-      new Creator<MosbySavedState>() {
-        public MosbySavedState createFromParcel(Parcel in) {
-          return new MosbySavedState(in);
+      ParcelableCompat.newCreator(new ParcelableCompatCreatorCallbacks<MosbySavedState>() {
+        public MosbySavedState createFromParcel(Parcel in, ClassLoader loader) {
+          if (loader == null) {
+            loader = MosbySavedState.class.getClassLoader();
+          }
+          return new MosbySavedState(in, loader);
         }
 
         public MosbySavedState[] newArray(int size) {
           return new MosbySavedState[size];
         }
-      };
+      });
 
   private String mosbyViewId;
 
@@ -46,8 +51,8 @@ public class MosbySavedState extends View.BaseSavedState {
     this.mosbyViewId = mosbyViewId;
   }
 
-  protected MosbySavedState(Parcel in) {
-    super(in);
+  protected MosbySavedState(Parcel in, ClassLoader loader) {
+    super(in, loader);
     this.mosbyViewId = in.readString();
   }
 

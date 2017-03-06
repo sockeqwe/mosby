@@ -24,8 +24,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 import com.hannesdorfmann.mosby3.mvp.lce.MvpLceFragment;
 import com.hannesdorfmann.mosby3.sample.R;
 import com.hannesdorfmann.mosby3.sample.SampleApplication;
@@ -44,13 +47,14 @@ public class CountriesFragment
     extends MvpLceFragment<SwipeRefreshLayout, List<Country>, CountriesView, CountriesPresenter>
     implements CountriesView, SwipeRefreshLayout.OnRefreshListener {
 
-  @Bind(R.id.recyclerView) RecyclerView recyclerView;
+  @BindView(R.id.recyclerView) RecyclerView recyclerView;
 
+  private Unbinder unbinder;
   CountriesAdapter adapter;
 
   @Override public void onDestroyView() {
     super.onDestroyView();
-    ButterKnife.unbind(this);
+    unbinder.unbind();
   }
 
   @Override public void onDestroy() {
@@ -60,7 +64,7 @@ public class CountriesFragment
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstance) {
     super.onViewCreated(view, savedInstance);
-    ButterKnife.bind(this, view);
+    unbinder = ButterKnife.bind(this, view);
     // Setup contentView == SwipeRefreshView
     contentView.setOnRefreshListener(this);
 

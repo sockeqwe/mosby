@@ -5,7 +5,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import butterknife.Bind;
+import butterknife.BindView;
+
 import com.hannesdorfmann.mosby3.sample.mail.R;
 import com.hannesdorfmann.mosby3.sample.mail.base.view.BaseActivity;
 import com.hannesdorfmann.mosby3.sample.mail.model.contact.Person;
@@ -19,7 +20,7 @@ public class DetailsActivity extends BaseActivity {
 
   public static final String KEY_MAIL = "com.hannesdorfmann.mosby.MosbyActivity.MAIL";
 
-  @Bind(R.id.toolbar) Toolbar toolbar;
+  @BindView(R.id.toolbar) Toolbar toolbar;
 
   @TargetApi(21) @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);

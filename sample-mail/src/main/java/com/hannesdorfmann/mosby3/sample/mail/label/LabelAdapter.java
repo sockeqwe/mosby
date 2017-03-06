@@ -12,7 +12,7 @@ import com.hannesdorfmann.mosby3.sample.mail.utils.SimpleAdapter;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -22,8 +22,8 @@ public class LabelAdapter extends SimpleAdapter<List<Label>> {
 
   static class ViewHolder {
 
-    @Bind(R.id.name) TextView text;
-    @Bind(R.id.icon) ImageView icon;
+    @BindView(R.id.name) TextView text;
+    @BindView(R.id.icon) ImageView icon;
 
     public ViewHolder(View v) {
       ButterKnife.bind(this, v);

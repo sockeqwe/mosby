@@ -36,6 +36,7 @@ dependencies {
 
 
   compile 'com.jakewharton:butterknife:'+rootProject.ext.butterknifeVersion
+  apt 'com.jakewharton:butterknife-compiler:' + rootProject.ext.butterknifeVersion
 
   apt 'com.hannesdorfmann.annotatedadapter:processor:' + rootProject.ext.annotatedadapterVersion
   compile 'com.hannesdorfmann.annotatedadapter:annotation:' + rootProject.ext.annotatedadapterVersion

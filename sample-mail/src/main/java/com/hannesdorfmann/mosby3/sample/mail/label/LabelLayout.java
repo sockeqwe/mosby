@@ -11,6 +11,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.hannesdorfmann.mosby3.mvp.viewstate.ViewState;
 import com.hannesdorfmann.mosby3.mvp.viewstate.layout.MvpViewStateLinearLayout;
@@ -22,7 +23,6 @@ import com.hannesdorfmann.mosby3.sample.mail.utils.DimensUtils;
 
 import java.util.List;
 
-import butterknife.Bind;
 import icepick.Icepick;
 import icepick.Icicle;
 
@@ -32,8 +32,8 @@ import icepick.Icicle;
 public class LabelLayout extends MvpViewStateLinearLayout<LabelView, LabelPresenter>
     implements LabelView {
 
-  @Bind(R.id.labelTextView) TextView labelView;
-  @Bind(R.id.labelLoadingView) View loadingView;
+  @BindView(R.id.labelTextView) TextView labelView;
+  @BindView(R.id.labelLoadingView) View loadingView;
   @Icicle Mail mail;
 
   ListPopupWindow popUpWindow;

@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.hannesdorfmann.mosby3.mvp.viewstate.ViewState;
 import com.hannesdorfmann.mosby3.mvp.viewstate.layout.MvpViewStateFrameLayout;
@@ -25,7 +26,6 @@ import com.hannesdorfmann.mosby3.sample.mvp.model.Country;
 
 import java.util.List;
 
-import butterknife.Bind;
 import butterknife.OnClick;
 
 /**
@@ -34,10 +34,10 @@ import butterknife.OnClick;
 public class CountriesLayout extends MvpViewStateFrameLayout<CountriesView, CountriesPresenter>
     implements CountriesView, SwipeRefreshLayout.OnRefreshListener {
 
-  @Bind(R.id.loadingView) View loadingView;
-  @Bind(R.id.errorView) TextView errorView;
-  @Bind(R.id.contentView) SwipeRefreshLayout contentView;
-  @Bind(R.id.recyclerView) RecyclerView recyclerView;
+  @BindView(R.id.loadingView) View loadingView;
+  @BindView(R.id.errorView) TextView errorView;
+  @BindView(R.id.contentView) SwipeRefreshLayout contentView;
+  @BindView(R.id.recyclerView) RecyclerView recyclerView;
 
   private CountriesAdapter adapter;
 

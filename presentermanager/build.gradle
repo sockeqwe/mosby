@@ -39,6 +39,7 @@ android {
 dependencies {
 
   compile 'com.android.support:appcompat-v7:' + rootProject.ext.appcompat7Version
+  compile 'com.android.support:support-v4:' + rootProject.ext.appcompat7Version
 
   compile project(':mvp-common')
 

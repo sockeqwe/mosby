@@ -97,7 +97,6 @@ public class ViewGroupMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<
   }
 
   @Override public void onAttachedToWindow() {
-    boolean viewStateWillBeRestored = false;
 
     P presenter = null;
     if (mosbyViewId == null) {
@@ -119,7 +118,6 @@ public class ViewGroupMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<
                   + presenter);
         }
       } else {
-        viewStateWillBeRestored = true;
         if (DEBUG) {
           Log.d(DEBUG_TAG, "Presenter instance reused from internal cache: " + presenter);
         }

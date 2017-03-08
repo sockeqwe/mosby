@@ -144,9 +144,4 @@ public class RetainingCountriesFragment extends
     super.onDestroy();
     SampleApplication.getRefWatcher(getActivity()).watch(this);
   }
-
-  @Override public boolean isRetainInstance() {
-    return super.isRetainInstance();
-  }
-
 }

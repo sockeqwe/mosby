@@ -14,11 +14,9 @@ public class RetainingCountriesActivity extends NotRetainingCountriesActivity {
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setRetainInstance(true);
   }
 
   @Override public LceViewState<List<Country>, CountriesView> createViewState() {
-    setRetainInstance(true);
     return new RetainingLceViewState<>();
   }
 }

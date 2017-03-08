@@ -37,7 +37,7 @@ import butterknife.Unbinder;
 /**
  * @author Hannes Dorfmann
  */
-public class MyCustomFragment extends MvpViewStateFragment<MyCustomView, MyCustomPresenter>
+public class MyCustomFragment extends MvpViewStateFragment<MyCustomView, MyCustomPresenter, MyCustomViewState>
     implements MyCustomView {
 
   private Unbinder unbinder;
@@ -60,7 +60,7 @@ public class MyCustomFragment extends MvpViewStateFragment<MyCustomView, MyCusto
     unbinder = ButterKnife.bind(this, view);
   }
 
-  @Override public ViewState createViewState() {
+  @Override public MyCustomViewState createViewState() {
     return new MyCustomViewState();
   }
 
@@ -73,18 +73,16 @@ public class MyCustomFragment extends MvpViewStateFragment<MyCustomView, MyCusto
   }
 
   @Override public void showA(A a) {
-    MyCustomViewState vs = ((MyCustomViewState) viewState);
-    vs.setShowingA(true);
-    vs.setData(a);
+    viewState.setShowingA(true);
+    viewState.setData(a);
     aView.setText(a.getName());
     aView.setVisibility(View.VISIBLE);
     bView.setVisibility(View.GONE);
   }
 
   @Override public void showB(B b) {
-    MyCustomViewState vs = ((MyCustomViewState) viewState);
-    vs.setShowingA(false);
-    vs.setData(b);
+    viewState.setShowingA(false);
+    viewState.setData(b);
     bView.setText(b.getFoo());
     aView.setVisibility(View.GONE);
     bView.setVisibility(View.VISIBLE);

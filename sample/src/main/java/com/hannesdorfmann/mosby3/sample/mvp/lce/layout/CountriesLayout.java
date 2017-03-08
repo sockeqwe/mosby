@@ -31,7 +31,7 @@ import butterknife.OnClick;
 /**
  * @author Hannes Dorfmann
  */
-public class CountriesLayout extends MvpViewStateFrameLayout<CountriesView, CountriesPresenter>
+public class CountriesLayout extends MvpViewStateFrameLayout<CountriesView, CountriesPresenter, CastedArrayListLceViewState<List<Country>, CountriesView>>
     implements CountriesView, SwipeRefreshLayout.OnRefreshListener {
 
   @BindView(R.id.loadingView) View loadingView;
@@ -73,12 +73,8 @@ public class CountriesLayout extends MvpViewStateFrameLayout<CountriesView, Coun
     return new SimpleCountriesPresenter();
   }
 
-  @Override public ViewState<CountriesView> createViewState() {
+  @Override public CastedArrayListLceViewState<List<Country>, CountriesView> createViewState() {
     return new CastedArrayListLceViewState<List<Country>, CountriesView>();
-  }
-
-  @Override public CastedArrayListLceViewState<List<Country>, CountriesView> getViewState() {
-    return (CastedArrayListLceViewState) super.getViewState();
   }
 
   @Override public void onNewViewStateInstance() {

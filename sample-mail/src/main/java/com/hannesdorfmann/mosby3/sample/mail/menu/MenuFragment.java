@@ -35,7 +35,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -44,9 +44,9 @@ import de.greenrobot.event.EventBus;
 public class MenuFragment extends AuthRefreshRecyclerFragment<List<Label>, MenuView, MenuPresenter>
     implements MenuView, MenuAdapter.LabelClickListener {
 
-  @Bind(R.id.email) TextView email;
-  @Bind(R.id.name) TextView name;
-  @Bind(R.id.profilePic) ImageView profilePic;
+  @BindView(R.id.email) TextView email;
+  @BindView(R.id.name) TextView name;
+  @BindView(R.id.profilePic) ImageView profilePic;
 
   @Inject EventBus eventBus;
   @Inject IntentStarter intentStarter;

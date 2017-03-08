@@ -27,8 +27,10 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 import com.hannesdorfmann.mosby3.sample.R;
 import com.hannesdorfmann.mosby3.sample.SampleApplication;
 import com.hannesdorfmann.mosby3.sample.mvp.lce.viewstate.NotRetainingCountriesFragment;
@@ -38,8 +40,10 @@ import com.hannesdorfmann.mosby3.sample.mvp.lce.viewstate.NotRetainingCountriesF
  */
 public class NestedViewPagerFragment extends Fragment {
 
-  @Bind(R.id.viewPager) ViewPager viewPager;
-  @Bind(R.id.tabs) TabLayout tabLayout;
+  private Unbinder unbinder;
+
+  @BindView(R.id.viewPager) ViewPager viewPager;
+  @BindView(R.id.tabs) TabLayout tabLayout;
 
   @Nullable @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -49,12 +53,12 @@ public class NestedViewPagerFragment extends Fragment {
 
   @Override public void onDestroyView() {
     super.onDestroyView();
-    ButterKnife.unbind(this);
+    unbinder.unbind();
   }
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    ButterKnife.bind(this, view);
+    unbinder = ButterKnife.bind(this, view);
 
     viewPager.setAdapter(new NestedPagerAdapter(getChildFragmentManager()));
     tabLayout.setupWithViewPager(viewPager);

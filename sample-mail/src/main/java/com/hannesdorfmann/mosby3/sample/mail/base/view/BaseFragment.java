@@ -26,6 +26,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import butterknife.ButterKnife;
 import com.hannesdorfmann.fragmentargs.FragmentArgs;
+
+import butterknife.Unbinder;
 import icepick.Icepick;
 
 /**
@@ -34,6 +36,7 @@ import icepick.Icepick;
  * @author Hannes Dorfmann
  */
 public abstract class BaseFragment extends Fragment {
+  private Unbinder unbinder;
 
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -57,12 +60,12 @@ public abstract class BaseFragment extends Fragment {
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     injectDependencies();
     super.onViewCreated(view, savedInstanceState);
-    ButterKnife.bind(this, view);
+    unbinder = ButterKnife.bind(this, view);
   }
 
   @Override public void onDestroyView() {
     super.onDestroyView();
-    ButterKnife.unbind(this);
+    unbinder.unbind();
   }
 
   /**

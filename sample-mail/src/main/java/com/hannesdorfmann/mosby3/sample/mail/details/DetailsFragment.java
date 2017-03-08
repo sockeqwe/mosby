@@ -41,7 +41,7 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
@@ -60,16 +60,16 @@ public class DetailsFragment extends AuthFragment<TextView, Mail, DetailsView, D
 
   @Inject IntentStarter intentStarter;
 
-  @Bind(R.id.senderPic) ImageView senderImageView;
-  @Bind(R.id.subject) TextView subjectView;
-  @Bind(R.id.date) TextView dateView;
-  @Bind(R.id.starButton) StarView starView;
-  @Bind(R.id.replay) FloatingActionButton replayView;
-  @Bind(R.id.senderName) TextView senderNameView;
-  @Bind(R.id.senderMail) TextView senderMailView;
-  @Bind(R.id.separatorLine) View separatorLine;
-  @Bind(R.id.label) LabelLayout labelView;
-  @Bind(R.id.scrollView) ObservableScrollView scrollView;
+  @BindView(R.id.senderPic) ImageView senderImageView;
+  @BindView(R.id.subject) TextView subjectView;
+  @BindView(R.id.date) TextView dateView;
+  @BindView(R.id.starButton) StarView starView;
+  @BindView(R.id.replay) FloatingActionButton replayView;
+  @BindView(R.id.senderName) TextView senderNameView;
+  @BindView(R.id.senderMail) TextView senderMailView;
+  @BindView(R.id.separatorLine) View separatorLine;
+  @BindView(R.id.label) LabelLayout labelView;
+  @BindView(R.id.scrollView) ObservableScrollView scrollView;
 
   private DetailsComponent detailsComponent;
 

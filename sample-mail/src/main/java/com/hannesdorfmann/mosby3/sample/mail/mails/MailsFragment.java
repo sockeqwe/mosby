@@ -20,7 +20,7 @@ import com.melnykov.fab.FloatingActionButton;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
@@ -33,7 +33,7 @@ public class MailsFragment extends BaseMailsFragment<MailsView, MailsPresenter>
 
   @Inject IntentStarter intentStarter;
 
-  @Bind(R.id.createMail) FloatingActionButton createMailButton;
+  @BindView(R.id.createMail) FloatingActionButton createMailButton;
 
   MailsComponent mailsComponent;
 

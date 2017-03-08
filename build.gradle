@@ -50,7 +50,7 @@ ext {
 
   // Libraries for samples
   fragmentargsVersion = '2.1.0'
-  butterknifeVersion = '7.0.1'
+  butterknifeVersion = '8.5.1'
   icepickVersion = '3.0.2'
   retrofitVersion = '1.9.0'
   picassoVersion = '2.5.2'

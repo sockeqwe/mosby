@@ -28,6 +28,8 @@ import com.hannesdorfmann.fragmentargs.FragmentArgs;
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 import com.hannesdorfmann.mosby3.mvp.viewstate.MvpViewStateFragment;
+
+import butterknife.Unbinder;
 import icepick.Icepick;
 
 /**
@@ -35,6 +37,8 @@ import icepick.Icepick;
  */
 public abstract class BaseViewStateFragment<V extends MvpView, P extends MvpPresenter<V>>
     extends MvpViewStateFragment<V, P> {
+
+  private Unbinder unbinder;
 
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -58,12 +62,12 @@ public abstract class BaseViewStateFragment<V extends MvpView, P extends MvpPres
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     injectDependencies();
     super.onViewCreated(view, savedInstanceState);
-    ButterKnife.bind(this, view);
+    unbinder = ButterKnife.bind(this, view);
   }
 
   @Override public void onDestroyView() {
     super.onDestroyView();
-    ButterKnife.unbind(this);
+    unbinder.unbind();
   }
 
 

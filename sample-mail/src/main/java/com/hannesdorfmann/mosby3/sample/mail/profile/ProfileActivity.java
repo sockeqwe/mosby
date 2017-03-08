@@ -12,7 +12,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import butterknife.Bind;
 import com.astuetz.PagerSlidingTabStrip;
 import com.hannesdorfmann.mosby3.mvp.viewstate.lce.ParcelableLceViewState;
 import com.hannesdorfmann.mosby3.mvp.viewstate.lce.data.CastedArrayListLceViewState;
@@ -23,6 +22,8 @@ import com.hannesdorfmann.mosby3.sample.mail.model.contact.Person;
 import com.hannesdorfmann.mosby3.sample.mail.model.contact.ProfileScreen;
 import com.hannesdorfmann.mosby3.sample.mail.utils.BuildUtils;
 import com.hannesdorfmann.mosby3.sample.mail.utils.MathUtils;
+
+import butterknife.BindView;
 import github.chenupt.dragtoplayout.DragTopLayout;
 import java.util.List;
 
@@ -39,13 +40,13 @@ public class ProfileActivity
   private Person person;
   private ProfileScreensAdapter adapter;
   private ProfileComponent profileComponent;
-  @Bind(R.id.viewPager) ViewPager viewPager;
-  @Bind(R.id.tabs) PagerSlidingTabStrip tabs;
-  @Bind(R.id.fadingToolbarHelper) View fadingToolbarHelper;
-  @Bind(R.id.separatorLine) View separatorLine;
-  @Bind(R.id.toolbar) Toolbar toolbar;
-  @Bind(R.id.toolbarTitle) TextView toolbarTitle;
-  @Bind(R.id.profileHeaderPic) ImageView headerImage;
+  @BindView(R.id.viewPager) ViewPager viewPager;
+  @BindView(R.id.tabs) PagerSlidingTabStrip tabs;
+  @BindView(R.id.fadingToolbarHelper) View fadingToolbarHelper;
+  @BindView(R.id.separatorLine) View separatorLine;
+  @BindView(R.id.toolbar) Toolbar toolbar;
+  @BindView(R.id.toolbarTitle) TextView toolbarTitle;
+  @BindView(R.id.profileHeaderPic) ImageView headerImage;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);

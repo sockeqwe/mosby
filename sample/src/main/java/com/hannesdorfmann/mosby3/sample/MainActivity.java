@@ -23,7 +23,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.hannesdorfmann.mosby3.sample.mvp.customviewstate.MyCustomActivity;
 import com.hannesdorfmann.mosby3.sample.mvp.lce.activity.CountriesActivity;
@@ -37,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
   Demo[] demos;
 
-  @Bind(R.id.listView) ListView listView;
+  @BindView(R.id.listView) ListView listView;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);

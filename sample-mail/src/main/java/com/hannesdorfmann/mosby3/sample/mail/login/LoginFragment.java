@@ -26,7 +26,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.TextView;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 import com.hannesdorfmann.mosby3.mvp.viewstate.ViewState;
 import com.hannesdorfmann.mosby3.sample.mail.MailApplication;
@@ -42,11 +42,11 @@ import com.hkm.ui.processbutton.iml.ActionProcessButton;
 public class LoginFragment extends BaseViewStateFragment<LoginView, LoginPresenter>
     implements LoginView {
 
-  @Bind(R.id.username) EditText username;
-  @Bind(R.id.password) EditText password;
-  @Bind(R.id.loginButton) ActionProcessButton loginButton;
-  @Bind(R.id.errorView) TextView errorView;
-  @Bind(R.id.loginForm) ViewGroup loginForm;
+  @BindView(R.id.username) EditText username;
+  @BindView(R.id.password) EditText password;
+  @BindView(R.id.loginButton) ActionProcessButton loginButton;
+  @BindView(R.id.errorView) TextView errorView;
+  @BindView(R.id.loginForm) ViewGroup loginForm;
 
   private LoginComponent loginComponent;
 

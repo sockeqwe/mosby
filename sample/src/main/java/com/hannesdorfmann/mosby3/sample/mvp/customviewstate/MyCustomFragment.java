@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.hannesdorfmann.mosby3.mvp.viewstate.MvpViewStateFragment;
 import com.hannesdorfmann.mosby3.mvp.viewstate.ViewState;
@@ -30,8 +31,8 @@ import com.hannesdorfmann.mosby3.sample.R;
 import com.hannesdorfmann.mosby3.sample.mvp.model.custom.A;
 import com.hannesdorfmann.mosby3.sample.mvp.model.custom.B;
 
-import butterknife.Bind;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 /**
  * @author Hannes Dorfmann
@@ -39,8 +40,10 @@ import butterknife.OnClick;
 public class MyCustomFragment extends MvpViewStateFragment<MyCustomView, MyCustomPresenter>
     implements MyCustomView {
 
-  @Bind(R.id.textViewA) TextView aView;
-  @Bind(R.id.textViewB) TextView bView;
+  private Unbinder unbinder;
+
+  @BindView(R.id.textViewA) TextView aView;
+  @BindView(R.id.textViewB) TextView bView;
 
   @Nullable @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
@@ -49,12 +52,12 @@ public class MyCustomFragment extends MvpViewStateFragment<MyCustomView, MyCusto
 
   @Override public void onDestroyView() {
     super.onDestroyView();
-    ButterKnife.unbind(this);
+    unbinder.unbind();
   }
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    ButterKnife.bind(this, view);
+    unbinder = ButterKnife.bind(this, view);
   }
 
   @Override public ViewState createViewState() {

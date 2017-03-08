@@ -23,7 +23,7 @@ import com.rengwuxian.materialedittext.MaterialEditText;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * @author Hannes Dorfmann
@@ -31,8 +31,8 @@ import butterknife.Bind;
 public class SearchFragment extends BaseMailsFragment<SearchView, SearchPresenter>
     implements SearchView {
 
-  @Bind(R.id.toolbar) Toolbar toolbar;
-  @Bind(R.id.searchEditView) MaterialEditText searchEditView;
+  @BindView(R.id.toolbar) Toolbar toolbar;
+  @BindView(R.id.searchEditView) MaterialEditText searchEditView;
 
   private SearchComponent searchComponent;
 

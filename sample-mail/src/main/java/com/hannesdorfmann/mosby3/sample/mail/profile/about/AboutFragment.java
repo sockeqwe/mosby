@@ -5,7 +5,8 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
-import butterknife.Bind;
+import butterknife.BindView;
+
 import com.hannesdorfmann.fragmentargs.annotation.Arg;
 import com.hannesdorfmann.mosby3.sample.mail.R;
 import com.hannesdorfmann.mosby3.sample.mail.base.view.BaseFragment;
@@ -20,9 +21,9 @@ public class AboutFragment extends BaseFragment {
 
   @Arg Person person;
 
-  @Bind(R.id.email) TextView email;
-  @Bind(R.id.birthday) TextView birthday;
-  @Bind(R.id.bio) TextView bio;
+  @BindView(R.id.email) TextView email;
+  @BindView(R.id.birthday) TextView birthday;
+  @BindView(R.id.bio) TextView bio;
 
   @Override protected int getLayoutRes() {
     return R.layout.fragment_about;

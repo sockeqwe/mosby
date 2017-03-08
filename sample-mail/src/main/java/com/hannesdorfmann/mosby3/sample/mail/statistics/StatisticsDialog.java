@@ -14,7 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.hannesdorfmann.mosby3.mvp.delegate.FragmentMvpDelegate;
 import com.hannesdorfmann.mosby3.mvp.delegate.FragmentMvpViewStateDelegateImpl;
@@ -31,10 +31,10 @@ import com.hannesdorfmann.mosby3.sample.mail.model.mail.statistics.MailStatistic
 public class StatisticsDialog extends AppCompatDialogFragment implements StatisticsView,
     MvpViewStateDelegateCallback<StatisticsView, StatisticsPresenter> {
 
-  @Bind(R.id.contentView) RecyclerView contentView;
-  @Bind(R.id.loadingView) View loadingView;
-  @Bind(R.id.errorView) TextView errorView;
-  @Bind(R.id.authView) View authView;
+  @BindView(R.id.contentView) RecyclerView contentView;
+  @BindView(R.id.loadingView) View loadingView;
+  @BindView(R.id.errorView) TextView errorView;
+  @BindView(R.id.authView) View authView;
 
   StatisticsPresenter presenter;
   ViewState<StatisticsView> viewState;

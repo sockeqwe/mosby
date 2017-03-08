@@ -65,6 +65,7 @@ dependencies {
   apt 'com.hannesdorfmann.parcelableplease:processor:' + rootProject.ext.parcelablepleaseVersion
 
   compile 'com.jakewharton:butterknife:' + rootProject.ext.butterknifeVersion
+  apt 'com.jakewharton:butterknife-compiler:' + rootProject.ext.butterknifeVersion
 
   compile 'frankiesardo:icepick:' + rootProject.ext.icepickVersion
   apt 'frankiesardo:icepick-processor:' + rootProject.ext.icepickVersion

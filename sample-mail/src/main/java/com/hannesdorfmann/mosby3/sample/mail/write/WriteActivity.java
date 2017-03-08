@@ -10,7 +10,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.Toast;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 import com.hannesdorfmann.mosby3.mvp.viewstate.RestorableViewState;
 import com.hannesdorfmann.mosby3.sample.mail.IntentStarter;
@@ -35,12 +35,12 @@ import javax.inject.Inject;
   public static final String KEY_REPLAY_MAIL =
       "com.hannesdorfmann.mosby.sample.mail.write.REPLAY_MAIL";
 
-  @Bind(R.id.loadingOverlay) View loadingOverlay;
-  @Bind(R.id.authOverlay) View authOverlay;
-  @Bind(R.id.toolbar) Toolbar toolbar;
-  @Bind(R.id.message) EditText message;
-  @Bind(R.id.subject) EditText subject;
-  @Bind(R.id.receiver) EditText receiver;
+  @BindView(R.id.loadingOverlay) View loadingOverlay;
+  @BindView(R.id.authOverlay) View authOverlay;
+  @BindView(R.id.toolbar) Toolbar toolbar;
+  @BindView(R.id.message) EditText message;
+  @BindView(R.id.subject) EditText subject;
+  @BindView(R.id.receiver) EditText receiver;
 
   @Inject IntentStarter intentStarter;
 

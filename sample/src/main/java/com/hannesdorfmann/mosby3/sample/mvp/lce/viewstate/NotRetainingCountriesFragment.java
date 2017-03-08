@@ -25,7 +25,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import android.view.ViewGroup;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 import com.hannesdorfmann.mosby3.mvp.viewstate.lce.LceViewState;
 import com.hannesdorfmann.mosby3.mvp.viewstate.lce.MvpLceViewStateFragment;
 import com.hannesdorfmann.mosby3.mvp.viewstate.lce.data.CastedArrayListLceViewState;
@@ -40,8 +44,6 @@ import com.hannesdorfmann.mosby3.sample.mvp.model.Country;
 
 import java.util.List;
 
-import butterknife.Bind;
-
 /**
  * This is an example of a NOT retaining fragment. It serializes and deserializes the viewstate
  * into a bundle
@@ -52,8 +54,9 @@ public class NotRetainingCountriesFragment extends
     MvpLceViewStateFragment<SwipeRefreshLayout, List<Country>, CountriesView, CountriesPresenter>
     implements CountriesView, SwipeRefreshLayout.OnRefreshListener {
 
-  @Bind(R.id.recyclerView) RecyclerView recyclerView;
+  @BindView(R.id.recyclerView) RecyclerView recyclerView;
 
+  private Unbinder unbinder;
   CountriesAdapter adapter;
 
   @Override public LceViewState<List<Country>, CountriesView> createViewState() {
@@ -62,7 +65,7 @@ public class NotRetainingCountriesFragment extends
 
   @Override public void onDestroyView() {
     super.onDestroyView();
-    ButterKnife.unbind(this);
+    unbinder.unbind();
   }
 
   @Nullable @Override
@@ -73,7 +76,7 @@ public class NotRetainingCountriesFragment extends
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstance) {
     super.onViewCreated(view, savedInstance);
-    ButterKnife.bind(this, view);
+    unbinder = ButterKnife.bind(this, view);
 
     // Setup contentView == SwipeRefreshView
     contentView.setOnRefreshListener(this);

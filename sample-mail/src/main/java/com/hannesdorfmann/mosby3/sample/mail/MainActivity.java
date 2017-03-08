@@ -13,7 +13,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import butterknife.Bind;
 import com.hannesdorfmann.mosby3.sample.mail.base.view.BaseActivity;
 import com.hannesdorfmann.mosby3.sample.mail.details.DetailsFragment;
 import com.hannesdorfmann.mosby3.sample.mail.details.DetailsFragmentBuilder;
@@ -23,6 +22,9 @@ import com.hannesdorfmann.mosby3.sample.mail.model.contact.Person;
 import com.hannesdorfmann.mosby3.sample.mail.model.mail.Label;
 import com.hannesdorfmann.mosby3.sample.mail.model.mail.Mail;
 import com.hannesdorfmann.mosby3.sample.mail.model.mail.MailProvider;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import icepick.Icepick;
 import icepick.Icicle;
 import javax.inject.Inject;
@@ -52,12 +54,12 @@ public class MainActivity extends BaseActivity {
 
   @Inject IntentStarter intentStarter;
 
-  @Bind(R.id.drawerLayout) DrawerLayout drawerLayout;
-  @Bind(R.id.toolbar) Toolbar toolbar;
-  @Bind(R.id.leftPane) ViewGroup leftPane;
-  @Nullable @Bind(R.id.rightPane) ViewGroup rightPane;
+  @BindView(R.id.drawerLayout) DrawerLayout drawerLayout;
+  @BindView(R.id.toolbar) Toolbar toolbar;
+  @BindView(R.id.leftPane) ViewGroup leftPane;
+  @Nullable @BindView(R.id.rightPane) ViewGroup rightPane;
   // contains leftPane + rightPane
-  @Nullable @Bind(R.id.paneContainer) ViewGroup paneContainer;
+  @Nullable @BindView(R.id.paneContainer) ViewGroup paneContainer;
 
   ActionBarDrawerToggle drawerToggle;
   private MainActivityComponent mainActivityComponent;

@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.hannesdorfmann.mosby3.mvp.viewstate.MvpViewStateActivity;
 import com.hannesdorfmann.mosby3.mvp.viewstate.RestorableViewState;
@@ -27,7 +28,6 @@ import com.hannesdorfmann.mosby3.sample.R;
 import com.hannesdorfmann.mosby3.sample.mvp.model.custom.A;
 import com.hannesdorfmann.mosby3.sample.mvp.model.custom.B;
 
-import butterknife.Bind;
 import butterknife.OnClick;
 
 /**
@@ -36,8 +36,8 @@ import butterknife.OnClick;
 public class MyCustomActivity extends MvpViewStateActivity<MyCustomView, MyCustomPresenter>
     implements MyCustomView {
 
-  @Bind(R.id.textViewA) TextView aView;
-  @Bind(R.id.textViewB) TextView bView;
+  @BindView(R.id.textViewA) TextView aView;
+  @BindView(R.id.textViewB) TextView bView;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);

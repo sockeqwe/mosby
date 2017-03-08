@@ -17,6 +17,7 @@
 
 package com.hannesdorfmann.mosby3.mvp.delegate;
 
+import android.support.annotation.NonNull;
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 import com.hannesdorfmann.mosby3.mvp.viewstate.ViewState;
@@ -24,8 +25,7 @@ import com.hannesdorfmann.mosby3.mvp.viewstate.ViewState;
 /**
  * @author Hannes Dorfmann
  */
-
-abstract class PartialMvpViewStateDelegateCallbackImpl
+class PartialMvpViewStateDelegateCallbackImpl
     implements MvpViewStateDelegateCallback<MvpView, MvpPresenter<MvpView>, ViewState<MvpView>> {
 
   MvpPresenter<MvpView> presenter;
@@ -45,5 +45,33 @@ abstract class PartialMvpViewStateDelegateCallbackImpl
 
   @Override public void setViewState(ViewState<MvpView> viewState) {
     this.viewState = viewState;
+  }
+
+  @NonNull @Override public MvpPresenter<MvpView> createPresenter() {
+    return null;
+  }
+
+  @NonNull @Override public ViewState<MvpView> createViewState() {
+    return null;
+  }
+
+  @Override public void setRestoringViewState(boolean restoringViewState) {
+
+  }
+
+  @Override public MvpView getMvpView() {
+    return null;
+  }
+
+  @Override public boolean isRestoringViewState() {
+    return false;
+  }
+
+  @Override public void onViewStateInstanceRestored(boolean instanceStateRetained) {
+
+  }
+
+  @Override public void onNewViewStateInstance() {
+
   }
 }

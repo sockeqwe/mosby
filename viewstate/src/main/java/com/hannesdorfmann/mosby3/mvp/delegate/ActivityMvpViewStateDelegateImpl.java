@@ -23,7 +23,6 @@ import android.util.Log;
 import com.hannesdorfmann.mosby3.PresenterManager;
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
-import com.hannesdorfmann.mosby3.mvp.viewstate.RestorableParcelableViewState;
 import com.hannesdorfmann.mosby3.mvp.viewstate.RestorableViewState;
 import com.hannesdorfmann.mosby3.mvp.viewstate.ViewState;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;

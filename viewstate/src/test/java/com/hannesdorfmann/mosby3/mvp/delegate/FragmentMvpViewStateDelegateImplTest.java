@@ -29,6 +29,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -58,7 +60,7 @@ public class FragmentMvpViewStateDelegateImplTest {
     viewState = Mockito.mock(ViewState.class);
 
     presenter = Mockito.mock(MvpPresenter.class);
-    callback = Mockito.mock(PartialMvpViewStateDelegateCallbackImpl.class);
+    callback = Mockito.spy(PartialMvpViewStateDelegateCallbackImpl.class);
     Mockito.doCallRealMethod().when(callback).setPresenter(presenter);
     Mockito.doCallRealMethod().when(callback).getPresenter();
     Mockito.doCallRealMethod().when(callback).setViewState(viewState);
@@ -104,13 +106,35 @@ public class FragmentMvpViewStateDelegateImplTest {
   }
 
   @Test
-  public void appStartWithProcessDeathAndViewStateRecreationFromBundle(){
-    Assert.fail("Not implemented");
+  public void appStartAfterProcessDeathAndViewStateRecreationFromBundle(){
+    Mockito.doAnswer(new Answer() {
+      @Override public Object answer(InvocationOnMock invocation) throws Throwable {
+        viewState = Mockito.spy(new SimpleRestorableViewState());
+        return viewState;
+      }
+    }).when(callback).createViewState();
+
+    Bundle bundle = BundleMocker.create();
+    bundle.putString(FragmentMvpViewStateDelegateImpl.KEY_MOSBY_VIEW_ID, "123456789");
+
+    startFragment(bundle, 1, 1, 1, 1, 1, 1, false, 1, 0, 1);
   }
 
   @Test
   public void appStartWithViewStateFromMemoryAndBundleButPreferViewStateFromMemory(){
-    Assert.fail("Not implemented");
+
+    Mockito.doAnswer(new Answer() {
+      @Override public Object answer(InvocationOnMock invocation) throws Throwable {
+        viewState = Mockito.spy(new SimpleRestorableViewState());
+        return viewState;
+      }
+    }).when(callback).createViewState();
+
+    startFragment(null, 1, 1, 1, 1, 1, 0, null, 0, 1, 0);
+    Bundle bundle = BundleMocker.create();
+    finishFragment(bundle, 1, true, true, false);
+    startFragment(bundle, 1, 2, 2, 1, 2, 1, true, 1, 1, 1);
+    finishFragment(bundle, 1, false, false, true);
   }
 
   private void startFragment(Bundle bundle, int createPresenter, int setPresenter, int attachView,

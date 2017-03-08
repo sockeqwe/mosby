@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.Map;
 import java.util.UUID;
 
@@ -21,7 +22,8 @@ import java.util.UUID;
  * changes and reattach the presenter afterwards.
  *
  * <p>
- * The idea is that each MVP View (based on ViewGroup) will get a unique view id. This view id is
+ * The idea is that each MVP View (like a Activity, Fragment, ViewGroup) will get a unique view id.
+ * This view id is
  * used to store the presenter and viewstate in it. After screen orientation changes we can reuse
  * the presenter and viewstate by querying for the given view id (must be saved in view's state
  * somehow).
@@ -32,6 +34,7 @@ import java.util.UUID;
  */
 final public class PresenterManager {
 
+  @SuppressFBWarnings(value = "MS_SHOULD_BE_FINAL", justification = "Could be enabled for debugging purpose")
   public static boolean DEBUG = false;
   public static final String DEBUG_TAG = "PresenterManager";
   final static String KEY_ACTIVITY_ID = "com.hannesdorfmann.mosby3.MosbyPresenterManagerActivityId";
@@ -256,7 +259,6 @@ final public class PresenterManager {
     ActivityScopedCache scopedCache = getOrCreateActivityScopedCache(activity);
     scopedCache.putPresenter(viewId, presenter);
   }
-
 
   /**
    * Puts the presenter into the internal cache

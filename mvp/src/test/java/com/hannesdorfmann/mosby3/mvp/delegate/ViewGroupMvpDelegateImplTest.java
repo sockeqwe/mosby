@@ -31,7 +31,6 @@ import org.robolectric.annotation.Config;
 /**
  * @author Hannes Dorfmann
  */
-@RunWith(RobolectricTestRunner.class) @Config(manifest = Config.NONE) // Just because of mocking bundle
 public class ViewGroupMvpDelegateImplTest {
 
   private MvpView view;

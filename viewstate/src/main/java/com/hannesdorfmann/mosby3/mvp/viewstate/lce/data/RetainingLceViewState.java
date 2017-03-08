@@ -21,8 +21,7 @@ import com.hannesdorfmann.mosby3.mvp.viewstate.lce.AbsLceViewState;
 import com.hannesdorfmann.mosby3.mvp.viewstate.lce.LceViewState;
 
 /**
- * This kind of {@link LceViewState} can be used with <b>Activities and Fragments that have set
- * setRetainInstance(true); <b/>. This allows to store / restore any kind of data along
+ * This allows one to store / restore any kind of data along
  * orientation changes. So this ViewState will not be saved into the Bundle of saveInstanceState().
  * This ViewState will be stored and restored directly by the Activity or Fragment itself.
  *

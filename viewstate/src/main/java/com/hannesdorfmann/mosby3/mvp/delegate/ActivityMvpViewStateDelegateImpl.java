@@ -26,6 +26,7 @@ import com.hannesdorfmann.mosby3.mvp.MvpView;
 import com.hannesdorfmann.mosby3.mvp.viewstate.RestorableParcelableViewState;
 import com.hannesdorfmann.mosby3.mvp.viewstate.RestorableViewState;
 import com.hannesdorfmann.mosby3.mvp.viewstate.ViewState;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /**
  * The default implementation for {@link ActivityMvpDelegate} that supports {@link ViewState}
@@ -36,7 +37,8 @@ import com.hannesdorfmann.mosby3.mvp.viewstate.ViewState;
 public class ActivityMvpViewStateDelegateImpl<V extends MvpView, P extends MvpPresenter<V>, VS extends ViewState<V>>
     extends ActivityMvpDelegateImpl<V, P> {
 
-  public static final boolean DEBUG = false;
+  @SuppressFBWarnings(value = "MS_SHOULD_BE_FINAL", justification = "Could be set for debugging")
+  public static boolean DEBUG = false;
   private static final String DEBUG_TAG = "ActivityMvpViewStateDel";
 
   private MvpViewStateDelegateCallback<V, P, VS> delegateCallback;
@@ -101,11 +103,11 @@ public class ActivityMvpViewStateDelegateImpl<V extends MvpView, P extends MvpPr
               + delegateCallback.getMvpView());
     }
 
-    if (bundle != null && viewState instanceof RestorableParcelableViewState) {
+    if (bundle != null && viewState instanceof RestorableViewState) {
       // A little bit hacky that we need an instance of the viewstate to restore a view state
       // (may creates another view state object) but I don't know any better way :)
       RestorableViewState restoredViewState =
-          ((RestorableParcelableViewState) viewState).restoreInstanceState(bundle);
+          ((RestorableViewState) viewState).restoreInstanceState(bundle);
 
       if (restoredViewState != null) {
         //

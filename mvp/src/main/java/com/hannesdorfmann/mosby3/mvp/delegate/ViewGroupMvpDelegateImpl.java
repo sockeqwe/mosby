@@ -28,6 +28,7 @@ import com.hannesdorfmann.mosby3.MosbySavedState;
 import com.hannesdorfmann.mosby3.PresenterManager;
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.UUID;
 
 /**
@@ -49,17 +50,14 @@ public class ViewGroupMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<
     implements ViewGroupMvpDelegate<V, P> {
 
   // TODO allow custom save state hook in
-  public static final boolean DEBUG = true;
+  @SuppressFBWarnings(value = "MS_SHOULD_BE_FINAL", justification = "Could be set for debugging")
+  public static boolean DEBUG = false;
   private static final String DEBUG_TAG = "ViewGroupMvpDelegateImp";
 
   private ViewGroupDelegateCallback<V, P> delegateCallback;
   private String mosbyViewId;
   private final boolean keepPresenterDuringScreenOrientationChange;
   private final Activity activity;
-
-  public ViewGroupMvpDelegateImpl(@NonNull ViewGroupDelegateCallback<V, P> delegateCallback){
-    this(delegateCallback, true);
-  }
 
   public ViewGroupMvpDelegateImpl(@NonNull ViewGroupDelegateCallback<V, P> delegateCallback,
       boolean keepPresenterDuringScreenOrientationChange) {
@@ -78,7 +76,7 @@ public class ViewGroupMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<
    *
    * @return The new created presenter instance
    */
-  private P createViewIdAndCreatePresenter() {
+  protected P createViewIdAndCreatePresenter() {
 
     P presenter = delegateCallback.createPresenter();
     if (presenter == null) {

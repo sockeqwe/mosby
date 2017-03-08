@@ -19,12 +19,14 @@ package com.hannesdorfmann.mosby3.mvp.delegate;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.View;
 import com.hannesdorfmann.mosby3.PresenterManager;
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 import com.hannesdorfmann.mosby3.mvp.viewstate.RestorableParcelableViewState;
 import com.hannesdorfmann.mosby3.mvp.viewstate.RestorableViewState;
 import com.hannesdorfmann.mosby3.mvp.viewstate.ViewState;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /**
  * The {@link FragmentMvpDelegateImpl} with {@link ViewState} support
@@ -35,7 +37,8 @@ import com.hannesdorfmann.mosby3.mvp.viewstate.ViewState;
 public class FragmentMvpViewStateDelegateImpl<V extends MvpView, P extends MvpPresenter<V>, VS extends ViewState<V>>
     extends FragmentMvpDelegateImpl<V, P> {
 
-  public static final boolean DEBUG = false;
+  @SuppressFBWarnings(value = "MS_SHOULD_BE_FINAL", justification = "Could be set for debugging")
+  public static boolean DEBUG = false;
   private static final String DEBUG_TAG = "FragmentMvpDelegateImpl";
   private MvpViewStateDelegateCallback<V, P, VS> delegateCallback;
   private boolean applyViewState = false;
@@ -50,8 +53,8 @@ public class FragmentMvpViewStateDelegateImpl<V extends MvpView, P extends MvpPr
     this.delegateCallback = delegateCallback;
   }
 
-  @Override public void onCreate(Bundle bundle) {
-    super.onCreate(bundle);
+  @Override public void onViewCreated(View view, Bundle bundle) {
+    super.onViewCreated(view, bundle);
 
     if (bundle != null && keepPresenterInstanceDuringScreenOrientationChanges) {
 
@@ -90,11 +93,11 @@ public class FragmentMvpViewStateDelegateImpl<V extends MvpView, P extends MvpPr
               + delegateCallback.getMvpView());
     }
 
-    if (bundle != null && viewState instanceof RestorableParcelableViewState) {
+    if (bundle != null && viewState instanceof RestorableViewState) {
       // A little bit hacky that we need an instance of the viewstate to restore a view state
       // (may creates another view state object) but I don't know any better way :)
       RestorableViewState restoredViewState =
-          ((RestorableParcelableViewState) viewState).restoreInstanceState(bundle);
+          ((RestorableViewState) viewState).restoreInstanceState(bundle);
 
       if (restoredViewState != null) {
         //

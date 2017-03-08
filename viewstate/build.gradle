@@ -32,4 +32,14 @@ dependencies {
   testCompile 'junit:junit:' + rootProject.ext.junitVersion
   testCompile 'org.mockito:mockito-core:' + rootProject.ext.mockitoVersion
   testCompile 'org.robolectric:robolectric:'+ rootProject.ext.robolectricVersion
+
+
+  testCompile('org.powermock:powermock-api-mockito:' + rootProject.ext.powermockVersion) {
+    exclude module: 'hamcrest-core'
+    exclude module: 'objenesis'
+  }
+  testCompile('org.powermock:powermock-module-junit4:' + rootProject.ext.powermockVersion) {
+    exclude module: 'hamcrest-core'
+    exclude module: 'objenesis'
+  }
 }

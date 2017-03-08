@@ -74,7 +74,7 @@ public abstract class MvpRelativeLayout<V extends MvpView, P extends MvpPresente
    */
   @NonNull protected ViewGroupMvpDelegate<V, P> getMvpDelegate() {
     if (mvpDelegate == null) {
-      mvpDelegate = new ViewGroupMvpDelegateImpl<>(this);
+      mvpDelegate = new ViewGroupMvpDelegateImpl<>(this, true);
     }
 
     return mvpDelegate;

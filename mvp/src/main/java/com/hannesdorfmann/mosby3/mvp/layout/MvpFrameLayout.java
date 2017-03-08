@@ -74,7 +74,7 @@ public abstract class MvpFrameLayout<V extends MvpView, P extends MvpPresenter<V
    */
   @NonNull protected ViewGroupMvpDelegate<V, P> getMvpDelegate() {
     if (mvpDelegate == null) {
-      mvpDelegate = new ViewGroupMvpDelegateImpl<>(this);
+      mvpDelegate = new ViewGroupMvpDelegateImpl<>(this, true);
     }
 
     return mvpDelegate;

@@ -21,8 +21,8 @@ import android.view.View;
 import com.hannesdorfmann.mosby3.mvp.MvpFragment;
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
-import com.hannesdorfmann.mosby3.mvp.delegate.FragmentMvpViewStateDelegateImpl;
 import com.hannesdorfmann.mosby3.mvp.delegate.FragmentMvpDelegate;
+import com.hannesdorfmann.mosby3.mvp.delegate.FragmentMvpViewStateDelegateImpl;
 import com.hannesdorfmann.mosby3.mvp.delegate.MvpViewStateDelegateCallback;
 
 /**
@@ -37,38 +37,33 @@ import com.hannesdorfmann.mosby3.mvp.delegate.MvpViewStateDelegateCallback;
  * @author Hannes Dorfmann
  * @since 1.0.0
  */
-public abstract class MvpViewStateFragment<V extends MvpView, P extends MvpPresenter<V>>
-    extends MvpFragment<V, P> implements MvpViewStateDelegateCallback<V, P> {
+public abstract class MvpViewStateFragment<V extends MvpView, P extends MvpPresenter<V>, VS extends ViewState<V>>
+    extends MvpFragment<V, P> implements MvpViewStateDelegateCallback<V, P, VS> {
 
   /**
    * The viewstate will be instantiated by calling {@link #createViewState()} in {@link
    * #onViewCreated(View, Bundle)}. Don't instantiate it by hand.
    */
-  protected ViewState<V> viewState;
+  protected VS viewState;
 
   /**
    * A simple flag that indicates if the restoring ViewState  is in progress right now.
    */
   private boolean restoringViewState = false;
 
-  /**
-   * Create the view state object of this class
-   */
-  public abstract ViewState createViewState();
-
   @Override protected FragmentMvpDelegate<V, P> getMvpDelegate() {
     if (mvpDelegate == null) {
-      mvpDelegate = new FragmentMvpViewStateDelegateImpl<V, P>(this);
+      mvpDelegate = new FragmentMvpViewStateDelegateImpl<>(this, this, true, true);
     }
 
     return mvpDelegate;
   }
 
-  @Override public ViewState getViewState() {
+  @Override public VS getViewState() {
     return viewState;
   }
 
-  @Override public void setViewState(ViewState<V> viewState) {
+  @Override public void setViewState(VS viewState) {
     this.viewState = viewState;
   }
 

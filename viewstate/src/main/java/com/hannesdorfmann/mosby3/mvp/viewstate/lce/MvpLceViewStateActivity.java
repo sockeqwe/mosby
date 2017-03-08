@@ -20,6 +20,7 @@ import android.view.View;
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.delegate.ActivityMvpDelegate;
 import com.hannesdorfmann.mosby3.mvp.delegate.ActivityMvpViewStateDelegateImpl;
+import com.hannesdorfmann.mosby3.mvp.delegate.MvpViewStateDelegateCallback;
 import com.hannesdorfmann.mosby3.mvp.lce.MvpLceActivity;
 import com.hannesdorfmann.mosby3.mvp.lce.MvpLceView;
 import com.hannesdorfmann.mosby3.mvp.viewstate.ViewState;
@@ -32,32 +33,25 @@ import com.hannesdorfmann.mosby3.mvp.viewstate.ViewState;
  */
 public abstract class MvpLceViewStateActivity<CV extends View, M, V extends MvpLceView<M>, P extends MvpPresenter<V>>
     extends MvpLceActivity<CV, M, V, P>
-    implements MvpLceView<M>,
-    com.hannesdorfmann.mosby3.mvp.delegate.MvpViewStateDelegateCallback<V,P>,
-    com.hannesdorfmann.mosby3.mvp.delegate.MvpDelegateCallback<V,P> {
+    implements MvpLceView<M>, MvpViewStateDelegateCallback<V, P, LceViewState<M, V>> {
 
   protected LceViewState<M, V> viewState;
   protected boolean restoringViewState = false;
 
   @Override protected ActivityMvpDelegate<V, P> getMvpDelegate() {
     if (mvpDelegate == null) {
-      mvpDelegate = new ActivityMvpViewStateDelegateImpl<>(this);
+      mvpDelegate = new ActivityMvpViewStateDelegateImpl<>(this, this, true);
     }
 
     return mvpDelegate;
   }
 
-  @Override public ViewState<V> getViewState() {
+  @Override public LceViewState<M, V> getViewState() {
     return viewState;
   }
 
-  @Override public void setViewState(ViewState<V> viewState) {
-    if (!(viewState instanceof LceViewState)) {
-      throw new IllegalArgumentException(
-          "Only " + LceViewState.class.getSimpleName() + " are allowed as view state");
-    }
-
-    this.viewState = (LceViewState<M, V>) viewState;
+  @Override public void setViewState(LceViewState<M, V> viewState) {
+    this.viewState = viewState;
   }
 
   @Override public void setRestoringViewState(boolean restoringViewState) {
@@ -98,13 +92,6 @@ public abstract class MvpLceViewStateActivity<CV extends View, M, V extends MvpL
 
     super.showLightError(msg);
   }
-
-  /**
-   * Creates the viewstate
-   *
-   * @return a new ViewState
-   */
-  public abstract LceViewState<M, V> createViewState();
 
   /**
    * Get the data that has been set before in {@link #setData(Object)}

@@ -17,13 +17,16 @@ package com.hannesdorfmann.mosby3.mvp.delegate;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.os.ParcelableCompat;
 import android.support.v4.os.ParcelableCompatCreatorCallbacks;
-
+import com.hannesdorfmann.mosby3.MosbySavedState;
 import com.hannesdorfmann.mosby3.mvp.viewstate.RestorableParcelableViewState;
 
 /**
- * The SavedState implementation to store the view state in layouts
+ * The SavedState implementation to store the {@link RestorableParcelableViewState} plus mosby view
+ * id
  *
  * @author Hannes Dorfmann
  * @since 1.1
@@ -46,8 +49,10 @@ public class MosbyViewStateSavedState extends MosbySavedState {
 
   private RestorableParcelableViewState mosbyViewState;
 
-  public MosbyViewStateSavedState(Parcelable superState) {
-    super(superState);
+  public MosbyViewStateSavedState(Parcelable superState, @NonNull String viewId,
+      @Nullable RestorableParcelableViewState viewState) {
+    super(superState, viewId);
+    this.mosbyViewState = viewState;
   }
 
   protected MosbyViewStateSavedState(Parcel in, ClassLoader loader) {
@@ -60,11 +65,8 @@ public class MosbyViewStateSavedState extends MosbySavedState {
     out.writeParcelable(mosbyViewState, flags);
   }
 
-  public RestorableParcelableViewState getMosbyViewState() {
+  @Nullable
+  public RestorableParcelableViewState getRestoreableViewState() {
     return mosbyViewState;
-  }
-
-  public void setMosbyViewState(RestorableParcelableViewState mosbyViewState) {
-    this.mosbyViewState = mosbyViewState;
   }
 }

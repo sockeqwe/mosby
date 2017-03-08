@@ -21,6 +21,7 @@ import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 import com.hannesdorfmann.mosby3.mvp.delegate.ActivityMvpDelegate;
 import com.hannesdorfmann.mosby3.mvp.delegate.ActivityMvpViewStateDelegateImpl;
+import com.hannesdorfmann.mosby3.mvp.delegate.MvpViewStateDelegateCallback;
 
 /**
  * This is a enhancement of {@link com.hannesdorfmann.mosby3.mvp.MvpActivity} that introduces the
@@ -34,12 +35,10 @@ import com.hannesdorfmann.mosby3.mvp.delegate.ActivityMvpViewStateDelegateImpl;
  * @author Hannes Dorfmann
  * @since 1.0.0
  */
-public abstract class MvpViewStateActivity<V extends MvpView, P extends MvpPresenter<V>>
-    extends MvpActivity<V, P> implements
-    com.hannesdorfmann.mosby3.mvp.delegate.MvpViewStateDelegateCallback<V,P>,
-    com.hannesdorfmann.mosby3.mvp.delegate.MvpDelegateCallback<V,P> {
+public abstract class MvpViewStateActivity<V extends MvpView, P extends MvpPresenter<V>, VS extends ViewState<V>>
+    extends MvpActivity<V, P> implements MvpViewStateDelegateCallback<V, P, VS> {
 
-  protected ViewState<V> viewState;
+  protected VS viewState;
 
   /**
    * A simple flag that indicates if the restoring ViewState  is in progress right now.
@@ -48,17 +47,17 @@ public abstract class MvpViewStateActivity<V extends MvpView, P extends MvpPrese
 
   @Override protected ActivityMvpDelegate<V, P> getMvpDelegate() {
     if (mvpDelegate == null) {
-      mvpDelegate = new ActivityMvpViewStateDelegateImpl<>(this);
+      mvpDelegate = new ActivityMvpViewStateDelegateImpl<>(this, this, true);
     }
 
     return mvpDelegate;
   }
 
-  @Override public ViewState<V> getViewState() {
+  @Override public VS getViewState() {
     return viewState;
   }
 
-  @Override public void setViewState(ViewState<V> viewState) {
+  @Override public void setViewState(VS viewState) {
 
     this.viewState = viewState;
   }
@@ -74,9 +73,4 @@ public abstract class MvpViewStateActivity<V extends MvpView, P extends MvpPrese
   @Override public void onViewStateInstanceRestored(boolean instanceStateRetained) {
     // not needed. You could override this is subclasses if needed
   }
-
-  /**
-   * Creates the ViewState instance
-   */
-  public abstract ViewState<V> createViewState();
 }

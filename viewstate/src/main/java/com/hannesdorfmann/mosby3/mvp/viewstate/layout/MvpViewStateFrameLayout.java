@@ -32,11 +32,11 @@ import com.hannesdorfmann.mosby3.mvp.viewstate.ViewState;
  * @author Hannes Dorfmann
  * @since 1.1
  */
-public abstract class MvpViewStateFrameLayout<V extends MvpView, P extends MvpPresenter<V>>
-    extends MvpFrameLayout<V, P> implements ViewGroupViewStateDelegateCallback<V, P> {
+public abstract class MvpViewStateFrameLayout<V extends MvpView, P extends MvpPresenter<V>, VS extends ViewState<V>>
+    extends MvpFrameLayout<V, P> implements ViewGroupViewStateDelegateCallback<V, P, VS> {
 
   private boolean restoringViewState = false;
-  protected ViewState<V> viewState;
+  protected VS viewState;
 
   public MvpViewStateFrameLayout(Context context) {
     super(context);
@@ -59,17 +59,17 @@ public abstract class MvpViewStateFrameLayout<V extends MvpView, P extends MvpPr
   @Override
   protected ViewGroupMvpDelegate<V, P> getMvpDelegate() {
     if (mvpDelegate == null) {
-      mvpDelegate = new ViewGroupMvpViewStateDelegateImpl<V, P>(this);
+      mvpDelegate = new ViewGroupMvpViewStateDelegateImpl<>(this, true);
     }
 
     return mvpDelegate;
   }
 
-  @Override public ViewState<V> getViewState() {
+  @Override public VS getViewState() {
     return viewState;
   }
 
-  @Override public void setViewState(ViewState<V> viewState) {
+  @Override public void setViewState(VS viewState) {
     this.viewState =  viewState;
   }
 

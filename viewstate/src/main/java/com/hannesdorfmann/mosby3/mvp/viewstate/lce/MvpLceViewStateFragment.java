@@ -19,8 +19,8 @@ package com.hannesdorfmann.mosby3.mvp.viewstate.lce;
 import android.os.Bundle;
 import android.view.View;
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
-import com.hannesdorfmann.mosby3.mvp.delegate.FragmentMvpViewStateDelegateImpl;
 import com.hannesdorfmann.mosby3.mvp.delegate.FragmentMvpDelegate;
+import com.hannesdorfmann.mosby3.mvp.delegate.FragmentMvpViewStateDelegateImpl;
 import com.hannesdorfmann.mosby3.mvp.delegate.MvpViewStateDelegateCallback;
 import com.hannesdorfmann.mosby3.mvp.lce.MvpLceFragment;
 import com.hannesdorfmann.mosby3.mvp.lce.MvpLceView;
@@ -33,8 +33,8 @@ import com.hannesdorfmann.mosby3.mvp.viewstate.ViewState;
  * @since 1.0.0
  */
 public abstract class MvpLceViewStateFragment<CV extends View, M, V extends MvpLceView<M>, P extends MvpPresenter<V>>
-    extends MvpLceFragment<CV, M, V, P> implements MvpLceView<M>,
-    MvpViewStateDelegateCallback<V, P> {
+    extends MvpLceFragment<CV, M, V, P>
+    implements MvpLceView<M>, MvpViewStateDelegateCallback<V, P, LceViewState<M, V>> {
 
   /**
    * The viewstate will be instantiated by calling {@link #createViewState()} in {@link
@@ -47,25 +47,20 @@ public abstract class MvpLceViewStateFragment<CV extends View, M, V extends MvpL
    */
   private boolean restoringViewState = false;
 
-  /**
-   * Create the view state object of this class
-   */
-  public abstract LceViewState<M, V> createViewState();
-
   @Override protected FragmentMvpDelegate<V, P> getMvpDelegate() {
     if (mvpDelegate == null) {
-      mvpDelegate = new FragmentMvpViewStateDelegateImpl<V, P>(this);
+      mvpDelegate = new FragmentMvpViewStateDelegateImpl<>(this, this, true, true);
     }
 
     return mvpDelegate;
   }
 
-  @Override public ViewState getViewState() {
+  @Override public LceViewState<M, V> getViewState() {
     return viewState;
   }
 
-  @Override public void setViewState(ViewState<V> viewState) {
-    this.viewState = (LceViewState<M, V>) viewState;
+  @Override public void setViewState(LceViewState<M, V> viewState) {
+    this.viewState = viewState;
   }
 
   @Override public void showContent() {

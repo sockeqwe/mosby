@@ -28,12 +28,23 @@ import com.hannesdorfmann.mosby3.mvp.test.view.TestMvpViewWithMultipleInterfaces
 import org.junit.Assert;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 /**
  * @author Hannes Dorfmann
  */
 public class MvpNullObjectBasePresenterTest {
+
+  @Test public void throwsExceptionWhenInteractingWithPresenterButNoViewHasEverAttached() {
+
+    MvpNullObjectBasePresenter<MvpView> presenter = new MvpNullObjectBasePresenter<MvpView>() {
+    };
+
+    try {
+      presenter.getView();
+      Assert.fail("Exception should be thrown");
+    } catch (IllegalStateException e) {
+      // Expected exception
+    }
+  }
 
   @Test @SuppressWarnings("unchecked") public void uselessGenericsParamsPresenter() {
     TestMvpView view = newTestView();
@@ -100,7 +111,6 @@ public class MvpNullObjectBasePresenterTest {
 
   private <V extends MvpView> void testAttachDetachView(
       final MvpNullObjectBasePresenter<V> presenter, final V view) {
-    Assert.assertNotNull(presenter.getView());
 
     testAttachView(presenter, view);
     testDetachNonRetain(presenter, view);

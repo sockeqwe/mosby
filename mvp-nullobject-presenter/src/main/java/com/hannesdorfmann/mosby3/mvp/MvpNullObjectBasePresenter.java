@@ -26,13 +26,13 @@ import java.lang.reflect.Type;
  *
  * @param <V> The type of the {@link MvpView}
  * @author Jens Dirller , Hannes Dorfmann
- * @see MvpBasePresenter
  * @since 1.2.0
  */
 public abstract class MvpNullObjectBasePresenter<V extends MvpView> implements MvpPresenter<V> {
 
   private WeakReference<V> view;
   private final V nullView;
+  private boolean viewAttachedAtLeastOnce = false;
 
   public MvpNullObjectBasePresenter() {
     try {
@@ -96,9 +96,13 @@ public abstract class MvpNullObjectBasePresenter<V extends MvpView> implements M
 
   @UiThread @Override public void attachView(@NonNull V view) {
     this.view = new WeakReference<V>(view);
+    viewAttachedAtLeastOnce = true;
   }
 
   @UiThread @NonNull protected V getView() {
+    if (!viewAttachedAtLeastOnce){
+      throw new IllegalStateException("No view has ever been attached to this presenter!");
+    }
     if (view != null) {
       V realView = view.get();
       if (realView != null) {

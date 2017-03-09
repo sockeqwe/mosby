@@ -20,18 +20,15 @@ package com.hannesdorfmann.mosby3.mvi;
 import android.support.annotation.CallSuper;
 import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
-
 import com.hannesdorfmann.mosby3.mvp.MvpView;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.PublishSubject;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This type of presenter is responsible to interact with the viewState in a Model-View-Intent way.
@@ -62,7 +59,7 @@ import io.reactivex.subjects.PublishSubject;
  * viewState is a object (typically a POJO) that holds all the data the view needs to display</li>
  * </ul>
  *
- * By using {@link #intent(ViewIntentBinder)} and {@link #subscribeViewState(Observable,
+ * By using {@link #intent(ViewIntentBinder)} and {@link #subscribeViewState(Observable, *
  * ViewStateConsumer)}
  * a relay will be established between the view and this presenter that allows the view to be
  * temporarily detached, without unsubscribing the underlying reactive business logic workflow and
@@ -210,16 +207,23 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
   }
 
   /**
-   * Get the view state observable. In some very rare case it could be useful to provide other
+   * Get the view state observable.
+   * <p>
+   * Most likely you will use this method for unit testing your presenter.
+   * </p>
+   *
+   * <p>
+   * In some very rare case it could be useful to provide other
    * components, like other presenters,
    * access to the state. This observable contains the same value as got from {@link
    * #subscribeViewState(Observable, ViewStateConsumer)} which is also used to render the view.
    * In other words, this Observable also represents the state of the View, so you could subscribe
    * via this observable to the view's state.
+   * </p>
    *
    * @return Observable
    */
-  protected Observable<VS> getViewStateObservable() {
+  public Observable<VS> getViewStateObservable() {
     return viewStateBehaviorSubject;
   }
 
@@ -311,7 +315,8 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
 
     this.viewStateConsumer = consumer;
 
-    viewStateDisposable = viewStateObservable.subscribeWith(new DisposableViewStateObserver<>(viewStateBehaviorSubject));
+    viewStateDisposable = viewStateObservable.subscribeWith(
+        new DisposableViewStateObserver<>(viewStateBehaviorSubject));
   }
 
   /**

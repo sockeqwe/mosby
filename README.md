@@ -17,9 +17,10 @@ dependencies {
 Mosby3 preview:
 ```groovy
 dependencies {
-	compile 'com.hannesdorfmann.mosby3:mvp:3.0.0-alpha4'
+	compile 'com.hannesdorfmann.mosby3:mvp:3.0.0-alpha4' // Plain MVP 
+	compile 'com.hannesdorfmann.mosby3:viewstate:3.0.0-alpha4' // ViewState support
+	compile 'com.hannesdorfmann.mosby3:mvp-lce:3.0.0' // LCE View
 
-	compile 'com.hannesdorfmann.mosby3:viewstate:3.0.0-alpha4'
 	// or
 	compile 'com.hannesdorfmann.mosby3:mvi:3.0.0-alpha4'
 }

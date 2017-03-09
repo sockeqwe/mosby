@@ -19,7 +19,6 @@ package com.hannesdorfmann.mosby3.mvp.viewstate;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
-import com.hannesdorfmann.mosby3.mvp.viewstate.lce.AbsParcelableLceViewState;
 
 /**
  * A ViewState that is parcelable. Activities can only use this kind of ViewState, because saving
@@ -45,8 +44,7 @@ public interface RestorableViewState<V extends MvpView> extends ViewState<V> {
    *
    * @param in the bundle to read the data from
    * @return null, if view state could not be restored or the restore viestate instance. Typically
-   * this method will return <code>this</code>. {@link AbsParcelableLceViewState} will return a
-   * copy, which is also ok.
+   * this method will return <code>this</code>.
    */
   public RestorableViewState<V> restoreInstanceState(Bundle in);
 }

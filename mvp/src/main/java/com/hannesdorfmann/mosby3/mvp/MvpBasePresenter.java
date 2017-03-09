@@ -85,8 +85,7 @@ public class MvpBasePresenter<V extends MvpView> implements MvpPresenter<V> {
    *
    * @return <code>null</code>, if view is not attached, otherwise the concrete view instance
    */
-  @UiThread
-  @Nullable public V getView() {
+  @UiThread public V getView() {
     return viewRef == null ? null : viewRef.get();
   }
 

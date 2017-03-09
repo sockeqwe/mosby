@@ -28,7 +28,7 @@ android {
 
 
 dependencies {
-  compile project(':viewstate')
+  compile project(':mvp-lce')
 
   compile 'com.android.support:design:'+ rootProject.ext.appcompat7Version
   compile 'com.android.support:recyclerview-v7:'+ rootProject.ext.recyclerviewVersion

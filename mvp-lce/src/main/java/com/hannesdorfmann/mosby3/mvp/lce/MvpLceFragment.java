@@ -27,7 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.hannesdorfmann.mosby3.mvp.MvpFragment;
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
-import com.hannesdorfmann.mosby3.mvp.R;
+import com.hannesdorfmann.mosby3.mvp.lce.R;
 
 /**
  * A {@link MvpFragment} that implements {@link MvpLceView} which gives you 3 options:

@@ -28,8 +28,8 @@ import java.util.UUID;
 
 /**
  * The concrete implementation of {@link ActivityMviDelegate}.
- * This delegate creates the Presenter and attaches the viewState to the presenter in {@link
- * Activity#onStart()}. The viewState is detached from presenter in {@link
+ * This delegate creates the Presenter and attaches the View to the presenter in {@link
+ * Activity#onStart()}. The view is detached from presenter in {@link
  * Activity#onStop()}
  *
  * @param <V> The type of {@link MvpView}

@@ -1,8 +1,5 @@
-// include ':sample', ':viewstate', ':mvp', ':rx', ':retrofit', ':sample-dagger1', ':sample-dagger2-rx', ':sample-mail',
-//     ':testing', ':mvp-common'
-
 include ':mvp-common', ':mvp', ':viewstate', ':testing', ':sample', ':mvi', ':sample-mail',
     ':mvp-nullobject-presenter',
     ':mvi-common',
     ':utils-fragment-integration-test',
-    ':mvi-integration-test', ':sample-mvi', ':presentermanager', ':sample-flow', ':utils-fragment'
+    ':mvi-integration-test', ':sample-mvi', ':presentermanager', ':utils-fragment'

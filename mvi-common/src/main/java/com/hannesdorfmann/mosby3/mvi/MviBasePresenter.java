@@ -95,8 +95,15 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
 
   /**
    * The binder is responsible to bind a single view intent.
-   * Call <pre><code>
-   *   // TODO example
+   * Typlically you use that in {@link #bindIntents()} in combination with the {@link
+   * #intent(ViewIntentBinder)} function like this:
+   * <pre><code>
+   *   Observable<Boolean> loadIntent = intent(new ViewIntentBinder() {
+   *      @Override
+   *      public Observable<Boolean> bind(MyView view){
+   *         return view.loadIntent();
+   *      }
+   *   }
    * </code></pre>
    *
    * @param <V> The View type
@@ -110,6 +117,18 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
   /**
    * This "binder" is responsible to bind the view state to the currently attached view.
    * This typically "renders" the view.
+   *
+   * Typically this is used in {@link #bindIntents()} with {@link #subscribeViewState(Observable, * ViewStateConsumer)}
+   * like this:
+   * <pre><code>
+   *   Observable<MyViewState> viewState =  ... ;
+   *   subscribeViewStateConsumerActually(viewState, new ViewStateConsumer() {
+   *      @Override
+   *      public void accept(MyView view, MyViewState viewState){
+   *         view.render(viewState);
+   *      }
+   *   }
+   * </code></pre>
    *
    * @param <V> The view Type
    * @param <VS> The ViewState type
@@ -292,6 +311,17 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
    * intents will cause memory leaks while viewState detached.
    * </p>
    *
+   * Typically this method is used in {@link #bindIntents()}  like this:
+   * <pre><code>
+   *   Observable<MyViewState> viewState =  ... ;
+   *   subscribeViewStateConsumerActually(viewState, new ViewStateConsumer() {
+   *      @Override
+   *      public void accept(MyView view, MyViewState viewState){
+   *         view.render(viewState);
+   *      }
+   *   }
+   * </code></pre>
+   *
    * @param viewStateObservable The Observable emitting new ViewState. Typically an intent {@link
    * #intent(ViewIntentBinder)} causes the underlying business logic to do a change and eventually
    * create a new ViewState.
@@ -320,7 +350,7 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
   }
 
   /**
-   * Actually subscribes the view as consumer to the internally view relay
+   * Actually subscribes the view as consumer to the internally view relay.
    *
    * @param view The mvp view
    */
@@ -383,6 +413,16 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
    * memoryleak by using a {@link ViewIntentBinder} is caused by the subscription to the original
    * view's intent when the view gets
    * detached.
+   *
+   * Typically this method is used in {@link #bindIntents()} like this:
+   * <pre><code>
+   *   Observable<Boolean> loadIntent = intent(new ViewIntentBinder() {
+   *      @Override
+   *      public Observable<Boolean> bind(MyView view){
+   *         return view.loadIntent();
+   *      }
+   *   }
+   * </code></pre>
    *
    * @param binder The {@link ViewIntentBinder} from where the the real view's intent will be
    * bound

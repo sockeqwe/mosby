@@ -26,7 +26,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import com.hannesdorfmann.mosby3.ActivityMviDelegate;
 import com.hannesdorfmann.mosby3.FragmentMviDelegate;
 import com.hannesdorfmann.mosby3.FragmentMviDelegateImpl;
@@ -35,10 +37,20 @@ import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 
 /**
+ * <p>
  * This abstract class can be used to extend from to implement an Model-View-Intent pattern with
- * this activity as View and a {@link MviPresenter} to coordinate the viewState and the underlying
- * model
- * (business logic)
+ * this activity as View and a {@link MviPresenter} to coordinate the View and the underlying
+ * model (business logic)
+ * </p>
+ *
+ * <p>
+ * Per default {@link FragmentMviDelegateImpl} is used with the following lifecycle:
+ * The View is attached to the Presenter in {@link Fragment#onViewCreated(View, Bundle)}.
+ * So you better instantiate all your UI widgets before that lifecycle callback (typically in
+ * {@link
+ * Fragment#onCreateView(LayoutInflater, ViewGroup, Bundle)}. The View is detached from Presenter in
+ * {@link Fragment#onDestroyView()}
+ * </p>
  *
  * @author Hannes Dorfmann
  * @since 3.0.0

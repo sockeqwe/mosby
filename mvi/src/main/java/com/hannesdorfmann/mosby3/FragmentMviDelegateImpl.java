@@ -26,13 +26,22 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.BackstackAccessor;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import com.hannesdorfmann.mosby3.mvi.MviPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 import java.util.UUID;
 
 /**
  * The default implementation of {@link FragmentMviDelegate}
+ * <p>
+ * The View is attached to the Presenter in {@link Fragment#onViewCreated(View, Bundle)}.
+ * So you better instantiate all your UI widgets before that lifecycle callback (typically in
+ * {@link
+ * Fragment#onCreateView(LayoutInflater, ViewGroup, Bundle)}. The View is detached from Presenter in
+ * {@link Fragment#onDestroyView()}
+ * </p>
  *
  * @param <V> The type of {@link MvpView}
  * @param <P> The type of {@link MviPresenter}

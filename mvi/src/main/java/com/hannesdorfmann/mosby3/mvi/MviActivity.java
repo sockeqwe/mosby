@@ -1,5 +1,6 @@
 package com.hannesdorfmann.mosby3.mvi;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -11,10 +12,19 @@ import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 
 /**
+ * <p>
  * This abstract class can be used to extend from to implement an Model-View-Intent pattern with
- * this activity as View and a {@link MviPresenter} to coordinate the viewState and the underlying
- * model
- * (business logic)
+ * this activity as View and a {@link MviPresenter} to coordinate the View and the underlying
+ * model (business logic).
+ * </p>
+ * <p>
+ * Per default {@link ActivityMviDelegateImpl} is used which means the View is attached to the
+ * presenter in {@link
+ * Activity#onStart()}. You better initialize all your UI components before that, typically in
+ * {@link Activity#onCreate(Bundle)}.
+ * The view is detached from presenter in {@link
+ * Activity#onStop()}
+ * </p>
  *
  * @author Hannes Dorfmann
  * @since 3.0.0
@@ -108,9 +118,10 @@ public abstract class MviActivity<V extends MvpView, P extends MviPresenter<V, ?
     try {
       return (V) this;
     } catch (ClassCastException e) {
-      String msg = "Couldn't cast the View to the corresponding View interface. Most likely you forgot to add \"Activity implements YourMviViewInterface\".";
-      Log.e(this.toString(),msg);
-      throw new RuntimeException(msg,e);
+      String msg =
+          "Couldn't cast the View to the corresponding View interface. Most likely you forgot to add \"Activity implements YourMviViewInterface\".";
+      Log.e(this.toString(), msg);
+      throw new RuntimeException(msg, e);
     }
   }
 

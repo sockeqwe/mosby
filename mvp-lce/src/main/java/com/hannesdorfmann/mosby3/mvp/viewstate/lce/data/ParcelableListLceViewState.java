@@ -1,18 +1,17 @@
 /*
- * Copyright 2017 Hannes Dorfmann.
+ * Copyright 2015 Hannes Dorfmann.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 package com.hannesdorfmann.mosby3.mvp.viewstate.lce.data;
@@ -27,39 +26,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A {@link LceViewState} and {@link RestorableViewState} that uses ArrayList containing
- * Parcelables as content data. This class takes a <code>List<? extends Parcelable></code> but
- * assumes that it is an instance of ArrayList. It uses {@link Parcel#writeList(List)}
- * and {@link Parcel#readArrayList(ClassLoader)} for serialisation
- * <p>
- * Can be used for Activites and Fragments.
- * </p>
+ * A {@link LceViewState} and {@link RestorableViewState} that uses a <code>List<? extends
+ * Parcelable></code> containing Parcelables as content data.
  *
- * @param <D> the type of the data / model that is put in an ArrayList
+ * @param <D> the type of the data / model
  * @param <V> the type of the view
  * @author Hannes Dorfmann
- * @since 1.0.0
- * @deprecated User {@link ParcelableListLceViewState}
+ * @since 3.0.0
  */
-@Deprecated
-public class CastedArrayListLceViewState<D extends List<? extends Parcelable>, V extends MvpLceView<D>>
+public class ParcelableListLceViewState<D extends List<? extends Parcelable>, V extends MvpLceView<D>>
     extends AbsParcelableLceViewState<D, V> {
 
-  public static final Creator<CastedArrayListLceViewState> CREATOR =
-      new Creator<CastedArrayListLceViewState>() {
-        @Override public CastedArrayListLceViewState createFromParcel(Parcel source) {
-          return new CastedArrayListLceViewState(source);
+  public static final Creator<ParcelableListLceViewState> CREATOR =
+      new Creator<ParcelableListLceViewState>() {
+        @Override public ParcelableListLceViewState createFromParcel(Parcel source) {
+          return new ParcelableListLceViewState(source);
         }
 
-        @Override public CastedArrayListLceViewState[] newArray(int size) {
-          return new CastedArrayListLceViewState[size];
+        @Override public ParcelableListLceViewState[] newArray(int size) {
+          return new ParcelableListLceViewState[size];
         }
       };
 
-  public CastedArrayListLceViewState() {
+  public ParcelableListLceViewState() {
   }
 
-  protected CastedArrayListLceViewState(Parcel source) {
+  protected ParcelableListLceViewState(Parcel source) {
     readFromParcel(source);
   }
 

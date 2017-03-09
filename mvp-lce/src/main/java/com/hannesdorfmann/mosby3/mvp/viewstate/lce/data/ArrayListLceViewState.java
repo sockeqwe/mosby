@@ -39,7 +39,9 @@ import java.util.List;
  * @param <V> the type of the view
  * @author Hannes Dorfmann
  * @since 1.0.0
+ * @deprecated User {@link ParcelableListLceViewState}
  */
+@Deprecated
 public class ArrayListLceViewState<D extends ArrayList<? extends Parcelable>, V extends MvpLceView<D>>
     extends AbsParcelableLceViewState<D, V> {
 

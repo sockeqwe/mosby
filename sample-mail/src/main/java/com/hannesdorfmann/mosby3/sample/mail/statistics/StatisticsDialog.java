@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatDialog;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,7 +18,6 @@ import butterknife.ButterKnife;
 import com.hannesdorfmann.mosby3.mvp.delegate.FragmentMvpDelegate;
 import com.hannesdorfmann.mosby3.mvp.delegate.FragmentMvpViewStateDelegateImpl;
 import com.hannesdorfmann.mosby3.mvp.delegate.MvpViewStateDelegateCallback;
-import com.hannesdorfmann.mosby3.mvp.viewstate.ViewState;
 import com.hannesdorfmann.mosby3.sample.mail.MailApplication;
 import com.hannesdorfmann.mosby3.sample.mail.R;
 import com.hannesdorfmann.mosby3.sample.mail.base.view.viewstate.AuthParcelableDataViewState;
@@ -29,7 +27,7 @@ import com.hannesdorfmann.mosby3.sample.mail.model.mail.statistics.MailStatistic
  * @author Hannes Dorfmann
  */
 public class StatisticsDialog extends AppCompatDialogFragment implements StatisticsView,
-    MvpViewStateDelegateCallback<StatisticsView, StatisticsPresenter> {
+    MvpViewStateDelegateCallback<StatisticsView, StatisticsPresenter, AuthParcelableDataViewState<MailStatistics, StatisticsView>> {
 
   @BindView(R.id.contentView) RecyclerView contentView;
   @BindView(R.id.loadingView) View loadingView;
@@ -37,12 +35,12 @@ public class StatisticsDialog extends AppCompatDialogFragment implements Statist
   @BindView(R.id.authView) View authView;
 
   StatisticsPresenter presenter;
-  ViewState<StatisticsView> viewState;
+  AuthParcelableDataViewState<MailStatistics, StatisticsView> viewState;
   MailStatistics data;
   StatisticsAdapter adapter;
 
   private FragmentMvpDelegate<StatisticsView, StatisticsPresenter> delegate =
-      new FragmentMvpViewStateDelegateImpl<>(this);
+      new FragmentMvpViewStateDelegateImpl<>(this, this, true, true);
 
   //
   // DELEGATE callback
@@ -172,15 +170,16 @@ public class StatisticsDialog extends AppCompatDialogFragment implements Statist
     presenter.loadStatistics();
   }
 
-  @Override public ViewState<StatisticsView> getViewState() {
+  @Override public AuthParcelableDataViewState<MailStatistics, StatisticsView> getViewState() {
     return viewState;
   }
 
-  @Override public void setViewState(ViewState<StatisticsView> viewState) {
+  @Override
+  public void setViewState(AuthParcelableDataViewState<MailStatistics, StatisticsView> viewState) {
     this.viewState = viewState;
   }
 
-  @Override public ViewState<StatisticsView> createViewState() {
+  @Override public AuthParcelableDataViewState<MailStatistics, StatisticsView> createViewState() {
     return new AuthParcelableDataViewState<MailStatistics, StatisticsView>();
   }
 
@@ -218,15 +217,5 @@ public class StatisticsDialog extends AppCompatDialogFragment implements Statist
 
   @Override public StatisticsView getMvpView() {
     return this;
-  }
-
-  @Override public boolean isRetainInstance() {
-    return getRetainInstance();
-  }
-
-  @Override public boolean shouldInstanceBeRetained() {
-    FragmentActivity activity = getActivity();
-    boolean changingConfig = activity != null && activity.isChangingConfigurations();
-    return getRetainInstance() && changingConfig;
   }
 }

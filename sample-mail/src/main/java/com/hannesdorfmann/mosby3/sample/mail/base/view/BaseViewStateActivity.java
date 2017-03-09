@@ -22,6 +22,7 @@ import butterknife.ButterKnife;
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 import com.hannesdorfmann.mosby3.mvp.viewstate.MvpViewStateActivity;
+import com.hannesdorfmann.mosby3.mvp.viewstate.ViewState;
 import icepick.Icepick;
 
 /**
@@ -29,8 +30,8 @@ import icepick.Icepick;
  *
  * @author Hannes Dorfmann
  */
-public abstract class BaseViewStateActivity<V extends MvpView, P extends MvpPresenter<V>>
-    extends MvpViewStateActivity<V, P> {
+public abstract class BaseViewStateActivity<V extends MvpView, P extends MvpPresenter<V>, VS extends ViewState<V>>
+    extends MvpViewStateActivity<V, P, VS> {
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     injectDependencies();

@@ -29,7 +29,7 @@ import javax.inject.Inject;
 /**
  * @author Hannes Dorfmann
  */
-@TargetApi(21) public class WriteActivity extends BaseViewStateActivity<WriteView, WritePresenter>
+@TargetApi(21) public class WriteActivity extends BaseViewStateActivity<WriteView, WritePresenter, WriteViewState>
     implements WriteView {
 
   public static final String KEY_REPLAY_MAIL =
@@ -92,7 +92,7 @@ import javax.inject.Inject;
     }
   }
 
-  @Override public RestorableViewState createViewState() {
+  @Override public WriteViewState createViewState() {
     return new WriteViewState();
   }
 
@@ -104,9 +104,6 @@ import javax.inject.Inject;
     showForm();
   }
 
-  @Override public WriteViewState getViewState() {
-    return (WriteViewState) super.getViewState();
-  }
 
   @Override public void showForm() {
     getViewState().setStateShowForm();

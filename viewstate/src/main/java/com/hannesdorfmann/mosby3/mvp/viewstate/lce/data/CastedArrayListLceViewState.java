@@ -61,7 +61,7 @@ public class CastedArrayListLceViewState<D extends List<? extends Parcelable>, V
   }
 
   @Override public void writeToParcel(Parcel dest, int flags) {
-
+/*
     if (loadedData != null && !(loadedData instanceof ArrayList)) {
       throw new ClassCastException(
           "You try to use CastedArrayListLceViewState which takes List<D> as argument but "
@@ -71,6 +71,8 @@ public class CastedArrayListLceViewState<D extends List<? extends Parcelable>, V
               + " which is not supported");
     }
 
+    */
+
     // Content
     dest.writeList(loadedData);
 
@@ -78,8 +80,8 @@ public class CastedArrayListLceViewState<D extends List<? extends Parcelable>, V
   }
 
   @Override protected void readFromParcel(Parcel source) {
-
-    loadedData = (D) source.readArrayList(getClassLoader());
+    loadedData = (D) new ArrayList<Parcelable>();
+    source.readList(loadedData, getClassLoader());
     super.readFromParcel(source);
   }
 

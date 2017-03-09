@@ -39,7 +39,7 @@ import com.hkm.ui.processbutton.iml.ActionProcessButton;
 /**
  * @author Hannes Dorfmann
  */
-public class LoginFragment extends BaseViewStateFragment<LoginView, LoginPresenter>
+public class LoginFragment extends BaseViewStateFragment<LoginView, LoginPresenter, LoginViewState>
     implements LoginView {
 
   @BindView(R.id.username) EditText username;
@@ -71,7 +71,7 @@ public class LoginFragment extends BaseViewStateFragment<LoginView, LoginPresent
     loginForm.setLayoutTransition(transition);
   }
 
-  @Override public ViewState createViewState() {
+  @Override public LoginViewState createViewState() {
     return new LoginViewState();
   }
 
@@ -116,8 +116,7 @@ public class LoginFragment extends BaseViewStateFragment<LoginView, LoginPresent
 
   @Override public void showLoginForm() {
 
-    LoginViewState vs = (LoginViewState) viewState;
-    vs.setShowLoginForm();
+    viewState.setShowLoginForm();
 
     errorView.setVisibility(View.GONE);
     setFormEnabled(true);
@@ -126,8 +125,7 @@ public class LoginFragment extends BaseViewStateFragment<LoginView, LoginPresent
 
   @Override public void showError() {
 
-    LoginViewState vs = (LoginViewState) viewState;
-    vs.setShowError();
+    viewState.setShowError();
 
     setFormEnabled(true);
     loginButton.setProgress(0);
@@ -144,8 +142,7 @@ public class LoginFragment extends BaseViewStateFragment<LoginView, LoginPresent
 
   @Override public void showLoading() {
 
-    LoginViewState vs = (LoginViewState) viewState;
-    vs.setShowLoading();
+    viewState.setShowLoading();
     errorView.setVisibility(View.GONE);
     setFormEnabled(false);
     // any progress between 0 - 100 shows animation

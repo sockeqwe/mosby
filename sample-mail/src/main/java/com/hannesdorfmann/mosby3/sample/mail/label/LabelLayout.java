@@ -29,7 +29,7 @@ import icepick.Icicle;
 /**
  * @author Hannes Dorfmann
  */
-public class LabelLayout extends MvpViewStateLinearLayout<LabelView, LabelPresenter>
+public class LabelLayout extends MvpViewStateLinearLayout<LabelView, LabelPresenter, LabelViewState>
     implements LabelView {
 
   @BindView(R.id.labelTextView) TextView labelView;
@@ -164,13 +164,10 @@ public class LabelLayout extends MvpViewStateLinearLayout<LabelView, LabelPresen
     getViewState().setStateShowingLabel();
   }
 
-  @Override public ViewState createViewState() {
+  @Override public LabelViewState createViewState() {
     return new LabelViewState();
   }
 
-  @Override public LabelViewState getViewState() {
-    return (LabelViewState) super.getViewState();
-  }
 
   @Override public void onNewViewStateInstance() {
     showLabel();

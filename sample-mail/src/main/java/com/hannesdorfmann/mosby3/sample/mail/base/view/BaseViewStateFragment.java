@@ -30,13 +30,14 @@ import com.hannesdorfmann.mosby3.mvp.MvpView;
 import com.hannesdorfmann.mosby3.mvp.viewstate.MvpViewStateFragment;
 
 import butterknife.Unbinder;
+import com.hannesdorfmann.mosby3.mvp.viewstate.ViewState;
 import icepick.Icepick;
 
 /**
  * @author Hannes Dorfmann
  */
-public abstract class BaseViewStateFragment<V extends MvpView, P extends MvpPresenter<V>>
-    extends MvpViewStateFragment<V, P> {
+public abstract class BaseViewStateFragment<V extends MvpView, P extends MvpPresenter<V>, VS extends ViewState<V>>
+    extends MvpViewStateFragment<V, P, VS> {
 
   private Unbinder unbinder;
 

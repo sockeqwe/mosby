@@ -1,4 +1,4 @@
-include ':mvp-common', ':mvp', ':viewstate', ':testing', ':sample', ':mvi', ':sample-mail',
+include ':mvp-common', ':mvp', ':viewstate', ':sample', ':mvi', ':sample-mail',
     ':mvp-nullobject-presenter',
     ':mvi-common',
     ':utils-fragment-integration-test',

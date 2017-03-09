@@ -22,7 +22,7 @@ import com.hannesdorfmann.mosby3.mvp.MvpView;
 import com.hannesdorfmann.mosby3.mvp.viewstate.ViewState;
 
 public abstract class PartialViewGroupMvpViewStateDelegateCallbackImpl implements
-    ViewGroupViewStateDelegateCallback<MvpView, MvpPresenter<MvpView>, ViewState<MvpView>> {
+    ViewGroupMvpViewStateDelegateCallback<MvpView, MvpPresenter<MvpView>, ViewState<MvpView>> {
 
   MvpPresenter<MvpView> presenter;
   ViewState<MvpView> viewState;

@@ -44,23 +44,28 @@ public class ViewGroupMvpViewStateDelegateImpl<V extends MvpView, P extends MvpP
   public static boolean DEBUG = false;
   private static final String DEBUG_TAG = "ViewGroupMvpDelegateImp";
 
-  private ViewGroupViewStateDelegateCallback<V, P, VS> delegateCallback;
+  private ViewGroupMvpViewStateDelegateCallback<V, P, VS> delegateCallback;
   private String mosbyViewId;
-  private final boolean keepPresenterDuringScreenOrientationChange;
+  private final boolean keepPresenter;
   private final Activity activity;
   private VS restoreableParcelableViewState = null;
 
   private boolean applyViewState = false;
   private boolean viewStateFromMemoryRestored = false;
 
+  /**
+   *  Creates a new instance
+   * @param delegateCallback the callback
+   * @param keepPresenter true, if you want to keep the presenter and view state during screen orientation changes etc.
+   */
   public ViewGroupMvpViewStateDelegateImpl(
-      @NonNull ViewGroupViewStateDelegateCallback<V, P, VS> delegateCallback,
-      boolean keepPresenterDuringScreenOrientationChange) {
+      @NonNull ViewGroupMvpViewStateDelegateCallback<V, P, VS> delegateCallback,
+      boolean keepPresenter) {
     if (delegateCallback == null) {
       throw new NullPointerException("MvpDelegateCallback is null!");
     }
     this.delegateCallback = delegateCallback;
-    this.keepPresenterDuringScreenOrientationChange = keepPresenterDuringScreenOrientationChange;
+    this.keepPresenter = keepPresenter;
     this.activity = PresenterManager.getActivity(delegateCallback.getContext());
   }
 
@@ -77,7 +82,7 @@ public class ViewGroupMvpViewStateDelegateImpl<V extends MvpView, P extends MvpP
     if (presenter == null) {
       throw new NullPointerException("Presenter returned from createPresenter() is null.");
     }
-    if (keepPresenterDuringScreenOrientationChange) {
+    if (keepPresenter) {
       Context context = delegateCallback.getContext();
       mosbyViewId = UUID.randomUUID().toString();
       PresenterManager.putPresenter(PresenterManager.getActivity(context), mosbyViewId, presenter);
@@ -87,7 +92,7 @@ public class ViewGroupMvpViewStateDelegateImpl<V extends MvpView, P extends MvpP
 
   private VS createViewState() {
     VS viewState = delegateCallback.createViewState();
-    if(keepPresenterDuringScreenOrientationChange) {
+    if(keepPresenter) {
       PresenterManager.putViewState(activity, mosbyViewId, viewState);
     }
     applyViewState = false;
@@ -157,6 +162,16 @@ public class ViewGroupMvpViewStateDelegateImpl<V extends MvpView, P extends MvpP
           viewState = restoreableParcelableViewState;
           applyViewState = true;
           viewStateFromMemoryRestored = false;
+
+          if (keepPresenter) {
+            if (mosbyViewId == null) {
+              throw new IllegalStateException(
+                  "The (internal) Mosby View id is null although restoreable view state (Parcelable) is not null. This should never happen. This seems to be a Mosby internal error. Please report this issue at https://github.com/sockeqwe/mosby/issues");
+            }
+            // Put restoreable view state into memory cache for future useage
+            PresenterManager.putViewState(activity, mosbyViewId, viewState);
+          }
+
           if (DEBUG) {
             Log.d(DEBUG_TAG, "Parcelable ViewState instance reused from last SavedState: " + viewState+ " MvpView: "+delegateCallback.getMvpView() );
           }
@@ -226,10 +241,9 @@ public class ViewGroupMvpViewStateDelegateImpl<V extends MvpView, P extends MvpP
           "Presenter returned from delegateCallback.getPresenter() is null");
     }
 
-    if (keepPresenterDuringScreenOrientationChange) {
+    if (keepPresenter) {
 
-      boolean destroyedPermanently = !ActivityMvpDelegateImpl.retainPresenterInstance(
-          keepPresenterDuringScreenOrientationChange, activity);
+      boolean destroyedPermanently = !ActivityMvpDelegateImpl.retainPresenterInstance(keepPresenter, activity);
 
       if (destroyedPermanently) {
         // Whole activity will be destroyed
@@ -247,7 +261,7 @@ public class ViewGroupMvpViewStateDelegateImpl<V extends MvpView, P extends MvpP
         presenter.detachView(false);
       } else {
         boolean detachedBecauseOrientationChange = ActivityMvpDelegateImpl.retainPresenterInstance(
-            keepPresenterDuringScreenOrientationChange, activity);
+            keepPresenter, activity);
 
         if (detachedBecauseOrientationChange) {
           // Simple orientation change
@@ -297,7 +311,7 @@ public class ViewGroupMvpViewStateDelegateImpl<V extends MvpView, P extends MvpP
 
     Parcelable superState = delegateCallback.superOnSaveInstanceState();
 
-    if (keepPresenterDuringScreenOrientationChange) {
+    if (keepPresenter) {
       if (viewState instanceof RestorableParcelableViewState){
         return new MosbyViewStateSavedState(superState, mosbyViewId, (RestorableParcelableViewState)viewState);
       }

@@ -29,7 +29,7 @@ import com.hannesdorfmann.mosby3.mvp.viewstate.ViewState;
  * ViewState} and mvp.
  *
  * @author Hannes Dorfmann
- * @see ViewGroupViewStateDelegateCallback
+ * @see ViewGroupMvpViewStateDelegateCallback
  * @since 1.0.0
  */
 public interface MvpViewStateDelegateCallback<V extends MvpView, P extends MvpPresenter<V>, VS extends ViewState<V>>

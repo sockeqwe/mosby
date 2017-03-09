@@ -22,7 +22,7 @@ import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 import com.hannesdorfmann.mosby3.mvp.delegate.ViewGroupMvpDelegate;
 import com.hannesdorfmann.mosby3.mvp.delegate.ViewGroupMvpViewStateDelegateImpl;
-import com.hannesdorfmann.mosby3.mvp.delegate.ViewGroupViewStateDelegateCallback;
+import com.hannesdorfmann.mosby3.mvp.delegate.ViewGroupMvpViewStateDelegateCallback;
 import com.hannesdorfmann.mosby3.mvp.layout.MvpLinearLayout;
 import com.hannesdorfmann.mosby3.mvp.viewstate.ViewState;
 
@@ -33,7 +33,7 @@ import com.hannesdorfmann.mosby3.mvp.viewstate.ViewState;
  * @since 1.1
  */
 public abstract class MvpViewStateLinearLayout<V extends MvpView, P extends MvpPresenter<V>, VS extends ViewState<V>>
-    extends MvpLinearLayout<V, P> implements ViewGroupViewStateDelegateCallback<V, P, VS> {
+    extends MvpLinearLayout<V, P> implements ViewGroupMvpViewStateDelegateCallback<V, P, VS> {
 
   private boolean restoringViewState = false;
   protected VS viewState;

@@ -118,7 +118,7 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
    * This "binder" is responsible to bind the view state to the currently attached view.
    * This typically "renders" the view.
    *
-   * Typically this is used in {@link #bindIntents()} with {@link #subscribeViewState(Observable, * ViewStateConsumer)}
+   * Typically this is used in {@link #bindIntents()} with {@link MviBasePresenter#subscribeViewState(Observable, ViewStateConsumer)}
    * like this:
    * <pre><code>
    *   Observable<MyViewState> viewState =  ... ;

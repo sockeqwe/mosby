@@ -18,8 +18,11 @@ package com.hannesdorfmann.mosby3.mvp.lce;
 
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.hannesdorfmann.mosby3.mvp.MvpFragment;
@@ -60,9 +63,9 @@ public abstract class MvpLceFragment<CV extends View, M, V extends MvpLceView<M>
   @CallSuper @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
 
-    loadingView = view.findViewById(R.id.loadingView);
-    contentView = (CV) view.findViewById(R.id.contentView);
-    errorView = (TextView) view.findViewById(R.id.errorView);
+    loadingView = createLoadingView(view);
+    contentView = createContentView(view);
+    errorView = createErrorView(view);
 
     if (loadingView == null) {
       throw new NullPointerException(
@@ -87,6 +90,38 @@ public abstract class MvpLceFragment<CV extends View, M, V extends MvpLceView<M>
         onErrorViewClicked();
       }
     });
+  }
+
+  /**
+   * Create the loading view. Default is {@code findViewById(R.id.loadingView)}
+   *
+   * @param view The main view returned from {@link #onCreateView(LayoutInflater, ViewGroup, * Bundle)}
+   * @return the loading view
+   */
+  @NonNull protected View createLoadingView(View view) {
+    return view.findViewById(R.id.loadingView);
+  }
+
+  /**
+   * Create the content view. Default is {@code findViewById(R.id.contentView)}
+   *
+   * @param view The main view returned from {@link #onCreateView(LayoutInflater, ViewGroup, *
+   * Bundle)}
+   * @return the content view
+   */
+  @NonNull protected CV createContentView(View view) {
+    return (CV) view.findViewById(R.id.contentView);
+  }
+
+  /**
+   * Create the loading view. Default is {@code findViewById(R.id.errorView)}
+   *
+   * @param view The main view returned from {@link #onCreateView(LayoutInflater, ViewGroup, *
+   * Bundle)}
+   * @return the error view
+   */
+  @NonNull protected TextView createErrorView(View view) {
+    return (TextView) view.findViewById(R.id.errorView);
   }
 
   @Override public void showLoading(boolean pullToRefresh) {

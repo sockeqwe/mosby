@@ -17,6 +17,7 @@
 package com.hannesdorfmann.mosby3.mvp.lce;
 
 import android.support.annotation.CallSuper;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,9 +56,9 @@ public abstract class MvpLceActivity<CV extends View, M, V extends MvpLceView<M>
 
   @CallSuper @Override public void onContentChanged() {
     super.onContentChanged();
-    loadingView = findViewById(R.id.loadingView);
-    contentView = (CV) findViewById(R.id.contentView);
-    errorView = (TextView) findViewById(R.id.errorView);
+    loadingView = createLoadingView();
+    contentView = createContentView();
+    errorView = createErrorView();
 
     if (loadingView == null) {
       throw new NullPointerException(
@@ -82,6 +83,30 @@ public abstract class MvpLceActivity<CV extends View, M, V extends MvpLceView<M>
         onErrorViewClicked();
       }
     });
+  }
+
+  /**
+   * Create the loading view. Default is {@code findViewById(R.id.loadingView)}
+   * @return the loading view
+   */
+  @NonNull protected View createLoadingView() {
+    return findViewById(R.id.loadingView);
+  }
+
+  /**
+   * Create the content view. Default is {@code findViewById(R.id.contentView)}
+   * @return the content view
+   */
+  @NonNull protected CV createContentView() {
+    return (CV) findViewById(R.id.contentView);
+  }
+
+  /**
+   * Create the loading view. Default is {@code findViewById(R.id.errorView)}
+   * @return the error view
+   */
+  @NonNull protected TextView createErrorView(){
+    return (TextView) findViewById(R.id.errorView);
   }
 
   /**

@@ -31,7 +31,7 @@ import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 
 /**
- * A LinearLayout that can be used as view with an presenter
+ * A LinearLayout that can be used as view with an Presenter to implement MVI
  *
  * @author Hannes Dorfmann
  * @since 3.0.0

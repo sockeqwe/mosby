@@ -31,7 +31,7 @@ import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 
 /**
- * A RelativeLayout that can be used as view with an presenter.
+ * A RelativeLayout that can be used as view with an presenPresenter to implement MVIter.
  *
  * @author Hannes Dorfmann
  * @since 3.0

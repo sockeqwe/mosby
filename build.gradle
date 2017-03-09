@@ -8,7 +8,7 @@ buildscript {
   dependencies {
     classpath 'com.android.tools.build:gradle:2.3.0'
     classpath 'com.neenbedankt.gradle.plugins:android-apt:1.7'
-  //  classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.5.2'
+    //  classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.5.2'
     classpath 'me.tatarka:gradle-retrolambda:3.5.0'
   }
 }
@@ -41,9 +41,11 @@ ext {
   javaTargetCompatibility = JavaVersion.VERSION_1_7
 
   // Libraries
-  appcompat7Version = '25.1.0'
-  supportAnnotations = '25.1.0'
-  recyclerviewVersion = '25.1.0'
+  appcompat7Version = '25.2.0'
+  supportAnnotations = '25.2.0'
+  recyclerviewVersion = '25.2.0'
+  rxjava2Version = '2.0.7'
+  
 
   // Libraries for samples
   fragmentargsVersion = '2.1.0'
@@ -51,11 +53,10 @@ ext {
   icepickVersion = '3.0.2'
   retrofitVersion = '1.9.0'
   picassoVersion = '2.5.2'
-  okhttpVersion ='2.3.0'
+  okhttpVersion = '2.3.0'
   parcelablepleaseVersion = '1.0.1'
   annotatedadapterVersion = '1.1.1.1-SNAPSHOT'
   rxjavaVersion = '1.0.16'
-  rxjava2Version = '2.0.4'
   rxandroidVersion = '1.0.1'
   dagger2Version = '2.0'
 

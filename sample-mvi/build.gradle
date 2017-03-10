@@ -48,6 +48,7 @@ dependencies {
 
   def retrofitVersion = '2.1.1-SNAPSHOT'
   def rxbindingVersion = '1.0.0'
+  def okHttpVersion ='3.6.0'
 
 
   compile project(':mvi')
@@ -63,9 +64,15 @@ dependencies {
 
   compile 'com.jakewharton.timber:timber:4.5.0'
 
+  compile 'com.squareup.okhttp3:okhttp:'+okHttpVersion
+  compile 'com.squareup.okhttp3:logging-interceptor:'+okHttpVersion
 
-  testCompile 'junit:junit:4.12'
-  testCompile 'org.robolectric:robolectric:' + rootProject.ext.robolectricVersion
+
+  testCompile 'junit:junit:'+ rootProject.ext.junitVersion
+  testCompile 'org.mockito:mockito-core:' + rootProject.ext.mockitoVersion
+  testCompile 'com.squareup.okhttp3:mockwebserver:'+okHttpVersion
+
+
   provided 'com.google.code.findbugs:annotations:3.0.0'
 
   compile "com.squareup.retrofit2:retrofit:$retrofitVersion"

@@ -59,8 +59,7 @@ import java.util.List;
  * viewState is a object (typically a POJO) that holds all the data the view needs to display</li>
  * </ul>
  *
- * By using {@link #intent(ViewIntentBinder)} and {@link #subscribeViewState(Observable, *
- * ViewStateConsumer)}
+ * By using {@link #intent(ViewIntentBinder)} and {@link #subscribeViewState(Observable, * ViewStateConsumer)}
  * a relay will be established between the view and this presenter that allows the view to be
  * temporarily detached, without unsubscribing the underlying reactive business logic workflow and
  * without causing memory leaks (caused by recreation of the view).
@@ -118,7 +117,7 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
    * This "binder" is responsible to bind the view state to the currently attached view.
    * This typically "renders" the view.
    *
-   * Typically this is used in {@link #bindIntents()} with {@link MviBasePresenter#subscribeViewState(Observable, ViewStateConsumer)}
+   * Typically this is used in {@link #bindIntents()} with {@link MviBasePresenter#subscribeViewState(Observable, * ViewStateConsumer)}
    * like this:
    * <pre><code>
    *   Observable<MyViewState> viewState =  ... ;
@@ -242,7 +241,7 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
    *
    * @return Observable
    */
-  public Observable<VS> getViewStateObservable() {
+  protected Observable<VS> getViewStateObservable() {
     return viewStateBehaviorSubject;
   }
 

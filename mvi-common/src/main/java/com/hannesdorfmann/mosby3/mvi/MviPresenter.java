@@ -25,11 +25,10 @@ import com.hannesdorfmann.mosby3.mvp.MvpView;
  * A {@link MviPresenter} is the bridge that is responsible to setup the reactive flow between
  * viewState and model
  *
- * @param <V> The type of the viewState this presenter responds to
- * @param <VS> The type of the viewState state
+ * @param <V> The type of the View this presenter responds to
+ * @param <VS> The type of the ViewState (Model)
  * @author Hannes Dorfmann
  * @since 3.0
  */
 public interface MviPresenter<V extends MvpView, VS> extends MvpPresenter<V> {
-
 }

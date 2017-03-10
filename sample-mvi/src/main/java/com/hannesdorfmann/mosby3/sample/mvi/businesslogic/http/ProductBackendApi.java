@@ -18,6 +18,7 @@
 package com.hannesdorfmann.mosby3.sample.mvi.businesslogic.http;
 
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model.Product;
+import com.hannesdorfmann.mosby3.sample.mvi.dependencyinjection.DependencyInjection;
 import io.reactivex.Observable;
 import java.util.List;
 import retrofit2.http.GET;
@@ -30,13 +31,8 @@ import retrofit2.http.Path;
  */
 public interface ProductBackendApi {
 
-  public static final String BASE_URL = "https://raw.githubusercontent.com";
-  public static final String BASE_URL_BRANCH = "master";
-  public static final String BASE_IMAGE_URL =
-      BASE_URL + "/sockeqwe/mosby/" + ProductBackendApi.BASE_URL_BRANCH + "/sample-mvi/server/images/";
-
   @GET("/sockeqwe/mosby/"
-      + ProductBackendApi.BASE_URL_BRANCH
+      + DependencyInjection.BASE_URL_BRANCH
       + "/sample-mvi/server/api/products{pagination}.json")
   public Observable<List<Product>> getProducts(@Path("pagination") int pagination);
 }

@@ -28,6 +28,7 @@ import com.bumptech.glide.Glide;
 import com.hannesdorfmann.mosby3.sample.mvi.R;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.http.ProductBackendApi;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model.Product;
+import com.hannesdorfmann.mosby3.sample.mvi.dependencyinjection.DependencyInjection;
 
 /**
  * View Holder just to display
@@ -58,7 +59,7 @@ public class ProductViewHolder extends RecyclerView.ViewHolder {
   public void bind(Product product) {
     this.product = product;
     Glide.with(itemView.getContext())
-        .load(ProductBackendApi.BASE_IMAGE_URL + product.getImage())
+        .load(DependencyInjection.BASE_IMAGE_URL + product.getImage())
         .centerCrop()
         .into(image);
     name.setText(product.getName());

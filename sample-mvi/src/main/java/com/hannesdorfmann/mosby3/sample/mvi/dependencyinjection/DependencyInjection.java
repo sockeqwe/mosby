@@ -17,13 +17,13 @@
 
 package com.hannesdorfmann.mosby3.sample.mvi.dependencyinjection;
 
-import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.interactor.details.DetailsInteractor;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.ShoppingCart;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.feed.GroupedPagedFeedLoader;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.feed.HomeFeedLoader;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.feed.PagingFeedLoader;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.http.ProductBackendApi;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.http.ProductBackendApiDecorator;
+import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.interactor.details.DetailsInteractor;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.interactor.search.SearchInteractor;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.searchengine.SearchEngine;
 import com.hannesdorfmann.mosby3.sample.mvi.view.category.CategoryPresenter;
@@ -38,6 +38,9 @@ import com.hannesdorfmann.mosby3.sample.mvi.view.shoppingcartoverview.ShoppingCa
 import com.hannesdorfmann.mosby3.sample.mvi.view.shoppingcartoverview.ShoppingCartOverviewPresenter;
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
+import java.util.logging.Level;
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.moshi.MoshiConverterFactory;
@@ -50,14 +53,22 @@ import retrofit2.converter.moshi.MoshiConverterFactory;
  */
 public class DependencyInjection {
 
+  public static String BASE_URL = "https://raw.githubusercontent.com";
+  public static final String BASE_URL_BRANCH = "master";
+  public static final String BASE_IMAGE_URL = BASE_URL
+      + "/sockeqwe/mosby/"
+      + DependencyInjection.BASE_URL_BRANCH
+      + "/sample-mvi/server/images/";
+
   // Don't do this in your real app
   private final PublishSubject<Boolean> clearSelectionRelay = PublishSubject.create();
   private final PublishSubject<Boolean> deleteSelectionRelay = PublishSubject.create();
-
   //
   // Some singletons
   //
-  private final Retrofit retrofit = new Retrofit.Builder().baseUrl(ProductBackendApi.BASE_URL)
+  private final HttpLoggingInterceptor httpLogger = new HttpLoggingInterceptor();
+  private final Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL)
+      .client(new OkHttpClient.Builder().addInterceptor(httpLogger).build())
       .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
       .addConverterFactory(MoshiConverterFactory.create())
       .build();
@@ -68,6 +79,12 @@ public class DependencyInjection {
   private final ShoppingCart shoppingCart = new ShoppingCart();
   private final ShoppingCartOverviewPresenter shoppingCartPresenter =
       new ShoppingCartOverviewPresenter(shoppingCart, deleteSelectionRelay, clearSelectionRelay);
+
+
+  // Initializer block
+  {
+    httpLogger.setLevel(HttpLoggingInterceptor.Level.BODY);
+  }
 
   private SearchEngine newSearchEngine() {
     return new SearchEngine(backendApiDecorator);

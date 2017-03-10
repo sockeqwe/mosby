@@ -31,6 +31,7 @@ import com.bumptech.glide.Glide;
 import com.hannesdorfmann.mosby3.sample.mvi.R;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.http.ProductBackendApi;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model.Product;
+import com.hannesdorfmann.mosby3.sample.mvi.dependencyinjection.DependencyInjection;
 import com.hannesdorfmann.mosby3.sample.mvi.view.shoppingcartoverview.ShoppingCartOverviewItem;
 import java.util.Locale;
 
@@ -75,7 +76,7 @@ public class ShoppingCartItemViewHolder extends RecyclerView.ViewHolder {
     Product product = item.getProduct();
 
     Glide.with(itemView.getContext())
-        .load(ProductBackendApi.BASE_IMAGE_URL + product.getImage())
+        .load(DependencyInjection.BASE_IMAGE_URL + product.getImage())
         .centerCrop()
         .into(image);
 

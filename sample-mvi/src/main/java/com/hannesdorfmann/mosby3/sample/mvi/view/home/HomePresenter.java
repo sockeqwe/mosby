@@ -66,8 +66,7 @@ public class HomePresenter extends MviBasePresenter<HomeView, HomeViewState> {
         ignored -> Timber.d("intent: pull to refresh"))
         .flatMap(ignored -> feedLoader.loadNewestPage()
             .subscribeOn(Schedulers.io())
-            .map(
-                items -> (PartialStateChanges) new PartialStateChanges.PullToRefreshLoaded(items))
+            .map(items -> (PartialStateChanges) new PartialStateChanges.PullToRefreshLoaded(items))
             .startWith(new PartialStateChanges.PullToRefreshLoading())
             .onErrorReturn(PartialStateChanges.PullToRefeshLoadingError::new));
 
@@ -90,7 +89,8 @@ public class HomePresenter extends MviBasePresenter<HomeView, HomeViewState> {
 
     HomeViewState initialState = new HomeViewState.Builder().firstPageLoading(true).build();
 
-    subscribeViewState(allIntentsObservable.scan(initialState, this::viewStateReducer),
+    subscribeViewState(
+        allIntentsObservable.scan(initialState, this::viewStateReducer).distinctUntilChanged(),
         HomeView::render);
   }
 
@@ -143,7 +143,8 @@ public class HomePresenter extends MviBasePresenter<HomeView, HomeViewState> {
     if (partialChanges instanceof PartialStateChanges.PullToRefeshLoadingError) {
       return previousState.builder()
           .pullToRefreshLoading(false)
-          .pullToRefreshError(((PartialStateChanges.PullToRefeshLoadingError) partialChanges).getError())
+          .pullToRefreshError(
+              ((PartialStateChanges.PullToRefeshLoadingError) partialChanges).getError())
           .build();
     }
 

@@ -38,6 +38,7 @@ import com.hannesdorfmann.mosby3.sample.mvi.SampleApplication;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.http.ProductBackendApi;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.interactor.details.ProductDetailsViewState;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model.Product;
+import com.hannesdorfmann.mosby3.sample.mvi.dependencyinjection.DependencyInjection;
 import com.jakewharton.rxbinding.view.RxView;
 import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import io.reactivex.Observable;
@@ -142,7 +143,7 @@ public class ProductDetailsActivity extends MviActivity<ProductDetailsView, Prod
     }
 
     Glide.with(this)
-        .load(ProductBackendApi.BASE_IMAGE_URL + product.getImage())
+        .load(DependencyInjection.BASE_IMAGE_URL + product.getImage())
         .centerCrop()
         .into(backdrop);
   }

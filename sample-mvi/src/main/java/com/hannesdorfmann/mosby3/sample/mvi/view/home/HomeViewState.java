@@ -81,15 +81,56 @@ public final class HomeViewState {
   }
 
   @Override public String toString() {
-    return "HomeViewState{" + 
-        "\nloadingFirstPage=" + loadingFirstPage +
-        ",\n firstPageError=" + firstPageError +
-        ",\n data=" + data +
-        ",\n loadingNextPage=" + loadingNextPage +
-        ",\n nextPageError=" + nextPageError +
-        ",\n loadingPullToRefresh=" + loadingPullToRefresh +
-        ",\n pullToRefreshError=" + pullToRefreshError +
-        "\n}";
+    return "HomeViewState{"
+        + "\nloadingFirstPage="
+        + loadingFirstPage
+        + ",\n firstPageError="
+        + firstPageError
+        + ",\n data="
+        + data
+        + ",\n loadingNextPage="
+        + loadingNextPage
+        + ",\n nextPageError="
+        + nextPageError
+        + ",\n loadingPullToRefresh="
+        + loadingPullToRefresh
+        + ",\n pullToRefreshError="
+        + pullToRefreshError
+        + "\n}";
+  }
+
+  @Override public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    HomeViewState that = (HomeViewState) o;
+
+    if (loadingFirstPage != that.loadingFirstPage) return false;
+    if (loadingNextPage != that.loadingNextPage) return false;
+    if (loadingPullToRefresh != that.loadingPullToRefresh) return false;
+
+    if (firstPageError != null ? !firstPageError.getClass().equals(that.firstPageError.getClass())
+        : that.firstPageError != null) {
+      return false;
+    }
+    if (data != null ? !data.equals(that.data) : that.data != null) return false;
+    if (nextPageError != null ? !nextPageError.getClass().equals(that.nextPageError.getClass())
+        : that.nextPageError != null) {
+      return false;
+    }
+    return pullToRefreshError != null ? pullToRefreshError.getClass()
+        .equals(that.pullToRefreshError.getClass()) : that.pullToRefreshError == null;
+  }
+
+  @Override public int hashCode() {
+    int result = (loadingFirstPage ? 1 : 0);
+    result = 31 * result + (firstPageError != null ? firstPageError.hashCode() : 0);
+    result = 31 * result + (data != null ? data.hashCode() : 0);
+    result = 31 * result + (loadingNextPage ? 1 : 0);
+    result = 31 * result + (nextPageError != null ? nextPageError.hashCode() : 0);
+    result = 31 * result + (loadingPullToRefresh ? 1 : 0);
+    result = 31 * result + (pullToRefreshError != null ? pullToRefreshError.hashCode() : 0);
+    return result;
   }
 
   public static final class Builder {

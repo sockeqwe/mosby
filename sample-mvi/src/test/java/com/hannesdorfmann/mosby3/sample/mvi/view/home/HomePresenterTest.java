@@ -116,9 +116,13 @@ public class HomePresenterTest {
     // 1. show loading indicator
     // 2. show the items with the first page
     //
-    List<FeedItem> expectedData =
-        Arrays.asList(new SectionHeader("category1"), mockProducts.get(0), mockProducts.get(1),
-            mockProducts.get(2), new AdditionalItemsLoadable(2, "category1", false, null));
+    List<FeedItem> expectedData = Arrays.asList(
+        new SectionHeader("category1"),
+        mockProducts.get(0),
+        mockProducts.get(1),
+        mockProducts.get(2),
+        new AdditionalItemsLoadable(2, "category1", false, null)
+    );
 
     HomeViewState loadingFirstPage = new HomeViewState.Builder().firstPageLoading(true).build();
     HomeViewState firstPage = new HomeViewState.Builder().data(expectedData).build();
@@ -136,8 +140,7 @@ public class HomePresenterTest {
     //
     // init the robot to drive to View which triggers intents on the presenter
     //
-    HomePresenter presenter =
-        new DependencyInjection().newHomePresenter();   // In a real app you could use dagger or instantiate the Presenter manually like new HomePresenter(...)
+    HomePresenter presenter = new DependencyInjection().newHomePresenter();   // In a real app you could use dagger or instantiate the Presenter manually like new HomePresenter(...)
     HomeViewRobot robot = new HomeViewRobot(presenter);
 
     //
@@ -152,8 +155,7 @@ public class HomePresenterTest {
     //
 
     HomeViewState loadingFirstPage = new HomeViewState.Builder().firstPageLoading(true).build();
-    HomeViewState errorFirstPage =
-        new HomeViewState.Builder().firstPageError(new ConnectException()).build();
+    HomeViewState errorFirstPage = new HomeViewState.Builder().firstPageError(new ConnectException()).build();
 
     // Check if as expected
     robot.assertRenderViewState(loadingFirstPage, errorFirstPage);
@@ -182,8 +184,7 @@ public class HomePresenterTest {
     //
     // init the robot to drive to View which triggers intents on the presenter
     //
-    HomePresenter presenter =
-        new DependencyInjection().newHomePresenter();   // In a real app you could use dagger or instantiate the Presenter manually like new HomePresenter(...)
+    HomePresenter presenter = new DependencyInjection().newHomePresenter();   // In a real app you could use dagger or instantiate the Presenter manually like new HomePresenter(...)
     HomeViewRobot robot = new HomeViewRobot(presenter);
 
     //
@@ -197,10 +198,13 @@ public class HomePresenterTest {
     // 2. show the items with the first page
     //
 
-    List<FeedItem> expectedDataAfterFristPage =
-        Arrays.asList(new SectionHeader("category1"), mockProductsFirstPage.get(0),
-            mockProductsFirstPage.get(1), mockProductsFirstPage.get(2),
-            new AdditionalItemsLoadable(2, "category1", false, null));
+    List<FeedItem> expectedDataAfterFristPage = Arrays.asList(
+        new SectionHeader("category1"),
+        mockProductsFirstPage.get(0),
+        mockProductsFirstPage.get(1),
+        mockProductsFirstPage.get(2),
+        new AdditionalItemsLoadable(2, "category1", false, null)
+    );
 
     HomeViewState loadingFirstPage = new HomeViewState.Builder().firstPageLoading(true).build();
     HomeViewState firstPage = new HomeViewState.Builder().data(expectedDataAfterFristPage).build();
@@ -220,13 +224,18 @@ public class HomePresenterTest {
     // 3. show loading next page indicator
     // 4. show next page content (plus original first page content)
     //
-    List<FeedItem> expectedDataAfterNextPage =
-        Arrays.asList(new SectionHeader("category1"), mockProductsFirstPage.get(0),
-            mockProductsFirstPage.get(1), mockProductsFirstPage.get(2),
-            new AdditionalItemsLoadable(2, "category1", false, null),
-            new SectionHeader("category2"), mockProductsNextPage.get(0),
-            mockProductsNextPage.get(1), mockProductsNextPage.get(2),
-            new AdditionalItemsLoadable(1, "category2", false, null));
+    List<FeedItem> expectedDataAfterNextPage = Arrays.asList(
+        new SectionHeader("category1"),
+        mockProductsFirstPage.get(0),
+        mockProductsFirstPage.get(1),
+        mockProductsFirstPage.get(2),
+        new AdditionalItemsLoadable(2, "category1", false, null),
+        new SectionHeader("category2"),
+        mockProductsNextPage.get(0),
+        mockProductsNextPage.get(1),
+        mockProductsNextPage.get(2),
+        new AdditionalItemsLoadable(1, "category2", false, null)
+    );
 
     HomeViewState nextPageLoading =
         new HomeViewState.Builder().data(expectedDataAfterFristPage).nextPageLoading(true).build();
@@ -268,9 +277,13 @@ public class HomePresenterTest {
     //
 
     List<FeedItem> expectedDataAfterFristPage =
-        Arrays.asList(new SectionHeader("category1"), mockProductsFirstPage.get(0),
-            mockProductsFirstPage.get(1), mockProductsFirstPage.get(2),
-            new AdditionalItemsLoadable(2, "category1", false, null));
+        Arrays.asList(
+            new SectionHeader("category1"),
+            mockProductsFirstPage.get(0),
+            mockProductsFirstPage.get(1),
+            mockProductsFirstPage.get(2),
+            new AdditionalItemsLoadable(2, "category1", false, null)
+        );
 
     HomeViewState loadingFirstPage = new HomeViewState.Builder().firstPageLoading(true).build();
     HomeViewState firstPage = new HomeViewState.Builder().data(expectedDataAfterFristPage).build();
@@ -347,9 +360,12 @@ public class HomePresenterTest {
     //
 
     List<FeedItem> expectedDataAfterFristPage =
-        Arrays.asList(new SectionHeader("category1"), mockProductsFirstPage.get(0),
-            mockProductsFirstPage.get(1), mockProductsFirstPage.get(2),
-            new AdditionalItemsLoadable(2, "category1", false, null));
+        Arrays.asList(new SectionHeader("category1"),
+            mockProductsFirstPage.get(0),
+            mockProductsFirstPage.get(1),
+            mockProductsFirstPage.get(2),
+            new AdditionalItemsLoadable(2, "category1", false, null)
+        );
 
     HomeViewState loadingFirstPage = new HomeViewState.Builder().firstPageLoading(true).build();
     HomeViewState firstPage = new HomeViewState.Builder().data(expectedDataAfterFristPage).build();
@@ -370,12 +386,18 @@ public class HomePresenterTest {
     // 4. show next page content (plus original first page content)
     //
     List<FeedItem> expectedDataAfterNextPage =
-        Arrays.asList(new SectionHeader("category1"), mockProductsFirstPage.get(0),
-            mockProductsFirstPage.get(1), mockProductsFirstPage.get(2),
+        Arrays.asList(
+            new SectionHeader("category1"),
+            mockProductsFirstPage.get(0),
+            mockProductsFirstPage.get(1),
+            mockProductsFirstPage.get(2),
             new AdditionalItemsLoadable(2, "category1", false, null),
-            new SectionHeader("category2"), mockProductsNextPage.get(0),
-            mockProductsNextPage.get(1), mockProductsNextPage.get(2),
-            new AdditionalItemsLoadable(1, "category2", false, null));
+            new SectionHeader("category2"),
+            mockProductsNextPage.get(0),
+            mockProductsNextPage.get(1),
+            mockProductsNextPage.get(2),
+            new AdditionalItemsLoadable(1, "category2", false, null)
+        );
 
     HomeViewState nextPageLoading =
         new HomeViewState.Builder().data(expectedDataAfterFristPage).nextPageLoading(true).build();
@@ -399,15 +421,23 @@ public class HomePresenterTest {
     // 6. show pull to refresh content (plus original first page + next page content)
     //
     List<FeedItem> expectedDataAfterPullToRefresh =
-        Arrays.asList(new SectionHeader("category3"), mockProductsPullToRefresh.get(0),
-            mockProductsPullToRefresh.get(1), mockProductsPullToRefresh.get(2),
+        Arrays.asList(
+            new SectionHeader("category3"),
+            mockProductsPullToRefresh.get(0),
+            mockProductsPullToRefresh.get(1),
+            mockProductsPullToRefresh.get(2),
             // No additional items loadable for category3
-            new SectionHeader("category1"), mockProductsFirstPage.get(0),
-            mockProductsFirstPage.get(1), mockProductsFirstPage.get(2),
+            new SectionHeader("category1"),
+            mockProductsFirstPage.get(0),
+            mockProductsFirstPage.get(1),
+            mockProductsFirstPage.get(2),
             new AdditionalItemsLoadable(2, "category1", false, null),
-            new SectionHeader("category2"), mockProductsNextPage.get(0),
-            mockProductsNextPage.get(1), mockProductsNextPage.get(2),
-            new AdditionalItemsLoadable(1, "category2", false, null));
+            new SectionHeader("category2"),
+            mockProductsNextPage.get(0),
+            mockProductsNextPage.get(1),
+            mockProductsNextPage.get(2),
+            new AdditionalItemsLoadable(1, "category2", false, null)
+        );
 
     HomeViewState pullToRefreshLoading = new HomeViewState.Builder().data(expectedDataAfterNextPage)
         .pullToRefreshLoading(true)
@@ -464,9 +494,13 @@ public class HomePresenterTest {
     //
 
     List<FeedItem> expectedDataAfterFristPage =
-        Arrays.asList(new SectionHeader("category1"), mockProductsFirstPage.get(0),
-            mockProductsFirstPage.get(1), mockProductsFirstPage.get(2),
-            new AdditionalItemsLoadable(2, "category1", false, null));
+        Arrays.asList(
+            new SectionHeader("category1"),
+            mockProductsFirstPage.get(0),
+            mockProductsFirstPage.get(1),
+            mockProductsFirstPage.get(2),
+            new AdditionalItemsLoadable(2, "category1", false, null)
+        );
 
     HomeViewState loadingFirstPage = new HomeViewState.Builder().firstPageLoading(true).build();
     HomeViewState firstPage = new HomeViewState.Builder().data(expectedDataAfterFristPage).build();
@@ -487,12 +521,18 @@ public class HomePresenterTest {
     // 4. show next page content (plus original first page content)
     //
     List<FeedItem> expectedDataAfterNextPage =
-        Arrays.asList(new SectionHeader("category1"), mockProductsFirstPage.get(0),
-            mockProductsFirstPage.get(1), mockProductsFirstPage.get(2),
+        Arrays.asList(
+            new SectionHeader("category1"),
+            mockProductsFirstPage.get(0),
+            mockProductsFirstPage.get(1),
+            mockProductsFirstPage.get(2),
             new AdditionalItemsLoadable(2, "category1", false, null),
-            new SectionHeader("category2"), mockProductsNextPage.get(0),
-            mockProductsNextPage.get(1), mockProductsNextPage.get(2),
-            new AdditionalItemsLoadable(1, "category2", false, null));
+            new SectionHeader("category2"),
+            mockProductsNextPage.get(0),
+            mockProductsNextPage.get(1),
+            mockProductsNextPage.get(2),
+            new AdditionalItemsLoadable(1, "category2", false, null)
+        );
 
     HomeViewState nextPageLoading =
         new HomeViewState.Builder().data(expectedDataAfterFristPage).nextPageLoading(true).build();
@@ -565,8 +605,13 @@ public class HomePresenterTest {
     // 2. show the items with the first page
     //
     List<FeedItem> expectedData =
-        Arrays.asList(new SectionHeader("category1"), mockProducts.get(0), mockProducts.get(1),
-            mockProducts.get(2), new AdditionalItemsLoadable(2, "category1", false, null));
+        Arrays.asList(
+            new SectionHeader("category1"),
+            mockProducts.get(0),
+            mockProducts.get(1),
+            mockProducts.get(2),
+            new AdditionalItemsLoadable(2, "category1", false, null)
+        );
 
     HomeViewState loadingFirstPage = new HomeViewState.Builder().firstPageLoading(true).build();
     HomeViewState firstPage = new HomeViewState.Builder().data(expectedData).build();
@@ -588,12 +633,23 @@ public class HomePresenterTest {
     //
 
     List<FeedItem> expectedDataWhileLoadingMoreOfCategory =
-        Arrays.asList(new SectionHeader("category1"), mockProducts.get(0), mockProducts.get(1),
-            mockProducts.get(2), new AdditionalItemsLoadable(2, "category1", true, null));
+        Arrays.asList(
+            new SectionHeader("category1"),
+            mockProducts.get(0),
+            mockProducts.get(1),
+            mockProducts.get(2),
+            new AdditionalItemsLoadable(2, "category1", true, null)
+        );
 
     List<FeedItem> expectedDataAfterAllOfCategoryCompleted =
-        Arrays.asList(new SectionHeader("category1"), mockProducts.get(0), mockProducts.get(1),
-            mockProducts.get(2), mockProducts.get(3), mockProducts.get(4));
+        Arrays.asList(
+            new SectionHeader("category1"),
+            mockProducts.get(0),
+            mockProducts.get(1),
+            mockProducts.get(2),
+            mockProducts.get(3),
+            mockProducts.get(4)
+        );
 
     HomeViewState loadingMoreOfCategory =
         new HomeViewState.Builder().data(expectedDataWhileLoadingMoreOfCategory).build();
@@ -603,7 +659,6 @@ public class HomePresenterTest {
     robot.assertRenderViewState(loadingFirstPage, firstPage, loadingMoreOfCategory,
         moreOfCategoryLoaded);
   }
-
 
   @Test public void loadingFirstPageAndMoreOfCategoryFails() throws IOException {
     //
@@ -643,8 +698,13 @@ public class HomePresenterTest {
     // 2. show the items with the first page
     //
     List<FeedItem> expectedData =
-        Arrays.asList(new SectionHeader("category1"), mockProducts.get(0), mockProducts.get(1),
-            mockProducts.get(2), new AdditionalItemsLoadable(2, "category1", false, null));
+        Arrays.asList(
+            new SectionHeader("category1"),
+            mockProducts.get(0),
+            mockProducts.get(1),
+            mockProducts.get(2),
+            new AdditionalItemsLoadable(2, "category1", false, null)
+        );
 
     HomeViewState loadingFirstPage = new HomeViewState.Builder().firstPageLoading(true).build();
     HomeViewState firstPage = new HomeViewState.Builder().data(expectedData).build();
@@ -667,12 +727,22 @@ public class HomePresenterTest {
     //
 
     List<FeedItem> expectedDataWhileLoadingMoreOfCategory =
-        Arrays.asList(new SectionHeader("category1"), mockProducts.get(0), mockProducts.get(1),
-            mockProducts.get(2), new AdditionalItemsLoadable(2, "category1", true, null));
+        Arrays.asList(
+            new SectionHeader("category1"),
+            mockProducts.get(0),
+            mockProducts.get(1),
+            mockProducts.get(2),
+            new AdditionalItemsLoadable(2, "category1", true, null)
+        );
 
     List<FeedItem> expectedDataAfterLoadingMoreOfCategoryError =
-        Arrays.asList(new SectionHeader("category1"), mockProducts.get(0), mockProducts.get(1),
-            mockProducts.get(2), new AdditionalItemsLoadable(2, "category1", false, new ConnectException()));
+        Arrays.asList(
+            new SectionHeader("category1"),
+            mockProducts.get(0),
+            mockProducts.get(1),
+            mockProducts.get(2),
+            new AdditionalItemsLoadable(2, "category1", false, new ConnectException())
+        );
 
     HomeViewState loadingMoreOfCategory =
         new HomeViewState.Builder().data(expectedDataWhileLoadingMoreOfCategory).build();

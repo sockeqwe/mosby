@@ -6,37 +6,42 @@ Check the [project website](http://hannesdorfmann.com/mosby/) for more informati
 [![Build Status](https://travis-ci.org/sockeqwe/mosby.svg?branch=master)](https://travis-ci.org/sockeqwe/mosby)
 
 # Dependency
+
 ```groovy
 dependencies {
-	compile 'com.hannesdorfmann.mosby:mvp:2.0.1'
+
+  compile 'com.hannesdorfmann.mosby3:mvi:3.0.0' // Model-View-Intent
+
 	// or
-	compile 'com.hannesdorfmann.mosby:viewstate:2.0.1' // optional viewstate feature
+	compile 'com.hannesdorfmann.mosby3:mvp:3.0.0' // Plain MVP
+	// or
+	compile 'com.hannesdorfmann.mosby3:viewstate:3.0.0' // ViewState support
 }
 ```
+Additional modules:
 
-Mosby3 preview:
 ```groovy
 dependencies {
-	compile 'com.hannesdorfmann.mosby3:mvp:3.0.0-alpha4' // Plain MVP
-	compile 'com.hannesdorfmann.mosby3:viewstate:3.0.0-alpha4' // ViewState support
-	compile 'com.hannesdorfmann.mosby3:mvp-lce:3.0.0' // LCE View
 
-	// or
-	compile 'com.hannesdorfmann.mosby3:mvi:3.0.0-alpha4'
+  // MVP + ViewState + LCE Views
+  compile 'com.hannesdorfmann.mosby3:mvp-lce:3.0.0'
+
+  // Null Object Presenter for MVP
+	compile 'com.hannesdorfmann.mosby3:mvp-nullobject-presenter:3.0.0'
 }
 ```
 
 SNAPSHOT:
 ```groovy
 dependencies {
-	compile 'com.hannesdorfmann.mosby3:mvp:3.0.0-SNAPSHOT'
-	// or
-	compile 'com.hannesdorfmann.mosby3:viewstate:3.0.0-SNAPSHOT'
-	// or
-	compile 'com.hannesdorfmann.mosby3:mvi:3.0.0-SNAPSHOT'
 
-	// only include this if you want to use MvpNullObjectPresenter
-	compile 'com.hannesdorfmann.mosby3:mvp-nullobject-presenter:3.0.0-SNAPSHOT'
+	compile 'com.hannesdorfmann.mosby3:mvi:3.0.1-SNAPSHOT'
+
+	compile 'com.hannesdorfmann.mosby3:mvp:3.0.1-SNAPSHOT'
+	compile 'com.hannesdorfmann.mosby3:viewstate:3.0.1-SNAPSHOT'
+	
+	compile 'com.hannesdorfmann.mosby3:mvp-lce:3.0.1-SNAPSHOT'
+	compile 'com.hannesdorfmann.mosby3:mvp-nullobject-presenter:3.0.1-SNAPSHOT'
 }
 ```
 

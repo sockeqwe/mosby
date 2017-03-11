@@ -44,6 +44,9 @@ dependencies {
   compile project(':utils-fragment')
   compile 'io.reactivex.rxjava2:rxjava:' + rootProject.ext.rxjava2Version
 
+  provided 'com.google.code.findbugs:annotations:'+rootProject.ext.findbugsAnnotations
+
+
   testCompile 'junit:junit:' + rootProject.ext.junitVersion
   testCompile 'org.mockito:mockito-core:' + rootProject.ext.mockitoVersion
 

@@ -50,6 +50,7 @@ public class ViewGroupMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<
     implements ViewGroupMvpDelegate<V, P> {
 
   // TODO allow custom save state hook in
+
   @SuppressFBWarnings(value = "MS_SHOULD_BE_FINAL", justification = "Could be set for debugging")
   public static boolean DEBUG = false;
   private static final String DEBUG_TAG = "ViewGroupMvpDelegateImp";

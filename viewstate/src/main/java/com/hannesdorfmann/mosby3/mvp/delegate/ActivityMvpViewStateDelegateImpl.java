@@ -36,7 +36,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 public class ActivityMvpViewStateDelegateImpl<V extends MvpView, P extends MvpPresenter<V>, VS extends ViewState<V>>
     extends ActivityMvpDelegateImpl<V, P> {
 
-  @SuppressFBWarnings(value = "MS_SHOULD_BE_FINAL", justification = "Could be set for debugging")
+  @SuppressFBWarnings(value = "MS_SHOULD_BE_FINAL", justification = "Could be enabled for debugging purpose")
   public static boolean DEBUG = false;
   private static final String DEBUG_TAG = "ActivityMvpViewStateDel";
 

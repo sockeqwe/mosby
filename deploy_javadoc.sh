@@ -10,7 +10,12 @@ MODULES[4]=mvp-dagger1
 MODULES[5]=retrofit
 MODULES[6]=rx
 MODULES[7]=viewstate
-MODULES[8]=viewstate-dagger1
+MODULES[8]=mvi
+MODULES[9]=mvi-common
+MODULES[10]=mvp-lce
+MODULES[11]=mvp-nullobject-presenter
+MODULES[12]=presentermanager
+MODULES[13]=utils-fragment
 
 DIR=/tmp/temp-clone
 

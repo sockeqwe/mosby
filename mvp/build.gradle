@@ -41,6 +41,8 @@ dependencies {
 
   compile 'com.android.support:appcompat-v7:' + rootProject.ext.appcompat7Version
 
+  provided 'com.google.code.findbugs:annotations:'+rootProject.ext.findbugsAnnotations
+
   compile project(':mvp-common')
   compile project(':presentermanager')
   compile project(':utils-fragment')

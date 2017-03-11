@@ -36,6 +36,7 @@ import com.hannesdorfmann.mosby3.sample.mvi.view.selectedcounttoolbar.SelectedCo
 import com.hannesdorfmann.mosby3.sample.mvi.view.shoppingcartlabel.ShoppingCartLabelPresenter;
 import com.hannesdorfmann.mosby3.sample.mvi.view.shoppingcartoverview.ShoppingCartOverviewItem;
 import com.hannesdorfmann.mosby3.sample.mvi.view.shoppingcartoverview.ShoppingCartOverviewPresenter;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
 import java.util.logging.Level;
@@ -53,6 +54,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory;
  */
 public class DependencyInjection {
 
+  @SuppressFBWarnings(value = "MS_SHOULD_BE_FINAL", justification = "Changeable for unit testing")
   public static String BASE_URL = "https://raw.githubusercontent.com";
   public static final String BASE_URL_BRANCH = "master";
   public static final String BASE_IMAGE_URL = BASE_URL

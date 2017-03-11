@@ -48,10 +48,12 @@ dependencies {
 
   def retrofitVersion = '2.1.1-SNAPSHOT'
   def rxbindingVersion = '1.0.0'
-  def okHttpVersion ='3.6.0'
+  def okHttpVersion = '3.6.0'
 
 
   compile project(':mvi')
+
+  provided 'com.google.code.findbugs:annotations:' + rootProject.ext.findbugsAnnotations
 
 
   compile 'com.android.support:appcompat-v7:' + rootProject.ext.appcompat7Version
@@ -64,13 +66,13 @@ dependencies {
 
   compile 'com.jakewharton.timber:timber:4.5.0'
 
-  compile 'com.squareup.okhttp3:okhttp:'+okHttpVersion
-  compile 'com.squareup.okhttp3:logging-interceptor:'+okHttpVersion
+  compile 'com.squareup.okhttp3:okhttp:' + okHttpVersion
+  compile 'com.squareup.okhttp3:logging-interceptor:' + okHttpVersion
 
 
-  testCompile 'junit:junit:'+ rootProject.ext.junitVersion
+  testCompile 'junit:junit:' + rootProject.ext.junitVersion
   testCompile 'org.mockito:mockito-core:' + rootProject.ext.mockitoVersion
-  testCompile 'com.squareup.okhttp3:mockwebserver:'+okHttpVersion
+  testCompile 'com.squareup.okhttp3:mockwebserver:' + okHttpVersion
 
 
   provided 'com.google.code.findbugs:annotations:3.0.0'
@@ -87,9 +89,9 @@ dependencies {
 
   compile "com.github.akarnokd:rxjava2-interop:0.7.2"
 
-  debugCompile 'com.squareup.leakcanary:leakcanary-android:'+ rootProject.ext.leakcanaryVersion
-  releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:'+ rootProject.ext.leakcanaryVersion
-  testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:'+ rootProject.ext.leakcanaryVersion
+  debugCompile 'com.squareup.leakcanary:leakcanary-android:' + rootProject.ext.leakcanaryVersion
+  releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:' + rootProject.ext.leakcanaryVersion
+  testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:' + rootProject.ext.leakcanaryVersion
 
   compile "com.jakewharton.rxbinding:rxbinding:$rxbindingVersion"
   compile "com.jakewharton.rxbinding:rxbinding-support-v4:$rxbindingVersion"

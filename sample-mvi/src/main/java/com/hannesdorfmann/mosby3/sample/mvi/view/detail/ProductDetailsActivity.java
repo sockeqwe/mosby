@@ -35,12 +35,10 @@ import com.bumptech.glide.Glide;
 import com.hannesdorfmann.mosby3.mvi.MviActivity;
 import com.hannesdorfmann.mosby3.sample.mvi.R;
 import com.hannesdorfmann.mosby3.sample.mvi.SampleApplication;
-import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.http.ProductBackendApi;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.interactor.details.ProductDetailsViewState;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model.Product;
 import com.hannesdorfmann.mosby3.sample.mvi.dependencyinjection.DependencyInjection;
-import com.jakewharton.rxbinding.view.RxView;
-import hu.akarnokd.rxjava.interop.RxJavaInterop;
+import com.jakewharton.rxbinding2.view.RxView;
 import io.reactivex.Observable;
 import java.util.Locale;
 import timber.log.Timber;
@@ -77,8 +75,7 @@ public class ProductDetailsActivity extends MviActivity<ProductDetailsView, Prod
     setSupportActionBar(toolbar);
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-    fabClickObservable =
-        RxJavaInterop.toV2Observable(RxView.clicks(fab).share().map(ignored -> true));
+    fabClickObservable = RxView.clicks(fab).share().map(ignored -> true);
   }
 
   @NonNull @Override public ProductDetailsPresenter createPresenter() {

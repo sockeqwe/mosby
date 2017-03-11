@@ -40,9 +40,8 @@ import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model.Product;
 import com.hannesdorfmann.mosby3.sample.mvi.view.detail.ProductDetailsActivity;
 import com.hannesdorfmann.mosby3.sample.mvi.view.ui.GridSpacingItemDecoration;
 import com.hannesdorfmann.mosby3.sample.mvi.view.ui.viewholder.ProductViewHolder;
-import com.jakewharton.rxbinding.support.v4.widget.RxSwipeRefreshLayout;
-import com.jakewharton.rxbinding.support.v7.widget.RxRecyclerView;
-import hu.akarnokd.rxjava.interop.RxJavaInterop;
+import com.jakewharton.rxbinding2.support.v4.widget.RxSwipeRefreshLayout;
+import com.jakewharton.rxbinding2.support.v7.widget.RxRecyclerView;
 import io.reactivex.Observable;
 import timber.log.Timber;
 
@@ -112,7 +111,7 @@ public class HomeFragment extends MviFragment<HomeView, HomePresenter>
   }
 
   @Override public Observable<Boolean> loadNextPageIntent() {
-    return RxJavaInterop.toV2Observable(RxRecyclerView.scrollStateChanges(recyclerView))
+    return RxRecyclerView.scrollStateChanges(recyclerView)
         .filter(event -> !adapter.isLoadingNextPage())
         .filter(event -> event == RecyclerView.SCROLL_STATE_IDLE)
         .filter(event -> layoutManager.findLastCompletelyVisibleItemPosition()
@@ -121,8 +120,7 @@ public class HomeFragment extends MviFragment<HomeView, HomePresenter>
   }
 
   @Override public Observable<Boolean> pullToRefreshIntent() {
-    return RxJavaInterop.toV2Observable(
-        RxSwipeRefreshLayout.refreshes(swipeRefreshLayout).map(ignored -> true));
+    return RxSwipeRefreshLayout.refreshes(swipeRefreshLayout).map(ignored -> true);
   }
 
   @Override public Observable<String> loadAllProductsFromCategoryIntent() {

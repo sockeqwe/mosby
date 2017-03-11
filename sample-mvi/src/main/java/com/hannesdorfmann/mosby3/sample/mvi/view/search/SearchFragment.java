@@ -22,8 +22,7 @@ import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model.Product;
 import com.hannesdorfmann.mosby3.sample.mvi.view.detail.ProductDetailsActivity;
 import com.hannesdorfmann.mosby3.sample.mvi.view.ui.GridSpacingItemDecoration;
 import com.hannesdorfmann.mosby3.sample.mvi.view.ui.viewholder.ProductViewHolder;
-import com.jakewharton.rxbinding.widget.RxSearchView;
-import hu.akarnokd.rxjava.interop.RxJavaInterop;
+import com.jakewharton.rxbinding2.widget.RxSearchView;
 import io.reactivex.Observable;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -73,7 +72,7 @@ public class SearchFragment extends MviFragment<SearchView, SearchPresenter>
   }
 
   @Override public Observable<String> searchIntent() {
-    return RxJavaInterop.toV2Observable(RxSearchView.queryTextChanges(searchView))
+    return RxSearchView.queryTextChanges(searchView)
         .skip(2) // Because after screen orientation changes query Text will be resubmitted again
         .filter(queryString -> queryString.length() > 3 || queryString.length() == 0)
         .debounce(500, TimeUnit.MILLISECONDS)

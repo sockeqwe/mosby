@@ -39,7 +39,7 @@ dependencies {
 
 	compile 'com.hannesdorfmann.mosby3:mvp:3.0.1-SNAPSHOT'
 	compile 'com.hannesdorfmann.mosby3:viewstate:3.0.1-SNAPSHOT'
-	
+
 	compile 'com.hannesdorfmann.mosby3:mvp-lce:3.0.1-SNAPSHOT'
 	compile 'com.hannesdorfmann.mosby3:mvp-nullobject-presenter:3.0.1-SNAPSHOT'
 }

@@ -94,6 +94,7 @@ public class CheckoutButton extends Button implements CheckoutButtonView,
     mviDelegate.onDetachedFromWindow();
   }
 
+
   @Override public Parcelable onSaveInstanceState() {
     return mviDelegate.onSaveInstanceState();
   }

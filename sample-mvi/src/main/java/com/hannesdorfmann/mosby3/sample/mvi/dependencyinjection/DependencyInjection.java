@@ -83,11 +83,6 @@ public class DependencyInjection {
       new ShoppingCartOverviewPresenter(shoppingCart, deleteSelectionRelay, clearSelectionRelay);
 
 
-  // Initializer block
-  {
-    httpLogger.setLevel(HttpLoggingInterceptor.Level.BODY);
-  }
-
   private SearchEngine newSearchEngine() {
     return new SearchEngine(backendApiDecorator);
   }

@@ -57,15 +57,19 @@ allprojects {
 }
 ```
 
-
-# Sample APK
-You can find the sample apk files in the [release section](https://github.com/sockeqwe/mosby/releases)
+# Documentation
+See the [project website](http://hannesdorfmann.com/mosby/)
 
 # Changelog
 The changelog can be found in the [release section](https://github.com/sockeqwe/mosby/releases)
 
 # Migrating
-See the [project website](http://hannesdorfmann.com/mosby/) for migrating from Mosby 1.x to Mosby 2.0
+In Mosby 3.0 we have changed the package name from `com.hannesdorfmann.mosby` to `com.hannesdorfmann.mosby3` (note the **3** at the end).
+Migrating a Mosby 2.x based app to Mosby 3.0  should be straight forward:
+Just replace all import statements of your app in android studio with `Edit -> Find -> Replace in Path ...`
+and set find `import com.hannesdorfmann.mosby` replace with `import com.hannesdorfmann.mosby3`.
+There were also some minor API changes (see [change log](https://github.com/sockeqwe/mosby/releases)),
+but most apps should be fine by replacing the import statements.
 
 # Conductor
 Mosby has a plugin for [Conductor](https://github.com/bluelinelabs/Conductor). You can find it here: https://github.com/sockeqwe/mosby-conductor

@@ -12,10 +12,10 @@ dependencies {
 
   compile 'com.hannesdorfmann.mosby3:mvi:3.0.0' // Model-View-Intent
 
-	// or
-	compile 'com.hannesdorfmann.mosby3:mvp:3.0.0' // Plain MVP
-	// or
-	compile 'com.hannesdorfmann.mosby3:viewstate:3.0.0' // ViewState support
+  // or
+  compile 'com.hannesdorfmann.mosby3:mvp:3.0.0' // Plain MVP
+  // or
+  compile 'com.hannesdorfmann.mosby3:viewstate:3.0.0' // MVP ViewState support
 }
 ```
 Additional modules:

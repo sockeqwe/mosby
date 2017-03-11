@@ -96,7 +96,7 @@ public class HomeViewRobot {
    * @param expectedHomeViewStates The expected  HomeViewStates that will be passed to
    * view.render()
    */
-  public void assertRenderViewState(HomeViewState... expectedHomeViewStates) {
+  public void assertViewStateRendered(HomeViewState... expectedHomeViewStates) {
 
     if (expectedHomeViewStates == null) {
       throw new NullPointerException("expectedHomeViewStates == null");

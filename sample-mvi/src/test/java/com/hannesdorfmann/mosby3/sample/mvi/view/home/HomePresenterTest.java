@@ -128,7 +128,7 @@ public class HomePresenterTest {
     HomeViewState firstPage = new HomeViewState.Builder().data(expectedData).build();
 
     // Check if as expected
-    robot.assertRenderViewState(loadingFirstPage, firstPage);
+    robot.assertViewStateRendered(loadingFirstPage, firstPage);
   }
 
   @Test public void loadingFirstFailsWithNoConnectionError() throws IOException {
@@ -158,7 +158,7 @@ public class HomePresenterTest {
     HomeViewState errorFirstPage = new HomeViewState.Builder().firstPageError(new ConnectException()).build();
 
     // Check if as expected
-    robot.assertRenderViewState(loadingFirstPage, errorFirstPage);
+    robot.assertViewStateRendered(loadingFirstPage, errorFirstPage);
   }
 
   @Test public void loadingFirstPageAndNextPage() {
@@ -210,7 +210,7 @@ public class HomePresenterTest {
     HomeViewState firstPage = new HomeViewState.Builder().data(expectedDataAfterFristPage).build();
 
     // Check if as expected
-    robot.assertRenderViewState(loadingFirstPage, firstPage);
+    robot.assertViewStateRendered(loadingFirstPage, firstPage);
 
     //
     // Fire second intent
@@ -242,7 +242,7 @@ public class HomePresenterTest {
     HomeViewState nextPage = new HomeViewState.Builder().data(expectedDataAfterNextPage).build();
 
     // Check if as expected
-    robot.assertRenderViewState(loadingFirstPage, firstPage, nextPageLoading, nextPage);
+    robot.assertViewStateRendered(loadingFirstPage, firstPage, nextPageLoading, nextPage);
   }
 
   @Test public void loadingFirstPageAndFailLoadingNextPage() throws Exception {
@@ -289,7 +289,7 @@ public class HomePresenterTest {
     HomeViewState firstPage = new HomeViewState.Builder().data(expectedDataAfterFristPage).build();
 
     // Check if as expected
-    robot.assertRenderViewState(loadingFirstPage, firstPage);
+    robot.assertViewStateRendered(loadingFirstPage, firstPage);
 
     //
     // Fire second intent
@@ -312,7 +312,7 @@ public class HomePresenterTest {
         .build();
 
     // Check if as expected
-    robot.assertRenderViewState(loadingFirstPage, firstPage, nextPageLoading, nextPage);
+    robot.assertViewStateRendered(loadingFirstPage, firstPage, nextPageLoading, nextPage);
   }
 
   @Test public void loadingFirstPageAndNextPageAndPullToRefresh() {
@@ -371,7 +371,7 @@ public class HomePresenterTest {
     HomeViewState firstPage = new HomeViewState.Builder().data(expectedDataAfterFristPage).build();
 
     // Check if as expected
-    robot.assertRenderViewState(loadingFirstPage, firstPage);
+    robot.assertViewStateRendered(loadingFirstPage, firstPage);
 
     //
     // Fire next page intent
@@ -404,7 +404,7 @@ public class HomePresenterTest {
     HomeViewState nextPage = new HomeViewState.Builder().data(expectedDataAfterNextPage).build();
 
     // Check if as expected
-    robot.assertRenderViewState(loadingFirstPage, firstPage, nextPageLoading, nextPage);
+    robot.assertViewStateRendered(loadingFirstPage, firstPage, nextPageLoading, nextPage);
 
     //
     // fire pull to refresh intent
@@ -445,7 +445,7 @@ public class HomePresenterTest {
     HomeViewState pullToRefreshPage =
         new HomeViewState.Builder().data(expectedDataAfterPullToRefresh).build();
 
-    robot.assertRenderViewState(loadingFirstPage, firstPage, nextPageLoading, nextPage,
+    robot.assertViewStateRendered(loadingFirstPage, firstPage, nextPageLoading, nextPage,
         pullToRefreshLoading, pullToRefreshPage);
   }
 
@@ -506,7 +506,7 @@ public class HomePresenterTest {
     HomeViewState firstPage = new HomeViewState.Builder().data(expectedDataAfterFristPage).build();
 
     // Check if as expected
-    robot.assertRenderViewState(loadingFirstPage, firstPage);
+    robot.assertViewStateRendered(loadingFirstPage, firstPage);
 
     //
     // Fire next page intent
@@ -539,7 +539,7 @@ public class HomePresenterTest {
     HomeViewState nextPage = new HomeViewState.Builder().data(expectedDataAfterNextPage).build();
 
     // Check if as expected
-    robot.assertRenderViewState(loadingFirstPage, firstPage, nextPageLoading, nextPage);
+    robot.assertViewStateRendered(loadingFirstPage, firstPage, nextPageLoading, nextPage);
 
     //
     // fire pull to refresh intent
@@ -563,7 +563,7 @@ public class HomePresenterTest {
         .pullToRefreshError(new ConnectException())
         .build();
 
-    robot.assertRenderViewState(loadingFirstPage, firstPage, nextPageLoading, nextPage,
+    robot.assertViewStateRendered(loadingFirstPage, firstPage, nextPageLoading, nextPage,
         pullToRefreshLoading, pullToRefreshError);
   }
 
@@ -617,7 +617,7 @@ public class HomePresenterTest {
     HomeViewState firstPage = new HomeViewState.Builder().data(expectedData).build();
 
     // Check if as expected
-    robot.assertRenderViewState(loadingFirstPage, firstPage);
+    robot.assertViewStateRendered(loadingFirstPage, firstPage);
 
     //
     // Load more of category
@@ -656,7 +656,7 @@ public class HomePresenterTest {
     HomeViewState moreOfCategoryLoaded =
         new HomeViewState.Builder().data(expectedDataAfterAllOfCategoryCompleted).build();
 
-    robot.assertRenderViewState(loadingFirstPage, firstPage, loadingMoreOfCategory,
+    robot.assertViewStateRendered(loadingFirstPage, firstPage, loadingMoreOfCategory,
         moreOfCategoryLoaded);
   }
 
@@ -710,7 +710,7 @@ public class HomePresenterTest {
     HomeViewState firstPage = new HomeViewState.Builder().data(expectedData).build();
 
     // Check if as expected
-    robot.assertRenderViewState(loadingFirstPage, firstPage);
+    robot.assertViewStateRendered(loadingFirstPage, firstPage);
 
     //
     // Load more of category
@@ -749,7 +749,7 @@ public class HomePresenterTest {
     HomeViewState moreOfCategoryError =
         new HomeViewState.Builder().data(expectedDataAfterLoadingMoreOfCategoryError).build();
 
-    robot.assertRenderViewState(loadingFirstPage, firstPage, loadingMoreOfCategory,
+    robot.assertViewStateRendered(loadingFirstPage, firstPage, loadingMoreOfCategory,
         moreOfCategoryError);
   }
 }

@@ -11,10 +11,10 @@ With that said, if you want to report a bug or file a feature request, then go a
 
 If you want to report an issue, please use the following template to make it easier for us to identify the bug:
 
-### Mosby Version
+**Mosby Version:**
 
-### Expected behavior
+**Expected behavior**
 
-### Actual behavior (include a stacktrace if crash):
+**Actual behavior (include a stacktrace if crash)**
 
-### Steps to reproduce the behavior
+**Steps to reproduce the behavior or link to a sample repository**

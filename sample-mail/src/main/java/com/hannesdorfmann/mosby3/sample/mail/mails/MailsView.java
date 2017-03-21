@@ -25,5 +25,5 @@ import java.util.List;
  */
 public interface MailsView extends BaseMailView<List<Mail>> {
 
-  public void changeLabel(Mail mail, String label);
+  void changeLabel(Mail mail, String label);
 }

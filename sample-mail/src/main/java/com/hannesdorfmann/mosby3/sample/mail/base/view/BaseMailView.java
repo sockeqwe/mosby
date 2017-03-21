@@ -23,18 +23,18 @@ import com.hannesdorfmann.mosby3.sample.mail.model.mail.Mail;
  */
 public interface BaseMailView<M> extends AuthView<M> {
 
-  public void markMailAsStared(int mailId);
+  void markMailAsStared(int mailId);
 
-  public void markMailAsUnstared(int mailId);
+  void markMailAsUnstared(int mailId);
 
-  public void showStaringFailed(Mail mail);
+  void showStaringFailed(Mail mail);
 
-  public void showUnstaringFailed(Mail mail);
+  void showUnstaringFailed(Mail mail);
 
 
   /**
    * Marks a certain mail as read
    */
-  public void markMailAsRead(Mail mail, boolean read);
+  void markMailAsRead(Mail mail, boolean read);
 
 }

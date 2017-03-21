@@ -10,12 +10,12 @@ import java.util.List;
  */
 public interface LabelView extends MvpLceView<List<Label>> {
 
-  public void showLabel();
+  void showLabel();
 
-  public void changeLabel(Mail mail, String label);
+  void changeLabel(Mail mail, String label);
 
-  public void showChangeLabelFailed(Mail mail, Throwable t);
+  void showChangeLabelFailed(Mail mail, Throwable t);
 
-  public void setMail(Mail mail);
+  void setMail(Mail mail);
 
 }

@@ -7,13 +7,13 @@ import com.hannesdorfmann.mosby3.mvp.MvpView;
  */
 public interface WriteView extends MvpView {
 
-  public void showForm();
+  void showForm();
 
-  public void showLoading();
+  void showLoading();
 
-  public void showError(Throwable e);
+  void showError(Throwable e);
 
-  public void showAuthenticationRequired();
+  void showAuthenticationRequired();
 
-  public void finishBecauseSuccessful();
+  void finishBecauseSuccessful();
 }

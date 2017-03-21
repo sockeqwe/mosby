@@ -37,7 +37,7 @@ public interface RestorableViewState<V extends MvpView> extends ViewState<V> {
    *
    * @param out The bundle where the viewstate should be stored in
    */
-  public void saveInstanceState(@NonNull Bundle out);
+  void saveInstanceState(@NonNull Bundle out);
 
   /**
    * Restores the viewstate that has been saved before with {@link #saveInstanceState(Bundle)}
@@ -46,5 +46,5 @@ public interface RestorableViewState<V extends MvpView> extends ViewState<V> {
    * @return null, if view state could not be restored or the restore viestate instance. Typically
    * this method will return <code>this</code>.
    */
-  public RestorableViewState<V> restoreInstanceState(Bundle in);
+  RestorableViewState<V> restoreInstanceState(Bundle in);
 }

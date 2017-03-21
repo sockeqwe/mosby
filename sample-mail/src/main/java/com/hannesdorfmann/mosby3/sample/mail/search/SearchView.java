@@ -9,11 +9,11 @@ import java.util.List;
  */
 public interface SearchView extends BaseMailView<List<Mail>> {
 
-  public void addOlderMails(List<Mail> older);
+  void addOlderMails(List<Mail> older);
 
-  public void showLoadMore(boolean showLoadMore);
+  void showLoadMore(boolean showLoadMore);
 
-  public void showLoadMoreError(Throwable e);
+  void showLoadMoreError(Throwable e);
 
-  public void showSearchNotStartedYet();
+  void showSearchNotStartedYet();
 }

@@ -54,58 +54,58 @@ public interface ActivityMviDelegate<V extends MvpView, P extends MviPresenter<V
    * This method must be called from {@link Activity#onCreate(Bundle)}.
    * This method internally creates the presenter and attaches the viewState to it.
    */
-  public void onCreate(Bundle bundle);
+  void onCreate(Bundle bundle);
 
   /**
    * This method must be called from {@link Activity#onDestroy()}}.
    * This method internally detaches the viewState from presenter
    */
-  public void onDestroy();
+  void onDestroy();
 
   /**
    * This method must be called from {@link Activity#onPause()}
    */
-  public void onPause();
+  void onPause();
 
   /**
    * This method must be called from {@link Activity#onResume()}
    */
-  public void onResume();
+  void onResume();
 
   /**
    * This method must be called from {@link Activity#onStart()}
    */
-  public void onStart();
+  void onStart();
 
   /**
    * This method must be called from {@link Activity#onStop()}
    */
-  public void onStop();
+  void onStop();
 
   /**
    * This method must be called from {@link Activity#onRestart()}
    */
-  public void onRestart();
+  void onRestart();
 
   /**
    * This method must be called from {@link Activity#onContentChanged()}
    */
-  public void onContentChanged();
+  void onContentChanged();
 
   /**
    * This method must be called from {@link Activity#onSaveInstanceState(Bundle)}
    */
-  public void onSaveInstanceState(Bundle outState);
+  void onSaveInstanceState(Bundle outState);
 
   /**
    * This method must be called from {@link Activity#onPostCreate(Bundle)}
    */
-  public void onPostCreate(Bundle savedInstanceState);
+  void onPostCreate(Bundle savedInstanceState);
 
   /**
    * This method must be called from {@link FragmentActivity#onRetainCustomNonConfigurationInstance()}
    *
    * @return Don't forget to return the value returned by this delegate method
    */
-  public Object onRetainCustomNonConfigurationInstance();
+  Object onRetainCustomNonConfigurationInstance();
 }

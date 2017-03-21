@@ -34,14 +34,14 @@ public interface MviDelegateCallback<V extends MvpView, P extends MviPresenter<V
    *
    * @return the created presenter instance
    */
-  @NonNull public P createPresenter();
+  @NonNull P createPresenter();
 
   /**
    * Get the MvpView for the presenter
    *
    * @return The viewState associated with the presenter
    */
-  @NonNull public V getMvpView();
+  @NonNull V getMvpView();
 
   /**
    * This method will be called to inform that restoring
@@ -55,5 +55,5 @@ public interface MviDelegateCallback<V extends MvpView, P extends MviPresenter<V
    *
    * @param restoringViewState true, if restoring view state is in progress, otherwise false
    */
-  public void setRestoringViewState(boolean restoringViewState);
+  void setRestoringViewState(boolean restoringViewState);
 }

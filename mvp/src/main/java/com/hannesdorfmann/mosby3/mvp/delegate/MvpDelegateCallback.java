@@ -40,7 +40,7 @@ public interface MvpDelegateCallback<V extends MvpView, P extends MvpPresenter<V
    *
    * @return the created presenter instance
    */
-  @NonNull public P createPresenter();
+  @NonNull P createPresenter();
 
   /**
    * Get the presenter. If null is returned, then a internally a new presenter instance gets
@@ -49,20 +49,20 @@ public interface MvpDelegateCallback<V extends MvpView, P extends MvpPresenter<V
    *
    * @return the presenter instance. can be null.
    */
-  public P getPresenter();
+  P getPresenter();
 
   /**
    * Sets the presenter instance
    *
    * @param presenter The presenter instance
    */
-  public void setPresenter(P presenter);
+  void setPresenter(P presenter);
 
   /**
    * Get the MvpView for the presenter
    *
    * @return The view associated with the presenter
    */
-  public V getMvpView();
+  V getMvpView();
 }
 

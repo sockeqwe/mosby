@@ -32,10 +32,10 @@ public interface CategoryView extends MvpView {
    *
    * @return Observable containing the category name as String
    */
-  public Observable<String> loadIntents();
+  Observable<String> loadIntents();
 
   /**
    * Render the state on the view
    */
-  public void render(CategoryViewState state);
+  void render(CategoryViewState state);
 }

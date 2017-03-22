@@ -15,4 +15,8 @@
   <string name="action_search">Search</string>
   <string name="action_delete">Delete selected items</string>
   <string name="title_activity_product_detail">ProductDetailActivity</string>
+  <plurals name="items">
+    <item quantity="one">%1$d Item</item>
+    <item quantity="other">%1$d Items</item>
+  </plurals>
 </resources>

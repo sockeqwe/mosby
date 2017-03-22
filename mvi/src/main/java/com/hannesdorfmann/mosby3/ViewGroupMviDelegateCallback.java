@@ -36,14 +36,14 @@ public interface ViewGroupMviDelegateCallback<V extends MvpView, P extends MviPr
   /**
    * This method must call super.onSaveInstanceState() within any view
    */
-  public Parcelable superOnSaveInstanceState();
+  Parcelable superOnSaveInstanceState();
 
   /**
    * This methdo must call super.onRestoreInstanceState(state)
    *
    * @param state The parcelable containing the state
    */
-  public void superOnRestoreInstanceState(Parcelable state);
+  void superOnRestoreInstanceState(Parcelable state);
 
   /**
    * Get the context
@@ -51,5 +51,5 @@ public interface ViewGroupMviDelegateCallback<V extends MvpView, P extends MviPr
    * @return Get the context
    * @since 3.0
    */
-  public Context getContext();
+  Context getContext();
 }

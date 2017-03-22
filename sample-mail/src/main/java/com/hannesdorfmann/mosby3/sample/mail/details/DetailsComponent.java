@@ -16,8 +16,8 @@ import javax.inject.Singleton;
 )
 public interface DetailsComponent {
 
-  public DetailsPresenter presenter();
+  DetailsPresenter presenter();
 
-  public void inject(DetailsFragment fragment);
+  void inject(DetailsFragment fragment);
 
 }

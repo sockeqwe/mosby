@@ -13,7 +13,7 @@ import javax.inject.Singleton;
     modules = { MailModule.class, NavigationModule.class },
     dependencies = MailAppComponent.class) public interface SearchComponent {
 
-  public SearchPresenter presenter();
+  SearchPresenter presenter();
 
-  public void inject(SearchFragment fragment);
+  void inject(SearchFragment fragment);
 }

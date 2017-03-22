@@ -29,5 +29,5 @@ import javax.inject.Singleton;
 dependencies = MailAppComponent.class)
 public interface LoginComponent {
 
-  public LoginPresenter presenter();
+  LoginPresenter presenter();
 }

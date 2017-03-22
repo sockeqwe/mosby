@@ -15,7 +15,7 @@ import javax.inject.Singleton;
 
 public interface ProfileMailsComponent {
 
-  public ProfileMailsPresenter presenter();
+  ProfileMailsPresenter presenter();
 
-  public void inject(ProfileMailsFragment fragment);
+  void inject(ProfileMailsFragment fragment);
 }

@@ -30,7 +30,7 @@ public interface PartialStateChanges {
   /**
    * Indicates that the first page is loading
    */
-  public final class FirstPageLoading implements PartialStateChanges {
+  final class FirstPageLoading implements PartialStateChanges {
 
     @Override public String toString() {
       return "FirstPageLoadingState{}";
@@ -40,7 +40,7 @@ public interface PartialStateChanges {
   /**
    * Indicates that an error has occurred while loading the first page
    */
-  public final class FirstPageError implements PartialStateChanges {
+  final class FirstPageError implements PartialStateChanges {
     private final Throwable error;
 
     public FirstPageError(Throwable error) {
@@ -61,7 +61,7 @@ public interface PartialStateChanges {
   /**
    * Indicates that the first page data has been loaded successfully
    */
-  public final class FirstPageLoaded implements PartialStateChanges {
+  final class FirstPageLoaded implements PartialStateChanges {
     private final List<FeedItem> data;
 
     public FirstPageLoaded(List<FeedItem> data) {
@@ -76,7 +76,7 @@ public interface PartialStateChanges {
   /**
    * Next Page has been loaded successfully
    */
-  public final class NextPageLoaded implements PartialStateChanges {
+  final class NextPageLoaded implements PartialStateChanges {
     private final List<FeedItem> data;
 
     public NextPageLoaded(List<FeedItem> data) {
@@ -91,7 +91,7 @@ public interface PartialStateChanges {
   /**
    * Error while loading new page
    */
-  public final class NexPageLoadingError implements PartialStateChanges {
+  final class NexPageLoadingError implements PartialStateChanges {
     private final Throwable error;
 
     public NexPageLoadingError(Throwable error) {
@@ -106,19 +106,19 @@ public interface PartialStateChanges {
   /**
    * Indicates that loading the next page has started
    */
-  public final class NextPageLoading implements PartialStateChanges {
+  final class NextPageLoading implements PartialStateChanges {
   }
 
   /**
    * Indicates that loading the newest items via pull to refresh has started
    */
-  public final class PullToRefreshLoading implements PartialStateChanges {
+  final class PullToRefreshLoading implements PartialStateChanges {
   }
 
   /**
    * Indicates that an error while loading the newest items via pull to refresh has occurred
    */
-  public final class PullToRefeshLoadingError implements PartialStateChanges {
+  final class PullToRefeshLoadingError implements PartialStateChanges {
     private final Throwable error;
 
     public PullToRefeshLoadingError(Throwable error) {
@@ -133,7 +133,7 @@ public interface PartialStateChanges {
   /**
    * Indicates that data has been loaded successfully over pull-to-refresh
    */
-  public final class PullToRefreshLoaded implements PartialStateChanges {
+  final class PullToRefreshLoaded implements PartialStateChanges {
     private final List<FeedItem> data;
 
     public PullToRefreshLoaded(List<FeedItem> data) {
@@ -148,7 +148,7 @@ public interface PartialStateChanges {
   /**
    * Loading all Products of a given category has been started
    */
-  public final class ProductsOfCategoryLoading implements PartialStateChanges {
+  final class ProductsOfCategoryLoading implements PartialStateChanges {
     private final String categoryName;
 
     public ProductsOfCategoryLoading(String categoryName) {
@@ -163,7 +163,7 @@ public interface PartialStateChanges {
   /**
    * An error while loading all products has been occurred
    */
-  public final class ProductsOfCategoryLoadingError implements PartialStateChanges {
+  final class ProductsOfCategoryLoadingError implements PartialStateChanges {
     private final String categoryName;
     private final Throwable error;
 
@@ -184,7 +184,7 @@ public interface PartialStateChanges {
   /**
    * Products of a given Category has been loaded
    */
-  public final class ProductsOfCategoryLoaded implements PartialStateChanges {
+  final class ProductsOfCategoryLoaded implements PartialStateChanges {
     private final List<Product> data;
     private final String categoryName;
 

@@ -23,5 +23,5 @@ import com.hannesdorfmann.mosby3.mvp.lce.MvpLceView;
  */
 public interface AuthView<M> extends MvpLceView<M> {
 
-  public void showAuthenticationRequired();
+  void showAuthenticationRequired();
 }

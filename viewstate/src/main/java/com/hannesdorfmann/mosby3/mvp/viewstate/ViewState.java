@@ -49,5 +49,5 @@ public interface ViewState<V extends MvpView> {
    * retained
    * because the {@link Fragment#setRetainInstance(boolean)} has been set to true
    */
-  public void apply(V view, boolean retained);
+  void apply(V view, boolean retained);
 }

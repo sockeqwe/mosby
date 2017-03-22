@@ -16,5 +16,5 @@ import javax.inject.Singleton;
     },
 dependencies = MailAppComponent.class) public interface ProfileComponent {
 
-  public ProfilePresenter presenter();
+  ProfilePresenter presenter();
 }

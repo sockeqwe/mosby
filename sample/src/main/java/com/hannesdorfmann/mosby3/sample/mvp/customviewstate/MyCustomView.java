@@ -26,7 +26,7 @@ import com.hannesdorfmann.mosby3.sample.mvp.model.custom.B;
 public interface MyCustomView extends MvpView {
 
 
-  public void showA(A a);
+  void showA(A a);
 
-  public void showB(B b);
+  void showB(B b);
 }

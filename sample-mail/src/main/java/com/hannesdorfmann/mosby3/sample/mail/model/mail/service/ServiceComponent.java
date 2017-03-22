@@ -14,7 +14,7 @@ import javax.inject.Singleton;
     dependencies = MailAppComponent.class)
 public interface ServiceComponent {
 
-  public void inject(SendMailService service);
+  void inject(SendMailService service);
 
-  public void inject(GcmFakeIntentService service);
+  void inject(GcmFakeIntentService service);
 }

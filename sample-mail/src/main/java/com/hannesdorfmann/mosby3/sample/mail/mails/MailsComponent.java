@@ -14,7 +14,7 @@ import javax.inject.Singleton;
     dependencies = MailAppComponent.class)
 public interface MailsComponent {
 
-  public MailsPresenter presenter();
+  MailsPresenter presenter();
 
-  public void inject(MailsFragment fragment);
+  void inject(MailsFragment fragment);
 }

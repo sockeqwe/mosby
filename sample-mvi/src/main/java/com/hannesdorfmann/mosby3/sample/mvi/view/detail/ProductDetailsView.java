@@ -31,20 +31,20 @@ public interface ProductDetailsView extends MvpView {
   /**
    * The intent to load details of a certain product
    */
-  public Observable<Integer> loadDetailsIntent();
+  Observable<Integer> loadDetailsIntent();
 
   /**
    * The intent to add a product to the shopping cart
    */
-  public Observable<Product> addToShoppingCartIntent();
+  Observable<Product> addToShoppingCartIntent();
 
   /**
    * the intent to remove a product from the shopping cart
    */
-  public Observable<Product> removeFromShoppingCartIntent();
+  Observable<Product> removeFromShoppingCartIntent();
 
   /**
    * Render the state n the UI
    */
-  public void render(ProductDetailsViewState state);
+  void render(ProductDetailsViewState state);
 }

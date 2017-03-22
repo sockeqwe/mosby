@@ -29,7 +29,7 @@ public interface MenuViewState {
   /**
    * Loads the list of all menu items
    */
-  public final class LoadingState implements MenuViewState{
+  final class LoadingState implements MenuViewState{
 
     @Override public String toString() {
       return "LoadingState{}";
@@ -39,7 +39,7 @@ public interface MenuViewState {
   /**
    * Ane error has ocurred while loading the data
    */
-  public final class ErrorState implements  MenuViewState{
+  final class ErrorState implements  MenuViewState{
     private final Throwable error;
 
     public ErrorState(Throwable error) {
@@ -60,7 +60,7 @@ public interface MenuViewState {
   /**
    * Data has been loaded successfully and can now be displayed
    */
-  public final class DataState implements  MenuViewState {
+  final class DataState implements  MenuViewState {
     private final List<MainMenuItem> categories;
 
     public DataState(List<MainMenuItem> categories) {

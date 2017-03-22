@@ -13,7 +13,7 @@ import javax.inject.Singleton;
     modules = { MailModule.class, NavigationModule.class },
     dependencies = MailAppComponent.class) public interface WriteComponent {
 
-  public WritePresenter presenter();
+  WritePresenter presenter();
 
-  public void inject(WriteActivity activity);
+  void inject(WriteActivity activity);
 }

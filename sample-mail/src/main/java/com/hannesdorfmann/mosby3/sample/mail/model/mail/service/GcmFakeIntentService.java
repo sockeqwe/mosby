@@ -66,7 +66,7 @@ public class GcmFakeIntentService extends IntentService {
     builder.setLargeIcon(BitmapFactory.decodeResource(getApplicationContext().getResources(),
         mail.getSender().getImageRes()));
 
-    builder.setSmallIcon(R.drawable.ic_launcher)
+    builder.setSmallIcon(R.mipmap.ic_launcher)
         .setLights(getResources().getColor(R.color.primary), 1800, 3500)
         .setAutoCancel(true)
         .setContentTitle(mail.getSubject())

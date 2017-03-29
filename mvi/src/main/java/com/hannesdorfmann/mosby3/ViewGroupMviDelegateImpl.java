@@ -25,6 +25,7 @@ import android.util.Log;
 import android.view.View;
 import com.hannesdorfmann.mosby3.mvi.MviPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.UUID;
 
 /**
@@ -38,27 +39,35 @@ public class ViewGroupMviDelegateImpl<V extends MvpView, P extends MviPresenter<
     implements ViewGroupMviDelegate<V, P> {
 
   // TODO allow custom save state hook in
-  public static final boolean DEBUG = true;
+
+  @SuppressFBWarnings(value = "MS_SHOULD_BE_FINAL", justification = "Could be enabled for debugging purpose")
+  public static boolean DEBUG = false;
   private static final String DEBUG_TAG = "ViewGroupMviDelegateImp";
 
   private ViewGroupMviDelegateCallback<V, P> delegateCallback;
   private String mosbyViewId;
   private final boolean keepPresenterDuringScreenOrientationChange;
+  private final boolean isInEditMode;
   private P presenter;
   private final Activity activity;
 
-  public ViewGroupMviDelegateImpl(ViewGroupMviDelegateCallback<V, P> delegateCallback) {
-    this(delegateCallback, true);
-  }
-
-  public ViewGroupMviDelegateImpl(ViewGroupMviDelegateCallback<V, P> delegateCallback,
+  public ViewGroupMviDelegateImpl(@NonNull View view,
+      @NonNull ViewGroupMviDelegateCallback<V, P> delegateCallback,
       boolean keepPresenterDuringScreenOrientationChange) {
+    if (view == null) {
+      throw new NullPointerException("View is null!");
+    }
     if (delegateCallback == null) {
       throw new NullPointerException("MvpDelegateCallback is null!");
     }
     this.delegateCallback = delegateCallback;
     this.keepPresenterDuringScreenOrientationChange = keepPresenterDuringScreenOrientationChange;
-    this.activity = PresenterManager.getActivity(delegateCallback.getContext());
+    this.isInEditMode = view.isInEditMode();
+    if (!isInEditMode) {
+      this.activity = PresenterManager.getActivity(delegateCallback.getContext());
+    } else {
+      this.activity = null;
+    }
   }
 
   /**
@@ -91,6 +100,8 @@ public class ViewGroupMviDelegateImpl<V extends MvpView, P extends MviPresenter<
   }
 
   @Override public void onAttachedToWindow() {
+    if (isInEditMode) return;
+
     boolean viewStateWillBeRestored = false;
 
     if (mosbyViewId == null) {
@@ -144,10 +155,12 @@ public class ViewGroupMviDelegateImpl<V extends MvpView, P extends MviPresenter<
   }
 
   @Override public void onDetachedFromWindow() {
+    if (isInEditMode) return;
 
     if (keepPresenterDuringScreenOrientationChange) {
 
-      boolean destroyedPermanently = !ActivityMviDelegateImpl.retainPresenterInstance(keepPresenterDuringScreenOrientationChange, activity);
+      boolean destroyedPermanently = !ActivityMviDelegateImpl.retainPresenterInstance(
+          keepPresenterDuringScreenOrientationChange, activity);
 
       if (destroyedPermanently) {
         // Whole activity will be destroyed
@@ -164,7 +177,8 @@ public class ViewGroupMviDelegateImpl<V extends MvpView, P extends MviPresenter<
         mosbyViewId = null;
         presenter.detachView(false);
       } else {
-        boolean detachedBecauseOrientationChange = ActivityMviDelegateImpl.retainPresenterInstance(keepPresenterDuringScreenOrientationChange, activity);
+        boolean detachedBecauseOrientationChange = ActivityMviDelegateImpl.retainPresenterInstance(
+            keepPresenterDuringScreenOrientationChange, activity);
 
         if (detachedBecauseOrientationChange) {
           // Simple orientation change
@@ -204,6 +218,7 @@ public class ViewGroupMviDelegateImpl<V extends MvpView, P extends MviPresenter<
    * Must be called from {@link View#onSaveInstanceState()}
    */
   public Parcelable onSaveInstanceState() {
+    if (isInEditMode) return null;
 
     Parcelable superState = delegateCallback.superOnSaveInstanceState();
 
@@ -213,7 +228,6 @@ public class ViewGroupMviDelegateImpl<V extends MvpView, P extends MviPresenter<
       return superState;
     }
   }
-
 
   /**
    * Restore the data from SavedState
@@ -228,6 +242,7 @@ public class ViewGroupMviDelegateImpl<V extends MvpView, P extends MviPresenter<
    * Must be called from {@link View#onRestoreInstanceState(Parcelable)}
    */
   public void onRestoreInstanceState(Parcelable state) {
+    if (isInEditMode) return;
 
     if (!(state instanceof MosbySavedState)) {
       delegateCallback.superOnRestoreInstanceState(state);

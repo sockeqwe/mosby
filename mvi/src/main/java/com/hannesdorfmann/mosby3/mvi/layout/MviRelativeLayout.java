@@ -75,7 +75,7 @@ public abstract class MviRelativeLayout<V extends MvpView, P extends MviPresente
    */
   @NonNull protected ViewGroupMviDelegate<V, P> getMvpDelegate() {
     if (mvpDelegate == null) {
-      mvpDelegate = new ViewGroupMviDelegateImpl<V, P>(this);
+      mvpDelegate = new ViewGroupMviDelegateImpl<V, P>(this, this, true);
     }
 
     return mvpDelegate;

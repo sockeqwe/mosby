@@ -31,6 +31,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.hannesdorfmann.mosby3.mvi.MviPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.UUID;
 
 /**
@@ -52,9 +53,10 @@ import java.util.UUID;
 public class FragmentMviDelegateImpl<V extends MvpView, P extends MviPresenter<V, ?>>
     implements FragmentMviDelegate<V, P> {
 
-  public static final boolean DEBUG = true;
+  @SuppressFBWarnings(value = "MS_SHOULD_BE_FINAL", justification = "Could be enabled for debugging purpose")
+  public static boolean DEBUG = false;
   private static final String DEBUG_TAG = "FragmentMviDelegateImpl";
-  private static final String KEY_MOSBY_VIEW_ID = "com.hannesdorfmann.mosby3.activity.viewState.id";
+  private static final String KEY_MOSBY_VIEW_ID = "com.hannesdorfmann.mosby3.fragment.mvi.id";
 
   private String mosbyViewId = null;
   private MviDelegateCallback<V, P> delegateCallback;

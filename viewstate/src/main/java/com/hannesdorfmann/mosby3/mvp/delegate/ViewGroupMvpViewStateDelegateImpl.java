@@ -48,25 +48,36 @@ public class ViewGroupMvpViewStateDelegateImpl<V extends MvpView, P extends MvpP
   private String mosbyViewId;
   private final boolean keepPresenter;
   private final Activity activity;
+  private final boolean isInEditMode;
   private VS restoreableParcelableViewState = null;
 
   private boolean applyViewState = false;
   private boolean viewStateFromMemoryRestored = false;
 
   /**
-   *  Creates a new instance
+   * Creates a new instance
+   *
    * @param delegateCallback the callback
-   * @param keepPresenter true, if you want to keep the presenter and view state during screen orientation changes etc.
+   * @param keepPresenter true, if you want to keep the presenter and view state during screen
+   * orientation changes etc.
    */
-  public ViewGroupMvpViewStateDelegateImpl(
+  public ViewGroupMvpViewStateDelegateImpl(@NonNull View view,
       @NonNull ViewGroupMvpViewStateDelegateCallback<V, P, VS> delegateCallback,
       boolean keepPresenter) {
+    if (view == null) {
+      throw new NullPointerException("View is null!");
+    }
     if (delegateCallback == null) {
       throw new NullPointerException("MvpDelegateCallback is null!");
     }
     this.delegateCallback = delegateCallback;
     this.keepPresenter = keepPresenter;
-    this.activity = PresenterManager.getActivity(delegateCallback.getContext());
+    this.isInEditMode = view.isInEditMode();
+    if (!isInEditMode) {
+      this.activity = PresenterManager.getActivity(delegateCallback.getContext());
+    } else {
+      this.activity = null;
+    }
   }
 
   /**
@@ -92,7 +103,7 @@ public class ViewGroupMvpViewStateDelegateImpl<V extends MvpView, P extends MvpP
 
   private VS createViewState() {
     VS viewState = delegateCallback.createViewState();
-    if(keepPresenter) {
+    if (keepPresenter) {
       PresenterManager.putViewState(activity, mosbyViewId, viewState);
     }
     applyViewState = false;
@@ -109,6 +120,7 @@ public class ViewGroupMvpViewStateDelegateImpl<V extends MvpView, P extends MvpP
   }
 
   @Override public void onAttachedToWindow() {
+    if (isInEditMode) return;
 
     P presenter = null;
     VS viewState = null;
@@ -118,13 +130,17 @@ public class ViewGroupMvpViewStateDelegateImpl<V extends MvpView, P extends MvpP
       // Activity is starting for the first time (or keepPresenterInstance == false)
       presenter = createViewIdAndCreatePresenter();
       if (DEBUG) {
-        Log.d(DEBUG_TAG, "new Presenter instance created: " + presenter+ " MvpView: "
+        Log.d(DEBUG_TAG, "new Presenter instance created: "
+            + presenter
+            + " MvpView: "
             + delegateCallback.getMvpView());
       }
 
       viewState = createViewState();
       if (DEBUG) {
-        Log.d(DEBUG_TAG, "new ViewState instance created: " + viewState+ " MvpView: "
+        Log.d(DEBUG_TAG, "new ViewState instance created: "
+            + viewState
+            + " MvpView: "
             + delegateCallback.getMvpView());
       }
     } else {
@@ -140,7 +156,8 @@ public class ViewGroupMvpViewStateDelegateImpl<V extends MvpView, P extends MvpP
         }
       } else {
         if (DEBUG) {
-          Log.d(DEBUG_TAG, "Presenter instance reused from internal cache: " + presenter
+          Log.d(DEBUG_TAG, "Presenter instance reused from internal cache: "
+              + presenter
               + " MvpView: "
               + delegateCallback.getMvpView());
         }
@@ -173,7 +190,10 @@ public class ViewGroupMvpViewStateDelegateImpl<V extends MvpView, P extends MvpP
           }
 
           if (DEBUG) {
-            Log.d(DEBUG_TAG, "Parcelable ViewState instance reused from last SavedState: " + viewState+ " MvpView: "+delegateCallback.getMvpView() );
+            Log.d(DEBUG_TAG, "Parcelable ViewState instance reused from last SavedState: "
+                + viewState
+                + " MvpView: "
+                + delegateCallback.getMvpView());
           }
         }
       } else {
@@ -181,7 +201,10 @@ public class ViewGroupMvpViewStateDelegateImpl<V extends MvpView, P extends MvpP
         applyViewState = true;
         viewStateFromMemoryRestored = true;
         if (DEBUG) {
-          Log.d(DEBUG_TAG, "ViewState instance reused from internal cache: " + viewState+ " MvpView: "+delegateCallback.getMvpView() );
+          Log.d(DEBUG_TAG, "ViewState instance reused from internal cache: "
+              + viewState
+              + " MvpView: "
+              + delegateCallback.getMvpView());
         }
       }
     }
@@ -234,6 +257,7 @@ public class ViewGroupMvpViewStateDelegateImpl<V extends MvpView, P extends MvpP
   }
 
   @Override public void onDetachedFromWindow() {
+    if (isInEditMode) return;
 
     P presenter = delegateCallback.getPresenter();
     if (presenter == null) {
@@ -243,7 +267,8 @@ public class ViewGroupMvpViewStateDelegateImpl<V extends MvpView, P extends MvpP
 
     if (keepPresenter) {
 
-      boolean destroyedPermanently = !ActivityMvpDelegateImpl.retainPresenterInstance(keepPresenter, activity);
+      boolean destroyedPermanently =
+          !ActivityMvpDelegateImpl.retainPresenterInstance(keepPresenter, activity);
 
       if (destroyedPermanently) {
         // Whole activity will be destroyed
@@ -260,8 +285,8 @@ public class ViewGroupMvpViewStateDelegateImpl<V extends MvpView, P extends MvpP
         mosbyViewId = null;
         presenter.detachView(false);
       } else {
-        boolean detachedBecauseOrientationChange = ActivityMvpDelegateImpl.retainPresenterInstance(
-            keepPresenter, activity);
+        boolean detachedBecauseOrientationChange =
+            ActivityMvpDelegateImpl.retainPresenterInstance(keepPresenter, activity);
 
         if (detachedBecauseOrientationChange) {
           // Simple orientation change
@@ -300,8 +325,8 @@ public class ViewGroupMvpViewStateDelegateImpl<V extends MvpView, P extends MvpP
   /**
    * Must be called from {@link View#onSaveInstanceState()}
    */
-  @Override
-  public Parcelable onSaveInstanceState() {
+  @Override public Parcelable onSaveInstanceState() {
+    if (isInEditMode) return null;
 
     VS viewState = delegateCallback.getViewState();
     if (viewState == null) {
@@ -312,8 +337,9 @@ public class ViewGroupMvpViewStateDelegateImpl<V extends MvpView, P extends MvpP
     Parcelable superState = delegateCallback.superOnSaveInstanceState();
 
     if (keepPresenter) {
-      if (viewState instanceof RestorableParcelableViewState){
-        return new MosbyViewStateSavedState(superState, mosbyViewId, (RestorableParcelableViewState)viewState);
+      if (viewState instanceof RestorableParcelableViewState) {
+        return new MosbyViewStateSavedState(superState, mosbyViewId,
+            (RestorableParcelableViewState) viewState);
       }
       return new MosbyViewStateSavedState(superState, mosbyViewId, null);
     } else {
@@ -321,12 +347,11 @@ public class ViewGroupMvpViewStateDelegateImpl<V extends MvpView, P extends MvpP
     }
   }
 
-
   /**
    * Must be called from {@link View#onRestoreInstanceState(Parcelable)}
    */
-  @Override
-  public void onRestoreInstanceState(Parcelable state) {
+  @Override public void onRestoreInstanceState(Parcelable state) {
+    if (isInEditMode) return;
 
     if (!(state instanceof MosbyViewStateSavedState)) {
       delegateCallback.superOnRestoreInstanceState(state);

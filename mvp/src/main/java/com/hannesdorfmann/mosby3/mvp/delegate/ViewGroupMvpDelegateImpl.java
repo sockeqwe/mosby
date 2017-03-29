@@ -64,6 +64,10 @@ public class ViewGroupMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<
   public ViewGroupMvpDelegateImpl(@NonNull View view,
       @NonNull ViewGroupDelegateCallback<V, P> delegateCallback,
       boolean keepPresenterDuringScreenOrientationChange) {
+    if (view == null) {
+      throw new NullPointerException("View is null!");
+    }
+
     if (delegateCallback == null) {
       throw new NullPointerException("MvpDelegateCallback is null!");
     }

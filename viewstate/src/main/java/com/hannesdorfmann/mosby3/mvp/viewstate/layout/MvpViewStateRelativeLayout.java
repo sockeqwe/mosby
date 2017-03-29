@@ -59,7 +59,7 @@ public abstract class MvpViewStateRelativeLayout<V extends MvpView, P extends Mv
   @Override
   protected ViewGroupMvpDelegate<V, P> getMvpDelegate() {
     if (mvpDelegate == null) {
-      mvpDelegate = new ViewGroupMvpViewStateDelegateImpl<V, P, VS>(this, true);
+      mvpDelegate = new ViewGroupMvpViewStateDelegateImpl<V, P, VS>(this, this, true);
     }
 
     return mvpDelegate;

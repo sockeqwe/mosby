@@ -10,12 +10,12 @@ Check the [project website](http://hannesdorfmann.com/mosby/) for more informati
 ```groovy
 dependencies {
 
-  compile 'com.hannesdorfmann.mosby3:mvi:3.0.0' // Model-View-Intent
+  compile 'com.hannesdorfmann.mosby3:mvi:3.0.1' // Model-View-Intent
 
   // or
-  compile 'com.hannesdorfmann.mosby3:mvp:3.0.0' // Plain MVP
+  compile 'com.hannesdorfmann.mosby3:mvp:3.0.1' // Plain MVP
   // or
-  compile 'com.hannesdorfmann.mosby3:viewstate:3.0.0' // MVP ViewState support
+  compile 'com.hannesdorfmann.mosby3:viewstate:3.0.1' // MVP ViewState support
 }
 ```
 Additional modules:
@@ -24,10 +24,10 @@ Additional modules:
 dependencies {
 
   // MVP + ViewState + LCE Views
-  compile 'com.hannesdorfmann.mosby3:mvp-lce:3.0.0'
+  compile 'com.hannesdorfmann.mosby3:mvp-lce:3.0.1'
 
   // Null Object Presenter for MVP
-	compile 'com.hannesdorfmann.mosby3:mvp-nullobject-presenter:3.0.0'
+	compile 'com.hannesdorfmann.mosby3:mvp-nullobject-presenter:3.0.1'
 }
 ```
 
@@ -35,13 +35,13 @@ SNAPSHOT:
 ```groovy
 dependencies {
 
-	compile 'com.hannesdorfmann.mosby3:mvi:3.0.1-SNAPSHOT'
+	compile 'com.hannesdorfmann.mosby3:mvi:3.0.2-SNAPSHOT'
 
-	compile 'com.hannesdorfmann.mosby3:mvp:3.0.1-SNAPSHOT'
-	compile 'com.hannesdorfmann.mosby3:viewstate:3.0.1-SNAPSHOT'
+	compile 'com.hannesdorfmann.mosby3:mvp:3.0.2-SNAPSHOT'
+	compile 'com.hannesdorfmann.mosby3:viewstate:3.0.2-SNAPSHOT'
 
-	compile 'com.hannesdorfmann.mosby3:mvp-lce:3.0.1-SNAPSHOT'
-	compile 'com.hannesdorfmann.mosby3:mvp-nullobject-presenter:3.0.1-SNAPSHOT'
+	compile 'com.hannesdorfmann.mosby3:mvp-lce:3.0.2-SNAPSHOT'
+	compile 'com.hannesdorfmann.mosby3:mvp-nullobject-presenter:3.0.2-SNAPSHOT'
 }
 ```
 

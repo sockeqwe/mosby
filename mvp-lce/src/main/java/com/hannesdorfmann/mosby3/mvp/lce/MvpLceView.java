@@ -50,7 +50,7 @@ public interface MvpLceView<M> extends MvpView {
    * @param pullToRefresh true, if pull-to-refresh has been invoked loading.
    */
   @UiThread
-  public void showLoading(boolean pullToRefresh);
+  void showLoading(boolean pullToRefresh);
 
   /**
    * Show the content view.
@@ -58,7 +58,7 @@ public interface MvpLceView<M> extends MvpView {
    * <b>The content view must have the id = R.id.contentView</b>
    */
   @UiThread
-  public void showContent();
+  void showContent();
 
   /**
    * Show the error view.
@@ -69,13 +69,13 @@ public interface MvpLceView<M> extends MvpView {
    * false.
    */
   @UiThread
-  public void showError(Throwable e, boolean pullToRefresh);
+  void showError(Throwable e, boolean pullToRefresh);
 
   /**
    * The data that should be displayed with {@link #showContent()}
    */
   @UiThread
-  public void setData(M data);
+  void setData(M data);
 
   /**
    * Load the data. Typically invokes the presenter method to load the desired data.
@@ -88,5 +88,5 @@ public interface MvpLceView<M> extends MvpView {
    * @param pullToRefresh true, if triggered by a pull to refresh. Otherwise false.
    */
   @UiThread
-  public void loadData(boolean pullToRefresh);
+  void loadData(boolean pullToRefresh);
 }

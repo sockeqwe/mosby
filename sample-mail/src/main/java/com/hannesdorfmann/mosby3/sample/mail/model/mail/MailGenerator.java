@@ -23,7 +23,7 @@ import java.util.List;
  */
 public interface MailGenerator {
 
-  public List<Mail> generateMails();
+  List<Mail> generateMails();
 
-  public Mail generateResponseMail(String senderMail);
+  Mail generateResponseMail(String senderMail);
 }

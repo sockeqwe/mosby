@@ -29,7 +29,7 @@ public interface ProductDetailsViewState {
   /**
    * Loads the list of all menu items
    */
-  public final class LoadingState implements ProductDetailsViewState {
+  final class LoadingState implements ProductDetailsViewState {
 
     @Override public String toString() {
       return "LoadingState{}";
@@ -39,7 +39,7 @@ public interface ProductDetailsViewState {
   /**
    * Ane error has ocurred while loading the data
    */
-  public final class ErrorState implements ProductDetailsViewState {
+  final class ErrorState implements ProductDetailsViewState {
     private final Throwable error;
 
     public ErrorState(Throwable error) {
@@ -60,7 +60,7 @@ public interface ProductDetailsViewState {
   /**
    * Data has been loaded successfully and can now be displayed
    */
-  public final class DataState implements ProductDetailsViewState {
+  final class DataState implements ProductDetailsViewState {
     private final ProductDetail detail;
 
     public DataState(ProductDetail detail) {

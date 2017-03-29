@@ -42,24 +42,24 @@ public interface ViewGroupMvpDelegate<V extends MvpView, P extends MvpPresenter<
   /**
    * Must be called from {@link View#onAttachedToWindow()}
    */
-  public void onAttachedToWindow();
+  void onAttachedToWindow();
 
   /**
    * Must be called from {@link View#onDetachedFromWindow()}
    */
-  public void onDetachedFromWindow();
+  void onDetachedFromWindow();
 
   /**
    * Must be called from {@link View#onRestoreInstanceState(Parcelable)}
    *
    * @param state The parcelable state
    */
-  public void onRestoreInstanceState(Parcelable state);
+  void onRestoreInstanceState(Parcelable state);
 
   /**
    * Save the instatnce state
    *
    * @return The state with all the saved data
    */
-  public Parcelable onSaveInstanceState();
+  Parcelable onSaveInstanceState();
 }

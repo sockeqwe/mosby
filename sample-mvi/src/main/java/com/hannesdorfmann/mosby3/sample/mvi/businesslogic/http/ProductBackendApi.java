@@ -34,5 +34,5 @@ public interface ProductBackendApi {
   @GET("/sockeqwe/mosby/"
       + DependencyInjection.BASE_URL_BRANCH
       + "/sample-mvi/server/api/products{pagination}.json")
-  public Observable<List<Product>> getProducts(@Path("pagination") int pagination);
+  Observable<List<Product>> getProducts(@Path("pagination") int pagination);
 }

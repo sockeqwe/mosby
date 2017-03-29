@@ -11,5 +11,5 @@ import javax.inject.Singleton;
 @Component(
     modules = NavigationModule.class) public interface MainActivityComponent {
 
-  public void inject(MainActivity activity);
+  void inject(MainActivity activity);
 }

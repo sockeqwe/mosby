@@ -38,17 +38,17 @@ public interface MvpViewStateDelegateCallback<V extends MvpView, P extends MvpPr
   /**
    * Get the viewState
    */
-  public VS getViewState();
+  VS getViewState();
 
   /**
    * Set the viewstate. <b>Should only be called by {@link MvpViewStateInternalDelegate}</b>
    */
-  public void setViewState(VS viewState);
+  void setViewState(VS viewState);
 
   /**
    * Create the viewstate.
    */
-  @NonNull public VS createViewState();
+  @NonNull VS createViewState();
 
   /**
    * This method will be called by {@link MvpViewStateInternalDelegate} to inform that restoring
@@ -58,12 +58,12 @@ public interface MvpViewStateDelegateCallback<V extends MvpView, P extends MvpPr
    *
    * @param restoringViewState true, if restoring viewstate is in progress, otherwise false
    */
-  public void setRestoringViewState(boolean restoringViewState);
+  void setRestoringViewState(boolean restoringViewState);
 
   /**
    * @return true if the viewstate is restoring right now (not finished yet). Otherwise false.
    */
-  public boolean isRestoringViewState();
+  boolean isRestoringViewState();
 
   /**
    * Called if the {@link ViewState} instance has been restored successfully.
@@ -76,7 +76,7 @@ public interface MvpViewStateDelegateCallback<V extends MvpView, P extends MvpPr
    * @param instanceStateRetained true, if the viewstate has been retained by using{@link
    * Fragment#setRetainInstance(boolean)}, otherwise false (always false for activities).
    */
-  public void onViewStateInstanceRestored(boolean instanceStateRetained);
+  void onViewStateInstanceRestored(boolean instanceStateRetained);
 
   /**
    * Called if a new {@link ViewState} has been created because no viewstate from a previous
@@ -84,5 +84,5 @@ public interface MvpViewStateDelegateCallback<V extends MvpView, P extends MvpPr
    * <p><b>Typically this is called on the first time the <i>Activity</i> or <i>Fragment</i> starts
    * and therefore no view state instance previously exists</b></p>
    */
-  public void onNewViewStateInstance();
+  void onNewViewStateInstance();
 }

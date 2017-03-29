@@ -25,6 +25,7 @@ import android.util.AttributeSet;
 import com.hannesdorfmann.mosby3.ViewGroupMviDelegate;
 import com.hannesdorfmann.mosby3.ViewGroupMviDelegateCallback;
 import com.hannesdorfmann.mosby3.ViewGroupMviDelegateImpl;
+import com.hannesdorfmann.mosby3.sample.mvi.R;
 import com.hannesdorfmann.mosby3.sample.mvi.SampleApplication;
 import io.reactivex.Observable;
 import timber.log.Timber;
@@ -65,15 +66,8 @@ public class ShoppingCartLabel extends AppCompatButton implements ShoppingCartLa
   }
 
   @Override public void render(int itemsInShoppingCart) {
-    // TODO move to strings.xml / internationalization with plurals
     Timber.d("render %d items in shopping cart", itemsInShoppingCart);
-    if (itemsInShoppingCart == 0) {
-      setText("0 items");
-    } else if (itemsInShoppingCart == 1) {
-      setText("1 item");
-    } else {
-      setText(itemsInShoppingCart + " items");
-    }
+    setText(getResources().getQuantityString(R.plurals.items, itemsInShoppingCart, itemsInShoppingCart));
   }
 
   @Override protected void onAttachedToWindow() {

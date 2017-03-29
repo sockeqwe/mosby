@@ -30,7 +30,7 @@ public interface ShoppingCartLabelView extends MvpView {
   /**
    * Intent to load the data
    */
-  public Observable<Boolean> loadIntent();
+  Observable<Boolean> loadIntent();
 
-  public void render(int intemsInShoppingCart);
+  void render(int intemsInShoppingCart);
 }

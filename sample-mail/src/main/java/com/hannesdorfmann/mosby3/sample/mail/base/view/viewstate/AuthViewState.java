@@ -24,7 +24,7 @@ import com.hannesdorfmann.mosby3.sample.mail.base.view.AuthView;
  */
 public interface AuthViewState<D, V extends AuthView<D>> extends LceViewState<D, V> {
 
-  public static final int SHOWING_AUTHENTICATION_REQUIRED = 2;
+  static final int SHOWING_AUTHENTICATION_REQUIRED = 2;
 
-  public void setShowingAuthenticationRequired();
+  void setShowingAuthenticationRequired();
 }

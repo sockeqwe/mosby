@@ -29,7 +29,7 @@ public interface CheckoutButtonView extends MvpView {
   /**
    * Intent to load the data
    */
-  public Observable<Boolean> loadIntent();
+  Observable<Boolean> loadIntent();
 
-  public void render(double sum);
+  void render(double sum);
 }

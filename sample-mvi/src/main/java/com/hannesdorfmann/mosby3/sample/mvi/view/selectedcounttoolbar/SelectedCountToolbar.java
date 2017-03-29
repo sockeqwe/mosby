@@ -83,12 +83,7 @@ public class SelectedCountToolbar extends Toolbar implements SelectedCountToolba
         setVisibility(View.GONE);
       }
     } else {
-      // TODO remove hardcoded strings - move to stings.xml with plurals
-      if (selectedCount == 1) {
-        setTitle(selectedCount + " Item");
-      } else {
-        setTitle(selectedCount + " Items");
-      }
+      setTitle(getResources().getQuantityString(R.plurals.items, selectedCount, selectedCount));
 
       if (getVisibility() != View.VISIBLE) {
         animate().alpha(1f).withStartAction(() -> setVisibility(View.VISIBLE)).start();

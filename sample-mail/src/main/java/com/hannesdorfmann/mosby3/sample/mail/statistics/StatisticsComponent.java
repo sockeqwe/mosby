@@ -14,5 +14,5 @@ import javax.inject.Singleton;
     dependencies = MailAppComponent.class)
 public interface StatisticsComponent {
 
-  public StatisticsPresenter presenter();
+  StatisticsPresenter presenter();
 }

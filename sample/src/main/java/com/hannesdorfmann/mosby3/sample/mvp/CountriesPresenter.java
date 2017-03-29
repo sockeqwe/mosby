@@ -23,5 +23,5 @@ import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
  */
 public interface CountriesPresenter extends MvpPresenter<CountriesView>{
 
-  public void loadCountries(final boolean pullToRefresh);
+  void loadCountries(final boolean pullToRefresh);
 }

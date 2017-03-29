@@ -38,7 +38,7 @@ import com.hannesdorfmann.mosby3.sample.mvi.dependencyinjection.DependencyInject
 public class ProductViewHolder extends RecyclerView.ViewHolder {
 
   public interface ProductClickedListener {
-    public void onProductClicked(Product product);
+    void onProductClicked(Product product);
   }
 
   public static ProductViewHolder create(LayoutInflater inflater, ProductClickedListener listener) {

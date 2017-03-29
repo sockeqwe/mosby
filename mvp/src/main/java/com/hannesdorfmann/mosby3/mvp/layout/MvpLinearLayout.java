@@ -56,6 +56,7 @@ public abstract class MvpLinearLayout<V extends MvpView, P extends MvpPresenter<
   @TargetApi(21)
   public MvpLinearLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
     super(context, attrs, defStyleAttr, defStyleRes);
+    this.isInEditMode();
   }
 
   /**
@@ -74,7 +75,7 @@ public abstract class MvpLinearLayout<V extends MvpView, P extends MvpPresenter<
    */
   @NonNull protected ViewGroupMvpDelegate<V, P> getMvpDelegate() {
     if (mvpDelegate == null) {
-      mvpDelegate = new ViewGroupMvpDelegateImpl<>(this, true);
+      mvpDelegate = new ViewGroupMvpDelegateImpl<>(this, this, true);
     }
 
     return mvpDelegate;

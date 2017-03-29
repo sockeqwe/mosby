@@ -19,6 +19,7 @@ package com.hannesdorfmann.mosby3.mvp.delegate;
 
 import android.app.Application;
 import android.support.v4.app.FragmentActivity;
+import android.view.View;
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 import org.junit.Before;
@@ -39,6 +40,7 @@ public class ViewGroupMvpDelegateImplTest {
   private ViewGroupMvpDelegateImpl<MvpView, MvpPresenter<MvpView>> delegate;
   private FragmentActivity activity;
   private Application application;
+  private View androidView;
 
   @Before public void initComponents() {
     view = new MvpView() {
@@ -51,12 +53,14 @@ public class ViewGroupMvpDelegateImplTest {
 
     activity = Mockito.mock(FragmentActivity.class);
     application = Mockito.mock(Application.class);
+    androidView = Mockito.mock(View.class);
 
     Mockito.when(callback.getMvpView()).thenReturn(view);
     Mockito.when(callback.getContext()).thenReturn(activity);
     Mockito.when(activity.getApplication()).thenReturn(application);
+    Mockito.when(androidView.isInEditMode()).thenReturn(false);
 
-    delegate = new ViewGroupMvpDelegateImpl<>(callback, true);
+    delegate = new ViewGroupMvpDelegateImpl<>(androidView, callback, true);
   }
 
   @Test public void appStartWithScreenOrientationChangeAndFinallyFinishing() {
@@ -72,7 +76,7 @@ public class ViewGroupMvpDelegateImplTest {
   }
 
   @Test public void dontKeepPresenter() {
-    delegate = new ViewGroupMvpDelegateImpl<MvpView, MvpPresenter<MvpView>>(callback, false);
+    delegate = new ViewGroupMvpDelegateImpl<MvpView, MvpPresenter<MvpView>>(androidView, callback, false);
     startViewGroup(1, 1, 1);
     finishViewGroup(1, false, true, false);
     startViewGroup(2, 2, 2);

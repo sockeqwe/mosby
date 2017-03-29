@@ -59,15 +59,25 @@ public class ViewGroupMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<
   private String mosbyViewId;
   private final boolean keepPresenterDuringScreenOrientationChange;
   private final Activity activity;
+  private final boolean isInEditMode;
 
-  public ViewGroupMvpDelegateImpl(@NonNull ViewGroupDelegateCallback<V, P> delegateCallback,
+  public ViewGroupMvpDelegateImpl(@NonNull View view,
+      @NonNull ViewGroupDelegateCallback<V, P> delegateCallback,
       boolean keepPresenterDuringScreenOrientationChange) {
     if (delegateCallback == null) {
       throw new NullPointerException("MvpDelegateCallback is null!");
     }
+
     this.delegateCallback = delegateCallback;
     this.keepPresenterDuringScreenOrientationChange = keepPresenterDuringScreenOrientationChange;
-    this.activity = PresenterManager.getActivity(delegateCallback.getContext());
+
+    isInEditMode = view.isInEditMode();
+
+    if (!isInEditMode) {
+      this.activity = PresenterManager.getActivity(delegateCallback.getContext());
+    } else {
+      this.activity = null;
+    }
   }
 
   /**
@@ -100,6 +110,7 @@ public class ViewGroupMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<
   }
 
   @Override public void onAttachedToWindow() {
+    if (isInEditMode) return;
 
     P presenter = null;
     if (mosbyViewId == null) {
@@ -161,6 +172,8 @@ public class ViewGroupMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<
   }
 
   @Override public void onDetachedFromWindow() {
+
+    if (isInEditMode) return;
 
     P presenter = delegateCallback.getPresenter();
     if (presenter == null) {
@@ -229,6 +242,7 @@ public class ViewGroupMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<
    * Must be called from {@link View#onSaveInstanceState()}
    */
   public Parcelable onSaveInstanceState() {
+    if (isInEditMode) return null;
 
     Parcelable superState = delegateCallback.superOnSaveInstanceState();
 
@@ -252,6 +266,7 @@ public class ViewGroupMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<
    * Must be called from {@link View#onRestoreInstanceState(Parcelable)}
    */
   public void onRestoreInstanceState(Parcelable state) {
+    if (isInEditMode) return;
 
     if (!(state instanceof MosbySavedState)) {
       delegateCallback.superOnRestoreInstanceState(state);

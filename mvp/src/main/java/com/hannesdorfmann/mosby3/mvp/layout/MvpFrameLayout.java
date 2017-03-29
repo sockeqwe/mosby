@@ -74,7 +74,7 @@ public abstract class MvpFrameLayout<V extends MvpView, P extends MvpPresenter<V
    */
   @NonNull protected ViewGroupMvpDelegate<V, P> getMvpDelegate() {
     if (mvpDelegate == null) {
-      mvpDelegate = new ViewGroupMvpDelegateImpl<>(this, true);
+      mvpDelegate = new ViewGroupMvpDelegateImpl<>(this, this, true);
     }
 
     return mvpDelegate;
@@ -117,7 +117,6 @@ public abstract class MvpFrameLayout<V extends MvpView, P extends MvpPresenter<V
   @Override public V getMvpView() {
     return (V) this;
   }
-
 
   @Override public final Parcelable superOnSaveInstanceState() {
     return super.onSaveInstanceState();

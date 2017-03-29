@@ -37,7 +37,7 @@ public class ShoppingCartLabel extends AppCompatButton implements ShoppingCartLa
     ViewGroupMviDelegateCallback<ShoppingCartLabelView, ShoppingCartLabelPresenter> {
 
   private final ViewGroupMviDelegate<ShoppingCartLabelView, ShoppingCartLabelPresenter>
-      mviDelegate = new ViewGroupMviDelegateImpl<>(this);
+      mviDelegate = new ViewGroupMviDelegateImpl<>(this, this, true);
 
   public ShoppingCartLabel(Context context, AttributeSet attrs) {
     super(context, attrs);

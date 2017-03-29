@@ -40,7 +40,7 @@ public class SelectedCountToolbar extends Toolbar implements SelectedCountToolba
     ViewGroupMviDelegateCallback<SelectedCountToolbarView, SelectedCountToolbarPresenter> {
 
   private final ViewGroupMviDelegate<SelectedCountToolbarView, SelectedCountToolbarPresenter>
-      mviDelegate = new ViewGroupMviDelegateImpl<>(this);
+      mviDelegate = new ViewGroupMviDelegateImpl<>(this, this, true);
 
   private final PublishSubject<Boolean> clearSelectionIntent = PublishSubject.create();
   private final PublishSubject<Boolean> deleteSelectedItemsIntent = PublishSubject.create();

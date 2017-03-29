@@ -40,7 +40,7 @@ public class CheckoutButton extends Button implements CheckoutButtonView,
     ViewGroupMviDelegateCallback<CheckoutButtonView, CheckoutButtonPresenter> {
 
   private final ViewGroupMviDelegate<CheckoutButtonView, CheckoutButtonPresenter> mviDelegate =
-      new ViewGroupMviDelegateImpl<>(this);
+      new ViewGroupMviDelegateImpl<>(this, this, true);
 
   public CheckoutButton(Context context, AttributeSet attrs) {
     super(context, attrs);

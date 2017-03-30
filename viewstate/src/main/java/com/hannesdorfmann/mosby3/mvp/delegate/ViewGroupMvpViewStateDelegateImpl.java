@@ -272,7 +272,6 @@ public class ViewGroupMvpViewStateDelegateImpl<V extends MvpView, P extends MvpP
 
       if (destroyedPermanently) {
         // Whole activity will be destroyed
-        // Internally Orientation manager already does the clean up
         if (DEBUG) {
           Log.d(DEBUG_TAG, "Detaching View "
               + delegateCallback.getMvpView()
@@ -281,7 +280,9 @@ public class ViewGroupMvpViewStateDelegateImpl<V extends MvpView, P extends MvpP
               + " and removing presenter permanently from internal cache because the hosting Activity will be destroyed permanently");
         }
 
-        PresenterManager.remove(activity, mosbyViewId);
+        if (mosbyViewId != null) { // mosbyViewId == null if keepPresenter == false
+          PresenterManager.remove(activity, mosbyViewId);
+        }
         mosbyViewId = null;
         presenter.detachView(false);
       } else {
@@ -316,8 +317,19 @@ public class ViewGroupMvpViewStateDelegateImpl<V extends MvpView, P extends MvpP
       }
     } else {
       // retain instance feature disabled
+
+      if (DEBUG) {
+        Log.d(DEBUG_TAG, "Detaching View "
+            + delegateCallback.getMvpView()
+            + " from Presenter "
+            + presenter
+            + " permanently");
+      }
+
       presenter.detachView(false);
-      PresenterManager.remove(activity, mosbyViewId);
+      if (mosbyViewId != null) { // mosbyViewId == null if keepPresenter == false
+        PresenterManager.remove(activity, mosbyViewId);
+      }
       mosbyViewId = null;
     }
   }

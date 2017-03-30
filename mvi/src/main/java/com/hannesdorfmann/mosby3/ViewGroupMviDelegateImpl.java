@@ -173,7 +173,9 @@ public class ViewGroupMviDelegateImpl<V extends MvpView, P extends MviPresenter<
               + " and removing presenter permanently from internal cache because the hosting Activity will be destroyed permanently");
         }
 
-        PresenterManager.remove(activity, mosbyViewId);
+        if (mosbyViewId != null) { // mosbyViewId == null if keepPresenterDuringScreenOrientationChange == false
+          PresenterManager.remove(activity, mosbyViewId);
+        }
         mosbyViewId = null;
         presenter.detachView(false);
       } else {
@@ -209,7 +211,9 @@ public class ViewGroupMviDelegateImpl<V extends MvpView, P extends MviPresenter<
     } else {
       // retain instance feature disabled
       presenter.detachView(false);
-      PresenterManager.remove(activity, mosbyViewId);
+      if (mosbyViewId != null) { // mosbyViewId == null if keepPresenterDuringScreenOrientationChange == false
+        PresenterManager.remove(activity, mosbyViewId);
+      }
       mosbyViewId = null;
     }
   }

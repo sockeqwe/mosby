@@ -81,6 +81,11 @@ public class StatisticsDialog extends AppCompatDialogFragment implements Statist
     contentView.setLayoutManager(new LinearLayoutManager(getActivity()));
   }
 
+  @Override public void onDestroyView() {
+    super.onDestroyView();
+    delegate.onDestroyView();
+  }
+
   @Override public void onStart() {
     super.onStart();
     delegate.onStart();

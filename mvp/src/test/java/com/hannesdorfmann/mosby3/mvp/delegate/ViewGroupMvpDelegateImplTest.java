@@ -83,6 +83,46 @@ public class ViewGroupMvpDelegateImplTest {
     finishViewGroup(2, false, false, true);
   }
 
+
+  /**
+   * Checks if two Views one that keeps presenter, the other who doesn't keep presenter during
+   * screen orientation changes work properly
+   *
+   * https://github.com/sockeqwe/mosby/issues/231
+   */
+  @Test public void dontKeepPresenterIfSecondPresenterInPresenterManager() {
+
+    MvpView view1 = new MvpView() {
+    };
+
+    MvpPresenter<MvpView> presenter1 = Mockito.mock(MvpPresenter.class);
+    PartialViewGroupMvpDelegateCallbackImpl callback1 = Mockito.mock(PartialViewGroupMvpDelegateCallbackImpl.class);
+    Mockito.doCallRealMethod().when(callback1).setPresenter(presenter1);
+    Mockito.doCallRealMethod().when(callback1).getPresenter();
+    View androidView1 = Mockito.mock(View.class);
+
+    Mockito.when(callback1.getMvpView()).thenReturn(view1);
+    Mockito.when(callback1.getContext()).thenReturn(activity);
+    Mockito.when(androidView1.isInEditMode()).thenReturn(false);
+    Mockito.when(callback1.createPresenter()).thenReturn(presenter1);
+
+    ViewGroupMvpDelegateImpl<MvpView, MvpPresenter<MvpView>> keepDeelgate
+        = new ViewGroupMvpDelegateImpl<MvpView, MvpPresenter<MvpView>>(androidView1, callback1, true);
+
+
+    delegate = new ViewGroupMvpDelegateImpl<MvpView, MvpPresenter<MvpView>>(androidView, callback, false);
+
+    keepDeelgate.onAttachedToWindow();
+
+    startViewGroup(1, 1, 1);
+    finishViewGroup(1, false, true, false);
+    startViewGroup(2, 2, 2);
+    finishViewGroup(2, false, false, true);
+
+    keepDeelgate.onDetachedFromWindow();
+  }
+
+
   private void startViewGroup(int createPresenter, int setPresenter, int attachView) {
     Mockito.when(callback.createPresenter()).thenReturn(presenter);
 

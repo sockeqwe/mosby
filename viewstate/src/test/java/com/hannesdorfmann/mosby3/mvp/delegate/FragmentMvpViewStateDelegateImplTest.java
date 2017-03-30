@@ -24,7 +24,6 @@ import android.support.v4.app.FragmentActivity;
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 import com.hannesdorfmann.mosby3.mvp.viewstate.ViewState;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -105,8 +104,47 @@ public class FragmentMvpViewStateDelegateImplTest {
     finishFragment(bundle, 2, false, false, true);
   }
 
-  @Test
-  public void appStartAfterProcessDeathAndViewStateRecreationFromBundle(){
+  /**
+   * Checks if two Fragments one that keeps presenter, the other who doesn't keep presenter during
+   * screen orientation changes work properly
+   *
+   * https://github.com/sockeqwe/mosby/issues/231
+   */
+  @Test public void dontKeepPresenterWithSecondFragmentInPresenterManager() {
+    MvpView view1 = new MvpView() {
+    };
+    ViewState<MvpView> viewState1 = Mockito.mock(ViewState.class);
+
+    MvpPresenter<MvpView> presenter1 = Mockito.mock(MvpPresenter.class);
+    PartialMvpViewStateDelegateCallbackImpl callback1 =
+        Mockito.spy(PartialMvpViewStateDelegateCallbackImpl.class);
+    Fragment fragment1 = PowerMockito.mock(Fragment.class);
+
+    Mockito.doCallRealMethod().when(callback1).setPresenter(presenter1);
+    Mockito.doCallRealMethod().when(callback1).getPresenter();
+    Mockito.doCallRealMethod().when(callback1).setViewState(viewState1);
+    Mockito.doCallRealMethod().when(callback1).getViewState();
+    Mockito.when(callback1.getMvpView()).thenReturn(view1);
+    Mockito.when(fragment1.getActivity()).thenReturn(activity);
+    Mockito.when(callback1.createPresenter()).thenReturn(presenter1);
+    Mockito.when(callback1.createViewState()).thenReturn(viewState1);
+
+    FragmentMvpViewStateDelegateImpl<MvpView, MvpPresenter<MvpView>, ViewState<MvpView>>
+        keepDelegate = new FragmentMvpViewStateDelegateImpl<>(fragment1, callback1, true, false);
+
+    startFragment(keepDelegate, null);
+
+    delegate = new FragmentMvpViewStateDelegateImpl<>(fragment, callback, false, false);
+    startFragment(null, 1, 1, 1, 1, 1, 0, null, 0, 1, 0);
+    Bundle bundle = BundleMocker.create();
+    finishFragment(bundle, 1, false, true, false);
+    startFragment(null, 2, 2, 2, 2, 2, 0, null, 0, 2, 0);
+    finishFragment(bundle, 2, false, false, true);
+
+    finishFragment(keepDelegate, BundleMocker.create());
+  }
+
+  @Test public void appStartAfterProcessDeathAndViewStateRecreationFromBundle() {
     Mockito.doAnswer(new Answer() {
       @Override public Object answer(InvocationOnMock invocation) throws Throwable {
         viewState = Mockito.spy(new SimpleRestorableViewState());
@@ -120,8 +158,7 @@ public class FragmentMvpViewStateDelegateImplTest {
     startFragment(bundle, 1, 1, 1, 1, 1, 1, false, 1, 0, 1);
   }
 
-  @Test
-  public void appStartWithViewStateFromMemoryAndBundleButPreferViewStateFromMemory(){
+  @Test public void appStartWithViewStateFromMemoryAndBundleShouldPreferViewStateFromMemory() {
 
     Mockito.doAnswer(new Answer() {
       @Override public Object answer(InvocationOnMock invocation) throws Throwable {
@@ -137,10 +174,9 @@ public class FragmentMvpViewStateDelegateImplTest {
     finishFragment(bundle, 1, false, false, true);
   }
 
-  private void startFragment(Bundle bundle, int createPresenter, int setPresenter, int attachView,
-      int createViewState, int setViewState, int applyViewState,
-      Boolean viewsStateRestoredFromMemory, int setRestoreViewState, int onNewViewStateInstance,
-      int onViewStateInstanceRestored) {
+  private void startFragment(
+      FragmentMvpViewStateDelegateImpl<MvpView, MvpPresenter<MvpView>, ViewState<MvpView>> delegate,
+      Bundle bundle) {
 
     delegate.onAttach(activity);
     delegate.onCreate(bundle);
@@ -148,6 +184,14 @@ public class FragmentMvpViewStateDelegateImplTest {
     delegate.onActivityCreated(bundle);
     delegate.onStart();
     delegate.onResume();
+  }
+
+  private void startFragment(Bundle bundle, int createPresenter, int setPresenter, int attachView,
+      int createViewState, int setViewState, int applyViewState,
+      Boolean viewsStateRestoredFromMemory, int setRestoreViewState, int onNewViewStateInstance,
+      int onViewStateInstanceRestored) {
+
+    startFragment(delegate, bundle);
 
     Mockito.verify(callback, Mockito.times(createPresenter)).createPresenter();
     Mockito.verify(callback, Mockito.times(setPresenter)).setPresenter(presenter);
@@ -178,19 +222,23 @@ public class FragmentMvpViewStateDelegateImplTest {
     }
   }
 
-  private void finishFragment(Bundle bundle, int detachViewCount, boolean expectKeepPresenter,
-      boolean changingConfigurations, boolean isFinishing) {
-    Mockito.when(callback.getPresenter()).thenReturn(presenter);
-    Mockito.when(activity.isChangingConfigurations()).thenReturn(changingConfigurations);
-    Mockito.when(activity.isFinishing()).thenReturn(isFinishing);
-
+  private void finishFragment(
+      FragmentMvpViewStateDelegateImpl<MvpView, MvpPresenter<MvpView>, ViewState<MvpView>> delegate,
+      Bundle bundle) {
     delegate.onPause();
     delegate.onSaveInstanceState(bundle);
     delegate.onStop();
     delegate.onDestroyView();
     delegate.onDestroy();
     delegate.onDetach();
+  }
 
+  private void finishFragment(Bundle bundle, int detachViewCount, boolean expectKeepPresenter,
+      boolean changingConfigurations, boolean isFinishing) {
+    Mockito.when(callback.getPresenter()).thenReturn(presenter);
+    Mockito.when(activity.isChangingConfigurations()).thenReturn(changingConfigurations);
+    Mockito.when(activity.isFinishing()).thenReturn(isFinishing);
+    finishFragment(delegate, bundle);
     Mockito.verify(presenter, Mockito.times(detachViewCount)).detachView(expectKeepPresenter);
   }
 }

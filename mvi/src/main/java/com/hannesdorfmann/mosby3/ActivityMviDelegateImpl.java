@@ -207,7 +207,9 @@ public class ActivityMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
     }
 
     if (!retainPresenterInstance){
-      PresenterManager.remove(activity, mosbyViewId);
+      if (mosbyViewId != null) { // mosbyViewId == null if keepPresenterInstance == false
+        PresenterManager.remove(activity, mosbyViewId);
+      }
       Log.d(DEBUG_TAG, "Destroying Presenter permanently " + presenter);
     }
   }

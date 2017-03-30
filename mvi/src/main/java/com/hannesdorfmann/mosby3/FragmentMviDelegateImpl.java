@@ -189,7 +189,7 @@ public class FragmentMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
         retainPresenterInstance(keepPresenterOnBackstack, activity, fragment);
 
     presenter.detachView(retainPresenterInstance);
-    if (!retainPresenterInstance) {
+    if (!retainPresenterInstance && mosbyViewId != null) { // mosbyViewId == null if keepPresenterDuringScreenOrientationChange == false
       PresenterManager.remove(activity, mosbyViewId);
     }
 

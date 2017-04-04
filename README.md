@@ -26,7 +26,7 @@ dependencies {
   compile 'com.hannesdorfmann.mosby3:mvp-lce:3.0.2'
 
   // Null Object Presenter for MVP
-	compile 'com.hannesdorfmann.mosby3:mvp-nullobject-presenter:3.0.2'
+  compile 'com.hannesdorfmann.mosby3:mvp-nullobject-presenter:3.0.2'
 }
 ```
 
@@ -34,13 +34,13 @@ SNAPSHOT:
 ```groovy
 dependencies {
 
-	compile 'com.hannesdorfmann.mosby3:mvi:3.0.3-SNAPSHOT'
+  compile 'com.hannesdorfmann.mosby3:mvi:3.0.3-SNAPSHOT'
 
-	compile 'com.hannesdorfmann.mosby3:mvp:3.0.3-SNAPSHOT'
-	compile 'com.hannesdorfmann.mosby3:viewstate:3.0.3-SNAPSHOT'
+  compile 'com.hannesdorfmann.mosby3:mvp:3.0.3-SNAPSHOT'
+  compile 'com.hannesdorfmann.mosby3:viewstate:3.0.3-SNAPSHOT'
 
-	compile 'com.hannesdorfmann.mosby3:mvp-lce:3.0.3-SNAPSHOT'
-	compile 'com.hannesdorfmann.mosby3:mvp-nullobject-presenter:3.0.3-SNAPSHOT'
+  compile 'com.hannesdorfmann.mosby3:mvp-lce:3.0.3-SNAPSHOT'
+  compile 'com.hannesdorfmann.mosby3:mvp-nullobject-presenter:3.0.3-SNAPSHOT'
 }
 ```
 

@@ -33,7 +33,7 @@ for (File file : sdkHandler.sdkLoader.repositories) {
 dependencies {
 
   compile project(':mvp-common')
-  compile 'com.android.support:support-annotations:' + rootProject.ext.supportAnnotations
+  compile 'com.android.support:support-annotations:' + rootProject.ext.supportLibVersion
 
   testCompile 'junit:junit:' + rootProject.ext.junitVersion
   testCompile 'org.mockito:mockito-core:' + rootProject.ext.mockitoVersion

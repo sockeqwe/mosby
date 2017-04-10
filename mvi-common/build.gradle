@@ -34,7 +34,7 @@ dependencies {
 
   compile project(':mvp-common')
   compile 'io.reactivex.rxjava2:rxjava:' + rootProject.ext.rxjava2Version
-  compile 'com.android.support:support-annotations:' + rootProject.ext.supportAnnotations
+  compile 'com.android.support:support-annotations:' + rootProject.ext.supportLibVersion
 
   testCompile 'junit:junit:' + rootProject.ext.junitVersion
   testCompile 'com.google.code.findbugs:annotations:'+rootProject.ext.findbugsAnnotations

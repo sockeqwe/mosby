@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'me.tatarka.retrolambda'
 apply from: '../findbugs.gradle'
 
@@ -82,7 +81,7 @@ dependencies {
   compile "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
 
   compile 'com.jakewharton:butterknife:'+rootProject.ext.butterknifeVersion
-  apt 'com.jakewharton:butterknife-compiler:' + rootProject.ext.butterknifeVersion
+  annotationProcessor 'com.jakewharton:butterknife-compiler:' + rootProject.ext.butterknifeVersion
 
   compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
   compile 'com.github.bumptech.glide:glide:3.7.0'

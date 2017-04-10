@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.neenbedankt.android-apt'
 apply from: '../findbugs.gradle'
 
 android {
@@ -36,14 +35,14 @@ dependencies {
 
 
   compile 'com.jakewharton:butterknife:'+rootProject.ext.butterknifeVersion
-  apt 'com.jakewharton:butterknife-compiler:' + rootProject.ext.butterknifeVersion
+  annotationProcessor 'com.jakewharton:butterknife-compiler:' + rootProject.ext.butterknifeVersion
 
-  apt 'com.hannesdorfmann.annotatedadapter:processor:' + rootProject.ext.annotatedadapterVersion
+  annotationProcessor 'com.hannesdorfmann.annotatedadapter:processor:' + rootProject.ext.annotatedadapterVersion
   compile 'com.hannesdorfmann.annotatedadapter:annotation:' + rootProject.ext.annotatedadapterVersion
   compile 'com.hannesdorfmann.annotatedadapter:support-recyclerview:' + rootProject.ext.annotatedadapterVersion
 
   compile 'com.hannesdorfmann.parcelableplease:annotation:' + rootProject.ext.parcelablepleaseVersion
-  apt 'com.hannesdorfmann.parcelableplease:processor:' + rootProject.ext.parcelablepleaseVersion
+  annotationProcessor 'com.hannesdorfmann.parcelableplease:processor:' + rootProject.ext.parcelablepleaseVersion
 
 
   compile 'com.squareup.leakcanary:leakcanary-android:'+ rootProject.ext.leakcanaryVersion

@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.neenbedankt.android-apt'
 apply from: '../findbugs.gradle'
 
 
@@ -56,23 +55,23 @@ dependencies {
   compile 'io.reactivex:rxjava:' + rootProject.ext.rxjavaVersion
   compile 'io.reactivex:rxandroid:' + rootProject.ext.rxandroidVersion
 
-  apt 'com.hannesdorfmann.annotatedadapter:processor:' + rootProject.ext.annotatedadapterVersion
+  annotationProcessor 'com.hannesdorfmann.annotatedadapter:processor:' + rootProject.ext.annotatedadapterVersion
   compile 'com.hannesdorfmann.annotatedadapter:annotation:' + rootProject.ext.annotatedadapterVersion
   compile 'com.hannesdorfmann.annotatedadapter:support-recyclerview:' + rootProject.ext.annotatedadapterVersion
 
 
   compile 'com.hannesdorfmann.parcelableplease:annotation:' + rootProject.ext.parcelablepleaseVersion
-  apt 'com.hannesdorfmann.parcelableplease:processor:' + rootProject.ext.parcelablepleaseVersion
+  annotationProcessor 'com.hannesdorfmann.parcelableplease:processor:' + rootProject.ext.parcelablepleaseVersion
 
   compile 'com.jakewharton:butterknife:' + rootProject.ext.butterknifeVersion
-  apt 'com.jakewharton:butterknife-compiler:' + rootProject.ext.butterknifeVersion
+  annotationProcessor 'com.jakewharton:butterknife-compiler:' + rootProject.ext.butterknifeVersion
 
   compile 'frankiesardo:icepick:' + rootProject.ext.icepickVersion
-  apt 'frankiesardo:icepick-processor:' + rootProject.ext.icepickVersion
+  annotationProcessor 'frankiesardo:icepick-processor:' + rootProject.ext.icepickVersion
   compile 'com.hannesdorfmann.fragmentargs:annotation:' + rootProject.ext.fragmentargsVersion
-  apt 'com.hannesdorfmann.fragmentargs:processor:' + rootProject.ext.fragmentargsVersion
+  annotationProcessor 'com.hannesdorfmann.fragmentargs:processor:' + rootProject.ext.fragmentargsVersion
   compile 'com.google.dagger:dagger:' + rootProject.ext.dagger2Version
-  apt 'com.google.dagger:dagger-compiler:' + rootProject.ext.dagger2Version
+  annotationProcessor 'com.google.dagger:dagger-compiler:' + rootProject.ext.dagger2Version
   compile 'javax.annotation:javax.annotation-api:1.2'
 
 

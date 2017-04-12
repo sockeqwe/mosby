@@ -23,6 +23,7 @@ import io.reactivex.subjects.ReplaySubject;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.TimeUnit;
 import org.junit.Assert;
 
 /**
@@ -103,7 +104,9 @@ public class HomeViewRobot {
     }
 
     int eventsCount = expectedHomeViewStates.length;
-    renderEventSubject.take(eventsCount).blockingSubscribe();
+    renderEventSubject.take(eventsCount)
+        .timeout(10, TimeUnit.SECONDS)
+        .blockingSubscribe();
 
     /*
     // Wait for few milli seconds to ensure that no more render events have occurred

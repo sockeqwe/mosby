@@ -6,8 +6,7 @@ buildscript {
     jcenter()
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:2.3.0'
-    classpath 'com.neenbedankt.gradle.plugins:android-apt:1.7'
+    classpath 'com.android.tools.build:gradle:2.3.1'
     //  classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.5.2'
     classpath 'me.tatarka:gradle-retrolambda:3.5.0'
   }
@@ -34,16 +33,14 @@ allprojects {
 ext {
   minSdk = 14
   targetSdk = 25
-  buildToolsVersion = '25.0.1'
+  buildToolsVersion = '25.0.2'
   compileSdkVersion = 25
 
   javaSourceCompatibility = JavaVersion.VERSION_1_7
   javaTargetCompatibility = JavaVersion.VERSION_1_7
 
   // Libraries
-  appcompat7Version = '25.2.0'
-  supportAnnotations = '25.2.0'
-  recyclerviewVersion = '25.2.0'
+  supportLibVersion = '25.3.1'
   rxjava2Version = '2.0.7'
 
 

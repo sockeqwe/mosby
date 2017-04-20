@@ -19,7 +19,6 @@ package com.hannesdorfmann.mosby3.mvi;
 
 import android.support.annotation.NonNull;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.subjects.PublishSubject;
@@ -34,7 +33,6 @@ import org.omg.CORBA.Object;
 /**
  * @author Hannes Dorfmann
  */
-@SuppressFBWarnings({"RV_RETURN_VALUE_IGNORED", "SIC_INNER_SHOULD_BE_STATIC"})
 public class MviBasePresenterTest {
 
   @Test public void bindIntentsAndUnbindIntentsOnlyOnce() {
@@ -135,11 +133,9 @@ public class MviBasePresenterTest {
     Assert.assertEquals(Arrays.asList("1 Intent", "2 Intent", "3 Intent"), intentsData);
     businessLogic.onNext("This will never reach the view");
     Assert.assertEquals(Arrays.asList("1 bl", "2 bl", "4 bl", "5 bl"), view.renderedModels);
-
   }
 
-  @Test
-  public void resetOnViewDetachedPermanently(){
+  @Test public void resetOnViewDetachedPermanently() {
     final AtomicInteger bindInvocations = new AtomicInteger(0);
     final AtomicInteger unbindInvocations = new AtomicInteger(0);
 

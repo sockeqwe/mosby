@@ -25,7 +25,6 @@ import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 import com.hannesdorfmann.mosby3.mvp.viewstate.RestorableViewState;
 import com.hannesdorfmann.mosby3.mvp.viewstate.ViewState;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /**
  * The default implementation for {@link ActivityMvpDelegate} that supports {@link ViewState}
@@ -36,7 +35,6 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 public class ActivityMvpViewStateDelegateImpl<V extends MvpView, P extends MvpPresenter<V>, VS extends ViewState<V>>
     extends ActivityMvpDelegateImpl<V, P> {
 
-  @SuppressFBWarnings(value = "MS_SHOULD_BE_FINAL", justification = "Could be enabled for debugging purpose")
   public static boolean DEBUG = false;
   private static final String DEBUG_TAG = "ActivityMvpViewStateDel";
 

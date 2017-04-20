@@ -65,5 +65,4 @@ ext {
   powermockVersion = '1.6.2'
   leakcanaryVersion = '1.5'
   androidSupportTestVersion = '0.5'
-  findbugsAnnotations = "3.0.0"
 }

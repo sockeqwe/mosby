@@ -27,7 +27,6 @@ import android.view.View;
 import com.hannesdorfmann.mosby3.PresenterManager;
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.UUID;
 
 /**
@@ -44,8 +43,6 @@ public class FragmentMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<V
 
   protected static final String KEY_MOSBY_VIEW_ID = "com.hannesdorfmann.mosby3.fragment.mvp.id";
 
-
-  @SuppressFBWarnings(value = "MS_SHOULD_BE_FINAL", justification = "Could be enabled for debugging purpose")
   public static boolean DEBUG = false;
   private static final String DEBUG_TAG = "FragmentMvpVSDelegate";
 
@@ -224,7 +221,9 @@ public class FragmentMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<V
 
     P presenter = getPresenter();
     presenter.detachView(retainPresenterInstance);
-    if (!retainPresenterInstance && mosbyViewId != null) { // mosbyViewId is null if keepPresenterInstanceDuringScreenOrientationChanges  == false
+    if (!retainPresenterInstance
+        && mosbyViewId
+        != null) { // mosbyViewId is null if keepPresenterInstanceDuringScreenOrientationChanges  == false
       PresenterManager.remove(activity, mosbyViewId);
     }
 

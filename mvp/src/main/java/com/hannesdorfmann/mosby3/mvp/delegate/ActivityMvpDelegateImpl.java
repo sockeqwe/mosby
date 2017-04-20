@@ -23,7 +23,6 @@ import android.util.Log;
 import com.hannesdorfmann.mosby3.PresenterManager;
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.UUID;
 
 /**
@@ -38,10 +37,8 @@ import java.util.UUID;
 public class ActivityMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<V>>
     implements ActivityMvpDelegate {
 
-
   protected static final String KEY_MOSBY_VIEW_ID = "com.hannesdorfmann.mosby3.activity.mvp.id";
 
-  @SuppressFBWarnings(value = "MS_SHOULD_BE_FINAL", justification = "Could be enabled for debugging purpose")
   public static boolean DEBUG = false;
   private static final String DEBUG_TAG = "ActivityMvpDelegateImpl";
 
@@ -101,7 +98,6 @@ public class ActivityMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<V
     }
     return presenter;
   }
-
 
   @Override public void onCreate(Bundle bundle) {
 
@@ -181,15 +177,21 @@ public class ActivityMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<V
   @Override public void onDestroy() {
     boolean retainPresenterInstance = retainPresenterInstance(keepPresenterInstance, activity);
     getPresenter().detachView(retainPresenterInstance);
-    if (!retainPresenterInstance && mosbyViewId != null){
+    if (!retainPresenterInstance && mosbyViewId != null) {
       PresenterManager.remove(activity, mosbyViewId);
     }
 
     if (DEBUG) {
       if (retainPresenterInstance) {
-        Log.d(DEBUG_TAG, "View" + getMvpView() + " destroyed temporarily. View detached from presenter "+getPresenter());
+        Log.d(DEBUG_TAG, "View"
+            + getMvpView()
+            + " destroyed temporarily. View detached from presenter "
+            + getPresenter());
       } else {
-        Log.d(DEBUG_TAG, "View" + getMvpView() + " destroyed permanently. View detached permanently from presenter "+getPresenter());
+        Log.d(DEBUG_TAG, "View"
+            + getMvpView()
+            + " destroyed permanently. View detached permanently from presenter "
+            + getPresenter());
       }
     }
   }

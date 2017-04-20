@@ -28,7 +28,6 @@ import com.hannesdorfmann.mosby3.MosbySavedState;
 import com.hannesdorfmann.mosby3.PresenterManager;
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.UUID;
 
 /**
@@ -51,7 +50,6 @@ public class ViewGroupMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<
 
   // TODO allow custom save state hook in
 
-  @SuppressFBWarnings(value = "MS_SHOULD_BE_FINAL", justification = "Could be set for debugging")
   public static boolean DEBUG = false;
   private static final String DEBUG_TAG = "ViewGroupMvpDelegateImp";
 
@@ -201,7 +199,8 @@ public class ViewGroupMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<
               + " and removing presenter permanently from internal cache because the hosting Activity will be destroyed permanently");
         }
 
-        if (mosbyViewId != null) { // mosbyViewId == null if keepPresenterDuringScreenOrientationChange == false
+        if (mosbyViewId
+            != null) { // mosbyViewId == null if keepPresenterDuringScreenOrientationChange == false
           PresenterManager.remove(activity, mosbyViewId);
         }
         mosbyViewId = null;
@@ -246,7 +245,8 @@ public class ViewGroupMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<
       }
       // retain instance feature disabled
       presenter.detachView(false);
-      if (mosbyViewId != null) { // mosbyViewId == null if keepPresenterDuringScreenOrientationChange == false
+      if (mosbyViewId
+          != null) { // mosbyViewId == null if keepPresenterDuringScreenOrientationChange == false
         PresenterManager.remove(activity, mosbyViewId);
       }
       mosbyViewId = null;

@@ -26,7 +26,6 @@ import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 import com.hannesdorfmann.mosby3.mvp.viewstate.RestorableParcelableViewState;
 import com.hannesdorfmann.mosby3.mvp.viewstate.ViewState;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.UUID;
 
 /**
@@ -40,7 +39,6 @@ public class ViewGroupMvpViewStateDelegateImpl<V extends MvpView, P extends MvpP
 
   // TODO allow custom save state hook in
 
-  @SuppressFBWarnings(value = "MS_SHOULD_BE_FINAL", justification = "Could be enabled for debugging purpose")
   public static boolean DEBUG = false;
   private static final String DEBUG_TAG = "ViewGroupMvpDelegateImp";
 

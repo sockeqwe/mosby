@@ -52,9 +52,6 @@ dependencies {
 
   compile project(':mvi')
 
-  provided 'com.google.code.findbugs:annotations:' + rootProject.ext.findbugsAnnotations
-
-
   compile 'com.android.support:appcompat-v7:' + rootProject.ext.supportLibVersion
   compile 'com.android.support:recyclerview-v7:' + rootProject.ext.supportLibVersion
   compile 'com.android.support:transition:' + rootProject.ext.supportLibVersion

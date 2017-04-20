@@ -17,8 +17,8 @@
 
 package com.hannesdorfmann.mosby3.mvi;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.reactivex.Observable;
+import io.reactivex.Observer;
 import io.reactivex.observers.TestObserver;
 import io.reactivex.subjects.PublishSubject;
 import org.junit.Assert;
@@ -27,7 +27,6 @@ import org.junit.Test;
 /**
  * @author Hannes Dorfmann
  */
-@SuppressFBWarnings({"RV_RETURN_VALUE_IGNORED"})
 public class DisposableIntentObserverTest {
 
   @Test public void forwardOnNextAndOnCompleteToPublishShubject() {

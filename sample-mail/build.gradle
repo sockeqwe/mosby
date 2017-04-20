@@ -80,5 +80,4 @@ dependencies {
 
   testCompile 'junit:junit:4.12'
   testCompile 'org.robolectric:robolectric:' + rootProject.ext.robolectricVersion
-  provided 'com.google.code.findbugs:annotations:3.0.0'
 }

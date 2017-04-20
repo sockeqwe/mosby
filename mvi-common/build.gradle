@@ -37,5 +37,16 @@ dependencies {
   compile 'com.android.support:support-annotations:' + rootProject.ext.supportLibVersion
 
   testCompile 'junit:junit:' + rootProject.ext.junitVersion
-  testCompile 'com.google.code.findbugs:annotations:'+rootProject.ext.findbugsAnnotations
+}
+
+
+findbugs {
+  excludeFilter = file("$project.projectDir/findbugs-filter.xml")
+}
+
+tasks.withType(FindBugs) {
+  reports {
+    xml.enabled = false
+    html.enabled = true
+  }
 }

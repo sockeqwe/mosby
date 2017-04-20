@@ -24,7 +24,6 @@ import android.util.Log;
 import com.hannesdorfmann.mosby3.mvi.MviPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.UUID;
 
 /**
@@ -43,7 +42,6 @@ public class ActivityMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
     implements ActivityMviDelegate {
 
 
-  @SuppressFBWarnings(value = "MS_SHOULD_BE_FINAL", justification = "Could be enabled for debugging purpose")
   public static boolean DEBUG = false;
   private static final String DEBUG_TAG = "ActivityMviDelegateImpl";
   private static final String KEY_MOSBY_VIEW_ID = "com.hannesdorfmann.mosby3.activity.mvi.id";

@@ -21,7 +21,6 @@ import com.hannesdorfmann.mosby3.sample.mail.model.account.AccountManager;
 import com.hannesdorfmann.mosby3.sample.mail.model.account.NotAuthenticatedException;
 import com.hannesdorfmann.mosby3.sample.mail.model.mail.statistics.MailStatistics;
 import com.hannesdorfmann.mosby3.sample.mail.model.mail.statistics.MailsCount;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -39,7 +38,7 @@ import rx.functions.Func1;
  */
 public class MailProvider {
 
-  @SuppressFBWarnings("MS_SHOULD_BE_FINAL") public static int DELAY = 2000;
+  public static int DELAY = 2000;
   public static int authExceptionEach = 15;
   public static int errorEach = 5;
   private int counter = 0;

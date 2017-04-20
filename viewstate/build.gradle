@@ -28,8 +28,6 @@ android {
 
 dependencies {
   compile project(':mvp')
-  provided 'com.google.code.findbugs:annotations:'+rootProject.ext.findbugsAnnotations
-
 
   testCompile 'junit:junit:' + rootProject.ext.junitVersion
 

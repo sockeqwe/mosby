@@ -150,7 +150,7 @@ public class HomeFragment extends MviFragment<HomeView, HomePresenter>
       // scroll to the end of the list so that the user sees the load more progress bar
       recyclerView.smoothScrollToPosition(adapter.getItemCount());
     }
-    adapter.setItems(state.getData());
+    adapter.setItems(state.getData()); // TODO error: this must be done before setLoading() otherwise error will occure. see https://github.com/sockeqwe/mosby/issues/244
 
     boolean pullToRefreshFinished = swipeRefreshLayout.isRefreshing()
         && !state.isLoadingPullToRefresh()

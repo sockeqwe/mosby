@@ -249,15 +249,22 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
     if (viewAttachedFirstTime) {
       bindIntents();
     }
+
+    //
+    // Build the chain from bottom to top:
+    // 1. Subscribe to ViewState
+    // 2. Subscribe intents
+    //
+    if (viewStateConsumer != null) {
+      subscribeViewStateConsumerActually(view);
+    }
+
     int intentsSize = intentRelaysBinders.size();
     for (int i = 0; i < intentsSize; i++) {
       IntentRelayBinderPair<?> intentRelayBinderPair = intentRelaysBinders.get(i);
       bindIntentActually(view, intentRelayBinderPair);
     }
 
-    if (viewStateConsumer != null) {
-      subscribeViewStateConsumerActually(view);
-    }
 
     viewAttachedFirstTime = false;
   }

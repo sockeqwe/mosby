@@ -21,9 +21,7 @@ import android.support.annotation.NonNull;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
-import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
-import io.reactivex.observers.TestObserver;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -31,12 +29,14 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
+ * Unit test that test if observables (like intents) are submitting directly in on subscribe,
+ * that all events will be dispatched properly to view.render() and no one has been swallowed
+ * because the observable stream hasn't been fully established yet.
  * @author Hannes Dorfmann
  */
+public class EagerObservableTest {
 
-public class EagerObservableFlowTest {
-
-  class SomeView implements MvpView {
+  private static class EagerView implements MvpView {
 
     List<String> renderedStates = new ArrayList<>();
 
@@ -53,16 +53,16 @@ public class EagerObservableFlowTest {
     }
   }
 
-  public class EagerPresenter extends MviBasePresenter<SomeView, String> {
+  private static class EagerPresenter extends MviBasePresenter<EagerView, String> {
     @Override protected void bindIntents() {
-      Observable<String> intent1 = intent(new ViewIntentBinder<SomeView, String>() {
-        @NonNull @Override public Observable<String> bind(@NonNull SomeView view) {
+      Observable<String> intent1 = intent(new ViewIntentBinder<EagerView, String>() {
+        @NonNull @Override public Observable<String> bind(@NonNull EagerView view) {
           return view.intent1();
         }
       });
 
-      Observable<String> intent2 = intent(new ViewIntentBinder<SomeView, String>() {
-        @NonNull @Override public Observable<String> bind(@NonNull SomeView view) {
+      Observable<String> intent2 = intent(new ViewIntentBinder<EagerView, String>() {
+        @NonNull @Override public Observable<String> bind(@NonNull EagerView view) {
           return view.intent2();
         }
       });
@@ -83,8 +83,8 @@ public class EagerObservableFlowTest {
 
       Observable<String> merged = Observable.merge(res1, res2);
 
-      subscribeViewState(merged, new ViewStateConsumer<SomeView, String>() {
-        @Override public void accept(@NonNull SomeView view, @NonNull String viewState) {
+      subscribeViewState(merged, new ViewStateConsumer<EagerView, String>() {
+        @Override public void accept(@NonNull EagerView view, @NonNull String viewState) {
           view.render(viewState);
         }
       });
@@ -93,7 +93,7 @@ public class EagerObservableFlowTest {
 
   @Test public void connectEager() {
 
-    SomeView view = new SomeView();
+    EagerView view = new EagerView();
     EagerPresenter presenter = new EagerPresenter();
 
     presenter.attachView(view);

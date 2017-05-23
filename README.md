@@ -1,7 +1,6 @@
 # Mosby
-A Model-View-Presenter library for modern Android apps.
+A Model-View-Presenter and Model-View-Intent library for Android apps.
 
-Check the [project website](http://hannesdorfmann.com/mosby/) for more information.
 
 [![Build Status](https://travis-ci.org/sockeqwe/mosby.svg?branch=master)](https://travis-ci.org/sockeqwe/mosby)
 
@@ -58,7 +57,8 @@ allprojects {
 ```
 
 # Documentation
-See the [project website](http://hannesdorfmann.com/mosby/)
+See the [project website](http://hannesdorfmann.com/mosby/).
+
 For Model-View-Intent checkout [this blog post series](http://hannesdorfmann.com/android/mosby3-mvi-1).
 
 # Changelog

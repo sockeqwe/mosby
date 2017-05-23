@@ -59,6 +59,7 @@ allprojects {
 
 # Documentation
 See the [project website](http://hannesdorfmann.com/mosby/)
+For Model-View-Intent checkout [this blog post series](http://hannesdorfmann.com/android/mosby3-mvi-1).
 
 # Changelog
 The changelog can be found in the [release section](https://github.com/sockeqwe/mosby/releases)

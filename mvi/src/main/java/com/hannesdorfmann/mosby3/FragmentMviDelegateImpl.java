@@ -36,11 +36,11 @@ import java.util.UUID;
 /**
  * The default implementation of {@link FragmentMviDelegate}
  * <p>
- * The View is attached to the Presenter in {@link Fragment#onViewCreated(View, Bundle)}.
+ * The View is attached to the Presenter in {@link Fragment#onStart()}.
  * So you better instantiate all your UI widgets before that lifecycle callback (typically in
  * {@link
  * Fragment#onCreateView(LayoutInflater, ViewGroup, Bundle)}. The View is detached from Presenter in
- * {@link Fragment#onDestroyView()}
+ * {@link Fragment#onStop()}
  * </p>
  *
  * @param <V> The type of {@link MvpView}
@@ -93,8 +93,12 @@ public class FragmentMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
   }
 
   @Override public void onViewCreated(View v, @Nullable Bundle savedInstanceState) {
-    boolean viewStateWillBeRestored = false;
     onViewCreatedCalled = true;
+    }
+
+  @Override public void onStart() {
+
+    boolean viewStateWillBeRestored = false;
 
     if (mosbyViewId == null) {
       // No presenter available,
@@ -181,6 +185,9 @@ public class FragmentMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
 
   @Override public void onDestroyView() {
     onViewCreatedCalled = false;
+  }
+
+  @Override public void onStop() {
 
     Activity activity = getActivity();
     boolean retainPresenterInstance =
@@ -239,9 +246,6 @@ public class FragmentMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
     return activity;
   }
 
-  @Override public void onStart() {
-  }
-
   /**
    * Generates the unique (mosby internal) viewState id and calls {@link
    * MviDelegateCallback#createPresenter()}
@@ -273,9 +277,6 @@ public class FragmentMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
         Log.d(DEBUG_TAG, "Saving MosbyViewId into Bundle. ViewId: " + mosbyViewId);
       }
     }
-  }
-
-  @Override public void onStop() {
   }
 
   @Override public void onAttach(Activity activity) {

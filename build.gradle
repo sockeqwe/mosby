@@ -4,9 +4,12 @@ buildscript {
 
   repositories {
     jcenter()
+    maven {
+      url "https://maven.google.com"
+    }
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:2.3.1'
+    classpath 'com.android.tools.build:gradle:2.3.3'
     //  classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.5.2'
     classpath 'me.tatarka:gradle-retrolambda:3.5.0'
   }
@@ -26,6 +29,10 @@ allprojects {
     maven {
       url 'https://clojars.org/repo/'
     }
+
+    maven {
+      url "https://maven.google.com"
+    }
   }
 }
 
@@ -33,14 +40,14 @@ allprojects {
 ext {
   minSdk = 14
   targetSdk = 25
-  buildToolsVersion = '25.0.2'
+  buildToolsVersion = '26.0.0'
   compileSdkVersion = 25
 
   javaSourceCompatibility = JavaVersion.VERSION_1_7
   javaTargetCompatibility = JavaVersion.VERSION_1_7
 
   // Libraries
-  supportLibVersion = '25.3.1'
+  supportLibVersion = '25.4.0'
   rxjava2Version = '2.0.7'
 
 

@@ -53,6 +53,8 @@ dependencies {
   androidTestCompile 'com.android.support.test:runner:' + rootProject.ext.androidSupportTestVersion
   androidTestCompile 'com.android.support.test:rules:' + rootProject.ext.androidSupportTestVersion
   androidTestCompile 'junit:junit:' + rootProject.ext.junitVersion
+  compile 'com.android.support.constraint:constraint-layout:1.0.2'
+  compile 'com.android.support:design:25.3.1'
 }
 
 configurations.all {

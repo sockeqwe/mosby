@@ -94,7 +94,7 @@ public class FragmentMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
 
   @Override public void onViewCreated(View v, @Nullable Bundle savedInstanceState) {
     onViewCreatedCalled = true;
-    }
+  }
 
   @Override public void onStart() {
 
@@ -176,6 +176,8 @@ public class FragmentMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
       return false;
     }
 
+    boolean contains = fragment.getFragmentManager().getFragments().contains(fragment);
+
     if (keepPresenterOnBackstack && BackstackAccessor.isFragmentOnBackStack(fragment)) {
       return true;
     }
@@ -185,6 +187,8 @@ public class FragmentMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
 
   @Override public void onDestroyView() {
     onViewCreatedCalled = false;
+    boolean retainPresenterInstance =
+        retainPresenterInstance(keepPresenterOnBackstack, getActivity(), fragment);
   }
 
   @Override public void onStop() {
@@ -273,6 +277,7 @@ public class FragmentMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
         && outState != null) {
       outState.putString(KEY_MOSBY_VIEW_ID, mosbyViewId);
 
+      retainPresenterInstance(keepPresenterOnBackstack, getActivity(), fragment);
       if (DEBUG) {
         Log.d(DEBUG_TAG, "Saving MosbyViewId into Bundle. ViewId: " + mosbyViewId);
       }

@@ -1,5 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2016 Hannes Dorfmann.
+  ~ Copyright 2017 Hannes Dorfmann.
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -15,7 +16,11 @@
   ~
   -->
 
-<resources>
-  <string name="app_name">mvi-integration-test</string>
-  <string name="title_activity_backstack">BackstackActivity</string>
-</resources>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:text="Second Fragment on backstack"
+    >
+
+</TextView>

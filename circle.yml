@@ -36,7 +36,7 @@ dependencies:
 test:
   override:
     # start the emulator
-    - emulator -avd circleci-android24 -no-window:
+    - emulator -avd circleci-android24:
         background: true
         parallel: true
     # wait for it to have booted
@@ -47,8 +47,35 @@ test:
   post:
   # Collect the JUnit reports
       - mkdir -p $CIRCLE_TEST_REPORTS/reports/junit
-      - find mvi/build/test-results/ -name "*.xml" -exec cp {} $CIRCLE_TEST_REPORTS/reports/junit/ \;
-      - find mvi/build/test-results/ -name "*.html" -exec cp {} $CIRCLE_TEST_REPORTS/reports/junit/ \;
+      - find mvi/build/ -name "*.xml" -exec cp {} $CIRCLE_TEST_REPORTS/reports/junit/ \;
+      - find mvi/build/ -name "*.html" -exec cp {} $CIRCLE_TEST_REPORTS/reports/junit/ \;
 
-      - find mvi-integration-test/build/reports/androidTest/ -name "*.xml" -exec cp {} $CIRCLE_TEST_REPORTS/reports/junit/ \;
-      - find mvi-integ/build/test-results/ -name "*.xml" -exec cp {} $CIRCLE_TEST_REPORTS/reports/junit/ \;
+      - find mvi-common/build/ -name "*.xml" -exec cp {} $CIRCLE_TEST_REPORTS/reports/junit/ \;
+      - find mvi-common/build/ -name "*.html" -exec cp {} $CIRCLE_TEST_REPORTS/reports/junit/ \;
+
+      - find mvi-integration-test/build/ -name "*.xml" -exec cp {} $CIRCLE_TEST_REPORTS/reports/junit/ \;
+      - find mvi-integration-test/build/ -name "*.html" -exec cp {} $CIRCLE_TEST_REPORTS/reports/junit/ \;
+
+      - find  mvp-common/build/ -name "*.xml" -exec cp {} $CIRCLE_TEST_REPORTS/reports/junit/ \;
+      - find  mvp-common/build/ -name "*.html" -exec cp {} $CIRCLE_TEST_REPORTS/reports/junit/ \;
+
+      - find mvp-lce/build/ -name "*.xml" -exec cp {} $CIRCLE_TEST_REPORTS/reports/junit/ \;
+      - find mvp-lce/build/ -name "*.xml" -exec cp {} $CIRCLE_TEST_REPORTS/reports/junit/ \;
+
+      - find mvp-nullobject-presenter/build/ -name "*.xml" -exec cp {} $CIRCLE_TEST_REPORTS/reports/junit/ \;
+      - find mvp-nullobject-presenter/build/ -name "*.html" -exec cp {} $CIRCLE_TEST_REPORTS/reports/junit/ \;
+
+      - find presentermanager/build/ -name "*.xml" -exec cp {} $CIRCLE_TEST_REPORTS/reports/junit/ \;
+      - find presentermanager/build/ -name "*.html" -exec cp {} $CIRCLE_TEST_REPORTS/reports/junit/ \;
+
+      - find utils-fragment/build/ -name "*.xml" -exec cp {} $CIRCLE_TEST_REPORTS/reports/junit/ \;
+      - find utils-fragment/build/ -name "*.html" -exec cp {} $CIRCLE_TEST_REPORTS/reports/junit/ \;
+
+      - find utils-fragment-integration-test/build/ -name "*.xml" -exec cp {} $CIRCLE_TEST_REPORTS/reports/junit/ \;
+      - find utils-fragment-integration-test/build/ -name "*.html" -exec cp {} $CIRCLE_TEST_REPORTS/reports/junit/ \;
+
+      - find viewstate/build/ -name "*.xml" -exec cp {} $CIRCLE_TEST_REPORTS/reports/junit/ \;
+      - find viewstate/build/ -name "*.html" -exec cp {} $CIRCLE_TEST_REPORTS/reports/junit/ \;
+
+      - find mvp/build/ -name "*.xml" -exec cp {} $CIRCLE_TEST_REPORTS/reports/junit/ \;
+      - find mvp/build/ -name "*.html" -exec cp {} $CIRCLE_TEST_REPORTS/reports/junit/ \;

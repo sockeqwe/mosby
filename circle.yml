@@ -1,0 +1,43 @@
+machine:
+    java:
+        version: oraclejdk8
+    environment:
+        ANDROID_HOME: /usr/local/android-sdk-linux
+        ANDROID_BUILD_TOOLS: 26.0.0
+
+dependencies:
+    pre:
+        # Remove any leftover lock from previous builds
+        - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+
+        # Make sure we have the sdkmanager available, and update the Android SDK tools if not
+        - if [ ! -e $ANDROID_HOME/tools/bin/sdkmanager ]; then echo y | android update sdk --no-ui --all --filter tools; fi
+
+        # Install all the required SDK components
+        - echo y | $ANDROID_HOME/tools/bin/sdkmanager --verbose "platform-tools" "build-tools;"$ANDROID_BUILD_TOOLS "extras;google;m2repository"
+
+    override:
+        # Force Gradle to pre-download dependencies for the app module (the default would only be for the root, which is useless)
+        - if [ -f ./gradlew ]; then ./gradlew mvi:dependencies --console=plain --no-daemon;else gradle mvi:dependencies --console=plain --no-daemon;fi
+
+    cache_directories:
+        # Android SDK
+        - /usr/local/android-sdk-linux/tools
+        - /usr/local/android-sdk-linux/platform-tools
+        - /usr/local/android-sdk-linux/build-tools
+        - /usr/local/android-sdk-linux/licenses
+        - /usr/local/android-sdk-linux/extras/google/m2repository
+
+        # Gradle caches
+        - /home/ubuntu/.gradle/caches/
+        - /home/ubuntu/.gradle/wrapper/
+
+test:
+    pre:
+        - ./.buildscript/swarm/swarm_start.sh
+
+    override:
+        - ./gradlew test cAT
+    
+    post:
+        - ./buildscript/swarm/swarm_stop.sh

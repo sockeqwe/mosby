@@ -1,8 +1,8 @@
 #!/bin/bash
 
 echo $ANDROID_HOME
-
 ls -la ${ANDROID_HOME}/tools/bin/
+
 
 SWARMER_VERSION=0.2.0
 SWARMER_JAR=/tmp/swarmer.jar

@@ -14,4 +14,6 @@ java -jar ${SWARMER_JAR} start \
 --android-abi google_apis/x86_64 \
 --path-to-config-ini .buildscript/swarmer/emulator1-config.ini \
 --emulator-start-options -prop persist.sys.language=en -prop persist.sys.country=US \
---redirect-logcat-to test_emulator_1_logcat.txt
+--redirect-logcat-to test_emulator_1_logcat.txt \
+--emulator-start-options  -verbose \
+--emulator-start-timeout-seconds 720

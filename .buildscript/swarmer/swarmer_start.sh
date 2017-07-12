@@ -15,5 +15,5 @@ java -jar ${SWARMER_JAR} start \
 --path-to-config-ini .buildscript/swarmer/emulator1-config.ini \
 --emulator-start-options -prop persist.sys.language=en -prop persist.sys.country=US \
 --redirect-logcat-to test_emulator_1_logcat.txt \
---emulator-start-options  -verbose \
---emulator-start-timeout-seconds 720
+--emulator-start-options  -verbose --no-window \
+--emulator-start-timeout-seconds 180

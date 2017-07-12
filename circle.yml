@@ -34,10 +34,10 @@ dependencies:
 
 test:
     pre:
-        - ./.buildscript/swarm/swarm_start.sh
+        - ./.buildscript/swarmer/swarmer_start.sh
 
     override:
         - ./gradlew test cAT
     
     post:
-        - ./buildscript/swarm/swarm_stop.sh
+        - ./buildscript/swarm/swarmer_stop.sh

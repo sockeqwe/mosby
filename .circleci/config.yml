@@ -10,6 +10,9 @@ jobs:
       - checkout
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "mvi/build.gradle" }}-{{ checksum  "mvi-common/build.gradle" }}-{{ checksum  "mvi-integration-test/build.gradle" }}-{{ checksum  "mvp/build.gradle" }}-{{ checksum  "mvp-common/build.gradle" }}-{{ checksum  "mvp-lce/build.gradle" }}-{{ checksum  "mvp-nullobject-presenter/build.gradle" }}-{{ checksum  "presentermanager/build.gradle" }}-{{ checksum  "sample/build.gradle" }}--{{ checksum  "sample-mail/build.gradle" }}-{{ checksum  "sample-mvi/build.gradle" }}-{{ checksum  "utils-fragment/build.gradle" }}-{{ checksum  "utils-fragment-integration-test/build.gradle" }}-{{ checksum  "viewstate/build.gradle" }}
+      -run:
+        name: Start Android Emulator (swarmer)
+        command: ./.buildscript/swarmer/swarmer_start.sh
       - run:
           name: Download Dependencies
           command: ./gradlew androidDependencies
@@ -18,8 +21,11 @@ jobs:
             - ~/.gradle
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "mvi/build.gradle" }}-{{ checksum  "mvi-common/build.gradle" }}-{{ checksum  "mvi-integration-test/build.gradle" }}-{{ checksum  "mvp/build.gradle" }}-{{ checksum  "mvp-common/build.gradle" }}-{{ checksum  "mvp-lce/build.gradle" }}-{{ checksum  "mvp-nullobject-presenter/build.gradle" }}-{{ checksum  "presentermanager/build.gradle" }}-{{ checksum  "sample/build.gradle" }}--{{ checksum  "sample-mail/build.gradle" }}-{{ checksum  "sample-mvi/build.gradle" }}-{{ checksum  "utils-fragment/build.gradle" }}-{{ checksum  "utils-fragment-integration-test/build.gradle" }}-{{ checksum  "viewstate/build.gradle" }}
       - run:
-          name: Run Tests
+          name: Build and Run Tests
           command: ./gradlew build lint test cAT
+      - run:
+          name: Stop Android Emulator (swarmer)
+          command: ./.buildscript/swarmer/swarmer_stop.sh
       - store_artifacts:
           path: app/build/reports
           destination: reports

@@ -8,8 +8,8 @@ SWARMER_VERSION=0.2.0
 SWARMER_JAR=/tmp/swarmer.jar
 
 curl --fail --location https://jcenter.bintray.com/com/gojuno/swarmer/swarmer/${SWARMER_VERSION}/swarmer-${SWARMER_VERSION}.jar --output ${SWARMER_JAR}
-sdkmanager --update
-sdkmanager "system-images;android-25;google_apis;x86_64"
+$ANDROID_HOME/tools/bin/sdkmanager --update
+$ANDROID_HOME/tools/bin/sdkmanager "system-images;android-25;google_apis;x86_64"
 
 
 java -jar ${SWARMER_JAR} start \

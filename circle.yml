@@ -19,7 +19,7 @@ dependencies:
 
     override:
         # Force Gradle to pre-download dependencies for the app module (the default would only be for the root, which is useless)
-        - if [ -f ./gradlew ]; then ./gradlew mvi:dependencies --console=plain --no-daemon;else gradle mvi:dependencies --console=plain --no-daemon;fi
+        - if [ -f ./gradlew ]; then ./gradlew mvi:dependencies --console=plain;else gradle mvi:dependencies --console=plain;fi
 
     cache_directories:
         # Android SDK
@@ -42,4 +42,13 @@ test:
     # wait for it to have booted
     - circle-android wait-for-boot
     # run tests  against the emulator.
-    - ./gradlew test connectedAndroidTest
+    - ./gradlew test connectedAndroidTest --console=plain
+
+  post:
+  # Collect the JUnit reports
+      - mkdir -p $CIRCLE_TEST_REPORTS/reports/junit
+      - find mvi/build/test-results/ -name "*.xml" -exec cp {} $CIRCLE_TEST_REPORTS/reports/junit/ \;
+      - find mvi/build/test-results/ -name "*.html" -exec cp {} $CIRCLE_TEST_REPORTS/reports/junit/ \;
+
+      - find mvi-integration-test/build/reports/androidTest/ -name "*.xml" -exec cp {} $CIRCLE_TEST_REPORTS/reports/junit/ \;
+      - find mvi-integ/build/test-results/ -name "*.xml" -exec cp {} $CIRCLE_TEST_REPORTS/reports/junit/ \;

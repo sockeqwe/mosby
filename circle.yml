@@ -4,6 +4,7 @@ machine:
     environment:
         ANDROID_HOME: /usr/local/android-sdk-linux
         ANDROID_BUILD_TOOLS: 26.0.0
+        QEMU_AUDIO_DRV: none
 
 dependencies:
     pre:
@@ -33,11 +34,12 @@ dependencies:
         - /home/ubuntu/.gradle/wrapper/
 
 test:
-    pre:
-        - ./.buildscript/swarmer/swarmer_start.sh
-
-    override:
-        - ./gradlew test cAT
-    
-    post:
-        - ./buildscript/swarm/swarmer_stop.sh
+  override:
+    # start the emulator
+    - emulator -avd circleci-android24 -no-window:
+        background: true
+        parallel: true
+    # wait for it to have booted
+    - circle-android wait-for-boot
+    # run tests  against the emulator.
+    - ./gradlew test connectedAndroidTest

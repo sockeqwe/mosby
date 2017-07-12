@@ -38,7 +38,7 @@ test:
     # start the emulator
     - emulator -avd circleci-android24:
         background: true
-        parallel: true
+        parallel: false
     # wait for it to have booted
     - circle-android wait-for-boot
     # run tests  against the emulator.

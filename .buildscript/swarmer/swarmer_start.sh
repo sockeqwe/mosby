@@ -5,6 +5,10 @@ SWARMER_JAR=/tmp/swarmer.jar
 
 curl --fail --location https://jcenter.bintray.com/com/gojuno/swarmer/swarmer/${SWARMER_VERSION}/swarmer-${SWARMER_VERSION}.jar --output ${SWARMER_JAR}
 
+android update sdk -u --filter platform-tools,android-25
+sdkmanager "system-images;android-25;google_apis;x86"
+
+
 java -jar ${SWARMER_JAR} start \
 --emulator-name test_emulator_1 \
 --package "system-images;android-25;google_apis;x86" \

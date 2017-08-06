@@ -102,7 +102,7 @@ public abstract class MvpLceActivity<CV extends View, M, V extends MvpLceView<M>
   }
 
   /**
-   * Create the loading view. Default is {@code findViewById(R.id.errorView)}
+   * Create the error view. Default is {@code findViewById(R.id.errorView)}
    * @return the error view
    */
   @NonNull protected TextView createErrorView(){

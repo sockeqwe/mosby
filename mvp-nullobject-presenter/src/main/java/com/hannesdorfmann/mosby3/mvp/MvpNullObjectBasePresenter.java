@@ -18,7 +18,8 @@ import java.lang.reflect.Type;
  * Please note that when creating the "null object" the first generic parameter (left depth-first
  * search) that will be found that is subtype of {@link MvpView} will be used as the type of the
  * view. So avoid having multiple generic parameters for "View" like this {@code
- * MyPresenter<FooMvpView, OtherMvpView>} because we can't know wheter FooMvpView or OtherMvpView is
+ * MyPresenter<FooMvpView, OtherMvpView>} because we can't know wheter FooMvpView or OtherMvpView
+ * is
  * the
  * real type of this presenter's view. In that case (left depth-first search) FooMvpView will be
  * used (may cause ClassCastException if OtherMvpView was the desired one)
@@ -100,7 +101,7 @@ public abstract class MvpNullObjectBasePresenter<V extends MvpView> implements M
   }
 
   @UiThread @NonNull protected V getView() {
-    if (!viewAttachedAtLeastOnce){
+    if (!viewAttachedAtLeastOnce) {
       throw new IllegalStateException("No view has ever been attached to this presenter!");
     }
     if (view != null) {
@@ -113,10 +114,30 @@ public abstract class MvpNullObjectBasePresenter<V extends MvpView> implements M
     return nullView;
   }
 
-  @UiThread @Override public void detachView(boolean retainInstance) {
+  /**
+   * {@inheritDoc}
+   */
+  @Override @UiThread public void detachView() {
+
+    detachView(true);
+
     if (view != null) {
       view.clear();
       view = null;
     }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override @UiThread public void destroy() {
+    detachView(false);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Deprecated @UiThread @Override public void detachView(boolean retainInstance) {
+
   }
 }

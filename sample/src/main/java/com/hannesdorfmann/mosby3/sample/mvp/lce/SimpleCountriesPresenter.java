@@ -77,19 +77,17 @@ public class SimpleCountriesPresenter extends MvpBasePresenter<CountriesView>
     countriesLoader.execute();
   }
 
-  @Override public void detachView(boolean retainInstance) {
-    super.detachView(retainInstance);
+  @Override public void detachView() {
+    super.detachView();
+    Log.d(TAG, "View detached from presenter");
+  }
 
-    StringBuilder builder = new StringBuilder("---- detachView(" + retainInstance + ") ");
-    if (!retainInstance) {
-      if (countriesLoader != null) {
-        countriesLoader.cancel(true);
-      }
-      builder.append(" --> cancel Loader");
+  @Override public void destroy() {
+    super.destroy();
+    if (countriesLoader != null) {
+      countriesLoader.cancel(true);
     }
-
-    builder.append(" ----");
-    Log.d(TAG, builder.toString());
+    Log.d(TAG,"Presenter destroyed");
   }
 
   @Override public void attachView(CountriesView view) {

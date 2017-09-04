@@ -32,6 +32,7 @@ public class FirstPresenter extends MviBasePresenter<FirstView, Object> {
   public AtomicInteger unbindIntentCalls = new AtomicInteger(0);
   public AtomicInteger attachViewCalls = new AtomicInteger(0);
   public AtomicInteger detachViewCalls = new AtomicInteger(0);
+  public AtomicInteger destoryCalls = new AtomicInteger(0);
 
   @Override protected void bindIntents() {
     bindIntentCalls.incrementAndGet();
@@ -47,9 +48,14 @@ public class FirstPresenter extends MviBasePresenter<FirstView, Object> {
     attachViewCalls.incrementAndGet();
   }
 
-  @Override public void detachView(boolean retainInstance) {
-    super.detachView(retainInstance);
-    Log.d("Presenters", "First Retain Presenter "+retainInstance);
+  @Override public void detachView() {
+    super.detachView();
+    Log.d("Presenters", "First Retain Presenter detachView");
     detachViewCalls.incrementAndGet();
+  }
+
+  @Override public void destroy() {
+    super.destroy();
+    destoryCalls.incrementAndGet();
   }
 }

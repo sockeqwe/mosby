@@ -176,8 +176,6 @@ public class FragmentMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
       return false;
     }
 
-    boolean contains = fragment.getFragmentManager().getFragments().contains(fragment);
-
     if (keepPresenterOnBackstack && BackstackAccessor.isFragmentOnBackStack(fragment)) {
       return true;
     }
@@ -193,25 +191,12 @@ public class FragmentMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
 
   @Override public void onStop() {
 
-    Activity activity = getActivity();
-    boolean retainPresenterInstance =
-        retainPresenterInstance(keepPresenterOnBackstack, activity, fragment);
-
-    presenter.detachView(retainPresenterInstance);
-    if (!retainPresenterInstance
-        && mosbyViewId
-        != null) { // mosbyViewId == null if keepPresenterDuringScreenOrientationChange == false
-      PresenterManager.remove(activity, mosbyViewId);
-    }
+    presenter.detachView();
 
     if (DEBUG) {
       Log.d(DEBUG_TAG, "detached MvpView from Presenter. MvpView "
           + delegateCallback.getMvpView()
           + "   Presenter: "
-          + presenter);
-      Log.d(DEBUG_TAG, "Retaining presenter instance: "
-          + Boolean.toString(retainPresenterInstance)
-          + " "
           + presenter);
     }
   }
@@ -229,6 +214,27 @@ public class FragmentMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
   }
 
   @Override public void onDestroy() {
+
+    Activity activity = getActivity();
+    boolean retainPresenterInstance =
+        retainPresenterInstance(keepPresenterOnBackstack, activity, fragment);
+
+    if (!retainPresenterInstance) {
+      presenter.destroy();
+      if (mosbyViewId
+          != null) { // mosbyViewId == null if keepPresenterDuringScreenOrientationChange == false
+        PresenterManager.remove(activity, mosbyViewId);
+      }
+      if (DEBUG) {
+        Log.d(DEBUG_TAG, "Presenter destroyed");
+      }
+    } else if (DEBUG) {
+      Log.d(DEBUG_TAG, "Retaining presenter instance: "
+          + Boolean.toString(retainPresenterInstance)
+          + " "
+          + presenter);
+    }
+
     presenter = null;
     delegateCallback = null;
     fragment = null;

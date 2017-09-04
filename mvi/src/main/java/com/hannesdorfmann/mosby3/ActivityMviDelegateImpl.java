@@ -194,8 +194,7 @@ public class ActivityMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
   }
 
   @Override public void onStop() {
-    boolean retainPresenterInstance = retainPresenterInstance(keepPresenterInstance, activity);
-    presenter.detachView(retainPresenterInstance);
+    presenter.detachView();
 
     if (DEBUG) {
       Log.d(DEBUG_TAG, "detached MvpView from Presenter. MvpView "
@@ -204,15 +203,20 @@ public class ActivityMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
           + presenter);
     }
 
+
+  }
+
+  @Override public void onDestroy() {
+
+    boolean retainPresenterInstance = retainPresenterInstance(keepPresenterInstance, activity);
     if (!retainPresenterInstance){
+      presenter.destroy();
       if (mosbyViewId != null) { // mosbyViewId == null if keepPresenterInstance == false
         PresenterManager.remove(activity, mosbyViewId);
       }
       Log.d(DEBUG_TAG, "Destroying Presenter permanently " + presenter);
     }
-  }
 
-  @Override public void onDestroy() {
     presenter = null;
     activity = null;
     delegateCallback = null;

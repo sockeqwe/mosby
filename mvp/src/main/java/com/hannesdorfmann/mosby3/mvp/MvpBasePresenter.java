@@ -16,9 +16,7 @@
 
 package com.hannesdorfmann.mosby3.mvp;
 
-import android.support.annotation.Nullable;
 import android.support.annotation.UiThread;
-
 import java.lang.ref.WeakReference;
 
 /**
@@ -72,8 +70,7 @@ public class MvpBasePresenter<V extends MvpView> implements MvpPresenter<V> {
 
   private WeakReference<V> viewRef;
 
-  @UiThread
-  @Override public void attachView(V view) {
+  @UiThread @Override public void attachView(V view) {
     viewRef = new WeakReference<V>(view);
   }
 
@@ -92,16 +89,31 @@ public class MvpBasePresenter<V extends MvpView> implements MvpPresenter<V> {
    * Checks if a view is attached to this presenter. You should always call this method before
    * calling {@link #getView()} to get the view instance.
    */
-  @UiThread
-  public boolean isViewAttached() {
+  @UiThread public boolean isViewAttached() {
     return viewRef != null && viewRef.get() != null;
   }
 
-  @UiThread
-  @Override public void detachView(boolean retainInstance) {
+  /**
+   * {@inheritDoc}
+   */
+  @Deprecated @UiThread @Override public void detachView(boolean retainInstance) {
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override public void detachView() {
+    detachView(true);
     if (viewRef != null) {
       viewRef.clear();
       viewRef = null;
     }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override public void destroy() {
+    detachView(false);
   }
 }

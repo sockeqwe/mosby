@@ -40,6 +40,7 @@ public class LifecycleTestPresenter extends MviBasePresenter<LifecycleTestView, 
     Log.d(getClass().getSimpleName(), "attachView " + attachViewInvokations + " " + attachedView);
   }
 
+  // TODO replace with not deprecated
   @Override public void detachView(boolean retainInstance) {
     super.detachView(retainInstance);
     attachedView = null;

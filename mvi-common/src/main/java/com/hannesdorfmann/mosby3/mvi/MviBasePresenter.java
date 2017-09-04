@@ -59,7 +59,8 @@ import java.util.List;
  * viewState is a object (typically a POJO) that holds all the data the view needs to display</li>
  * </ul>
  *
- * By using {@link #intent(ViewIntentBinder)} and {@link #subscribeViewState(Observable, * ViewStateConsumer)}
+ * By using {@link #intent(ViewIntentBinder)} and {@link #subscribeViewState(Observable, *
+ * ViewStateConsumer)}
  * a relay will be established between the view and this presenter that allows the view to be
  * temporarily detached, without unsubscribing the underlying reactive business logic workflow and
  * without causing memory leaks (caused by recreation of the view).
@@ -117,7 +118,8 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
    * This "binder" is responsible to bind the view state to the currently attached view.
    * This typically "renders" the view.
    *
-   * Typically this is used in {@link #bindIntents()} with {@link MviBasePresenter#subscribeViewState(Observable, * ViewStateConsumer)}
+   * Typically this is used in {@link #bindIntents()} with {@link MviBasePresenter#subscribeViewState(Observable,
+   * * ViewStateConsumer)}
    * like this:
    * <pre><code>
    *   Observable<MyViewState> viewState =  ... ;
@@ -265,23 +267,11 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
       bindIntentActually(view, intentRelayBinderPair);
     }
 
-
     viewAttachedFirstTime = false;
   }
 
-  @Override @CallSuper public void detachView(boolean retainInstance) {
-    if (!retainInstance) {
-      if (viewStateDisposable != null) {
-        // Cancel the overall observable stream
-        viewStateDisposable.dispose();
-      }
-
-      unbindIntents();
-      reset();
-      // TODO should we re emit the inital state? What if no initial state has been set.
-      // TODO should we rather throw an exception if presenter is reused after view has been detached permanently
-    }
-
+  @Override @CallSuper public void detachView() {
+    detachView(true);
     if (viewRelayConsumerDisposable != null) {
       // Cancel subscription from View to viewState Relay
       viewRelayConsumerDisposable.dispose();
@@ -293,6 +283,26 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
       intentDisposals.dispose();
       intentDisposals = null;
     }
+  }
+
+  @Override @CallSuper public void destroy() {
+    detachView(false);
+    if (viewStateDisposable != null) {
+      // Cancel the overall observable stream
+      viewStateDisposable.dispose();
+    }
+
+    unbindIntents();
+    reset();
+    // TODO should we re emit the inital state? What if no initial state has been set.
+    // TODO should we rather throw an exception if presenter is reused after view has been detached permanently
+
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Deprecated @Override @CallSuper public void detachView(boolean retainInstance) {
   }
 
   /**

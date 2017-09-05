@@ -17,6 +17,7 @@
 
 package com.hannesdorfmann.mosby3.mvi.integrationtest.lifecycle.fragment.childfragment;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -31,10 +32,12 @@ public class MviLifecycleChildFragmentActivity
   private static final String TAG ="FragmetnTag";
   public LifecycleTestPresenter presenter;
   public static int createPresenterInvokations = 0;
+  private static Activity currentInstance;
 
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    currentInstance = this;
     setContentView(R.layout.activity_child_mvi_container);
     Log.d(getClass().getSimpleName(), "onCreate() " + this);
 
@@ -60,5 +63,13 @@ public class MviLifecycleChildFragmentActivity
     presenter = new LifecycleTestPresenter();
     Log.d(getClass().getSimpleName(), "createPresenter() " + this + " " + presenter);
     return presenter;
+  }
+
+  public static void pressBackButton() {
+    currentInstance.runOnUiThread(new Runnable() {
+      @Override public void run() {
+        currentInstance.onBackPressed();
+      }
+    });
   }
 }

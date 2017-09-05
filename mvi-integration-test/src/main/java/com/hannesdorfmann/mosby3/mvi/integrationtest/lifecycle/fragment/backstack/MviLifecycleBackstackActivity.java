@@ -77,7 +77,12 @@ public class MviLifecycleBackstackActivity
     return presenter;
   }
 
+
   public static void pressBackButton() {
-    currentActivity.onBackPressed();
+    currentActivity.runOnUiThread(new Runnable() {
+      @Override public void run() {
+        currentActivity.onBackPressed();
+      }
+    });
   }
 }

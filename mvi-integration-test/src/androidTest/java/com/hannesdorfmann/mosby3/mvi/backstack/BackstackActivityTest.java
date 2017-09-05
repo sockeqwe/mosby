@@ -19,6 +19,7 @@ package com.hannesdorfmann.mosby3.mvi.backstack;
 
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import com.hannesdorfmann.mosby3.FragmentMviDelegateImpl;
 import com.hannesdorfmann.mosby3.mvi.integrationtest.backstack.BackstackActivity;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -33,10 +34,8 @@ import org.junit.runner.RunWith;
 
   @Test public void testConfigChange() throws Exception {
 
-    // FragmentMviDelegateImpl.DEBUG = true;
+    FragmentMviDelegateImpl.DEBUG = true;
 
-    // Context of the app under test.
-    BackstackActivity portraitActivity = rule.getActivity();
 
     Thread.sleep(1000);
     Assert.assertEquals(1, BackstackActivity.createFirstPresenterCalls.get());
@@ -63,7 +62,7 @@ import org.junit.runner.RunWith;
     Thread.sleep(1000);
 
     Assert.assertEquals(2, BackstackActivity.firstPresenter.detachViewCalls.get());
-    Assert.assertEquals(1, BackstackActivity.firstPresenter.unbindIntentCalls.get());
+    Assert.assertEquals(0, BackstackActivity.firstPresenter.unbindIntentCalls.get());
     Assert.assertEquals(1, BackstackActivity.createFirstPresenterCalls.get());
     Assert.assertEquals(2, BackstackActivity.firstPresenter.attachViewCalls.get());
     Assert.assertEquals(1, BackstackActivity.firstPresenter.bindIntentCalls.get());
@@ -88,14 +87,28 @@ import org.junit.runner.RunWith;
     Assert.assertEquals(1, BackstackActivity.secondPresenter.bindIntentCalls.get());
 
     //
-    // Press back button
+    // Press back button --> Finish second fragment
     //
     BackstackActivity.pressBackButton();
     Thread.sleep(1000);
-  }
-
-  @AfterClass public static void afterBackButtonPressed() {
     Assert.assertEquals(2, BackstackActivity.secondPresenter.detachViewCalls.get());
     Assert.assertEquals(1, BackstackActivity.secondPresenter.unbindIntentCalls.get());
+
+    //
+    // First Fragment restored from backstack
+    //
+    Assert.assertEquals(1, BackstackActivity.createFirstPresenterCalls.get());
+    Assert.assertEquals(3, BackstackActivity.firstPresenter.attachViewCalls.get());
+    Assert.assertEquals(1, BackstackActivity.firstPresenter.bindIntentCalls.get());
+
+    // Press back button --> finishes the activity
+    BackstackActivity.pressBackButton();
+    Thread.sleep(1000);
+
+  }
+
+  @AfterClass public static void afterActivityFinished() {
+    Assert.assertEquals(3, BackstackActivity.firstPresenter.detachViewCalls.get());
+    Assert.assertEquals(1, BackstackActivity.firstPresenter.unbindIntentCalls.get());
   }
 }

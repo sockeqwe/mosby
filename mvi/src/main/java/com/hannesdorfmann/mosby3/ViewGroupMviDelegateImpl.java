@@ -172,6 +172,13 @@ public class ViewGroupMviDelegateImpl<V extends MvpView, P extends MviPresenter<
         // mosbyViewId == null if keepPresenterDuringScreenOrientationChange == false
         PresenterManager.remove(activity, mosbyViewId);
       } // else destroy presenter through activity lifecycle callbacks
+    } else if (!activity.isFinishing()){
+      // View has been removed manually from container
+      presenter.destroy();
+      if (mosbyViewId != null) {
+        PresenterManager.remove(activity, mosbyViewId);
+      }
+      activity.getApplication().unregisterActivityLifecycleCallbacks(this);
     }
   }
 

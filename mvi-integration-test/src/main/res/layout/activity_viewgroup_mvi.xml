@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+  <com.hannesdorfmann.mosby3.mvi.integrationtest.lifecycle.viewgroup.TestMviFrameLayout
+      android:id="@+id/testFrameLayout"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+     android:background="#A000FF"
+      >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Custom MVI ViewGroup"
+        />
+  </com.hannesdorfmann.mosby3.mvi.integrationtest.lifecycle.viewgroup.TestMviFrameLayout>
+
+</FrameLayout>

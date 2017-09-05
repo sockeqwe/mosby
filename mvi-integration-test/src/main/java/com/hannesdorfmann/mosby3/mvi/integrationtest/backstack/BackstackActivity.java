@@ -48,12 +48,6 @@ public class BackstackActivity extends AppCompatActivity {
           .replace(R.id.fragmentContainer, new FirstMviFragment())
           .commit();
     }
-
-    findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View v) {
-        navigateToSecondFragment();
-      }
-    });
   }
 
   public static void navigateToSecondFragment() {

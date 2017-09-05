@@ -37,20 +37,20 @@ public class LifecycleTestPresenter extends MviBasePresenter<LifecycleTestView, 
     super.attachView(view);
     attachViewInvokations++;
     attachedView = view;
-    Log.d(getClass().getSimpleName(), "attachView " + attachViewInvokations + " " + attachedView);
+    Log.d(getClass().getSimpleName(), "attachView " + attachViewInvokations + " " + attachedView+" in "+toString());
   }
 
   @Override public void detachView() {
     super.detachView();
     attachedView = null;
     detachViewInvokations++;
-    Log.d(getClass().getSimpleName(), "detachView " + detachViewInvokations);
+    Log.d(getClass().getSimpleName(), "detachView " + detachViewInvokations+" in "+toString());
   }
 
   @Override public void destroy() {
     super.destroy();
     destoryInvoations++;
-    Log.d(getClass().getSimpleName(), "destroy Presenter " + destoryInvoations);
+    Log.d(getClass().getSimpleName(), "destroy Presenter " + destoryInvoations+" in "+toString());
   }
 
   @Override protected void bindIntents() {

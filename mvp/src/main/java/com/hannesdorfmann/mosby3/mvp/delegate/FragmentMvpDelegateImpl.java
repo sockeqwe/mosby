@@ -216,26 +216,13 @@ public class FragmentMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<V
 
     onViewCreatedCalled = false;
 
-    Activity activity = getActivity();
-    boolean retainPresenterInstance = retainPresenterInstance();
-
-    P presenter = getPresenter();
-    presenter.detachView(retainPresenterInstance);
-    if (!retainPresenterInstance
-        && mosbyViewId
-        != null) { // mosbyViewId is null if keepPresenterInstanceDuringScreenOrientationChanges  == false
-      PresenterManager.remove(activity, mosbyViewId);
-    }
+    getPresenter().detachView();
 
     if (DEBUG) {
       Log.d(DEBUG_TAG, "detached MvpView from Presenter. MvpView "
           + delegateCallback.getMvpView()
           + "   Presenter: "
-          + presenter);
-      Log.d(DEBUG_TAG, "Retaining presenter instance: "
-          + Boolean.toString(retainPresenterInstance)
-          + " "
-          + presenter);
+          + getPresenter());
     }
   }
 
@@ -287,5 +274,26 @@ public class FragmentMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<V
   }
 
   @Override public void onDestroy() {
+
+    Activity activity = getActivity();
+    boolean retainPresenterInstance = retainPresenterInstance();
+
+    P presenter = getPresenter();
+    if (!retainPresenterInstance) {
+      presenter.destroy();
+      if (DEBUG) {
+        Log.d(DEBUG_TAG, "Presenter destroyed. MvpView "
+            + delegateCallback.getMvpView()
+            + "   Presenter: "
+            + presenter);
+      }
+    }
+
+    if (!retainPresenterInstance
+        && mosbyViewId
+        != null) { // mosbyViewId is null if keepPresenterInstanceDuringScreenOrientationChanges  == false
+      PresenterManager.remove(activity, mosbyViewId);
+    }
+
   }
 }

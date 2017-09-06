@@ -66,9 +66,9 @@ public class ActivityMvpDelegateImplTest {
 
     startActivity(delegate, null, 1, 1, 1);
     Bundle bundle = BundleMocker.create();
-    finishActivity(delegate, bundle, true, 1, true, false);
+    finishActivity(delegate, bundle, true, 1, 0, true, false);
     startActivity(delegate, bundle, 1, 2, 2);
-    finishActivity(delegate, bundle, false, 1, false, true);
+    finishActivity(delegate, bundle, false, 2, 1, false, true);
   }
 
   @Test public void appStartFinishing() {
@@ -77,7 +77,7 @@ public class ActivityMvpDelegateImplTest {
 
     startActivity(delegate, null, 1, 1, 1);
     Bundle bundle = BundleMocker.create();
-    finishActivity(delegate, bundle, false, 1, false, true);
+    finishActivity(delegate, bundle, false, 1, 1, false, true);
   }
 
   @Test public void dontKeepPresenter() {
@@ -85,9 +85,9 @@ public class ActivityMvpDelegateImplTest {
         new ActivityMvpDelegateImpl<>(activity, callback, false);
     startActivity(delegate, null, 1, 1, 1);
     Bundle bundle = BundleMocker.create();
-    finishActivity(delegate, bundle, false, 1, true, false);
+    finishActivity(delegate, bundle, false, 1, 1, true, false);
     startActivity(delegate, bundle, 2, 2, 2);
-    finishActivity(delegate, bundle, false, 2, false, true);
+    finishActivity(delegate, bundle, false, 2, 2, false, true);
   }
 
   private void startActivity(ActivityMvpDelegateImpl<MvpView, MvpPresenter<MvpView>> delegate,
@@ -105,7 +105,7 @@ public class ActivityMvpDelegateImplTest {
   }
 
   private void finishActivity(ActivityMvpDelegateImpl<MvpView, MvpPresenter<MvpView>> delegate,
-      Bundle bundle, boolean expectKeepPresenter, int detachViewCount,
+      Bundle bundle, boolean expectKeepPresenter, int detachViewCount, int destroyCount,
       boolean changingConfigurations, boolean isFinishing) {
     Mockito.when(callback.getPresenter()).thenReturn(presenter);
     Mockito.when(activity.isChangingConfigurations()).thenReturn(changingConfigurations);
@@ -117,6 +117,7 @@ public class ActivityMvpDelegateImplTest {
     delegate.onDestroy();
     delegate.onRestart();
 
-    Mockito.verify(presenter, Mockito.times(detachViewCount)).detachView(expectKeepPresenter);
+    Mockito.verify(presenter, Mockito.times(detachViewCount)).detachView();
+    if (!expectKeepPresenter) Mockito.verify(presenter, Mockito.times(destroyCount)).destroy();
   }
 }

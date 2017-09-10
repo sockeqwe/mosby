@@ -17,6 +17,7 @@
 
 package com.hannesdorfmann.mosby3.mvp.delegate;
 
+import android.os.Parcelable;
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 

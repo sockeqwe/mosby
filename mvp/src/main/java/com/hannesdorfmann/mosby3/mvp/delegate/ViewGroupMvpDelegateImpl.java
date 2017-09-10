@@ -83,6 +83,7 @@ public class ViewGroupMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<
 
     if (!isInEditMode) {
       this.activity = PresenterManager.getActivity(delegateCallback.getContext());
+      this.activity.getApplication().registerActivityLifecycleCallbacks(this);
     } else {
       this.activity = null;
     }
@@ -281,6 +282,7 @@ public class ViewGroupMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<
       P presenter = delegateCallback.getPresenter();
       presenter.destroy();
       presenterDestroeyed = true;
+      activity.getApplication().unregisterActivityLifecycleCallbacks(this);
       if (DEBUG) {
         Log.d(DEBUG_TAG, "Presenter destroyed: " + presenter);
       }

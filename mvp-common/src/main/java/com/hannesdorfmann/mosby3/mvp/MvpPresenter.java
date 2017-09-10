@@ -16,6 +16,7 @@
 
 package com.hannesdorfmann.mosby3.mvp;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.UiThread;
 
 /**
@@ -35,7 +36,7 @@ public interface MvpPresenter<V extends MvpView> {
    * Set or attach the view to this presenter
    */
   @UiThread
-  void attachView(V view);
+  void attachView(@NonNull V view);
 
   /**
    * Will be called if the view has been destroyed. Typically this method will be invoked from

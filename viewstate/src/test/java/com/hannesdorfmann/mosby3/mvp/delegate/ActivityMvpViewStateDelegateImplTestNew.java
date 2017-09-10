@@ -76,9 +76,9 @@ public class ActivityMvpViewStateDelegateImplTestNew {
 
     startActivity(delegate, null, 1, 1, 1, 1, 1, 0, null, 0, 1, 0);
     Bundle bundle = BundleMocker.create();
-    finishActivity(delegate, bundle, true, 1, true, false);
+    finishActivity(delegate, bundle, 1, 0, true, false);
     startActivity(delegate, bundle, 1, 2, 2, 1, 2, 1, true, 1, 1, 1);
-    finishActivity(delegate, bundle, false, 1, false, true);
+    finishActivity(delegate, bundle, 2, 1, false, true);
   }
 
   @Test public void appStartFinishing() {
@@ -87,7 +87,7 @@ public class ActivityMvpViewStateDelegateImplTestNew {
 
     startActivity(delegate, null, 1, 1, 1, 1, 1, 0, null, 0, 1, 0);
     Bundle bundle = BundleMocker.create();
-    finishActivity(delegate, bundle, false, 1, false, true);
+    finishActivity(delegate, bundle, 1,1, false, true);
   }
 
   @Test public void dontKeepPresenterAndViewState() {
@@ -95,9 +95,9 @@ public class ActivityMvpViewStateDelegateImplTestNew {
         new ActivityMvpViewStateDelegateImpl<>(activity, callback, false);
     startActivity(delegate, null, 1, 1, 1, 1, 1, 0, null, 0, 1, 0);
     Bundle bundle = BundleMocker.create();
-    finishActivity(delegate, bundle, false, 1, true, false);
+    finishActivity(delegate, bundle, 1,1, true, false);
     startActivity(delegate, bundle, 2, 2, 2, 2, 2, 0, null, 0, 2, 0);
-    finishActivity(delegate, bundle, false, 2, false, true);
+    finishActivity(delegate, bundle, 2, 2, false, true);
   }
 
   @Test public void appStartAfterProcessDeathAndViewStateRecreationFromBundle() {
@@ -131,9 +131,9 @@ public class ActivityMvpViewStateDelegateImplTestNew {
 
     startActivity(delegate, null, 1, 1, 1, 1, 1, 0, null, 0, 1, 0);
     Bundle bundle = BundleMocker.create();
-    finishActivity(delegate, bundle, true, 1, true, false);
+    finishActivity(delegate, bundle, 1, 0,true, false);
     startActivity(delegate, bundle, 1, 2, 2, 1, 2, 1, true, 1, 1, 1);
-    finishActivity(delegate, bundle, false, 1, false, true);
+    finishActivity(delegate, bundle,  2, 1,false, true);
   }
 
   private void startActivity(
@@ -178,8 +178,8 @@ public class ActivityMvpViewStateDelegateImplTestNew {
   }
 
   private void finishActivity(ActivityMvpDelegateImpl<MvpView, MvpPresenter<MvpView>> delegate,
-      Bundle bundle, boolean expectKeepPresenter, int detachViewCount,
-      boolean changingConfigurations, boolean isFinishing) {
+      Bundle bundle, int detachViewCount, int destroyViewCount, boolean changingConfigurations,
+      boolean isFinishing) {
     Mockito.when(callback.getPresenter()).thenReturn(presenter);
     Mockito.when(callback.getViewState()).thenReturn(viewState);
     Mockito.when(activity.isChangingConfigurations()).thenReturn(changingConfigurations);
@@ -191,6 +191,7 @@ public class ActivityMvpViewStateDelegateImplTestNew {
     delegate.onDestroy();
     delegate.onRestart();
 
-    Mockito.verify(presenter, Mockito.times(detachViewCount)).detachView(expectKeepPresenter);
+    Mockito.verify(presenter, Mockito.times(detachViewCount)).detachView();
+    Mockito.verify(presenter, Mockito.times(destroyViewCount)).destroy();
   }
 }

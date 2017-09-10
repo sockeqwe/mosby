@@ -194,9 +194,10 @@ public class FragmentMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<V
     return view;
   }
 
-  protected boolean retainPresenterInstance() {
+  static boolean retainPresenterInstance(Activity activity, Fragment fragment,
+      boolean keepPresenterInstanceDuringScreenOrientationChanges,
+      boolean keepPresenterOnBackstack) {
 
-    Activity activity = getActivity();
     if (activity.isChangingConfigurations()) {
       return keepPresenterInstanceDuringScreenOrientationChanges;
     }
@@ -276,7 +277,8 @@ public class FragmentMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<V
   @Override public void onDestroy() {
 
     Activity activity = getActivity();
-    boolean retainPresenterInstance = retainPresenterInstance();
+    boolean retainPresenterInstance = retainPresenterInstance(activity, fragment,
+        keepPresenterInstanceDuringScreenOrientationChanges, keepPresenterOnBackstack);
 
     P presenter = getPresenter();
     if (!retainPresenterInstance) {
@@ -294,6 +296,5 @@ public class FragmentMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<V
         != null) { // mosbyViewId is null if keepPresenterInstanceDuringScreenOrientationChanges  == false
       PresenterManager.remove(activity, mosbyViewId);
     }
-
   }
 }

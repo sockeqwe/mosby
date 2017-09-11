@@ -79,11 +79,7 @@ public abstract class AbsLceViewState<D, V extends MvpLceView<D>> implements Lce
         view.showContent();
       }
 
-      if (retained) {
-        view.showLoading(ptr);
-      } else {
-        view.loadData(ptr);
-      }
+      view.showLoading(ptr);
     } else if (currentViewState == STATE_SHOW_ERROR) {
 
       boolean ptr = pullToRefresh;
@@ -94,5 +90,13 @@ public abstract class AbsLceViewState<D, V extends MvpLceView<D>> implements Lce
       }
       view.showError(e, ptr);
     }
+  }
+
+  @Override public boolean isLoadingState() {
+    return STATE_SHOW_LOADING == currentViewState;
+  }
+
+  @Override public boolean isPullToRefreshLoadingState() {
+    return isLoadingState() && pullToRefresh;
   }
 }

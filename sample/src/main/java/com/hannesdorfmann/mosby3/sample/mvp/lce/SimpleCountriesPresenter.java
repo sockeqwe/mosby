@@ -30,7 +30,8 @@ import java.util.List;
 public class SimpleCountriesPresenter extends MvpBasePresenter<CountriesView>
     implements CountriesPresenter {
 
-  private static final String TAG = "CountriesPresenter";
+  private static int PRESENTER_ID_FOR_LOGGING = 0;
+  private final String TAG = "CountriesPresenter"+(PRESENTER_ID_FOR_LOGGING++);
 
   private int failingCounter = 0;
   private CountriesAsyncLoader countriesLoader;
@@ -56,6 +57,7 @@ public class SimpleCountriesPresenter extends MvpBasePresenter<CountriesView>
 
           @Override public void onSuccess(List<Country> countries) {
 
+            Log.d(TAG, "Countries callback onSuccess " + getView());
             if (isViewAttached()) {
               Log.d(TAG, "setData()");
               getView().setData(countries);
@@ -66,6 +68,7 @@ public class SimpleCountriesPresenter extends MvpBasePresenter<CountriesView>
           }
 
           @Override public void onError(Exception e) {
+            Log.d(TAG, "Countries callback onError " + getView());
 
             if (isViewAttached()) {
 
@@ -87,7 +90,7 @@ public class SimpleCountriesPresenter extends MvpBasePresenter<CountriesView>
     if (countriesLoader != null) {
       countriesLoader.cancel(true);
     }
-    Log.d(TAG,"Presenter destroyed");
+    Log.d(TAG, "Presenter destroyed");
   }
 
   @Override public void attachView(CountriesView view) {

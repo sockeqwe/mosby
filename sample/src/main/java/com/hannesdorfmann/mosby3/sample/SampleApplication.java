@@ -19,6 +19,12 @@ package com.hannesdorfmann.mosby3.sample;
 
 import android.app.Application;
 import android.content.Context;
+import com.hannesdorfmann.mosby3.mvp.delegate.ActivityMvpDelegateImpl;
+import com.hannesdorfmann.mosby3.mvp.delegate.ActivityMvpViewStateDelegateImpl;
+import com.hannesdorfmann.mosby3.mvp.delegate.FragmentMvpDelegateImpl;
+import com.hannesdorfmann.mosby3.mvp.delegate.FragmentMvpViewStateDelegateImpl;
+import com.hannesdorfmann.mosby3.mvp.delegate.ViewGroupMvpDelegateImpl;
+import com.hannesdorfmann.mosby3.mvp.delegate.ViewGroupMvpViewStateDelegateImpl;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
@@ -42,5 +48,12 @@ public class SampleApplication extends Application {
       return;
     }
     refWatcher = LeakCanary.install(this);
+
+    ActivityMvpViewStateDelegateImpl.DEBUG = true;
+    FragmentMvpViewStateDelegateImpl.DEBUG = true;
+    ViewGroupMvpViewStateDelegateImpl.DEBUG = true;
+    ActivityMvpDelegateImpl.DEBUG = true;
+    FragmentMvpDelegateImpl.DEBUG=true;
+    ViewGroupMvpDelegateImpl.DEBUG = true;
   }
 }

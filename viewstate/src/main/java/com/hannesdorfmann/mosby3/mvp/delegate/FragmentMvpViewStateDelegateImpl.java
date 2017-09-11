@@ -88,79 +88,33 @@ public class FragmentMvpViewStateDelegateImpl<V extends MvpView, P extends MvpPr
             "MosbyView ID = " + mosbyViewId + " for MvpView: " + delegateCallback.getMvpView());
       }
     }
+
+    //
+    // if config change and not retaining fragment,
+    // we have to do this here because if Fragment is on backstack or in ViewPager with FragmentPagerAdapter
+    // a fragment (not visible) runs only the following callbacks:
+    // 1. onCreate()
+    // 2. onSaveInstnaceState()
+    // 3. onDestroy();
+    //
+    // Creating the View (UI) like Fragment.onViewCreate() is not triggered if Fragment not visible.
+    //
+    setViewStateInDelegateCallbackIfNeeded(bundle);
+
+    //
+    // creates the presenter if needed but doesn't attach view to presenter
+    //
+    createPresenterIfNeeded();
   }
 
   @Override public void onViewCreated(View view, Bundle bundle) {
-
     onViewCreatedCalled = true;
 
-    if (mosbyViewId != null) {
-      VS viewState = PresenterManager.getViewState(fragment.getActivity(), mosbyViewId);
-      if (viewState != null) {
-        //
-        // ViewState restored from PresenterManager
-        //
-        delegateCallback.setViewState(viewState);
-        applyViewState = true;
-        applyViewStateFromMemory = true;
-        if (DEBUG) {
-          Log.d(DEBUG_TAG, "ViewState reused from Mosby internal cache for view: "
-              + delegateCallback.getMvpView()
-              + " viewState: "
-              + viewState);
-        }
-
-        return;
-      }
-    }
-
-    VS viewState = delegateCallback.createViewState();
-    if (viewState == null) {
-      throw new NullPointerException(
-          "ViewState returned from createViewState() is null! MvpView that has returned null as ViewState is: "
-              + delegateCallback.getMvpView());
-    }
-
-    if (bundle != null && viewState instanceof RestorableViewState) {
-      // A little bit hacky that we need an instance of the viewstate to restore a view state
-      // (may creates another view state object) but I don't know any better way :)
-      RestorableViewState restoredViewState =
-          ((RestorableViewState) viewState).restoreInstanceState(bundle);
-
-      if (restoredViewState != null) {
-        //
-        // ViewState restored from bundle
-        //
-        viewState = (VS) restoredViewState;
-        delegateCallback.setViewState(viewState);
-        applyViewState = true;
-        applyViewStateFromMemory = false;
-
-        if (DEBUG) {
-          Log.d(DEBUG_TAG, "Recreated ViewState from bundle for view: "
-              + delegateCallback.getMvpView()
-              + " viewState: "
-              + viewState);
-        }
-
-        return;
-      }
-    }
-
     //
-    // Entirely new ViewState has been created, typically because the app is starting the first time
+    // We have to call this again for retaining Fragments because
+    // Fragment.onCreate() will not be called in this case
     //
-
-    delegateCallback.setViewState(viewState);
-    applyViewState = false;
-    applyViewStateFromMemory = false;
-
-    if (DEBUG) {
-      Log.d(DEBUG_TAG, "Created a new ViewState instance for view: "
-          + delegateCallback.getMvpView()
-          + " viewState: "
-          + viewState);
-    }
+    setViewStateInDelegateCallbackIfNeeded(bundle);
   }
 
   @Override public void onStart() {
@@ -184,8 +138,14 @@ public class FragmentMvpViewStateDelegateImpl<V extends MvpView, P extends MvpPr
       delegateCallback.setRestoringViewState(false);
     }
 
-    createPresenterIfNeeded();
     delegateCallback.getPresenter().attachView(delegateCallback.getMvpView());
+
+    if (DEBUG) {
+      Log.d(DEBUG_TAG, "View"
+          + delegateCallback.getMvpView()
+          + " attached to Presenter "
+          + delegateCallback.getPresenter());
+    }
 
     if (applyViewState) {
       if (!applyViewStateFromMemory && keepPresenterInstanceDuringScreenOrientationChanges) {
@@ -194,7 +154,8 @@ public class FragmentMvpViewStateDelegateImpl<V extends MvpView, P extends MvpPr
               "The (internal) Mosby View id is null although bundle is not null. This should never happen. This seems to be a Mosby internal error. Please report this issue at https://github.com/sockeqwe/mosby/issues");
         }
         // Put viewState from bundle into Memory Cache / Presenter Manager
-        PresenterManager.putViewState(fragment.getActivity(), mosbyViewId, delegateCallback.getViewState());
+        PresenterManager.putViewState(fragment.getActivity(), mosbyViewId,
+            delegateCallback.getViewState());
       }
       delegateCallback.onViewStateInstanceRestored(applyViewStateFromMemory);
     } else {
@@ -330,11 +291,6 @@ public class FragmentMvpViewStateDelegateImpl<V extends MvpView, P extends MvpPr
     }
 
     delegateCallback.setPresenter(presenter);
-
-    if (DEBUG) {
-      Log.d(DEBUG_TAG,
-          "View" + delegateCallback.getMvpView() + " attached to Presenter " + presenter);
-    }
   }
 
   @NonNull private Activity getActivity() {
@@ -376,6 +332,78 @@ public class FragmentMvpViewStateDelegateImpl<V extends MvpView, P extends MvpPr
       PresenterManager.putPresenter(getActivity(), mosbyViewId, presenter);
       PresenterManager.putViewState(getActivity(), mosbyViewId, viewState);
     }
+
     return presenter;
+  }
+
+  private void setViewStateInDelegateCallbackIfNeeded(Bundle bundle) {
+
+    if (mosbyViewId != null) {
+      VS viewState = PresenterManager.getViewState(fragment.getActivity(), mosbyViewId);
+      if (viewState != null) {
+        //
+        // ViewState restored from PresenterManager
+        //
+        delegateCallback.setViewState(viewState);
+        applyViewState = true;
+        applyViewStateFromMemory = true;
+        if (DEBUG) {
+          Log.d(DEBUG_TAG, "ViewState reused from Mosby internal cache for view: "
+              + delegateCallback.getMvpView()
+              + " viewState: "
+              + viewState);
+        }
+
+        return;
+      }
+    }
+
+    VS viewState = delegateCallback.createViewState();
+    if (viewState == null) {
+      throw new NullPointerException(
+          "ViewState returned from createViewState() is null! MvpView that has returned null as ViewState is: "
+              + delegateCallback.getMvpView());
+    }
+
+    if (bundle != null && viewState instanceof RestorableViewState) {
+      // A little bit hacky that we need an instance of the viewstate to restore a view state
+      // (may creates another view state object) but I don't know any better way :)
+      RestorableViewState restoredViewState =
+          ((RestorableViewState) viewState).restoreInstanceState(bundle);
+
+      if (restoredViewState != null) {
+        //
+        // ViewState restored from bundle
+        //
+        viewState = (VS) restoredViewState;
+        delegateCallback.setViewState(viewState);
+        applyViewState = true;
+        applyViewStateFromMemory = false;
+
+        if (DEBUG) {
+          Log.d(DEBUG_TAG, "Recreated ViewState from bundle for view: "
+              + delegateCallback.getMvpView()
+              + " viewState: "
+              + viewState);
+        }
+
+        return;
+      }
+    }
+
+    //
+    // Entirely new ViewState has been created, typically because the app is starting the first time
+    //
+
+    delegateCallback.setViewState(viewState);
+    applyViewState = false;
+    applyViewStateFromMemory = false;
+
+    if (DEBUG) {
+      Log.d(DEBUG_TAG, "Created a new ViewState instance for view: "
+          + delegateCallback.getMvpView()
+          + " viewState: "
+          + viewState);
+    }
   }
 }

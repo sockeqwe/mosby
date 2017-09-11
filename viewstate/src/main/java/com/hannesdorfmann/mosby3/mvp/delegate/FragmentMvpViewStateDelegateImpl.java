@@ -30,7 +30,24 @@ import com.hannesdorfmann.mosby3.mvp.viewstate.ViewState;
 import java.util.UUID;
 
 /**
- * The {@link FragmentMvpDelegateImpl} with {@link ViewState} support
+ * The {@link FragmentMvpDelegateImpl} with {@link ViewState} support.
+ *
+ * <p>
+ * Attaches and restores ViewState in {@link #onStart()}
+ * (also {@link MvpViewStateDelegateCallback#onNewViewStateInstance()} or {@link
+ * MvpViewStateDelegateCallback#onViewStateInstanceRestored(boolean)} will be called from {@link
+ * #onStop()}).
+ * View is detached from presenter in {@link #onStop()}. Finally, {@link MvpPresenter#destroy()}
+ * is called from {@link #onDestroy()} (if Fragment will be destoryed permanently, not screen
+ * orientation changes).
+ * </p>
+ *
+ * <p>
+ * Presenter should be used only after {@link #onStart()}. Since the ViewState feature has its own
+ * lifecycle (kind of) {@link MvpViewStateDelegateCallback#onNewViewStateInstance()} or {@link
+ * MvpViewStateDelegateCallback#onViewStateInstanceRestored(boolean)} you should only use those 2
+ * methods to start an operation like "loading data".
+ * </p>
  *
  * @author Hannes Dorfmann
  * @since 1.1.0

@@ -7,9 +7,12 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
- * This
+ * This Presenter implementation queues ({@link ViewAction} to interact with the view layer if no
+ * view is attached.
+ * Once a view is (re)attached, the queued {@link ViewAction} will be executed one after another.
  *
  * @author Hannes Dorfmann
+ * @since 3.1.0
  */
 public class MvpQueuingBasePresenter<V extends MvpView> implements MvpPresenter<V> {
 

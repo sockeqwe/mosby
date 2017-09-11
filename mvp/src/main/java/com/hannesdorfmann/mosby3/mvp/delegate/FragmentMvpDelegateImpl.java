@@ -30,7 +30,10 @@ import com.hannesdorfmann.mosby3.mvp.MvpView;
 import java.util.UUID;
 
 /**
- * * The default implementation of {@link FragmentMvpDelegate}
+ * The default implementation of {@link FragmentMvpDelegate}
+ * Presenter is available (has view attached) in {@link #onViewCreated(View, Bundle)} (after
+ * called super.onViewCreated()). View will be detached in {@link #onDestroyView()} from presenter,
+ * and eventually presenter will be destroyed in {@link #onDestroy()}.
  *
  * @param <V> The type of {@link MvpView}
  * @param <P> The type of {@link MvpPresenter}
@@ -109,57 +112,8 @@ public class FragmentMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<V
 
   @Override public void onViewCreated(View view, @Nullable Bundle bundle) {
 
-    P presenter = null;
-
-    if (bundle != null && keepPresenterInstanceDuringScreenOrientationChanges) {
-
-      mosbyViewId = bundle.getString(KEY_MOSBY_VIEW_ID);
-
-      if (DEBUG) {
-        Log.d(DEBUG_TAG,
-            "MosbyView ID = " + mosbyViewId + " for MvpView: " + delegateCallback.getMvpView());
-      }
-
-      if (mosbyViewId != null
-          && (presenter = PresenterManager.getPresenter(getActivity(), mosbyViewId)) != null) {
-        //
-        // Presenter restored from cache
-        //
-        if (DEBUG) {
-          Log.d(DEBUG_TAG,
-              "Reused presenter " + presenter + " for view " + delegateCallback.getMvpView());
-        }
-      } else {
-        //
-        // No presenter found in cache, most likely caused by process death
-        //
-        presenter = createViewIdAndCreatePresenter();
-        if (DEBUG) {
-          Log.d(DEBUG_TAG, "No presenter found although view Id was here: "
-              + mosbyViewId
-              + ". Most likely this was caused by a process death. New Presenter created"
-              + presenter
-              + " for view "
-              + getMvpView());
-        }
-      }
-    } else {
-      //
-      // Activity starting first time, so create a new presenter
-      //
-      presenter = createViewIdAndCreatePresenter();
-      if (DEBUG) {
-        Log.d(DEBUG_TAG, "New presenter " + presenter + " for view " + getMvpView());
-      }
-    }
-
-    if (presenter == null) {
-      throw new IllegalStateException(
-          "Oops, Presenter is null. This seems to be a Mosby internal bug. Please report this issue here: https://github.com/sockeqwe/mosby/issues");
-    }
-
-    delegateCallback.setPresenter(presenter);
-    getPresenter().attachView(getMvpView());
+    P presenter = getPresenter();
+    presenter.attachView(getMvpView());
 
     if (DEBUG) {
       Log.d(DEBUG_TAG, "View" + getMvpView() + " attached to Presenter " + presenter);
@@ -271,7 +225,58 @@ public class FragmentMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<V
     }
   }
 
-  @Override public void onCreate(Bundle saved) {
+  @Override public void onCreate(Bundle bundle) {
+
+    P presenter = null;
+
+    if (bundle != null && keepPresenterInstanceDuringScreenOrientationChanges) {
+
+      mosbyViewId = bundle.getString(KEY_MOSBY_VIEW_ID);
+
+      if (DEBUG) {
+        Log.d(DEBUG_TAG,
+            "MosbyView ID = " + mosbyViewId + " for MvpView: " + delegateCallback.getMvpView());
+      }
+
+      if (mosbyViewId != null
+          && (presenter = PresenterManager.getPresenter(getActivity(), mosbyViewId)) != null) {
+        //
+        // Presenter restored from cache
+        //
+        if (DEBUG) {
+          Log.d(DEBUG_TAG,
+              "Reused presenter " + presenter + " for view " + delegateCallback.getMvpView());
+        }
+      } else {
+        //
+        // No presenter found in cache, most likely caused by process death
+        //
+        presenter = createViewIdAndCreatePresenter();
+        if (DEBUG) {
+          Log.d(DEBUG_TAG, "No presenter found although view Id was here: "
+              + mosbyViewId
+              + ". Most likely this was caused by a process death. New Presenter created"
+              + presenter
+              + " for view "
+              + getMvpView());
+        }
+      }
+    } else {
+      //
+      // Activity starting first time, so create a new presenter
+      //
+      presenter = createViewIdAndCreatePresenter();
+      if (DEBUG) {
+        Log.d(DEBUG_TAG, "New presenter " + presenter + " for view " + getMvpView());
+      }
+    }
+
+    if (presenter == null) {
+      throw new IllegalStateException(
+          "Oops, Presenter is null. This seems to be a Mosby internal bug. Please report this issue here: https://github.com/sockeqwe/mosby/issues");
+    }
+
+    delegateCallback.setPresenter(presenter);
   }
 
   @Override public void onDestroy() {
@@ -291,9 +296,8 @@ public class FragmentMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<V
       }
     }
 
-    if (!retainPresenterInstance
-        && mosbyViewId
-        != null) { // mosbyViewId is null if keepPresenterInstanceDuringScreenOrientationChanges  == false
+    if (!retainPresenterInstance && mosbyViewId != null) {
+      // mosbyViewId is null if keepPresenterInstanceDuringScreenOrientationChanges  == false
       PresenterManager.remove(activity, mosbyViewId);
     }
   }

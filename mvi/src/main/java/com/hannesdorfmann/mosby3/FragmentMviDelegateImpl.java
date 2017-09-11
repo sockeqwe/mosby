@@ -26,9 +26,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.BackstackAccessor;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import com.hannesdorfmann.mosby3.mvi.MviPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 import java.util.UUID;
@@ -38,9 +36,9 @@ import java.util.UUID;
  * <p>
  * The View is attached to the Presenter in {@link Fragment#onStart()}.
  * So you better instantiate all your UI widgets before that lifecycle callback (typically in
- * {@link
- * Fragment#onCreateView(LayoutInflater, ViewGroup, Bundle)}. The View is detached from Presenter in
- * {@link Fragment#onStop()}
+ * {@link * Fragment#onStart()}. The View is detached from Presenter in
+ * {@link Fragment#onStop()}. {@link MviPresenter#destroy()} is called from {@link
+ * Fragment#onDestroy()} if Fragment will be destroyed permanently.
  * </p>
  *
  * @param <V> The type of {@link MvpView}
@@ -63,6 +61,7 @@ public class FragmentMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
   private final boolean keepPresenterDuringScreenOrientationChange;
   private final boolean keepPresenterOnBackstack;
   private P presenter;
+  private boolean viewStateWillBeRestored;
 
   public FragmentMviDelegateImpl(@NonNull MviDelegateCallback<V, P> delegateCallback,
       @NonNull Fragment fragment) {
@@ -92,18 +91,22 @@ public class FragmentMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
     this.keepPresenterOnBackstack = keepPresenterOnBackstack;
   }
 
-  @Override public void onViewCreated(View v, @Nullable Bundle savedInstanceState) {
-    onViewCreatedCalled = true;
-  }
+  @Override public void onCreate(@Nullable Bundle bundle) {
+    if ((keepPresenterDuringScreenOrientationChange || keepPresenterOnBackstack)
+        && bundle != null) {
+      mosbyViewId = bundle.getString(KEY_MOSBY_VIEW_ID);
+    }
 
-  @Override public void onStart() {
-
-    boolean viewStateWillBeRestored = false;
+    if (DEBUG) {
+      Log.d(DEBUG_TAG,
+          "MosbyView ID = " + mosbyViewId + " for MvpView: " + delegateCallback.getMvpView());
+    }
 
     if (mosbyViewId == null) {
       // No presenter available,
       // Activity is starting for the first time (or keepPresenterDuringScreenOrientationChange == false)
       presenter = createViewIdAndCreatePresenter();
+      viewStateWillBeRestored = false;
       if (DEBUG) {
         Log.d(DEBUG_TAG, "new Presenter instance created: " + presenter);
       }
@@ -113,6 +116,7 @@ public class FragmentMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
         // Process death,
         // hence no presenter with the given viewState id stored, although we have a viewState id
         presenter = createViewIdAndCreatePresenter();
+        viewStateWillBeRestored = false;
         if (DEBUG) {
           Log.d(DEBUG_TAG,
               "No Presenter instance found in cache, although MosbyView ID present. This was caused by process death, therefore new Presenter instance created: "
@@ -125,6 +129,18 @@ public class FragmentMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
         }
       }
     }
+
+    if (presenter == null) {
+      throw new IllegalStateException(
+          "Oops, Presenter is null. This seems to be a Mosby internal bug. Please report this issue here: https://github.com/sockeqwe/mosby/issues");
+    }
+  }
+
+  @Override public void onViewCreated(View v, @Nullable Bundle savedInstanceState) {
+    onViewCreatedCalled = true;
+  }
+
+  @Override public void onStart() {
 
     // presenter is ready, so attach viewState
     V view = delegateCallback.getMvpView();
@@ -185,31 +201,18 @@ public class FragmentMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
 
   @Override public void onDestroyView() {
     onViewCreatedCalled = false;
-    boolean retainPresenterInstance =
-        retainPresenterInstance(keepPresenterOnBackstack, getActivity(), fragment);
   }
 
   @Override public void onStop() {
 
     presenter.detachView();
+    viewStateWillBeRestored = true; // used after screen orientation if retaining Fragment
 
     if (DEBUG) {
       Log.d(DEBUG_TAG, "detached MvpView from Presenter. MvpView "
           + delegateCallback.getMvpView()
           + "   Presenter: "
           + presenter);
-    }
-  }
-
-  @Override public void onCreate(@Nullable Bundle bundle) {
-    if ((keepPresenterDuringScreenOrientationChange || keepPresenterOnBackstack)
-        && bundle != null) {
-      mosbyViewId = bundle.getString(KEY_MOSBY_VIEW_ID);
-    }
-
-    if (DEBUG) {
-      Log.d(DEBUG_TAG,
-          "MosbyView ID = " + mosbyViewId + " for MvpView: " + delegateCallback.getMvpView());
     }
   }
 

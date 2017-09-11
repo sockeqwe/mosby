@@ -49,11 +49,13 @@ public class SampleApplication extends Application {
     }
     refWatcher = LeakCanary.install(this);
 
+    /*
     ActivityMvpViewStateDelegateImpl.DEBUG = true;
     FragmentMvpViewStateDelegateImpl.DEBUG = true;
     ViewGroupMvpViewStateDelegateImpl.DEBUG = true;
     ActivityMvpDelegateImpl.DEBUG = true;
     FragmentMvpDelegateImpl.DEBUG=true;
     ViewGroupMvpDelegateImpl.DEBUG = true;
+    */
   }
 }

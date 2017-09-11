@@ -99,6 +99,7 @@ public class NotRetainingCountriesFragment extends
   }
 
   @Override public void setData(List<Country> data) {
+    Log.d(getTag(), "setData ");
     adapter.setCountries(data);
     adapter.notifyDataSetChanged();
   }
@@ -108,16 +109,30 @@ public class NotRetainingCountriesFragment extends
   }
 
   @Override public void showContent() {
+    Log.d(getTag(), "showContent");
     super.showContent();
-    contentView.setRefreshing(false);
+    contentView.post(new Runnable() {
+      @Override public void run() {
+        // Workaround for measure bug: https://code.google.com/p/android/issues/detail?id=77712
+        contentView.setRefreshing(false);
+      }
+    });
   }
 
   @Override public void showError(Throwable e, boolean pullToRefresh) {
+
+    Log.d(getTag(), "showError " + pullToRefresh);
     super.showError(e, pullToRefresh);
-    contentView.setRefreshing(false);
+    contentView.post(new Runnable() {
+      @Override public void run() {
+        // Workaround for measure bug: https://code.google.com/p/android/issues/detail?id=77712
+        contentView.setRefreshing(false);
+      }
+    });
   }
 
   @Override public void showLoading(boolean pullToRefresh) {
+    Log.d(getTag(), "showLoading " + pullToRefresh);
     super.showLoading(pullToRefresh);
     if (pullToRefresh && !contentView.isRefreshing()) {
       // Workaround for measure bug: https://code.google.com/p/android/issues/detail?id=77712
@@ -146,6 +161,11 @@ public class NotRetainingCountriesFragment extends
   @Override public void onViewStateInstanceRestored(boolean instanceStateRetainedInMemory) {
     Log.d(getTag(), "onViewStateInstanceRestored " + instanceStateRetainedInMemory);
     super.onViewStateInstanceRestored(instanceStateRetainedInMemory);
+  }
+
+  @Override public void setRestoringViewState(boolean restoringViewState) {
+    super.setRestoringViewState(restoringViewState);
+    Log.d(getTag(), "setRestoringViewState " + restoringViewState);
   }
 
   @Override public String toString() {

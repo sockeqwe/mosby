@@ -87,6 +87,19 @@ public class FragmentMvpViewStateDelegateImpl<V extends MvpView, P extends MvpPr
         Log.d(DEBUG_TAG,
             "MosbyView ID = " + mosbyViewId + " for MvpView: " + delegateCallback.getMvpView());
       }
+
+      P presenter = restorePresenterOrRecreateNewPresenterAfterProcessDeath();
+      delegateCallback.setPresenter(presenter);
+
+      VS viewState = restoreViewStateOrRecreateViewStateAfterProcessDeath(bundle);
+      delegateCallback.setViewState(viewState);
+    } else {
+
+      // starting for the first time
+      P presenter = createViewIdAndPresenter();
+      delegateCallback.setPresenter(presenter);
+      VS viewState = createViewState();
+      delegateCallback.setViewState(viewState);
     }
 
     //
@@ -99,22 +112,10 @@ public class FragmentMvpViewStateDelegateImpl<V extends MvpView, P extends MvpPr
     //
     // Creating the View (UI) like Fragment.onViewCreate() is not triggered if Fragment not visible.
     //
-    setViewStateInDelegateCallbackIfNeeded(bundle);
-
-    //
-    // creates the presenter if needed but doesn't attach view to presenter
-    //
-    createPresenterIfNeeded();
   }
 
   @Override public void onViewCreated(View view, Bundle bundle) {
     onViewCreatedCalled = true;
-
-    //
-    // We have to call this again for retaining Fragments because
-    // Fragment.onCreate() will not be called in this case
-    //
-    setViewStateInDelegateCallbackIfNeeded(bundle);
   }
 
   @Override public void onStart() {
@@ -172,6 +173,15 @@ public class FragmentMvpViewStateDelegateImpl<V extends MvpView, P extends MvpPr
           + delegateCallback.getMvpView()
           + "   Presenter: "
           + delegateCallback.getPresenter());
+    }
+
+    if (keepPresenterInstanceDuringScreenOrientationChanges) {
+      // Ensure that viewstate will be applied again after backstack navigation or view pager swipe
+      applyViewState = true;
+      applyViewStateFromMemory = true;
+    } else {
+      applyViewState = false;
+      applyViewStateFromMemory = false;
     }
   }
 
@@ -245,7 +255,7 @@ public class FragmentMvpViewStateDelegateImpl<V extends MvpView, P extends MvpPr
   /**
    * Creates the presenter instance if not able to reuse presenter from PresenterManager
    */
-  private void createPresenterIfNeeded() {
+  private P restorePresenterOrRecreateNewPresenterAfterProcessDeath() {
 
     P presenter;
 
@@ -260,11 +270,13 @@ public class FragmentMvpViewStateDelegateImpl<V extends MvpView, P extends MvpPr
           Log.d(DEBUG_TAG,
               "Reused presenter " + presenter + " for view " + delegateCallback.getMvpView());
         }
+
+        return presenter;
       } else {
         //
         // No presenter found in cache, most likely caused by process death
         //
-        presenter = createViewIdAndPresenterAndViewState();
+        presenter = createViewIdAndPresenter();
         if (DEBUG) {
           Log.d(DEBUG_TAG, "No presenter found although view Id was here: "
               + mosbyViewId
@@ -273,24 +285,20 @@ public class FragmentMvpViewStateDelegateImpl<V extends MvpView, P extends MvpPr
               + " for view "
               + delegateCallback.getMvpView());
         }
+
+        return presenter;
       }
     } else {
       //
       // starting first time, so create a new presenter
       //
-      presenter = createViewIdAndPresenterAndViewState();
+      presenter = createViewIdAndPresenter();
       if (DEBUG) {
         Log.d(DEBUG_TAG,
             "New presenter " + presenter + " for view " + delegateCallback.getMvpView());
       }
+      return presenter;
     }
-
-    if (presenter == null) {
-      throw new IllegalStateException(
-          "Oops, Presenter is null. This seems to be a Mosby internal bug. Please report this issue here: https://github.com/sockeqwe/mosby/issues");
-    }
-
-    delegateCallback.setPresenter(presenter);
   }
 
   @NonNull private Activity getActivity() {
@@ -310,7 +318,7 @@ public class FragmentMvpViewStateDelegateImpl<V extends MvpView, P extends MvpPr
    *
    * @return The new created presenter instance
    */
-  private P createViewIdAndPresenterAndViewState() {
+  private P createViewIdAndPresenter() {
 
     P presenter = delegateCallback.createPresenter();
     if (presenter == null) {
@@ -318,54 +326,75 @@ public class FragmentMvpViewStateDelegateImpl<V extends MvpView, P extends MvpPr
           "Presenter returned from createPresenter() is null. Fragment is " + fragment);
     }
 
-    VS viewState = delegateCallback.getViewState();
-    if (viewState == null) {
-      viewState = delegateCallback.createViewState();
-      if (viewState == null) {
-        throw new NullPointerException(
-            "ViewState returned from createViewState() is null. Fragment is " + fragment);
-      }
-      delegateCallback.setViewState(viewState);
-    }
     if (keepPresenterInstanceDuringScreenOrientationChanges) {
       mosbyViewId = UUID.randomUUID().toString();
       PresenterManager.putPresenter(getActivity(), mosbyViewId, presenter);
-      PresenterManager.putViewState(getActivity(), mosbyViewId, viewState);
     }
 
     return presenter;
   }
 
-  private void setViewStateInDelegateCallbackIfNeeded(Bundle bundle) {
-
-    if (mosbyViewId != null) {
-      VS viewState = PresenterManager.getViewState(fragment.getActivity(), mosbyViewId);
-      if (viewState != null) {
-        //
-        // ViewState restored from PresenterManager
-        //
-        delegateCallback.setViewState(viewState);
-        applyViewState = true;
-        applyViewStateFromMemory = true;
-        if (DEBUG) {
-          Log.d(DEBUG_TAG, "ViewState reused from Mosby internal cache for view: "
-              + delegateCallback.getMvpView()
-              + " viewState: "
-              + viewState);
-        }
-
-        return;
-      }
+  /**
+   * Creates a new ViewState instance
+   *
+   * @return the newly created instance
+   */
+  private VS createViewState() {
+    VS viewState = delegateCallback.createViewState();
+    if (viewState == null) {
+      throw new NullPointerException(
+          "ViewState returned from createViewState() is null. Fragment is " + fragment);
     }
 
-    VS viewState = delegateCallback.createViewState();
+    if (keepPresenterInstanceDuringScreenOrientationChanges) {
+      PresenterManager.putViewState(getActivity(), mosbyViewId, viewState);
+    }
+
+    return viewState;
+  }
+
+  private VS restoreViewStateOrRecreateViewStateAfterProcessDeath(Bundle bundle) {
+
+    if (bundle == null) {
+      throw new NullPointerException("Bundle is null. This should never be the case"
+          + "Please report this issue at https://github.com/sockeqwe/mosby/issues");
+    }
+
+    if (mosbyViewId == null) {
+      throw new NullPointerException(
+          "The (internal) Mosby View id is null although bundle is not null. "
+              + "This should never be the case while restoring ViewState instance. "
+              + "Please report this issue at https://github.com/sockeqwe/mosby/issues");
+    }
+
+    //
+    // Try to restore ViewState from PresenterManager
+    //
+    VS viewState = PresenterManager.getViewState(fragment.getActivity(), mosbyViewId);
+    if (viewState != null) {
+      applyViewState = true;
+      applyViewStateFromMemory = true;
+      if (DEBUG) {
+        Log.d(DEBUG_TAG, "ViewState reused from Mosby internal cache for view: "
+            + delegateCallback.getMvpView()
+            + " viewState: "
+            + viewState);
+      }
+
+      return viewState;
+    }
+
+    //
+    // Try to restore viewstate from bundle
+    //
+    viewState = delegateCallback.createViewState();
     if (viewState == null) {
       throw new NullPointerException(
           "ViewState returned from createViewState() is null! MvpView that has returned null as ViewState is: "
               + delegateCallback.getMvpView());
     }
 
-    if (bundle != null && viewState instanceof RestorableViewState) {
+    if (viewState instanceof RestorableViewState) {
       // A little bit hacky that we need an instance of the viewstate to restore a view state
       // (may creates another view state object) but I don't know any better way :)
       RestorableViewState restoredViewState =
@@ -376,9 +405,12 @@ public class FragmentMvpViewStateDelegateImpl<V extends MvpView, P extends MvpPr
         // ViewState restored from bundle
         //
         viewState = (VS) restoredViewState;
-        delegateCallback.setViewState(viewState);
         applyViewState = true;
         applyViewStateFromMemory = false;
+
+        if (keepPresenterInstanceDuringScreenOrientationChanges) {
+          PresenterManager.putViewState(getActivity(), mosbyViewId, viewState);
+        }
 
         if (DEBUG) {
           Log.d(DEBUG_TAG, "Recreated ViewState from bundle for view: "
@@ -387,17 +419,21 @@ public class FragmentMvpViewStateDelegateImpl<V extends MvpView, P extends MvpPr
               + viewState);
         }
 
-        return;
+        return viewState;
       }
     }
 
     //
-    // Entirely new ViewState has been created, typically because the app is starting the first time
+    // Entirely new ViewState has been created, typically because process death and mosby view id points to
+    // a  old id but view got a new one because of process death.
     //
 
-    delegateCallback.setViewState(viewState);
     applyViewState = false;
     applyViewStateFromMemory = false;
+
+    if (keepPresenterInstanceDuringScreenOrientationChanges) {
+      PresenterManager.putViewState(getActivity(), mosbyViewId, viewState);
+    }
 
     if (DEBUG) {
       Log.d(DEBUG_TAG, "Created a new ViewState instance for view: "
@@ -405,5 +441,7 @@ public class FragmentMvpViewStateDelegateImpl<V extends MvpView, P extends MvpPr
           + " viewState: "
           + viewState);
     }
+
+    return viewState;
   }
 }

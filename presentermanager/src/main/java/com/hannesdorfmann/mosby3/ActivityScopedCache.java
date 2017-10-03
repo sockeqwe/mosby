@@ -43,7 +43,7 @@ class ActivityScopedCache {
   public void clear() {
     /*
     // TODO: can this check if there are still Presenters in the internal cache that must be detached? Maybe post() / postDelayed() on the  MainThreadLooper()
-    // it doesn't work out that well, because super.onDestroy() which then invokes PresenterManager.clear() might be called before the MviDelegates did their job to remove the Presenter from cache and dettach the view permanently
+    // it doesnt work out that well, because super.onDestroy() which then invokes PresenterManager.clear() might be called before the MviDelegates did their job to remove the Presenter from cache and detach the view permanently
 
     for (PresenterHolder holder : presenterMap.values()) {
       // This should never be the case: If there were some presenters left in the internal cache,

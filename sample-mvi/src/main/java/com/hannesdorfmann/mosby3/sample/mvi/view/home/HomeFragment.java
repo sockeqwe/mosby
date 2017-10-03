@@ -92,8 +92,10 @@ public class HomeFragment extends MviFragment<HomeView, HomePresenter>
       }
     });
 
+    /*
     recyclerView.addItemDecoration(new GridSpacingItemDecoration(spanCount,
         getResources().getDimensionPixelSize(R.dimen.grid_spacing), true));
+        */
 
     recyclerView.setAdapter(adapter);
     recyclerView.setLayoutManager(layoutManager);

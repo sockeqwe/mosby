@@ -32,7 +32,7 @@ import java.lang.ref.WeakReference;
  *    // do something
  *    ...
  *
- *    ifViewAtached( view -> view.showSuccessful())
+ *    ifViewAttached( view -> view.showSuccessful())
  *  }
  *
  * }
@@ -54,7 +54,7 @@ public class MvpBasePresenter<V extends MvpView> implements MvpPresenter<V> {
    *    // do something
    *    ...
    *
-   *    ifViewAtached( view -> view.showSuccessful())
+   *    ifViewAttached( view -> view.showSuccessful())
    *  }
    * @param <V> The Type of the View
    */
@@ -114,7 +114,7 @@ public class MvpBasePresenter<V extends MvpView> implements MvpPresenter<V> {
    * attached
    * while trying to execute the action. false, if no exception should be thrown (but action will
    * not executed either since no view attached)
-   * @param action The {@link ViewAction} that will be exceuted if a view is attached. Here is
+   * @param action The {@link ViewAction} that will be executed if a view is attached. Here is
    * where
    * you call view.isLoading etc. Use the view reference passed as parameter to {@link
    * ViewAction#run(Object)} and not deprecated method {@link #getView()}

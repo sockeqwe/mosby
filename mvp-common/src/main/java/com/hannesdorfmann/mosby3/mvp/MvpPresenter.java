@@ -24,7 +24,7 @@ import android.support.annotation.UiThread;
  *
  * <p>
  * Mosby assumes that all interaction (i.e. updating the View) between Presenter and View is
- * executed on android's main UI thread.
+ * executed on Android's main UI thread.
  * </p>
  *
  * @author Hannes Dorfmann

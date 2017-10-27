@@ -26,7 +26,7 @@ public class MvpQueuingBasePresenter<V extends MvpView> implements MvpPresenter<
    * // do something
    * ...
    *
-   * ifViewAtached( view -> view.showSuccessful())
+   * ifViewAttached( view -> view.showSuccessful())
    * }
    *
    * @param <V> The Type of the View

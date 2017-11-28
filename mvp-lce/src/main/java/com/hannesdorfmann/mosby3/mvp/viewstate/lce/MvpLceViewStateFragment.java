@@ -86,8 +86,10 @@ public abstract class MvpLceViewStateFragment<CV extends View, M, V extends MvpL
     return restoringViewState;
   }
 
-  @Override public void onViewStateInstanceRestored(boolean instanceStateRetained) {
-    // Not needed in general. override it in subclass if you need this callback
+  @Override public void onViewStateInstanceRestored(boolean instanceStateRetainedInMemory) {
+    if (!instanceStateRetainedInMemory && viewState.isLoadingState()) {
+      loadData(viewState.isPullToRefreshLoadingState());
+    }
   }
 
   @Override public void onNewViewStateInstance() {

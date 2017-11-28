@@ -177,6 +177,7 @@ public abstract class MvpLceActivity<CV extends View, M, V extends MvpLceView<M>
   protected void animateErrorViewIn() {
     LceAnimator.showErrorView(loadingView, contentView, errorView);
   }
+  
 }
 
 

@@ -55,11 +55,12 @@ public class MviBasePresenterTest {
     };
 
     presenter.attachView(view);
-    presenter.detachView(true);
+    presenter.detachView();
     presenter.attachView(view);
-    presenter.detachView(true);
+    presenter.detachView();
     presenter.attachView(view);
-    presenter.detachView(false);
+    presenter.detachView();
+    presenter.destroy();
 
     Assert.assertEquals(1, bindInvocations.get());
     Assert.assertEquals(1, unbindInvocations.get());
@@ -108,7 +109,7 @@ public class MviBasePresenterTest {
     Assert.assertEquals(Arrays.asList("1 Intent", "2 Intent"), intentsData);
 
     // Detach View temporarily
-    presenter.detachView(true);
+    presenter.detachView();
     Assert.assertFalse(view.anIntent.hasObservers());
     businessLogic.onNext("3 bl");
     Assert.assertEquals(Arrays.asList("1 bl", "2 bl"), view.renderedModels);
@@ -126,7 +127,8 @@ public class MviBasePresenterTest {
     Assert.assertEquals(Arrays.asList("1 bl", "2 bl", "4 bl", "5 bl"), view.renderedModels);
 
     // Detach View permanently
-    presenter.detachView(false);
+    presenter.detachView();
+    presenter.destroy();
     Assert.assertFalse(businessLogic.hasObservers()); // No more observers
     Assert.assertFalse(view.anIntent.hasObservers()); // No more observers
     view.anIntent.onNext("This will never be delivered to presenter");
@@ -154,11 +156,13 @@ public class MviBasePresenterTest {
     };
 
     presenter.attachView(view);
-    presenter.detachView(false);
+    presenter.detachView();
+    presenter.destroy();
     presenter.attachView(view);
-    presenter.detachView(true);
+    presenter.detachView();
     presenter.attachView(view);
-    presenter.detachView(false);
+    presenter.detachView();
+    presenter.destroy();
 
     Assert.assertEquals(2, bindInvocations.get());
     Assert.assertEquals(2, unbindInvocations.get());

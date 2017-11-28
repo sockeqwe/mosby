@@ -17,6 +17,7 @@
 
 package com.hannesdorfmann.mosby3.mvi.integrationtest.lifecycle.activity;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -30,11 +31,13 @@ public class MviLifecycleActivity extends MviActivity<LifecycleTestView, Lifecyc
 
   public LifecycleTestPresenter presenter;
   public static int createPresenterInvokations = 0;
+  public static Activity currentInstance ;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_lifecycle);
     Log.d(getClass().getSimpleName(), "onCreate() " + this);
+    currentInstance = this;
   }
 
   @Override protected void onDestroy() {
@@ -47,5 +50,13 @@ public class MviLifecycleActivity extends MviActivity<LifecycleTestView, Lifecyc
     presenter = new LifecycleTestPresenter();
     Log.d(getClass().getSimpleName(), "createPresenter() " + this+" "+presenter);
     return presenter;
+  }
+
+  public static void pressBackButton() {
+    currentInstance.runOnUiThread(new Runnable() {
+      @Override public void run() {
+        currentInstance.onBackPressed();
+      }
+    });
   }
 }

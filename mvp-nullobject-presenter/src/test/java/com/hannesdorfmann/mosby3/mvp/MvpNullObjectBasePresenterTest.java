@@ -55,7 +55,8 @@ public class MvpNullObjectBasePresenterTest {
 
     presenter.attachView(view);
     presenter.viewShowThat();
-    presenter.detachView(false);
+    presenter.detachView();
+    presenter.destroy();
     presenter.viewShowThat();
   }
 
@@ -69,7 +70,8 @@ public class MvpNullObjectBasePresenterTest {
 
     presenter.attachView(view);
     presenter.viewShowThat();
-    presenter.detachView(false);
+    presenter.detachView();
+    presenter.destroy();
     presenter.viewShowThat();
   }
 
@@ -93,7 +95,8 @@ public class MvpNullObjectBasePresenterTest {
 
     presenter.attachView(view);
     presenter.viewShowThat();
-    presenter.detachView(false);
+    presenter.detachView();
+    presenter.destroy();
     presenter.viewShowThat();
   }
 
@@ -105,7 +108,8 @@ public class MvpNullObjectBasePresenterTest {
 
     presenter.attachView(view);
     presenter.invokeShowThat();
-    presenter.detachView(false);
+    presenter.detachView();
+    presenter.destroy();
     presenter.invokeShowThat();
   }
 
@@ -127,14 +131,15 @@ public class MvpNullObjectBasePresenterTest {
 
   private <V extends MvpView> void testDetachNonRetain(
       final MvpNullObjectBasePresenter<V> presenter, final V view) {
-    presenter.detachView(false);
+    presenter.detachView();
+    presenter.destroy();
     Assert.assertNotNull(presenter.getView());
     Assert.assertTrue(presenter.getView() != view); // Null Object view;
   }
 
   private <V extends MvpView> void testDetachRetain(final MvpNullObjectBasePresenter<V> presenter,
       final V view) {
-    presenter.detachView(true);
+    presenter.detachView();
     Assert.assertNotNull(presenter.getView());
     Assert.assertTrue(presenter.getView() != view); // Null Object view;
   }
@@ -147,7 +152,8 @@ public class MvpNullObjectBasePresenterTest {
     Assert.assertNotNull(presenter.getView());
     Assert.assertTrue(view == presenter.getView());
 
-    presenter.detachView(false);
+    presenter.detachView();
+    presenter.destroy();
     Assert.assertNotNull(presenter.getView());
     Assert.assertFalse(presenter.getView() == view);
 

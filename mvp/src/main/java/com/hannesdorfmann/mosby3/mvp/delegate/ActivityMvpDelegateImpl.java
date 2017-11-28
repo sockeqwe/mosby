@@ -176,7 +176,10 @@ public class ActivityMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<V
 
   @Override public void onDestroy() {
     boolean retainPresenterInstance = retainPresenterInstance(keepPresenterInstance, activity);
-    getPresenter().detachView(retainPresenterInstance);
+    getPresenter().detachView();
+    if (!retainPresenterInstance){
+      getPresenter().destroy();
+    }
     if (!retainPresenterInstance && mosbyViewId != null) {
       PresenterManager.remove(activity, mosbyViewId);
     }

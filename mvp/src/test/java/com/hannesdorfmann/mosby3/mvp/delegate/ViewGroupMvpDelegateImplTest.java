@@ -18,20 +18,20 @@
 package com.hannesdorfmann.mosby3.mvp.delegate;
 
 import android.app.Application;
+import android.os.Parcelable;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
 /**
  * @author Hannes Dorfmann
  */
+//@Ignore("can't be tested like this because a view can't be detached manually without destroying presenter")
 public class ViewGroupMvpDelegateImplTest {
 
   private MvpView view;
@@ -41,15 +41,18 @@ public class ViewGroupMvpDelegateImplTest {
   private FragmentActivity activity;
   private Application application;
   private View androidView;
+  private Parcelable savedState;
 
   @Before public void initComponents() {
     view = new MvpView() {
     };
+    savedState = null;
 
     presenter = Mockito.mock(MvpPresenter.class);
     callback = Mockito.mock(PartialViewGroupMvpDelegateCallbackImpl.class);
     Mockito.doCallRealMethod().when(callback).setPresenter(presenter);
     Mockito.doCallRealMethod().when(callback).getPresenter();
+    Mockito.doCallRealMethod().when(callback).superOnSaveInstanceState();
 
     activity = Mockito.mock(FragmentActivity.class);
     application = Mockito.mock(Application.class);
@@ -65,24 +68,27 @@ public class ViewGroupMvpDelegateImplTest {
 
   @Test public void appStartWithScreenOrientationChangeAndFinallyFinishing() {
     startViewGroup(1, 1, 1);
-    finishViewGroup(1, true, true, false);
+    finishViewGroup(1, 0, true, false);
+    delegate = new ViewGroupMvpDelegateImpl<>(androidView, callback, true);
     startViewGroup(1, 2, 2);
-    finishViewGroup(1, false, false, true);
+    finishViewGroup(2, 1, false, true);
   }
 
   @Test public void appStartFinishing() {
     startViewGroup(1, 1, 1);
-    finishViewGroup(1, false, false, true);
+    finishViewGroup(1, 1, false, true);
   }
 
   @Test public void dontKeepPresenter() {
-    delegate = new ViewGroupMvpDelegateImpl<MvpView, MvpPresenter<MvpView>>(androidView, callback, false);
+    delegate =
+        new ViewGroupMvpDelegateImpl<MvpView, MvpPresenter<MvpView>>(androidView, callback, false);
     startViewGroup(1, 1, 1);
-    finishViewGroup(1, false, true, false);
+    finishViewGroup(1, 1, true, false);
+    delegate =
+        new ViewGroupMvpDelegateImpl<MvpView, MvpPresenter<MvpView>>(androidView, callback, false);
     startViewGroup(2, 2, 2);
-    finishViewGroup(2, false, false, true);
+    finishViewGroup(2, 2, false, true);
   }
-
 
   /**
    * Checks if two Views one that keeps presenter, the other who doesn't keep presenter during
@@ -96,7 +102,8 @@ public class ViewGroupMvpDelegateImplTest {
     };
 
     MvpPresenter<MvpView> presenter1 = Mockito.mock(MvpPresenter.class);
-    PartialViewGroupMvpDelegateCallbackImpl callback1 = Mockito.mock(PartialViewGroupMvpDelegateCallbackImpl.class);
+    PartialViewGroupMvpDelegateCallbackImpl callback1 =
+        Mockito.mock(PartialViewGroupMvpDelegateCallbackImpl.class);
     Mockito.doCallRealMethod().when(callback1).setPresenter(presenter1);
     Mockito.doCallRealMethod().when(callback1).getPresenter();
     View androidView1 = Mockito.mock(View.class);
@@ -106,26 +113,30 @@ public class ViewGroupMvpDelegateImplTest {
     Mockito.when(androidView1.isInEditMode()).thenReturn(false);
     Mockito.when(callback1.createPresenter()).thenReturn(presenter1);
 
-    ViewGroupMvpDelegateImpl<MvpView, MvpPresenter<MvpView>> keepDeelgate
-        = new ViewGroupMvpDelegateImpl<MvpView, MvpPresenter<MvpView>>(androidView1, callback1, true);
+    ViewGroupMvpDelegateImpl<MvpView, MvpPresenter<MvpView>> keepDeelgate =
+        new ViewGroupMvpDelegateImpl<MvpView, MvpPresenter<MvpView>>(androidView1, callback1, true);
 
-
-    delegate = new ViewGroupMvpDelegateImpl<MvpView, MvpPresenter<MvpView>>(androidView, callback, false);
+    delegate =
+        new ViewGroupMvpDelegateImpl<MvpView, MvpPresenter<MvpView>>(androidView, callback, false);
 
     keepDeelgate.onAttachedToWindow();
 
     startViewGroup(1, 1, 1);
-    finishViewGroup(1, false, true, false);
+    finishViewGroup(1, 1, true, false);
+    delegate =
+        new ViewGroupMvpDelegateImpl<MvpView, MvpPresenter<MvpView>>(androidView, callback, false);
     startViewGroup(2, 2, 2);
-    finishViewGroup(2, false, false, true);
+    finishViewGroup(2, 2, false, true);
 
     keepDeelgate.onDetachedFromWindow();
   }
 
-
   private void startViewGroup(int createPresenter, int setPresenter, int attachView) {
     Mockito.when(callback.createPresenter()).thenReturn(presenter);
 
+    if (savedState != null) {
+      delegate.onRestoreInstanceState(savedState);
+    }
     delegate.onAttachedToWindow();
 
     Mockito.verify(callback, Mockito.times(createPresenter)).createPresenter();
@@ -133,15 +144,17 @@ public class ViewGroupMvpDelegateImplTest {
     Mockito.verify(presenter, Mockito.times(attachView)).attachView(view);
   }
 
-  private void finishViewGroup(int detachCount, boolean expectKeepPresenter, boolean configChange,
+  private void finishViewGroup(int detachCount, int destroyCount, boolean configChange,
       boolean finishingActivity) {
 
     Mockito.when(activity.isFinishing()).thenReturn(finishingActivity);
     Mockito.when(activity.isChangingConfigurations()).thenReturn(configChange);
     Mockito.when(callback.getPresenter()).thenReturn(presenter);
 
+    savedState = delegate.onSaveInstanceState();
     delegate.onDetachedFromWindow();
 
-    Mockito.verify(presenter, Mockito.times(detachCount)).detachView(expectKeepPresenter);
+    Mockito.verify(presenter, Mockito.times(detachCount)).detachView();
+    Mockito.verify(presenter, Mockito.times(destroyCount)).destroy();
   }
 }

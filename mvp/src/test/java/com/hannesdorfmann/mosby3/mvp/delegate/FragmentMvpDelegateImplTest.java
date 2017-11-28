@@ -71,24 +71,24 @@ public class FragmentMvpDelegateImplTest {
   @Test public void appStartWithScreenOrientationChangeAndFinallyFinishing() {
     startFragment(delegate, null, 1, 1, 1);
     Bundle bundle = BundleMocker.create();
-    finishFragment(delegate, bundle, 1, true, true, false);
+    finishFragment(delegate, bundle, 1, 0,  true, false);
     startFragment(delegate, bundle, 1, 2, 2);
-    finishFragment(delegate, bundle, 1, false, false, true);
+    finishFragment(delegate, bundle, 2, 1, false, true);
   }
 
   @Test public void appStartFinishing() {
     startFragment(delegate, null, 1, 1, 1);
     Bundle bundle = BundleMocker.create();
-    finishFragment(delegate, bundle, 1, false, false, true);
+    finishFragment(delegate, bundle, 1, 1, false, true);
   }
 
   @Test public void dontKeepPresenter() {
     delegate = new FragmentMvpDelegateImpl<>(fragment, callback, false, false);
     startFragment(delegate, null, 1, 1, 1);
     Bundle bundle = BundleMocker.create();
-    finishFragment(delegate, bundle, 1, false, true, false);
+    finishFragment(delegate, bundle, 1, 1, true, false);
     startFragment(delegate, null, 2, 2, 2);
-    finishFragment(delegate, bundle, 2, false, false, true);
+    finishFragment(delegate, bundle, 2, 2, false, true);
   }
 
   /**
@@ -119,12 +119,11 @@ public class FragmentMvpDelegateImplTest {
     FragmentMvpDelegateImpl<MvpView, MvpPresenter<MvpView>> dontKeepDelegate =
         new FragmentMvpDelegateImpl<>(fragment, callback, false, false);
 
-
     startFragment(dontKeepDelegate, null, 1, 1, 1);
     Bundle bundle = BundleMocker.create();
-    finishFragment(dontKeepDelegate, bundle, 1, false, true, false);
+    finishFragment(dontKeepDelegate, bundle, 1, 1, true, false);
     startFragment(dontKeepDelegate, null, 2, 2, 2);
-    finishFragment(dontKeepDelegate, bundle, 2, false, false, true);
+    finishFragment(dontKeepDelegate, bundle, 2, 2, false, true);
 
     Bundle bundle2 = BundleMocker.create();
     finishFragment(keepDelegate, bundle2);
@@ -162,7 +161,7 @@ public class FragmentMvpDelegateImplTest {
   }
 
   private void finishFragment(FragmentMvpDelegateImpl<MvpView, MvpPresenter<MvpView>> delegate,
-      Bundle bundle, int detachViewCount, boolean expectKeepPresenter,
+      Bundle bundle, int detachViewCount, int destroyCount,
       boolean changingConfigurations, boolean isFinishing) {
     Mockito.when(callback.getPresenter()).thenReturn(presenter);
     Mockito.when(activity.isChangingConfigurations()).thenReturn(changingConfigurations);
@@ -170,6 +169,7 @@ public class FragmentMvpDelegateImplTest {
 
     finishFragment(delegate, bundle);
 
-    Mockito.verify(presenter, Mockito.times(detachViewCount)).detachView(expectKeepPresenter);
+    Mockito.verify(presenter, Mockito.times(detachViewCount)).detachView();
+    Mockito.verify(presenter, Mockito.times(destroyCount)).destroy();
   }
 }

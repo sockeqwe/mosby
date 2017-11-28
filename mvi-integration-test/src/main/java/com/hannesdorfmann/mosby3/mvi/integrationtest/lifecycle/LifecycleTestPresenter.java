@@ -29,23 +29,28 @@ public class LifecycleTestPresenter extends MviBasePresenter<LifecycleTestView, 
   public int attachViewInvokations = 0;
   public LifecycleTestView attachedView;
   public int detachViewInvokations = 0;
-  public boolean onDettachViewRetainInstance = false;
   public int bindIntentInvocations = 0;
   public int unbindIntentInvocations = 0;
+  public int destoryInvoations = 0;
 
   @Override public void attachView(LifecycleTestView view) {
     super.attachView(view);
     attachViewInvokations++;
     attachedView = view;
-    Log.d(getClass().getSimpleName(), "attachView " + attachViewInvokations + " " + attachedView);
+    Log.d(getClass().getSimpleName(), "attachView " + attachViewInvokations + " " + attachedView+" in "+toString());
   }
 
-  @Override public void detachView(boolean retainInstance) {
-    super.detachView(retainInstance);
+  @Override public void detachView() {
+    super.detachView();
     attachedView = null;
     detachViewInvokations++;
-    onDettachViewRetainInstance = retainInstance;
-    Log.d(getClass().getSimpleName(), "detachView " + detachViewInvokations + " " + retainInstance);
+    Log.d(getClass().getSimpleName(), "detachView " + detachViewInvokations+" in "+toString());
+  }
+
+  @Override public void destroy() {
+    super.destroy();
+    destoryInvoations++;
+    Log.d(getClass().getSimpleName(), "destroy Presenter " + destoryInvoations+" in "+toString());
   }
 
   @Override protected void bindIntents() {

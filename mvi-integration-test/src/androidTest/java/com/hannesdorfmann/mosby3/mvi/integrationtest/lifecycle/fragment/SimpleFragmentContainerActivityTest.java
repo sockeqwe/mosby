@@ -44,6 +44,7 @@ import org.junit.runner.RunWith;
     Assert.assertNotNull(presenter);
     Assert.assertEquals(1, fragment.createPresenterInvokations);
     Assert.assertEquals(1, presenter.attachViewInvokations);
+    Assert.assertEquals(1, presenter.bindIntentInvocations);
     Assert.assertTrue(presenter.attachedView == fragment);
 
     Thread.sleep(1000);
@@ -55,19 +56,27 @@ import org.junit.runner.RunWith;
     Thread.sleep(1000);
 
     Assert.assertEquals(1, presenter.detachViewInvokations);
-    Assert.assertTrue(presenter.onDettachViewRetainInstance);
+    Assert.assertEquals(0, presenter.unbindIntentInvocations);
+    Assert.assertEquals(0, presenter.destoryInvoations);
     Assert.assertEquals(1, fragment.createPresenterInvokations);
     Assert.assertEquals(2, presenter.attachViewInvokations);
+    Assert.assertNotNull(presenter.attachedView);
     Assert.assertTrue(presenter.attachedView != fragment);
+
+    //
+    // press back --> Finish Activity
+    //
+
+    SimpleFragmentContainerActivity.pressBackButton();
+    Thread.sleep(1000);
   }
 
   @AfterClass
   public static void checkPresenterNotRetained(){
-
-    // TODO is there a better way to test after onDestroy() has been called?
     Assert.assertNotNull(presenter);
     Assert.assertEquals(2, presenter.detachViewInvokations);
-    Assert.assertFalse(presenter.onDettachViewRetainInstance);
+    Assert.assertEquals(1, presenter.unbindIntentInvocations);
+    Assert.assertEquals(1, presenter.destoryInvoations);
 
   }
 }

@@ -28,6 +28,7 @@ android {
 
 dependencies {
   compile project(':mvp-lce')
+  compile project(':mvp-queuing-presenter')
 
   compile 'com.android.support:design:'+ rootProject.ext.supportLibVersion
   compile 'com.android.support:recyclerview-v7:'+ rootProject.ext.supportLibVersion

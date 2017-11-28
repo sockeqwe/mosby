@@ -17,6 +17,7 @@
 
 package com.hannesdorfmann.mosby3.mvi.integrationtest.lifecycle.fragment;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -27,10 +28,12 @@ import com.hannesdorfmann.mosby3.mvi.integrationtest.R;
  */
 public class RetainingFragmentContainerActivity extends AppCompatActivity {
 
+  private static Activity currentInstance;
   private static final String TAG = "Test-Fragment";
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    currentInstance = this;
     setContentView(R.layout.activity_lifecycle);
 
     if (savedInstanceState == null) {
@@ -42,5 +45,13 @@ public class RetainingFragmentContainerActivity extends AppCompatActivity {
 
   public SimpleRetainingMviLifecycleFragment getFragment(){
     return (SimpleRetainingMviLifecycleFragment) getSupportFragmentManager().findFragmentByTag(TAG);
+  }
+
+  public static void pressBackButton() {
+    currentInstance.runOnUiThread(new Runnable() {
+      @Override public void run() {
+        currentInstance.onBackPressed();
+      }
+    });
   }
 }

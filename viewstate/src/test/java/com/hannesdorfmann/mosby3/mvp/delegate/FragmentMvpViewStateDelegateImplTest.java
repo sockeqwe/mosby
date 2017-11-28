@@ -83,15 +83,15 @@ public class FragmentMvpViewStateDelegateImplTest {
   @Test public void appStartWithScreenOrientationChangeAndFinallyFinishing() {
     startFragment(null, 1, 1, 1, 1, 1, 0, null, 0, 1, 0);
     Bundle bundle = BundleMocker.create();
-    finishFragment(bundle, 1, true, true, false);
+    finishFragment(bundle, 1,0,  true, false);
     startFragment(bundle, 1, 2, 2, 1, 2, 1, true, 1, 1, 1);
-    finishFragment(bundle, 1, false, false, true);
+    finishFragment(bundle, 2, 1, false, true);
   }
 
   @Test public void appStartFinishing() {
     startFragment(null, 1, 1, 1, 1, 1, 0, null, 0, 1, 0);
     Bundle bundle = BundleMocker.create();
-    finishFragment(bundle, 1, false, false, true);
+    finishFragment(bundle, 1, 1, false, true);
     Mockito.verifyNoMoreInteractions(viewState);
   }
 
@@ -99,9 +99,9 @@ public class FragmentMvpViewStateDelegateImplTest {
     delegate = new FragmentMvpViewStateDelegateImpl<>(fragment, callback, false, false);
     startFragment(null, 1, 1, 1, 1, 1, 0, null, 0, 1, 0);
     Bundle bundle = BundleMocker.create();
-    finishFragment(bundle, 1, false, true, false);
+    finishFragment(bundle, 1, 1, true, false);
     startFragment(null, 2, 2, 2, 2, 2, 0, null, 0, 2, 0);
-    finishFragment(bundle, 2, false, false, true);
+    finishFragment(bundle, 2, 2, false, true);
   }
 
   /**
@@ -137,9 +137,9 @@ public class FragmentMvpViewStateDelegateImplTest {
     delegate = new FragmentMvpViewStateDelegateImpl<>(fragment, callback, false, false);
     startFragment(null, 1, 1, 1, 1, 1, 0, null, 0, 1, 0);
     Bundle bundle = BundleMocker.create();
-    finishFragment(bundle, 1, false, true, false);
+    finishFragment(bundle, 1, 1, true, false);
     startFragment(null, 2, 2, 2, 2, 2, 0, null, 0, 2, 0);
-    finishFragment(bundle, 2, false, false, true);
+    finishFragment(bundle, 2, 2, false, true);
 
     finishFragment(keepDelegate, BundleMocker.create());
   }
@@ -169,9 +169,9 @@ public class FragmentMvpViewStateDelegateImplTest {
 
     startFragment(null, 1, 1, 1, 1, 1, 0, null, 0, 1, 0);
     Bundle bundle = BundleMocker.create();
-    finishFragment(bundle, 1, true, true, false);
+    finishFragment(bundle, 1, 0, true, false);
     startFragment(bundle, 1, 2, 2, 1, 2, 1, true, 1, 1, 1);
-    finishFragment(bundle, 1, false, false, true);
+    finishFragment(bundle, 2, 1, false, true);
   }
 
   private void startFragment(
@@ -233,12 +233,13 @@ public class FragmentMvpViewStateDelegateImplTest {
     delegate.onDetach();
   }
 
-  private void finishFragment(Bundle bundle, int detachViewCount, boolean expectKeepPresenter,
+  private void finishFragment(Bundle bundle, int detachViewCount, int destroyPresenterCount,
       boolean changingConfigurations, boolean isFinishing) {
     Mockito.when(callback.getPresenter()).thenReturn(presenter);
     Mockito.when(activity.isChangingConfigurations()).thenReturn(changingConfigurations);
     Mockito.when(activity.isFinishing()).thenReturn(isFinishing);
     finishFragment(delegate, bundle);
-    Mockito.verify(presenter, Mockito.times(detachViewCount)).detachView(expectKeepPresenter);
+    Mockito.verify(presenter, Mockito.times(detachViewCount)).detachView();
+    Mockito.verify(presenter, Mockito.times(destroyPresenterCount)).destroy();
   }
 }

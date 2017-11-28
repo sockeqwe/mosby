@@ -44,6 +44,7 @@ import org.junit.runner.RunWith;
     Assert.assertNotNull(activityPresenter);
     Assert.assertEquals(1, MviLifecycleChildFragmentActivity.createPresenterInvokations);
     Assert.assertEquals(1, activityPresenter.attachViewInvokations);
+    Assert.assertEquals(1, activityPresenter.bindIntentInvocations);
     Assert.assertTrue(activityPresenter.attachedView == activity);
 
     ContainerMviLifecycleFragment fragment = activity.getFragment();
@@ -51,6 +52,7 @@ import org.junit.runner.RunWith;
     Assert.assertNotNull(fragmentPresenter);
     Assert.assertEquals(1, ContainerMviLifecycleFragment.createPresenterInvokations);
     Assert.assertEquals(1, fragmentPresenter.attachViewInvokations);
+    Assert.assertEquals(1, fragmentPresenter.bindIntentInvocations);
     Assert.assertTrue(fragmentPresenter.attachedView == fragment);
 
 
@@ -59,6 +61,7 @@ import org.junit.runner.RunWith;
     Assert.assertNotNull(childFragment);
     Assert.assertEquals(1, MviLifecycleChildFragment.createPresenterInvokations);
     Assert.assertEquals(1, childFragmentPresenter.attachViewInvokations);
+    Assert.assertEquals(1, childFragmentPresenter.bindIntentInvocations);
     Assert.assertTrue(childFragmentPresenter.attachedView == fragment);
 
     Thread.sleep(1000);
@@ -70,41 +73,55 @@ import org.junit.runner.RunWith;
     Thread.sleep(1000);
 
     Assert.assertEquals(1, activityPresenter.detachViewInvokations);
-    Assert.assertTrue(activityPresenter.onDettachViewRetainInstance);
+    Assert.assertEquals(0, activityPresenter.unbindIntentInvocations);
+    Assert.assertEquals(0, activityPresenter.destoryInvoations);
     Assert.assertEquals(1, MviLifecycleChildFragmentActivity.createPresenterInvokations);
+    Assert.assertEquals(1, activityPresenter.bindIntentInvocations);
     Assert.assertEquals(2, activityPresenter.attachViewInvokations);
     Assert.assertNotNull(activityPresenter.attachedView);
     Assert.assertTrue(activityPresenter.attachedView != activity);
 
     Assert.assertEquals(1, fragmentPresenter.detachViewInvokations);
-    Assert.assertTrue(fragmentPresenter.onDettachViewRetainInstance);
+    Assert.assertEquals(0, fragmentPresenter.unbindIntentInvocations);
+    Assert.assertEquals(0, fragmentPresenter.destoryInvoations);
     Assert.assertEquals(1, ContainerMviLifecycleFragment.createPresenterInvokations);
     Assert.assertEquals(2, fragmentPresenter.attachViewInvokations);
+    Assert.assertEquals(1, fragmentPresenter.bindIntentInvocations);
     Assert.assertNotNull(fragmentPresenter.attachedView);
     Assert.assertTrue(fragmentPresenter.attachedView != fragment);
 
     Assert.assertEquals(1, childFragmentPresenter.detachViewInvokations);
-    Assert.assertTrue(childFragmentPresenter.onDettachViewRetainInstance);
+    Assert.assertEquals(0, childFragmentPresenter.unbindIntentInvocations);
+    Assert.assertEquals(0, childFragmentPresenter.destoryInvoations);
     Assert.assertEquals(1, MviLifecycleChildFragment.createPresenterInvokations);
     Assert.assertEquals(2, childFragmentPresenter.attachViewInvokations);
+    Assert.assertEquals(1, childFragmentPresenter.bindIntentInvocations);
     Assert.assertNotNull(childFragmentPresenter.attachedView);
     Assert.assertTrue(childFragmentPresenter.attachedView != fragment);
+
+    //
+    // Press back button --> Activity finishes
+    //
+    MviLifecycleChildFragmentActivity.pressBackButton();
+    Thread.sleep(1000);
   }
 
   @AfterClass public static void checkPresenterNotRetained() {
 
-    // TODO is there a better way to test after onDestroy() has been called?
     Assert.assertNotNull(activityPresenter);
     Assert.assertEquals(2, activityPresenter.detachViewInvokations);
-    Assert.assertFalse(activityPresenter.onDettachViewRetainInstance);
+    Assert.assertEquals(1, activityPresenter.unbindIntentInvocations);
+    Assert.assertEquals(1, activityPresenter.destoryInvoations);
 
     Assert.assertNotNull(fragmentPresenter);
     Assert.assertEquals(2, fragmentPresenter.detachViewInvokations);
-    Assert.assertFalse(fragmentPresenter.onDettachViewRetainInstance);
+    Assert.assertEquals(1, fragmentPresenter.unbindIntentInvocations);
+    Assert.assertEquals(1, fragmentPresenter.destoryInvoations);
 
 
     Assert.assertNotNull(childFragmentPresenter);
     Assert.assertEquals(2, childFragmentPresenter.detachViewInvokations);
-    Assert.assertFalse(childFragmentPresenter.onDettachViewRetainInstance);
+    Assert.assertEquals(1, childFragmentPresenter.unbindIntentInvocations);
+    Assert.assertEquals(1, childFragmentPresenter.destoryInvoations);
   }
 }

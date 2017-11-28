@@ -30,7 +30,10 @@ import com.hannesdorfmann.mosby3.mvp.MvpView;
 import java.util.UUID;
 
 /**
- * * The default implementation of {@link FragmentMvpDelegate}
+ * The default implementation of {@link FragmentMvpDelegate}
+ * Presenter is available (has view attached) in {@link #onViewCreated(View, Bundle)} (after
+ * called super.onViewCreated()). View will be detached in {@link #onDestroyView()} from presenter,
+ * and eventually presenter will be destroyed in {@link #onDestroy()}.
  *
  * @param <V> The type of {@link MvpView}
  * @param <P> The type of {@link MvpPresenter}
@@ -109,6 +112,121 @@ public class FragmentMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<V
 
   @Override public void onViewCreated(View view, @Nullable Bundle bundle) {
 
+    P presenter = getPresenter();
+    presenter.attachView(getMvpView());
+
+    if (DEBUG) {
+      Log.d(DEBUG_TAG, "View" + getMvpView() + " attached to Presenter " + presenter);
+    }
+
+    onViewCreatedCalled = true;
+  }
+
+  @NonNull private Activity getActivity() {
+    Activity activity = fragment.getActivity();
+    if (activity == null) {
+      throw new NullPointerException(
+          "Activity returned by Fragment.getActivity() is null. Fragment is " + fragment);
+    }
+
+    return activity;
+  }
+
+  private P getPresenter() {
+    P presenter = delegateCallback.getPresenter();
+    if (presenter == null) {
+      throw new NullPointerException("Presenter returned from getPresenter() is null");
+    }
+    return presenter;
+  }
+
+  private V getMvpView() {
+    V view = delegateCallback.getMvpView();
+    if (view == null) {
+      throw new NullPointerException("View returned from getMvpView() is null");
+    }
+    return view;
+  }
+
+  static boolean retainPresenterInstance(Activity activity, Fragment fragment,
+      boolean keepPresenterInstanceDuringScreenOrientationChanges,
+      boolean keepPresenterOnBackstack) {
+
+    if (activity.isChangingConfigurations()) {
+      return keepPresenterInstanceDuringScreenOrientationChanges;
+    }
+
+    if (activity.isFinishing()) {
+      return false;
+    }
+
+    if (keepPresenterOnBackstack && BackstackAccessor.isFragmentOnBackStack(fragment)) {
+      return true;
+    }
+
+    return !fragment.isRemoving();
+  }
+
+  @Override public void onDestroyView() {
+
+    onViewCreatedCalled = false;
+
+    getPresenter().detachView();
+
+    if (DEBUG) {
+      Log.d(DEBUG_TAG, "detached MvpView from Presenter. MvpView "
+          + delegateCallback.getMvpView()
+          + "   Presenter: "
+          + getPresenter());
+    }
+  }
+
+  @Override public void onPause() {
+
+  }
+
+  @Override public void onResume() {
+
+  }
+
+  @Override public void onStart() {
+
+    if (!onViewCreatedCalled) {
+      throw new IllegalStateException("It seems that you are using "
+          + delegateCallback.getClass().getCanonicalName()
+          + " as headless (UI less) fragment (because onViewCreated() has not been called or maybe delegation misses that part). Having a Presenter without a View (UI) doesn't make sense. Simply use an usual fragment instead of an MvpFragment if you want to use a UI less Fragment");
+    }
+  }
+
+  @Override public void onStop() {
+
+  }
+
+  @Override public void onActivityCreated(Bundle savedInstanceState) {
+
+  }
+
+  @Override public void onAttach(Activity activity) {
+
+  }
+
+  @Override public void onDetach() {
+
+  }
+
+  @Override public void onSaveInstanceState(Bundle outState) {
+    if ((keepPresenterInstanceDuringScreenOrientationChanges || keepPresenterOnBackstack)
+        && outState != null) {
+      outState.putString(KEY_MOSBY_VIEW_ID, mosbyViewId);
+
+      if (DEBUG) {
+        Log.d(DEBUG_TAG, "Saving MosbyViewId into Bundle. ViewId: " + mosbyViewId);
+      }
+    }
+  }
+
+  @Override public void onCreate(Bundle bundle) {
+
     P presenter = null;
 
     if (bundle != null && keepPresenterInstanceDuringScreenOrientationChanges) {
@@ -159,133 +277,28 @@ public class FragmentMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<V
     }
 
     delegateCallback.setPresenter(presenter);
-    getPresenter().attachView(getMvpView());
-
-    if (DEBUG) {
-      Log.d(DEBUG_TAG, "View" + getMvpView() + " attached to Presenter " + presenter);
-    }
-
-    onViewCreatedCalled = true;
-  }
-
-  @NonNull private Activity getActivity() {
-    Activity activity = fragment.getActivity();
-    if (activity == null) {
-      throw new NullPointerException(
-          "Activity returned by Fragment.getActivity() is null. Fragment is " + fragment);
-    }
-
-    return activity;
-  }
-
-  private P getPresenter() {
-    P presenter = delegateCallback.getPresenter();
-    if (presenter == null) {
-      throw new NullPointerException("Presenter returned from getPresenter() is null");
-    }
-    return presenter;
-  }
-
-  private V getMvpView() {
-    V view = delegateCallback.getMvpView();
-    if (view == null) {
-      throw new NullPointerException("View returned from getMvpView() is null");
-    }
-    return view;
-  }
-
-  protected boolean retainPresenterInstance() {
-
-    Activity activity = getActivity();
-    if (activity.isChangingConfigurations()) {
-      return keepPresenterInstanceDuringScreenOrientationChanges;
-    }
-
-    if (activity.isFinishing()) {
-      return false;
-    }
-
-    if (keepPresenterOnBackstack && BackstackAccessor.isFragmentOnBackStack(fragment)) {
-      return true;
-    }
-
-    return !fragment.isRemoving();
-  }
-
-  @Override public void onDestroyView() {
-
-    onViewCreatedCalled = false;
-
-    Activity activity = getActivity();
-    boolean retainPresenterInstance = retainPresenterInstance();
-
-    P presenter = getPresenter();
-    presenter.detachView(retainPresenterInstance);
-    if (!retainPresenterInstance
-        && mosbyViewId
-        != null) { // mosbyViewId is null if keepPresenterInstanceDuringScreenOrientationChanges  == false
-      PresenterManager.remove(activity, mosbyViewId);
-    }
-
-    if (DEBUG) {
-      Log.d(DEBUG_TAG, "detached MvpView from Presenter. MvpView "
-          + delegateCallback.getMvpView()
-          + "   Presenter: "
-          + presenter);
-      Log.d(DEBUG_TAG, "Retaining presenter instance: "
-          + Boolean.toString(retainPresenterInstance)
-          + " "
-          + presenter);
-    }
-  }
-
-  @Override public void onPause() {
-
-  }
-
-  @Override public void onResume() {
-
-  }
-
-  @Override public void onStart() {
-
-    if (!onViewCreatedCalled) {
-      throw new IllegalStateException("It seems that you are using "
-          + delegateCallback.getClass().getCanonicalName()
-          + " as headless (UI less) fragment (because onViewCreated() has not been called or maybe delegation misses that part). Having a Presenter without a View (UI) doesn't make sense. Simply use an usual fragment instead of an MvpFragment if you want to use a UI less Fragment");
-    }
-  }
-
-  @Override public void onStop() {
-
-  }
-
-  @Override public void onActivityCreated(Bundle savedInstanceState) {
-
-  }
-
-  @Override public void onAttach(Activity activity) {
-
-  }
-
-  @Override public void onDetach() {
-
-  }
-
-  @Override public void onSaveInstanceState(Bundle outState) {
-    if ((keepPresenterInstanceDuringScreenOrientationChanges || keepPresenterOnBackstack)
-        && outState != null) {
-      outState.putString(KEY_MOSBY_VIEW_ID, mosbyViewId);
-
-      if (DEBUG) {
-        Log.d(DEBUG_TAG, "Saving MosbyViewId into Bundle. ViewId: " + mosbyViewId);
-      }
-    }
-  }
-
-  @Override public void onCreate(Bundle saved) {
   }
 
   @Override public void onDestroy() {
+
+    Activity activity = getActivity();
+    boolean retainPresenterInstance = retainPresenterInstance(activity, fragment,
+        keepPresenterInstanceDuringScreenOrientationChanges, keepPresenterOnBackstack);
+
+    P presenter = getPresenter();
+    if (!retainPresenterInstance) {
+      presenter.destroy();
+      if (DEBUG) {
+        Log.d(DEBUG_TAG, "Presenter destroyed. MvpView "
+            + delegateCallback.getMvpView()
+            + "   Presenter: "
+            + presenter);
+      }
+    }
+
+    if (!retainPresenterInstance && mosbyViewId != null) {
+      // mosbyViewId is null if keepPresenterInstanceDuringScreenOrientationChanges  == false
+      PresenterManager.remove(activity, mosbyViewId);
+    }
   }
 }

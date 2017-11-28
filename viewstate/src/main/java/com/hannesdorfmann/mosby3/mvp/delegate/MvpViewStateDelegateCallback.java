@@ -17,7 +17,6 @@
 package com.hannesdorfmann.mosby3.mvp.delegate;
 
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 import com.hannesdorfmann.mosby3.mvp.viewstate.ViewState;
@@ -73,8 +72,8 @@ public interface MvpViewStateDelegateCallback<V extends MvpView, P extends MvpPr
    * the view to be on the same state as before.
    * </p>
    *
-   * @param instanceStateRetained true, if the viewstate has been retained by using{@link
-   * Fragment#setRetainInstance(boolean)}, otherwise false (always false for activities).
+   * @param instanceStateRetained true, if the viewstate has been restored from memory, otherwise
+   * false (viewstate has been restored from Bundle)
    */
   void onViewStateInstanceRestored(boolean instanceStateRetained);
 

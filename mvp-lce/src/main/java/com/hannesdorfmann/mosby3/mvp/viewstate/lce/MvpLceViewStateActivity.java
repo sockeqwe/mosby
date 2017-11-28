@@ -66,8 +66,10 @@ public abstract class MvpLceViewStateActivity<CV extends View, M, V extends MvpL
     loadData(false);
   }
 
-  @Override public void onViewStateInstanceRestored(boolean instanceStateRetained) {
-    // not needed. You could override this is subclasses if needed
+  @Override public void onViewStateInstanceRestored(boolean instanceStateRetainedInMemory) {
+    if (!instanceStateRetainedInMemory && viewState.isLoadingState()) {
+      loadData(viewState.isPullToRefreshLoadingState());
+    }
   }
 
   @Override public void showContent() {

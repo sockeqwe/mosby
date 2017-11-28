@@ -34,6 +34,16 @@
     <activity android:name=".lifecycle.fragment.RetainingFragmentContainerActivity"/>
     <activity android:name=".lifecycle.fragment.childfragment.MviLifecycleChildFragmentActivity"/>
     <activity android:name=".lifecycle.fragment.backstack.MviLifecycleBackstackActivity"/>
+    <activity android:name=".lifecycle.viewgroup.MviViewGroupContainerActivity"/>
+    <activity
+        android:name=".backstack.BackstackActivity"
+        android:label="@string/title_activity_backstack"
+        android:theme="@style/AppTheme.NoActionBar">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+      </intent-filter>
+    </activity>
   </application>
 
 </manifest>

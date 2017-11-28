@@ -64,4 +64,17 @@ public interface LceViewState<D, V extends MvpLceView<D>> extends ViewState<V> {
    * @param pullToRefresh Was it a pull to refresh operation?
    */
   void setStateShowLoading(boolean pullToRefresh);
+
+  /**
+   *
+   * @return true if the viewstate is loading, otherwise false
+   */
+  boolean isLoadingState();
+
+  /**
+   *
+   * @return true if {@link #isLoadingState()} and pull-to-refresh has been triggered
+   */
+  boolean isPullToRefreshLoadingState();
+
 }

@@ -17,9 +17,12 @@
 
 package com.hannesdorfmann.mosby3.mvp.delegate;
 
+import android.os.Parcelable;
+import android.view.AbsSavedState;
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 import com.hannesdorfmann.mosby3.mvp.viewstate.ViewState;
+import org.mockito.Mockito;
 
 public abstract class PartialViewGroupMvpViewStateDelegateCallbackImpl implements
     ViewGroupMvpViewStateDelegateCallback<MvpView, MvpPresenter<MvpView>, ViewState<MvpView>> {
@@ -41,5 +44,9 @@ public abstract class PartialViewGroupMvpViewStateDelegateCallbackImpl implement
 
   @Override public void setViewState(ViewState<MvpView> viewState) {
     this.viewState = viewState;
+  }
+
+  @Override public Parcelable superOnSaveInstanceState() {
+    return Mockito.mock(AbsSavedState.class);
   }
 }

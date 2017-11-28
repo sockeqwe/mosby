@@ -1,4 +1,4 @@
-include ':mvp-common',
+include ':mvp-common', ':mvp-queuing-presenter',
     ':mvp',
     ':viewstate',
     ':sample',
@@ -7,8 +7,8 @@ include ':mvp-common',
     ':mvp-lce',
     ':mvp-nullobject-presenter',
     ':mvi-common',
-    ':utils-fragment-integration-test',
     ':mvi-integration-test',
     ':sample-mvi',
     ':presentermanager',
     ':utils-fragment'
+    // ':utils-fragment-integration-test'

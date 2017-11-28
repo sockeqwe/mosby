@@ -46,8 +46,7 @@ public interface ViewState<V extends MvpView> {
    *
    * @param view The {@link MvpView}
    * @param retained true, if the components like the viewstate and the presenter have been
-   * retained
-   * because the {@link Fragment#setRetainInstance(boolean)} has been set to true
+   * retained in memory, otherwise false (viewstate has been restored from Bundle / Parcelable)
    */
   void apply(V view, boolean retained);
 }

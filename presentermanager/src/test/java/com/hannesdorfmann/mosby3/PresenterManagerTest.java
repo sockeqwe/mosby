@@ -403,6 +403,12 @@ public class PresenterManagerTest {
 
       @Override public void detachView(boolean retainInstance) {
       }
+
+      @Override public void detachView() {
+      }
+
+      @Override public void destroy() {
+      }
     };
 
     String viewId ="123";

@@ -18,7 +18,9 @@
 package com.hannesdorfmann.mosby3;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
+import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -35,7 +37,7 @@ import java.util.UUID;
  * @since 3.0.0
  */
 public class ViewGroupMviDelegateImpl<V extends MvpView, P extends MviPresenter<V, ?>>
-    implements ViewGroupMviDelegate<V, P> {
+    implements ViewGroupMviDelegate<V, P>, Application.ActivityLifecycleCallbacks {
 
   // TODO allow custom save state hook in
 
@@ -48,6 +50,10 @@ public class ViewGroupMviDelegateImpl<V extends MvpView, P extends MviPresenter<
   private final boolean isInEditMode;
   private P presenter;
   private final Activity activity;
+
+  private boolean checkedActivityFinishing = false;
+  private boolean presenterDetached = false;
+  private boolean presenterDestroeyed = false;
 
   public ViewGroupMviDelegateImpl(@NonNull View view,
       @NonNull ViewGroupMviDelegateCallback<V, P> delegateCallback,
@@ -63,6 +69,7 @@ public class ViewGroupMviDelegateImpl<V extends MvpView, P extends MviPresenter<
     this.isInEditMode = view.isInEditMode();
     if (!isInEditMode) {
       this.activity = PresenterManager.getActivity(delegateCallback.getContext());
+      this.activity.getApplication().registerActivityLifecycleCallbacks(this);
     } else {
       this.activity = null;
     }
@@ -155,67 +162,20 @@ public class ViewGroupMviDelegateImpl<V extends MvpView, P extends MviPresenter<
   @Override public void onDetachedFromWindow() {
     if (isInEditMode) return;
 
-    if (keepPresenterDuringScreenOrientationChange) {
+    detachPresenterIfNotDoneYet();
 
-      boolean destroyedPermanently = !ActivityMviDelegateImpl.retainPresenterInstance(
+    if (!checkedActivityFinishing) {
+
+      boolean destroyPermanently = !ActivityMviDelegateImpl.retainPresenterInstance(
           keepPresenterDuringScreenOrientationChange, activity);
 
-      if (destroyedPermanently) {
-        // Whole activity will be destroyed
-        // Internally Orientation manager already does the clean up
-        if (DEBUG) {
-          Log.d(DEBUG_TAG, "Detaching View "
-              + delegateCallback.getMvpView()
-              + " from Presenter "
-              + presenter
-              + " and removing presenter permanently from internal cache because the hosting Activity will be destroyed permanently");
-        }
-
-        if (mosbyViewId
-            != null) { // mosbyViewId == null if keepPresenterDuringScreenOrientationChange == false
-          PresenterManager.remove(activity, mosbyViewId);
-        }
-        mosbyViewId = null;
-        presenter.detachView(false);
-      } else {
-        boolean detachedBecauseOrientationChange = ActivityMviDelegateImpl.retainPresenterInstance(
-            keepPresenterDuringScreenOrientationChange, activity);
-
-        if (detachedBecauseOrientationChange) {
-          // Simple orientation change
-          if (DEBUG) {
-            Log.d(DEBUG_TAG, "Detaching View "
-                + delegateCallback.getMvpView()
-                + " from Presenter "
-                + presenter
-                + " temporarily because of orientation change");
-          }
-          presenter.detachView(true);
-        } else {
-          // view detached, i.e. because of back stack / navigation
-          /*
-          if (DEBUG) {
-            Log.d(DEBUG_TAG, "Detaching View "
-                + delegateCallback.getMvpView()
-                + " from Presenter "
-                + presenter
-                + " because view has been destroyed. Also Presenter is removed permanently from internal cache.");
-          }
-          PresenterManager.remove(activity, mosbyViewId);
-          mosbyViewId = null;
-          presenter.detachView(false);
-          */
-        }
+      if (destroyPermanently) {
+        destroyPresenterIfnotDoneYet();
+      } else if (!activity.isFinishing()) {
+        // View removed manually from screen
+        destroyPresenterIfnotDoneYet();
       }
-    } else {
-      // retain instance feature disabled
-      presenter.detachView(false);
-      if (mosbyViewId
-          != null) { // mosbyViewId == null if keepPresenterDuringScreenOrientationChange == false
-        PresenterManager.remove(activity, mosbyViewId);
-      }
-      mosbyViewId = null;
-    }
+    } // else --> see onActivityDestroyed()
   }
 
   /**
@@ -256,5 +216,68 @@ public class ViewGroupMviDelegateImpl<V extends MvpView, P extends MviPresenter<
     MosbySavedState savedState = (MosbySavedState) state;
     restoreSavedState(savedState);
     delegateCallback.superOnRestoreInstanceState(savedState.getSuperState());
+  }
+
+  @Override public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+  }
+
+  @Override public void onActivityStarted(Activity activity) {
+  }
+
+  @Override public void onActivityResumed(Activity activity) {
+  }
+
+  @Override public void onActivityPaused(Activity activity) {
+  }
+
+  @Override public void onActivityStopped(Activity activity) {
+  }
+
+  @Override public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+  }
+
+  @Override public void onActivityDestroyed(Activity activity) {
+    if (activity == this.activity) {
+      // The hosting activity of this view has been destroyed, so time to destoryed the presenter too?
+
+      activity.getApplication().unregisterActivityLifecycleCallbacks(this);
+      checkedActivityFinishing = true;
+
+      boolean destroyedPermanently = !ActivityMviDelegateImpl.retainPresenterInstance(
+          keepPresenterDuringScreenOrientationChange, activity);
+
+      if (destroyedPermanently) {
+        // Whole activity will be destroyed
+        detachPresenterIfNotDoneYet();
+        destroyPresenterIfnotDoneYet();
+      }
+    }
+  }
+
+  private void destroyPresenterIfnotDoneYet() {
+    if (!presenterDestroeyed) {
+      presenter.destroy();
+      presenterDestroeyed = true;
+      if (DEBUG) {
+        Log.d(DEBUG_TAG, "Presenter destroyed: " + presenter);
+      }
+
+      if (mosbyViewId != null) {
+        // mosbyViewId == null if keepPresenterDuringScreenOrientationChange == false
+        PresenterManager.remove(activity, mosbyViewId);
+      }
+      mosbyViewId = null;
+    }
+  }
+
+  private void detachPresenterIfNotDoneYet() {
+    if (!presenterDetached) {
+      presenter.detachView();
+      presenterDetached = true;
+      if (DEBUG) {
+        Log.d(DEBUG_TAG,
+            "view " + delegateCallback.getMvpView() + " detached from Presenter " + presenter);
+      }
+    }
   }
 }

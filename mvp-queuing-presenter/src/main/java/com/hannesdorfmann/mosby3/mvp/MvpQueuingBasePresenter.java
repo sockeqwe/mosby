@@ -46,10 +46,13 @@ public class MvpQueuingBasePresenter<V extends MvpView> implements MvpPresenter<
 
   private WeakReference<V> viewRef;
 
+  private boolean presenterDestroyed;
+
   /**
    * {@inheritDoc}
    */
   @Override public void attachView(@NonNull V view) {
+    presenterDestroyed = false;
     viewRef = new WeakReference<V>(view);
     runQueuedActions();
   }
@@ -72,6 +75,7 @@ public class MvpQueuingBasePresenter<V extends MvpView> implements MvpPresenter<
    */
   @Override public void destroy() {
     viewActionQueue.clear();
+    presenterDestroyed = false;
   }
 
   /**
@@ -88,6 +92,9 @@ public class MvpQueuingBasePresenter<V extends MvpView> implements MvpPresenter<
     runQueuedActions();
   }
 
+  /**
+   * Runs the queued actions.
+   */
   private void runQueuedActions() {
     V view = viewRef == null ? null : viewRef.get();
     if (view != null) {
@@ -97,4 +104,47 @@ public class MvpQueuingBasePresenter<V extends MvpView> implements MvpPresenter<
       }
     }
   }
+
+
+  /**
+   * Executes the passed Action only if a View is attached.
+   * if no view is attached either an exception will be thrown if  parameter
+   * exceptionIfViewNotAttached is true. Otherwise, the action is just not executed (no exception
+   * thrown).
+   * Note that if no view is attached this will not re-executed the given action if the View get's
+   * re attached. If you want to do that use {@link #onceViewAttached(ViewAction)}
+   *
+   * @param exceptionIfViewNotAttached true, if an exception should be thrown if no view is
+   * attached
+   * while trying to execute the action. false, if no exception should be thrown (but action will
+   * not executed either since no view attached)
+   * @param action The {@link ViewAction} that will be exceuted if a view is attached. Here is
+   * where
+   * you call view.isLoading etc. Use the view reference passed as parameter to {@link
+   * ViewAction#run(Object)}.
+   */
+  @MainThread
+  protected final void ifViewAttached(boolean exceptionIfViewNotAttached, ViewAction<V> action) {
+    final V view = viewRef == null ? null : viewRef.get();
+    if (view != null) {
+      action.run(view);
+    } else if (exceptionIfViewNotAttached) {
+      throw new IllegalStateException(
+              "No View attached to Presenter. Presenter destroyed = " + presenterDestroyed);
+    }
+  }
+
+
+  /**
+   * Calls {@link #ifViewAttached(boolean, ViewAction)} with false as first parameter (don't throw
+   * exception if view not attached).
+   *
+   * @see #ifViewAttached(boolean, ViewAction)
+   */
+  protected final void ifViewAttached(ViewAction<V> action) {
+    ifViewAttached(false, action);
+  }
+
+
+
 }

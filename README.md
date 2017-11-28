@@ -9,11 +9,11 @@ A Model-View-Presenter and Model-View-Intent library for Android apps.
 ```groovy
 dependencies {
 
-  compile 'com.hannesdorfmann.mosby3:mvi:3.0.4' // Model-View-Intent
+  compile 'com.hannesdorfmann.mosby3:mvi:3.1.0' // Model-View-Intent
   // or
-  compile 'com.hannesdorfmann.mosby3:mvp:3.0.4' // Plain MVP
+  compile 'com.hannesdorfmann.mosby3:mvp:3.1.0' // Plain MVP
   // or
-  compile 'com.hannesdorfmann.mosby3:viewstate:3.0.4' // MVP + ViewState support
+  compile 'com.hannesdorfmann.mosby3:viewstate:3.1.0' // MVP + ViewState support
 }
 ```
 
@@ -23,10 +23,10 @@ Additional modules:
 dependencies {
 
   // MVP + ViewState + LCE Views
-  compile 'com.hannesdorfmann.mosby3:mvp-lce:3.0.4'
+  compile 'com.hannesdorfmann.mosby3:mvp-lce:3.1.0'
 
   // Null Object Presenter for MVP
-  compile 'com.hannesdorfmann.mosby3:mvp-nullobject-presenter:3.0.4'
+  compile 'com.hannesdorfmann.mosby3:mvp-nullobject-presenter:3.1.0'
 }
 ```
 
@@ -35,13 +35,13 @@ dependencies {
 ```groovy
 dependencies {
 
-  compile 'com.hannesdorfmann.mosby3:mvi:3.0.5-SNAPSHOT'
+  compile 'com.hannesdorfmann.mosby3:mvi:3.1.1-SNAPSHOT'
 
-  compile 'com.hannesdorfmann.mosby3:mvp:3.0.5-SNAPSHOT'
-  compile 'com.hannesdorfmann.mosby3:viewstate:3.0.5-SNAPSHOT'
+  compile 'com.hannesdorfmann.mosby3:mvp:3.1.1-SNAPSHOT'
+  compile 'com.hannesdorfmann.mosby3:viewstate:3.1.1-SNAPSHOT'
 
-  compile 'com.hannesdorfmann.mosby3:mvp-lce:3.0.5-SNAPSHOT'
-  compile 'com.hannesdorfmann.mosby3:mvp-nullobject-presenter:3.0.5-SNAPSHOT'
+  compile 'com.hannesdorfmann.mosby3:mvp-lce:3.1.1-SNAPSHOT'
+  compile 'com.hannesdorfmann.mosby3:mvp-nullobject-presenter:3.1.1-SNAPSHOT'
 }
 ```
 

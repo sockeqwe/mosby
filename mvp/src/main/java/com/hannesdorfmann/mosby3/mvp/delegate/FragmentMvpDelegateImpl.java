@@ -31,8 +31,8 @@ import java.util.UUID;
 
 /**
  * The default implementation of {@link FragmentMvpDelegate}
- * Presenter is available (has view attached) in {@link #onViewCreated(View, Bundle)} (after
- * called super.onViewCreated()). View will be detached in {@link #onDestroyView()} from presenter,
+ * Presenter is available (has view that is attached) in {@link #onViewCreated(View, Bundle)} (after
+ * super.onViewCreated() is called). View will be detached in {@link #onDestroyView()} from presenter,
  * and eventually presenter will be destroyed in {@link #onDestroy()}.
  *
  * @param <V> The type of {@link MvpView}

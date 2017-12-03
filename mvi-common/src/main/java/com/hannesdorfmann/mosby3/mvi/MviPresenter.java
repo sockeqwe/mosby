@@ -21,9 +21,8 @@ import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 
 /**
- * This type of presenter is responsible to interact with the viewState in a Model-View-Intent way.
- * A {@link MviPresenter} is the bridge that is responsible to setup the reactive flow between
- * viewState and model
+ * This type of presenter is responsible for interaction with the viewState in a Model-View-Intent way.
+ * It is the bridge that is responsible for setting up the reactive flow between viewState and model.
  *
  * @param <V> The type of the View this presenter responds to
  * @param <VS> The type of the ViewState (Model)

@@ -21,7 +21,6 @@ import android.content.pm.ActivityInfo;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import com.hannesdorfmann.mosby3.mvi.integrationtest.lifecycle.LifecycleTestPresenter;
-import com.hannesdorfmann.mosby3.mvi.integrationtest.lifecycle.fragment.childfragment.MviLifecycleChildFragmentActivity;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Rule;

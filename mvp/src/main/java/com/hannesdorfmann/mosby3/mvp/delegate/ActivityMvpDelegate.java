@@ -18,12 +18,11 @@ package com.hannesdorfmann.mosby3.mvp.delegate;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 
 /**
- * A delegate for Activities to attach them to mosbies mvp.
+ * A delegate for Activities to attach them to Mosby mvp.
  *
  * <p>
  * The following methods must be invoked from the corresponding Activities lifecycle methods:

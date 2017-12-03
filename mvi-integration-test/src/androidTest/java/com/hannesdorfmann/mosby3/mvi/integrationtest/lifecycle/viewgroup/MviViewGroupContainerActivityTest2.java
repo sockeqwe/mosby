@@ -17,13 +17,10 @@
 
 package com.hannesdorfmann.mosby3.mvi.integrationtest.lifecycle.viewgroup;
 
-import android.content.pm.ActivityInfo;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.util.Log;
 import com.hannesdorfmann.mosby3.ViewGroupMviDelegateImpl;
 import com.hannesdorfmann.mosby3.mvi.integrationtest.lifecycle.LifecycleTestPresenter;
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;

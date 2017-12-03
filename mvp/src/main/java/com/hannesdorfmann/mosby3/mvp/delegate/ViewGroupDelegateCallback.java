@@ -22,8 +22,7 @@ import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 
 /**
- * An enhanced version of {@link MvpDelegateCallback} that adds support
- * for
+ * An enhanced version of {@link MvpDelegateCallback} that adds support for
  * android.view.View like FrameLayout etc.
  *
  * @author Hannes Dorfmann
@@ -38,7 +37,7 @@ public interface ViewGroupDelegateCallback<V extends MvpView, P extends MvpPrese
   Parcelable superOnSaveInstanceState();
 
   /**
-   * This methdo must call super.onRestoreInstanceState(state)
+   * This method must call super.onRestoreInstanceState(state)
    *
    * @param state The parcelable containing the state
    */

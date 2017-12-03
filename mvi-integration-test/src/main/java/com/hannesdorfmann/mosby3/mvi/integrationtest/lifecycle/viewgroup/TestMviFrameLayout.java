@@ -5,7 +5,6 @@ import android.util.AttributeSet;
 import com.hannesdorfmann.mosby3.mvi.integrationtest.lifecycle.LifecycleTestPresenter;
 import com.hannesdorfmann.mosby3.mvi.integrationtest.lifecycle.LifecycleTestView;
 import com.hannesdorfmann.mosby3.mvi.layout.MviFrameLayout;
-import com.hannesdorfmann.mosby3.mvp.MvpView;
 
 /**
  * @author Hannes Dorfmann

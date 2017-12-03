@@ -31,18 +31,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This type of presenter is responsible to interact with the viewState in a Model-View-Intent way.
- * A {@link MviBasePresenter} is the bridge that is repsonsible to setup the reactive flow between
- * "view" and "model".
+ * This type of presenter is responsible for interaction with the viewState in a Model-View-Intent way.
+ * It is the bridge that is responsible for setting up the reactive flow between "view" and "model".
  *
  * <p>
- * Thee methods {@link #bindIntents()} and {@link #unbindIntents()} are kind of representing the
+ * The methods {@link #bindIntents()} and {@link #unbindIntents()} are kind of representing the
  * lifecycle of this Presenter.
  * <ul>
  * <li>{@link #bindIntents()} is called the first time the view is attached </li>
  * <li>{@link #unbindIntents()} is called once the view is detached permanently because the view
- * has
- * been destroyed and hence this presenter is not needed anymore and will also be destroyed
+ * has been destroyed and hence this presenter is not needed anymore and will also be destroyed
  * afterwards too.</li>
  * </ul>
  * </p>
@@ -55,12 +53,10 @@ import java.util.List;
  * <ul>
  * <li>{@link #intent(ViewIntentBinder)}</li>: Use this to bind an Observable intent from the view
  * <li>{@link #subscribeViewState(Observable, ViewStateConsumer)}: Use this to bind the ViewState
- * (a
- * viewState is a object (typically a POJO) that holds all the data the view needs to display</li>
+ * (a viewState is an object (typically a POJO) that holds all the data the view needs to display</li>
  * </ul>
  *
- * By using {@link #intent(ViewIntentBinder)} and {@link #subscribeViewState(Observable, *
- * ViewStateConsumer)}
+ * By using {@link #intent(ViewIntentBinder)} and {@link #subscribeViewState(Observable, ViewStateConsumer)}
  * a relay will be established between the view and this presenter that allows the view to be
  * temporarily detached, without unsubscribing the underlying reactive business logic workflow and
  * without causing memory leaks (caused by recreation of the view).
@@ -68,8 +64,7 @@ import java.util.List;
  *
  * <p>
  * Please note that the methods {@link #attachView(MvpView)} and {@link #detachView(boolean)}
- * should
- * not be overridden unless you have a really good reason to do so. Usually {@link #bindIntents()}
+ * should not be overridden unless you have a really good reason to do so. Usually {@link #bindIntents()}
  * and {@link #unbindIntents()} should be enough.
  * </p>
  *
@@ -79,14 +74,14 @@ import java.util.List;
  * </p>
  *
  * <p>
- * <b>Please note that you should not reuse a MviBasePresenter once the View who originally has
- * instantiated this Presenter has been destroyed permanently</b>. App wide singletons for
- * Presenters is not a good idea in Model-View-Intent. Reusing singleton scoped Presenters for
+ * <b>Please note that you should not reuse an MviBasePresenter once the View that originally has
+ * instantiated this Presenter has been destroyed permanently</b>. App-wide singletons for
+ * Presenters is not a good idea in Model-View-Intent. Reusing singleton-scoped Presenters for
  * different view instances may cause emitting the previous state of the previous attached view
  * (which already has been destroyed permanently).
  * </p>
  *
- * @param <V> The type of the viewState this presenter responds to
+ * @param <V> The type of the view this presenter responds to
  * @param <VS> The type of the viewState state
  * @author Hannes Dorfmann
  * @since 3.0
@@ -94,8 +89,8 @@ import java.util.List;
 public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPresenter<V, VS> {
 
   /**
-   * The binder is responsible to bind a single view intent.
-   * Typlically you use that in {@link #bindIntents()} in combination with the {@link
+   * The binder is responsible for binding a single view intent.
+   * Typically, you use that in {@link #bindIntents()} in combination with the {@link
    * #intent(ViewIntentBinder)} function like this:
    * <pre><code>
    *   Observable<Boolean> loadIntent = intent(new ViewIntentBinder() {
@@ -110,17 +105,15 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
    * @param <I> The type of the Intent
    */
   protected interface ViewIntentBinder<V extends MvpView, I> {
-
-    @NonNull public Observable<I> bind(@NonNull V view);
+    @NonNull Observable<I> bind(@NonNull V view);
   }
 
   /**
-   * This "binder" is responsible to bind the view state to the currently attached view.
+   * This "binder" is responsible for binding the view state to the currently attached view.
    * This typically "renders" the view.
    *
-   * Typically this is used in {@link #bindIntents()} with {@link MviBasePresenter#subscribeViewState(Observable,
-   * * ViewStateConsumer)}
-   * like this:
+   * Typically, this is used in {@link #bindIntents()} with
+   * {@link #subscribeViewState(Observable, ViewStateConsumer)} like this:
    * <pre><code>
    *   Observable<MyViewState> viewState =  ... ;
    *   subscribeViewStateConsumerActually(viewState, new ViewStateConsumer() {
@@ -131,15 +124,15 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
    *   }
    * </code></pre>
    *
-   * @param <V> The view Type
+   * @param <V> The view type
    * @param <VS> The ViewState type
    */
   protected interface ViewStateConsumer<V extends MvpView, VS> {
-    public void accept(@NonNull V view, @NonNull VS viewState);
+    void accept(@NonNull V view, @NonNull VS viewState);
   }
 
   /**
-   * A simple class that holds a pair of the intent relay and the binder to bind the actual Intent
+   * A simple class that holds a pair of the Intent relay and the binder to bind the actual Intent
    * Observable.
    *
    * @param <I> The Intent type
@@ -156,14 +149,13 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
   }
 
   /**
-   * This relay is the bridge to the viewState (UI). Whenever the viewState get's reattached, the
-   * latest
-   * state will be reemitted.
+   * This relay is the bridge to the viewState (UI). Whenever the viewState gets re-attached, the
+   * latest state will be re-emitted.
    */
   private final BehaviorSubject<VS> viewStateBehaviorSubject;
 
   /**
-   * We only allow to cal {@link #subscribeViewState(Observable, ViewStateConsumer)} method once
+   * We only allow to call {@link #subscribeViewState(Observable, ViewStateConsumer)} method once
    */
   private boolean subscribeViewStateMethodCalled = false;
   /**
@@ -173,29 +165,26 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
   private List<IntentRelayBinderPair<?>> intentRelaysBinders = new ArrayList<>(4);
 
   /**
-   * Composite Disposals holding subscriptions to all intents observable offered by the viewState.
+   * Composite Disposables holding subscriptions to all intents observable offered by the viewState.
    */
-  private CompositeDisposable intentDisposals;
+  private CompositeDisposable intentDisposables;
 
   /**
-   * Disposal to unsubscribe from the viewState when the viewState is detached (i.e. during screen
-   * orientation
-   * changes)
+   * Disposable to unsubscribe from the viewState when the viewState is detached (i.e. during screen
+   * orientation changes)
    */
   private Disposable viewRelayConsumerDisposable;
 
   /**
    * Disposable between the viewState observable returned from {@link #intent(ViewIntentBinder)}
-   * and
-   * {@link #viewStateBehaviorSubject}
+   * and {@link #viewStateBehaviorSubject}
    */
   private Disposable viewStateDisposable;
 
   /**
-   * Will be used to determine whether or not a View has been attached for the first time.
+   * Used to determine whether or not a View has been attached for the first time.
    * This is used to determine whether or not the intents should be bound via {@link
-   * #bindIntents()}
-   * or rebound internally.
+   * #bindIntents()} or rebound internally.
    */
   private boolean viewAttachedFirstTime = true;
 
@@ -213,7 +202,7 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
   }
 
   /**
-   * Creaes a new Presenter with the initial view state
+   * Creates a new Presenter with the initial view state
    *
    * @param initialViewState initial view state (must be not null)
    */
@@ -227,17 +216,16 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
   }
 
   /**
-   * Get the view state observable.
+   * Gets the view state observable.
    * <p>
    * Most likely you will use this method for unit testing your presenter.
    * </p>
    *
    * <p>
-   * In some very rare case it could be useful to provide other
-   * components, like other presenters,
-   * access to the state. This observable contains the same value as got from {@link
+   * In some very rare case it could be useful to provide other components, such as other presenters,
+   * access to the state. This observable contains the same value as the one from {@link
    * #subscribeViewState(Observable, ViewStateConsumer)} which is also used to render the view.
-   * In other words, this Observable also represents the state of the View, so you could subscribe
+   * In other words, this observable also represents the state of the View, so you could subscribe
    * via this observable to the view's state.
    * </p>
    *
@@ -278,10 +266,10 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
       viewRelayConsumerDisposable = null;
     }
 
-    if (intentDisposals != null) {
-      // Cancel subscriptons from view intents to intent Relays
-      intentDisposals.dispose();
-      intentDisposals = null;
+    if (intentDisposables != null) {
+      // Cancel subscriptions from view intents to intent Relays
+      intentDisposables.dispose();
+      intentDisposables = null;
     }
   }
 
@@ -294,9 +282,8 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
 
     unbindIntents();
     reset();
-    // TODO should we re emit the inital state? What if no initial state has been set.
+    // TODO should we re-emit the initial state? What if no initial state has been set?
     // TODO should we rather throw an exception if presenter is reused after view has been detached permanently
-
   }
 
   /**
@@ -306,8 +293,8 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
   }
 
   /**
-   * This is called when the View has been detached permantently (view is destroyed permanently)
-   * to reset the internal state of this Presenter to be ready for being reused (even thought
+   * This is called when the View has been detached permanently (view is destroyed permanently)
+   * to reset the internal state of this Presenter to be ready for being reused (even though
    * reusing presenters after their view has been destroy is BAD)
    */
   private void reset() {
@@ -319,15 +306,14 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
   /**
    * This method subscribes the Observable emitting {@code ViewState} over time to the passed
    * consumer.
-   * <b>Do only invoke this method once! Typically in {@link #bindIntents()}</b>
+   * <b>Only invoke this method once! Typically, in {@link #bindIntents()}</b>
    * <p>
-   * Internally Mosby will hold some relays to ensure that no items emitted from the ViewState
+   * Internally, Mosby will hold some relays to ensure that no items emitted from the ViewState
    * Observable will be lost while viewState is not attached nor that the subscriptions to
-   * viewState
-   * intents will cause memory leaks while viewState detached.
+   * viewState intents will cause memory leaks while viewState detached.
    * </p>
    *
-   * Typically this method is used in {@link #bindIntents()}  like this:
+   * Typically, this method is used in {@link #bindIntents()}  like this:
    * <pre><code>
    *   Observable<MyViewState> viewState =  ... ;
    *   subscribeViewStateConsumerActually(viewState, new ViewStateConsumer() {
@@ -338,7 +324,7 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
    *   }
    * </code></pre>
    *
-   * @param viewStateObservable The Observable emitting new ViewState. Typically an intent {@link
+   * @param viewStateObservable The Observable emitting new ViewState. Typically, an intent {@link
    * #intent(ViewIntentBinder)} causes the underlying business logic to do a change and eventually
    * create a new ViewState.
    * @param consumer {@link ViewStateConsumer} The consumer that will update ("render") the view.
@@ -378,7 +364,7 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
 
     if (viewStateConsumer == null) {
       throw new NullPointerException(ViewStateConsumer.class.getSimpleName()
-          + " is null. This is a mosby internal bug. Please file an issue at https://github.com/sockeqwe/mosby/issues");
+          + " is null. This is a Mosby internal bug. Please file an issue at https://github.com/sockeqwe/mosby/issues");
     }
 
     viewRelayConsumerDisposable = viewStateBehaviorSubject.subscribe(new Consumer<VS>() {
@@ -389,12 +375,12 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
   }
 
   /**
-   * This method is called one the view is attached for the very first time to this presenter.
-   * It will not called again for instance during screen orientation changes when the view will be
+   * This method is called once the view is attached to this presenter for the very first time.
+   * For instance, it will not be called again during screen orientation changes when the view will be
    * detached temporarily.
    *
    * <p>
-   * The counter part of this method is  {@link #unbindIntents()}.
+   * The counter part of this method is {@link #unbindIntents()}.
    * This {@link #bindIntents()} and {@link #unbindIntents()} are kind of representing the
    * lifecycle of this Presenter.
    * {@link #bindIntents()} is called the first time the view is attached
@@ -408,10 +394,10 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
   /**
    * This method will be called once the view has been detached permanently and hence the presenter
    * will be "destroyed" too. This is the correct time for doing some cleanup like unsubscribe from
-   * some RxSubscriptions etc.
+   * RxSubscriptions, etc.
    *
-   * * <p>
-   * The counter part of this method is  {@link #bindIntents()} ()}.
+   * <p>
+   * The counter part of this method is {@link #bindIntents()} ()}.
    * This {@link #bindIntents()} and {@link #unbindIntents()} are kind of representing the
    * lifecycle of this Presenter.
    * {@link #bindIntents()} is called the first time the view is attached
@@ -425,12 +411,10 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
 
   /**
    * This method creates a decorator around the original view's "intent". This method ensures that
-   * no
-   * memoryleak by using a {@link ViewIntentBinder} is caused by the subscription to the original
-   * view's intent when the view gets
-   * detached.
+   * no memory leak by using a {@link ViewIntentBinder} is caused by the subscription to the original
+   * view's intent when the view gets detached.
    *
-   * Typically this method is used in {@link #bindIntents()} like this:
+   * Typically, this method is used in {@link #bindIntents()} like this:
    * <pre><code>
    *   Observable<Boolean> loadIntent = intent(new ViewIntentBinder() {
    *      @Override
@@ -481,11 +465,11 @@ public abstract class MviBasePresenter<V extends MvpView, VS> implements MviPres
           "Intent Observable returned from Binder " + intentBinder + " is null");
     }
 
-    if (intentDisposals == null) {
-      intentDisposals = new CompositeDisposable();
+    if (intentDisposables == null) {
+      intentDisposables = new CompositeDisposable();
     }
 
-    intentDisposals.add(intent.subscribeWith(new DisposableIntentObserver<I>(intentRelay)));
+    intentDisposables.add(intent.subscribeWith(new DisposableIntentObserver<I>(intentRelay)));
     return intentRelay;
   }
 }

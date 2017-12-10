@@ -28,7 +28,7 @@ dependencies {
   // Null Object Presenter for MVP
   compile 'com.hannesdorfmann.mosby3:mvp-nullobject-presenter:3.1.
   
-  // Queueing Presenter
+  // Queueing Presenter for MVP
   compile 'com.hannesdorfmann.mosby3:mvp-queueing-presenter:3.1.0'
 }
 ```

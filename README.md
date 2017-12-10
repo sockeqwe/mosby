@@ -29,7 +29,7 @@ dependencies {
   compile 'com.hannesdorfmann.mosby3:mvp-nullobject-presenter:3.1.
   
   // Queueing Presenter
-  compile com.hannesdorfmann.mosby3:mvp-queueing-presenter:3.1.0
+  compile 'com.hannesdorfmann.mosby3:mvp-queueing-presenter:3.1.0'
 }
 ```
 
@@ -45,7 +45,7 @@ dependencies {
 
   compile 'com.hannesdorfmann.mosby3:mvp-lce:3.1.1-SNAPSHOT'
   compile 'com.hannesdorfmann.mosby3:mvp-nullobject-presenter:3.1.1-SNAPSHOT'
-  compile com.hannesdorfmann.mosby3:mvp-queueing-presenter:3.1.1-SNAPSHOT
+  compile 'com.hannesdorfmann.mosby3:mvp-queueing-presenter:3.1.1-SNAPSHOT'
 }
 ```
 

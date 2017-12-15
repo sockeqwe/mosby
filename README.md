@@ -26,10 +26,10 @@ dependencies {
   compile 'com.hannesdorfmann.mosby3:mvp-lce:3.1.0'
 
   // Null Object Presenter for MVP
-  compile 'com.hannesdorfmann.mosby3:mvp-nullobject-presenter:3.1.
+  compile 'com.hannesdorfmann.mosby3:mvp-nullobject-presenter:3.1.0'
   
-  // Queueing Presenter for MVP
-  compile 'com.hannesdorfmann.mosby3:mvp-queueing-presenter:3.1.0'
+  // Queuing Presenter for MVP
+  compile 'com.hannesdorfmann.mosby3:mvp-queuing-presenter:3.1.0'
 }
 ```
 
@@ -45,7 +45,7 @@ dependencies {
 
   compile 'com.hannesdorfmann.mosby3:mvp-lce:3.1.1-SNAPSHOT'
   compile 'com.hannesdorfmann.mosby3:mvp-nullobject-presenter:3.1.1-SNAPSHOT'
-  compile 'com.hannesdorfmann.mosby3:mvp-queueing-presenter:3.1.1-SNAPSHOT'
+  compile 'com.hannesdorfmann.mosby3:mvp-queuing-presenter:3.1.1-SNAPSHOT'
 }
 ```
 
@@ -62,17 +62,17 @@ allprojects {
 # Documentation
 See the [project website](http://hannesdorfmann.com/mosby/).
 
-For Model-View-Intent checkout [this blog post series](http://hannesdorfmann.com/android/mosby3-mvi-1).
+For Model-View-Intent check out [this blog post series](http://hannesdorfmann.com/android/mosby3-mvi-1).
 
 # Changelog
 The changelog can be found in the [release section](https://github.com/sockeqwe/mosby/releases)
 
 # Migrating
 In Mosby 3.0 we have changed the package name from `com.hannesdorfmann.mosby` to `com.hannesdorfmann.mosby3` (note the **3** at the end).
-Migrating a Mosby 2.x based app to Mosby 3.0  should be straight forward:
+Migrating a Mosby 2.x based app to Mosby 3.0 should be straightforward:
 Just replace all import statements of your app in android studio with `Edit -> Find -> Replace in Path ...`
 and set find `import com.hannesdorfmann.mosby` replace with `import com.hannesdorfmann.mosby3`.
-There were also some minor API changes (see [change log](https://github.com/sockeqwe/mosby/releases)),
+There were also some minor API changes (see [changelog](https://github.com/sockeqwe/mosby/releases)),
 but most apps should be fine by replacing the import statements.
 
 # Conductor

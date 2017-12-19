@@ -63,7 +63,7 @@ public class ViewGroupMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<
 
   private boolean checkedActivityFinishing = false;
   private boolean presenterDetached = false;
-  private boolean presenterDestroeyed = false;
+  private boolean presenterDestroyed = false;
 
   public ViewGroupMvpDelegateImpl(@NonNull View view,
       @NonNull ViewGroupDelegateCallback<V, P> delegateCallback,
@@ -231,10 +231,10 @@ public class ViewGroupMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<
           keepPresenterDuringScreenOrientationChange, activity);
 
       if (destroyPermanently) {
-        destroyPresenterIfnotDoneYet();
+        destroyPresenterIfNotDoneYet();
       } else if (!activity.isChangingConfigurations()) {
         // View removed manually from screen
-        destroyPresenterIfnotDoneYet();
+        destroyPresenterIfNotDoneYet();
       }
     } // else --> see onActivityDestroyed()
   }
@@ -242,7 +242,7 @@ public class ViewGroupMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<
   @Override public void onActivityDestroyed(Activity activity) {
 
     if (activity == this.activity) {
-      // The hosting activity of this view has been destroyed, so time to destoryed the presenter too?
+      // The hosting activity of this view has been destroyed, so time to destroy the presenter too?
 
       activity.getApplication().unregisterActivityLifecycleCallbacks(this);
       checkedActivityFinishing = true;
@@ -253,7 +253,7 @@ public class ViewGroupMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<
       if (destroyedPermanently) {
         // Whole activity will be destroyed
         detachPresenterIfNotDoneYet();
-        destroyPresenterIfnotDoneYet();
+        destroyPresenterIfNotDoneYet();
       }
     }
 
@@ -277,11 +277,13 @@ public class ViewGroupMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<
   @Override public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
   }
 
-  private void destroyPresenterIfnotDoneYet() {
-    if (!presenterDestroeyed) {
+  private void destroyPresenterIfNotDoneYet() {
+    if (!presenterDestroyed) {
       P presenter = delegateCallback.getPresenter();
-      presenter.destroy();
-      presenterDestroeyed = true;
+      if (presenter != null) {
+        presenter.destroy();
+      }
+      presenterDestroyed = true;
       activity.getApplication().unregisterActivityLifecycleCallbacks(this);
       if (DEBUG) {
         Log.d(DEBUG_TAG, "Presenter destroyed: " + presenter);
@@ -298,7 +300,9 @@ public class ViewGroupMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<
   private void detachPresenterIfNotDoneYet() {
     if (!presenterDetached) {
       P presenter = delegateCallback.getPresenter();
-      presenter.detachView();
+      if (presenter != null) {
+        presenter.detachView();
+      }
       presenterDetached = true;
       if (DEBUG) {
         Log.d(DEBUG_TAG,

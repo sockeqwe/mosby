@@ -1,4 +1,4 @@
-package com.hannesdorfmann.mosby.mvp;
+package com.hannesdorfmann.mosby3.mvp;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -7,19 +7,20 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.view.View;
-import com.hannesdorfmann.mosby.mvp.delegate.BaseMvpDelegateCallback;
-import com.hannesdorfmann.mosby.mvp.delegate.FragmentMvpDelegate;
-import com.hannesdorfmann.mosby.mvp.delegate.FragmentMvpDelegateImpl;
+import com.hannesdorfmann.mosby3.mvp.delegate.FragmentMvpDelegate;
+import com.hannesdorfmann.mosby3.mvp.delegate.FragmentMvpDelegateImpl;
+import com.hannesdorfmann.mosby3.mvp.delegate.MvpDelegateCallback;
 
 /**
  * A DialogFragment that uses an {@link MvpPresenter} to implement a Model-View-Presenter
  * architecture
  *
  * @author Hannes Dorfmann
+ * @author Michał Seroczyński
  * @since 3.1.1
  */
 public abstract class MvpDialogFragment<V extends MvpView, P extends MvpPresenter<V>> extends DialogFragment
-    implements BaseMvpDelegateCallback<V, P>, MvpView {
+    implements MvpDelegateCallback<V, P>, MvpView {
 
   protected FragmentMvpDelegate<V, P> mvpDelegate;
 
@@ -52,7 +53,7 @@ public abstract class MvpDialogFragment<V extends MvpView, P extends MvpPresente
    */
   @NonNull protected FragmentMvpDelegate<V, P> getMvpDelegate() {
     if (mvpDelegate == null) {
-      mvpDelegate = new FragmentMvpDelegateImpl<>(this);
+      mvpDelegate = new FragmentMvpDelegateImpl<>(this, this, true, true);
     }
 
     return mvpDelegate;

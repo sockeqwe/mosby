@@ -1,14 +1,16 @@
-package com.hannesdorfmann.mosby.mvp.lce;
+package com.hannesdorfmann.mosby3.mvp.lce;
 
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.hannesdorfmann.mosby.mvp.MvpDialogFragment;
-import com.hannesdorfmann.mosby.mvp.MvpPresenter;
-import com.hannesdorfmann.mosby.mvp.R;
+import com.hannesdorfmann.mosby3.mvp.MvpDialogFragment;
+import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 
 /**
  * A {@link MvpDialogFragment} that implements {@link MvpLceView} which gives you 3 options:
@@ -44,9 +46,9 @@ public abstract class MvpLceDialogFragment<CV extends View, M, V extends MvpLceV
   @CallSuper @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
 
-    loadingView = view.findViewById(R.id.loadingView);
-    contentView = (CV) view.findViewById(R.id.contentView);
-    errorView = (TextView) view.findViewById(R.id.errorView);
+    loadingView = createLoadingView(view);
+    contentView = createContentView(view);
+    errorView = createErrorView(view);
 
     if (loadingView == null) {
       throw new NullPointerException(
@@ -73,14 +75,45 @@ public abstract class MvpLceDialogFragment<CV extends View, M, V extends MvpLceV
     });
   }
 
-  @Override
-  public void showLoading(boolean pullToRefresh) {
+  /**
+   * Create the loading view. Default is {@code findViewById(R.id.loadingView)}
+   *
+   * @param view The main view returned from {@link #onCreateView(LayoutInflater, ViewGroup, * Bundle)}
+   * @return the loading view
+   */
+  @NonNull protected View createLoadingView(View view) {
+    return view.findViewById(R.id.loadingView);
+  }
+
+  /**
+   * Create the content view. Default is {@code findViewById(R.id.contentView)}
+   *
+   * @param view The main view returned from {@link #onCreateView(LayoutInflater, ViewGroup, *
+   * Bundle)}
+   * @return the content view
+   */
+  @NonNull protected CV createContentView(View view) {
+    return (CV) view.findViewById(R.id.contentView);
+  }
+
+  /**
+   * Create the error view. Default is {@code findViewById(R.id.errorView)}
+   *
+   * @param view The main view returned from {@link #onCreateView(LayoutInflater, ViewGroup, *
+   * Bundle)}
+   * @return the error view
+   */
+  @NonNull protected TextView createErrorView(View view) {
+    return (TextView) view.findViewById(R.id.errorView);
+  }
+
+  @Override public void showLoading(boolean pullToRefresh) {
 
     if (!pullToRefresh) {
       animateLoadingViewIn();
     }
 
-    // otherwise the pull to refresh widget will already display a loading animation 
+    // otherwise the pull to refresh widget will already display a loading animation
   }
 
   /**
@@ -90,8 +123,7 @@ public abstract class MvpLceDialogFragment<CV extends View, M, V extends MvpLceV
     LceAnimator.showLoading(loadingView, contentView, errorView);
   }
 
-  @Override
-  public void showContent() {
+  @Override public void showContent() {
     animateContentViewIn();
   }
 

@@ -1,0 +1,94 @@
+apply plugin: 'com.android.application'
+//apply plugin: 'me.tatarka.retrolambda'
+apply from: '../findbugs.gradle'
+
+
+android {
+  compileSdkVersion rootProject.ext.compileSdkVersion
+  buildToolsVersion rootProject.ext.buildToolsVersion
+
+  compileOptions {
+    // For retrolambda support
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+
+  defaultConfig {
+    applicationId "com.hannesdorfmann.mosby3.sample.mvi"
+    minSdkVersion 16
+    targetSdkVersion rootProject.ext.targetSdk
+    versionName project.VERSION_NAME
+    versionCode Integer.parseInt(project.VERSION_CODE)
+  }
+
+  buildTypes {
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+    }
+  }
+
+  lintOptions {
+    abortOnError false
+  }
+
+  packagingOptions {
+    exclude 'META-INF/services/javax.annotation.processing.Processor'
+    exclude 'META-INF/LICENSE'
+    exclude 'META-INF/NOTICE'
+    exclude 'META-INF/MANIFEST.MF'
+    exclude 'META-INF/rxjava.properties'
+    exclude 'LICENSE'
+    exclude 'NOTICE'
+  }
+}
+
+dependencies {
+
+  def retrofitVersion = '2.1.1-SNAPSHOT'
+  def rxbindingVersion = '2.0.0'
+  def okHttpVersion = '3.6.0'
+
+
+  compile project(':mvi')
+
+  compile 'com.android.support:appcompat-v7:' + rootProject.ext.supportLibVersion
+  compile 'com.android.support:recyclerview-v7:' + rootProject.ext.supportLibVersion
+  compile 'com.android.support:transition:' + rootProject.ext.supportLibVersion
+  compile 'com.android.support:cardview-v7:' + rootProject.ext.supportLibVersion
+  compile 'com.android.support:design:' + rootProject.ext.supportLibVersion
+
+  compile 'com.sothree.slidinguppanel:library:3.3.1'
+
+  compile 'com.jakewharton.timber:timber:4.5.0'
+
+  compile 'com.squareup.okhttp3:okhttp:' + okHttpVersion
+  compile 'com.squareup.okhttp3:logging-interceptor:' + okHttpVersion
+
+
+  testCompile 'junit:junit:' + rootProject.ext.junitVersion
+  testCompile 'org.mockito:mockito-core:' + rootProject.ext.mockitoVersion
+  testCompile 'com.squareup.okhttp3:mockwebserver:' + okHttpVersion
+
+
+  provided 'com.google.code.findbugs:annotations:3.0.0'
+
+  compile "com.squareup.retrofit2:retrofit:$retrofitVersion"
+  compile "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
+  compile "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
+
+  compile 'com.jakewharton:butterknife:'+rootProject.ext.butterknifeVersion
+  annotationProcessor 'com.jakewharton:butterknife-compiler:' + rootProject.ext.butterknifeVersion
+
+  compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+  compile 'com.github.bumptech.glide:glide:3.7.0'
+
+  debugCompile 'com.squareup.leakcanary:leakcanary-android:' + rootProject.ext.leakcanaryVersion
+  releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:' + rootProject.ext.leakcanaryVersion
+  testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:' + rootProject.ext.leakcanaryVersion
+
+  compile "com.jakewharton.rxbinding2:rxbinding:$rxbindingVersion"
+  compile "com.jakewharton.rxbinding2:rxbinding-support-v4:$rxbindingVersion"
+  compile "com.jakewharton.rxbinding2:rxbinding-design:$rxbindingVersion"
+  compile "com.jakewharton.rxbinding2:rxbinding-recyclerview-v7:$rxbindingVersion"
+}

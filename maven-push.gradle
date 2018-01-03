@@ -112,7 +112,6 @@ afterEvaluate { project ->
   }
 
 
-/*
   task androidJavadocs(type: Javadoc) {
     source = android.sourceSets.main.java.srcDirs
     classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
@@ -141,6 +140,4 @@ afterEvaluate { project ->
     archives androidSourcesJar
     archives androidJavadocsJar
   }
-  */
-
 }

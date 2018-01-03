@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.hannesdorfmann.mosby.mvp.viewstate">
+    package="com.hannesdorfmann.mosby3.mvp.viewstate">
 
   <application/>
 

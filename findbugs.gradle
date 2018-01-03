@@ -1,8 +1,8 @@
 apply plugin: 'findbugs'
 
 afterEvaluate {
-  def variants = plugins.hasPlugin('com.android.application') ?
-      android.applicationVariants : android.libraryVariants
+  def variants = plugins.hasPlugin('com.android.application') ? android.applicationVariants :
+      android.libraryVariants
 
   variants.each { variant ->
     def task = tasks.create("findBugs${variant.name.capitalize()}", FindBugs)
@@ -27,6 +27,20 @@ afterEvaluate {
     task.classes = fileTree(variantCompile.destinationDir)
     task.source = variantCompile.source
     task.classpath = variantCompile.classpath.plus(project.files(android.bootClasspath))
+
+    def variantDir = file(variantCompile.destinationDir)
+    def pathToFilter = variantDir.parentFile.parentFile.parentFile.parentFile.toString() +
+        "/findbugs-filter.xml"
+
+
+
+    def filterFile = file(pathToFilter)
+
+    println("File should  $pathToFilter " + filterFile.exists())
+    if (filterFile.exists()) {
+      task.excludeFilter = filterFile
+      println("File filter $filterFile")
+    }
 
     task.dependsOn(variantCompile)
     tasks.getByName('check').dependsOn(task)

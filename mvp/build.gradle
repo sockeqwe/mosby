@@ -1,8 +1,10 @@
 apply plugin: 'com.android.library'
 apply from: '../maven-push.gradle'
 apply from: '../findbugs.gradle'
+// apply plugin: 'com.getkeepsafe.dexcount'
 
 android {
+
   compileSdkVersion rootProject.ext.compileSdkVersion
   buildToolsVersion rootProject.ext.buildToolsVersion
 
@@ -37,13 +39,17 @@ android {
 
 dependencies {
 
-  compile 'com.android.support:appcompat-v7:' + rootProject.ext.appcompat7Version
+  compile 'com.android.support:appcompat-v7:' + rootProject.ext.supportLibVersion
 
   compile project(':mvp-common')
+  compile project(':presentermanager')
+  compile project(':utils-fragment')
 
   testCompile 'junit:junit:' + rootProject.ext.junitVersion
   testCompile 'org.mockito:mockito-core:' + rootProject.ext.mockitoVersion
 
+  testCompile "org.robolectric:robolectric:"+rootProject.ext.robolectricVersion
+  testCompile "org.robolectric:shadows-support-v4:"+rootProject.ext.robolectricVersion
 
   testCompile('org.powermock:powermock-api-mockito:' + rootProject.ext.powermockVersion) {
     exclude module: 'hamcrest-core'

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2017 Hannes Dorfmann.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+  <FrameLayout
+      android:id="@+id/visibleSwipeArea"
+      android:layout_width="match_parent"
+      android:layout_height="?attr/actionBarSize"
+      android:background="#EEEEEE"
+      android:elevation="4dp"
+      android:paddingBottom="8dp"
+      android:paddingLeft="16dp"
+      android:paddingRight="16dp"
+      android:paddingTop="8dp"
+      >
+
+    <com.hannesdorfmann.mosby3.sample.mvi.view.checkoutbutton.CheckoutButton
+        android:id="@+id/checkoutButton"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="right|center_vertical"
+        android:background="@color/accent"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:text="Checkout"
+        android:textColor="#FFFFFF"
+        />
+
+    <com.hannesdorfmann.mosby3.sample.mvi.view.shoppingcartlabel.ShoppingCartLabel
+        android:id="@+id/shoppingCartLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="left|center_vertical"
+        android:clickable="false"
+        android:drawableLeft="@drawable/ic_shopping_cart_label"
+        android:drawablePadding="8dp"
+        android:gravity="left|center_vertical"
+        android:maxLines="1"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        />
+
+  </FrameLayout>
+
+  <com.hannesdorfmann.mosby3.sample.mvi.view.selectedcounttoolbar.SelectedCountToolbar
+      android:id="@+id/selectedCountToolbar"
+      android:layout_width="match_parent"
+      android:layout_height="?attr/actionBarSize"
+      android:background="@color/accent"
+      android:elevation="4dp"
+      android:titleTextColor="#FFFFFF"
+      />
+
+  <android.support.v7.widget.RecyclerView
+      android:id="@+id/shoppingCartRecyclerView"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_below="@id/visibleSwipeArea"
+      android:clipToPadding="false"
+      android:paddingBottom="8dp"
+      android:paddingTop="8dp"
+      />
+
+
+</RelativeLayout>

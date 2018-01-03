@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <TextView
+      android:id="@+id/errorView"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:layout_margin="@dimen/search_progress_margin"
+      android:drawableTop="@drawable/ic_error"
+      android:gravity="center"
+      android:textSize="18sp"
+      android:padding="32dp"
+      android:text="@string/error_unknown"
+      android:visibility="gone"
+  />
+
+</merge>

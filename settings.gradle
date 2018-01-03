@@ -1,4 +1,14 @@
-// include ':sample', ':viewstate', ':mvp', ':rx', ':retrofit', ':sample-dagger1', ':sample-dagger2-rx', ':sample-mail',
-//     ':testing', ':mvp-common'
-
-include ':mvp-common', ':mvp', ':viewstate', ':testing', ':sample', ':sample-dagger1', ':sample-dagger2-rx', ':sample-mail', ':sample-kotlin'
+include ':mvp-common', ':mvp-queuing-presenter',
+    ':mvp',
+    ':viewstate',
+    ':sample',
+    ':mvi',
+//    ':sample-mail',
+    ':mvp-lce',
+    ':mvp-nullobject-presenter',
+    ':mvi-common',
+    ':mvi-integration-test',
+    ':sample-mvi',
+    ':presentermanager',
+    ':utils-fragment'
+    // ':utils-fragment-integration-test'

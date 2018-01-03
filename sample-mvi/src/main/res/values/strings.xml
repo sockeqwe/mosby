@@ -1,0 +1,22 @@
+<resources>
+  <string name="app_name">sample-mvi</string>
+  <!-- search -->
+  <string name="search_no_results">No results found</string>
+  <string name="search_icon">Search</string>
+  <string name="search_query_hint">Search ...</string>
+  <string name="error_unknown">An Error has occurred</string>
+  <string name="click_to_load_more">CLICK HERE TO LOAD MORE</string>
+  <string name="click_to_load_more_error">"ERROR HAS OCCURRED.\nCLICK TO RETRY."</string>
+  <string name="title_activity_main_activiy">Mosby MVI Example</string>
+
+  <string name="navigation_drawer_open">Open navigation drawer</string>
+  <string name="navigation_drawer_close">Close navigation drawer</string>
+
+  <string name="action_search">Search</string>
+  <string name="action_delete">Delete selected items</string>
+  <string name="title_activity_product_detail">ProductDetailActivity</string>
+  <plurals name="items">
+    <item quantity="one">%1$d Item</item>
+    <item quantity="other">%1$d Items</item>
+  </plurals>
+</resources>

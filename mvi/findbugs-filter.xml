@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
+
+  <Match>
+    <Class name="com.hannesdorfmann.mosby3.ActivityMviDelegateImpl"/>
+    <Field name="DEBUG"/>
+    <Bug code="MS"/>
+  </Match>
+
+  <Match>
+    <Class name="com.hannesdorfmann.mosby3.FragmentMviDelegateImpl"/>
+    <Field name="DEBUG"/>
+    <Bug code="MS"/>
+  </Match>
+
+  <Match>
+    <Class name="com.hannesdorfmann.mosby3.ViewGroupMviDelegateImpl"/>
+    <Field name="DEBUG"/>
+    <Bug code="MS"/>
+  </Match>
+
+</FindBugsFilter>

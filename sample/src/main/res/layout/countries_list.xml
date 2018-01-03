@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.hannesdorfmann.mosby.sample.mvp.lce.activity.CountriesActivity">
+    tools:context="com.hannesdorfmann.mosby3.sample.mvp.lce.activity.CountriesActivity">
 
 
   <include layout="@layout/loading_view" />

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/scrim"
+    >
+
+  <SearchView
+      android:id="@+id/searchView"
+      android:layout_width="match_parent"
+      android:layout_height="?attr/actionBarSize"
+      android:background="@color/search_toolbar_background"
+      android:iconifiedByDefault="false"
+      android:queryHint="@string/search_query_hint"
+      android:elevation="4dp"
+      />
+
+  <FrameLayout
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="1"
+      >
+
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/window_background"
+        >
+
+      <ProgressBar
+          android:id="@+id/loadingView"
+          android:layout_width="54dp"
+          android:layout_height="54dp"
+          android:layout_gravity="top|center_horizontal"
+          android:layout_margin="@dimen/search_progress_margin"
+          android:indeterminate="true"
+          style="@style/Widget.AppCompat.ProgressBar"
+          />
+
+      <include layout="@layout/include_errorview"/>
+
+      <android.support.v7.widget.RecyclerView
+          android:id="@+id/recyclerView"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:visibility="gone"
+          />
+
+      <TextView
+          android:id="@+id/emptyView"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="top|center_horizontal"
+          android:layout_margin="@dimen/search_progress_margin"
+          android:drawableTop="@drawable/search_big"
+          android:gravity="center"
+          android:padding="16dp"
+          android:text="@string/search_no_results"
+          android:textSize="18sp"
+          />
+
+    </FrameLayout>
+
+
+  </FrameLayout>
+
+</LinearLayout>

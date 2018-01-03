@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.hannesdorfmann.mosby.sample">
+    package="com.hannesdorfmann.mosby3.sample">
 
   <application
       android:allowBackup="true"
       android:icon="@mipmap/ic_launcher"
       android:label="@string/app_name"
       android:theme="@style/AppTheme"
-      android:name=".SampleApplication">
+      android:name="com.hannesdorfmann.mosby3.sample.SampleApplication">
 
     <activity
-        android:name=".MainActivity"
+        android:name="com.hannesdorfmann.mosby3.sample.MainActivity"
         android:label="@string/title_activity_main">
 
       <intent-filter>
@@ -20,32 +20,32 @@
 
     </activity>
 
-    <activity android:name=".FragmentContainerActivity"
+    <activity android:name="com.hannesdorfmann.mosby3.sample.FragmentContainerActivity"
         android:label="FragmentActivity"/>
 
     <activity
-        android:name=".mvp.lce.activity.CountriesActivity"
+        android:name="com.hannesdorfmann.mosby3.sample.mvp.lce.activity.CountriesActivity"
         android:label="@string/title_activity_lce">
     </activity>
 
-    <activity android:name=".mvp.lce.viewstate.NotRetainingCountriesActivity"
+    <activity android:name="com.hannesdorfmann.mosby3.sample.mvp.lce.viewstate.NotRetainingCountriesActivity"
         android:label="NotRetainingCountriesActivity"
         />
 
-    <activity android:name=".mvp.lce.viewstate.RetainingCountriesActivity"
+    <activity android:name="com.hannesdorfmann.mosby3.sample.mvp.lce.viewstate.RetainingCountriesActivity"
       android:label="RetainingCountriesActivity" />
 
-    <activity android:name=".mvp.customviewstate.MyCustomActivity"
+    <activity android:name="com.hannesdorfmann.mosby3.sample.mvp.customviewstate.MyCustomActivity"
         android:label="Custom ViewState Activity"/>
 
-    <activity android:name=".mvp.lce.layout.CountriesLayoutActivity"
+    <activity android:name="com.hannesdorfmann.mosby3.sample.mvp.lce.layout.CountriesLayoutActivity"
         android:label="MVP Framelayout"/>
 
-    <activity android:name=".mvp.lce.viewstate.RetainingCountriesFragmentEmbededInXmlActivity"
+    <activity android:name="com.hannesdorfmann.mosby3.sample.mvp.lce.viewstate.RetainingCountriesFragmentEmbededInXmlActivity"
       android:label="Embeded ViewState Fragment"
       />
     
-    <activity android:name=".mvp.lce.viewpager.ViewPagerActivity"
+    <activity android:name="com.hannesdorfmann.mosby3.sample.mvp.lce.viewpager.ViewPagerActivity"
       android:label="ViewPager" />
   </application>
 

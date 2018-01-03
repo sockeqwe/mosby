@@ -1,0 +1,128 @@
+[
+  {
+    "id": 1,
+    "name": "Amethyst Candle Holder",
+    "category": "Home Décor",
+    "image": "1.jpg",
+    "price": 39.99,
+    "description": "Amethyst has a very high spiritual vibration and is especially calming for the mind. I use it extensively in spiritual practice for meditation and healing. Amethyst is particularly well known to provide a protective shield around the aura against psychic attack or negativity. It can even be used to help a dying person make a peaceful transition."
+  },
+  {
+    "id": 2,
+    "name": "Christmas Stocking",
+    "category": "Home Décor",
+    "image": "2.jpg",
+    "price": 36.35,
+    "description": "We wanted to make a Christmas stocking robust and big enough to be filled with goodies but also to look fabulous hanging on the fireplace as a decoration year after year. We only use good quality designer fabrics."
+  },
+  {
+    "id": 3,
+    "name": "home sweet home sign",
+    "category": "Home Décor",
+    "image": "3.jpg",
+    "price": 19.35,
+    "description": "A beautiful stained wood sign is made from pine wood. This rustic sign adds warmth to a room tucked on a shelf or hung on the wall. Also a perfect gift for so many occasions."
+  },
+  {
+    "id": 4,
+    "name": "Dream Catcher",
+    "category": "Home Décor",
+    "image": "4.jpg",
+    "price": 20.75,
+    "description": "The Gypsy is a free spirited dream catcher that’s name speaks for itself. The feathers and macramé hanging from the hoop flow freely in the night air, catching any bad dreams that my come across your room. By day, the Gypsy creates a noticeable positive energy that will add a sense of free spirit to your home."
+  },
+  {
+    "id": 5,
+    "name": "Park Map",
+    "category": "Home Décor",
+    "image": "5.jpg",
+    "price": 56.00,
+    "description": "Bring together state park adventures and travels with this interactive themed push pin map to create memories that will last a lifetime. One of our Design Gurus would love to work one-on-one with you to customize this personalized interactive map which helps you keep those memories alive by displaying all of the places you’ve visited. After each trip, place a pin on the location you’ve just returned from and use the printable map tags to add photos and special moments to the map… you won’t be able to keep from smiling as you remember your favorite part of that trip, every time you see the map!"
+  },
+  {
+    "id": 6,
+    "name": "Bulbasaur Pokémon Planter",
+    "category": "Home Décor",
+    "image": "6.jpg",
+    "price": 19.42,
+    "description": "Marbled Bulbasaur planter made from Jesmonite. Jesmonite is a durable, waterproof material that looks and feels like stone. Sealed with a glossy finish."
+  },
+  {
+    "id": 7,
+    "name": "Women's surgical scrub hats",
+    "category": "Hats & Caps",
+    "image": "7.jpg",
+    "price": 10.00,
+    "description": "A lightweight slouch beanie. The fabric makes it less bulky compared to traditional knitted beanies so they can be worn all year. "
+  },
+  {
+    "id": 8,
+    "name": "Trucker Hat",
+    "category": "Hats & Caps",
+    "image": "8.jpg",
+    "price": 18.00,
+    "description": "Got that Jeep Hair and Don't Care?! Pair it with this super cute distressed trucker hat!"
+  },
+  {
+    "id": 9,
+    "name": "Nasa Meatball",
+    "category": "Hats & Caps",
+    "image": "9.jpg",
+    "price": 19.95,
+    "description": "For guys who need more space."
+  },
+  {
+    "id": 10,
+    "name": "Bunny Hat",
+    "category": "Hats & Caps",
+    "image": "10.jpg",
+    "price": 20.44,
+    "description": "This hat is made in two layers of fuchsia fleece. The materials are fleece, thread and wire, so it's completely vegan."
+  },
+  {
+    "id": 11,
+    "name": "Bunny Hat",
+    "category": "Hats & Caps",
+    "image": "11.jpg",
+    "price": 15.00,
+    "description": "This is an adorable little girls crochet linen beanie hat with a three layer cream colored flower. Super soft and stretchy any little girl would love to wear it! "
+  },
+  {
+    "id": 12,
+    "name": "Game of Thrones Wood Engraved",
+    "category": "Cell Phone",
+    "image": "12.jpg",
+    "price": 15.00,
+    "description": "Personalized wood iPhone 6 case is a unique and Personalized way to have a one of a kind phone case. Get one for yourself or give it as a gift, either way, this case is sure to get some looks. The wood is exquisitely engraved with your Personalized touch."
+  },
+  {
+    "id": 13,
+    "name": "Acoustic Reclaimed Pallet",
+    "category": "Cell Phone",
+    "image": "13.jpg",
+    "price": 26.50,
+    "description": "Reclaimed wood acoustic amplifier for smartphones/mobile devices - currently available for iPhone 4S, 5S, 6, 6+ and Galaxy III, S4, S5, S6, S6 Edge (some Galaxy models need rotated for best amplification and the Boom Boom Box may work with other makes and models not listed)."
+  },
+  {
+    "id": 14,
+    "name": "Altoids Amp and Speaker",
+    "category": "Cell Phone",
+    "image": "14.jpg",
+    "price": 30.00,
+    "description": "An amazingly clear and loud MP3 amp! This thing is cool! It includes a patch cable, ON/OFF toggle, and more general coolness than you can handle."
+  },{
+    "id": 15,
+    "name": "Motorola Case",
+    "category": "Cell Phone",
+    "image": "15.jpg",
+    "price": 14.99,
+    "description": "This is my Chic design is printed made by UV technology for Motorola phones! "
+  },{
+    "id": 16,
+    "name": "Rob Gronkowski Case",
+    "category": "Cell Phone",
+    "image": "16.jpg",
+    "price": 13.99,
+    "description": "They Are Very Durable And Also Stylish At The Same Time. They Protect EDGES, And Cover CORNERS Of Your Phone And Metal Casing Of The BACK Of Your Phone And Helps Against Screen Cracks. These Cases Are Not Cheap Sticker Cases They Will Withstand A Lot Of Usage With Out Peeling, Cracking, Or Fading"
+  }
+]

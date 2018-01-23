@@ -16,7 +16,7 @@ buildscript {
 }
 
 plugins {
-    id "org.sonarqube" version "2.6"
+    id "org.sonarqube" version "2.6.1"
 }
 
 allprojects {
@@ -76,4 +76,11 @@ ext {
   powermockVersion = '1.6.2'
   leakcanaryVersion = '1.5'
   androidSupportTestVersion = '0.5'
+}
+
+
+project(":mvi-integration-test") {
+    sonarqube {
+        skipProject = true
+    }
 }

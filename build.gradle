@@ -77,10 +77,3 @@ ext {
   leakcanaryVersion = '1.5'
   androidSupportTestVersion = '0.5'
 }
-
-
-sonarqube {
-  properties {
-      property "sonar.branch", "sonarqubeintegration"
-  }
-}

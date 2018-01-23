@@ -13,6 +13,11 @@ addons:
     organization: "sockeqwe-github"
     token:
       secure: sG283mZs8szzBkWh2WGDBLuk3EM0jqkYFIolKaE/j906aUOBXvLYLJKd6Tx8oDg9QxijSRaLdpyj6sPDfyhmEOV9rEzJpZVgmfyDjRFgValyws4ASxN3TMRmb8ZGE5hBLuckCZJpHyz0xTe1fE7MmjNZOvztOOgTCsUASw9Yyt4=
+    branches:
+      - sonarqubeintegration
+      - master
+    github_token:
+      secure: "cmPqeb1CXxWXwqkw+UCfDkKmes0duSsFlYjsD30JsvFDX+MfHhrrdOuRPc/lem9AgOG9UfqsFJbbucmFwJDWX5jcSIFXxEoIHw+qI8+jpPSNggfatiZyPJJgqC6zqWj47bpOdBSt7TSImeM8S3exgidy7kjPMvzHxV7QAUPoBXY="
 jdk:
 - oraclejdk8
 licenses:

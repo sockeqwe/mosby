@@ -12,7 +12,7 @@ addons:
   sonarcloud:
     organization: "sockeqwe-github"
     token:
-      secure: sG283mZs8szzBkWh2WGDBLuk3EM0jqkYFIolKaE/j906aUOBXvLYLJKd6Tx8oDg9QxijSRaLdpyj6sPDfyhmEOV9rEzJpZVgmfyDjRFgValyws4ASxN3TMRmb8ZGE5hBLuckCZJpHyz0xTe1fE7MmjNZOvztOOgTCsUASw9Yyt4=
+      secure: "eMzzcahfiX/pn0ncj6ffseR+CPRiT6NlJUaT1GSjunpiENPcEc8vpxS+EDT+yGzR/D/XSwrwdSA4Uwj94B+1W64NXfvBbAwx2AJkD8rkskRlln/fh3Un8lhJS7PQG5ybzb5MrbBGAPvYOSB9zNAvunLMeUzZi8hvFJB8hymaVKo="
     branches:
       - sonarqubeintegration
       - master

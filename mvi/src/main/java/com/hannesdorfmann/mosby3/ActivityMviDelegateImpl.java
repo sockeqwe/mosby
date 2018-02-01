@@ -189,8 +189,7 @@ public class ActivityMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
    * @param keepPresenterInstance true, if the delegate has enabled keep
    */
   static boolean retainPresenterInstance(boolean keepPresenterInstance, Activity activity) {
-    return keepPresenterInstance && (activity.isChangingConfigurations()
-        || !activity.isFinishing());
+    return keepPresenterInstance && !activity.isFinishing();
   }
 
   @Override public void onStop() {

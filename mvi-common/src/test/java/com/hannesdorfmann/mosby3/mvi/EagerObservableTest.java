@@ -53,6 +53,7 @@ public class EagerObservableTest {
     }
   }
 
+
   private static class EagerPresenter extends MviBasePresenter<EagerView, String> {
     @Override protected void bindIntents() {
       Observable<String> intent1 = intent(new ViewIntentBinder<EagerView, String>() {
@@ -100,5 +101,7 @@ public class EagerObservableTest {
 
     Assert.assertEquals(Arrays.asList("Result 1", "Result 2"), view.renderedStates);
   }
+
+
 
 }

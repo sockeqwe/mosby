@@ -49,6 +49,7 @@ ext {
   // Libraries
   supportLibVersion = '27.0.2'
   rxjava2Version = '2.0.7'
+  rxAndroid2Version = '2.0.1'
 
 
   // Libraries for samples

@@ -16,6 +16,7 @@
   -->
 
 <resources>
-  <string name="app_name">mvi-integration-test</string>
-  <string name="title_activity_backstack">BackstackActivity</string>
+    <string name="app_name">mvi-integration-test</string>
+    <string name="title_activity_backstack">BackstackActivity</string>
+    <string name="title_activity_eager_view">EagerViewActivity</string>
 </resources>

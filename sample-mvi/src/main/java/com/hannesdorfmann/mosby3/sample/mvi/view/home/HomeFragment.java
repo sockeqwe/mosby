@@ -109,7 +109,7 @@ public class HomeFragment extends MviFragment<HomeView, HomePresenter>
   }
 
   @Override public Observable<Boolean> loadFirstPageIntent() {
-    return Observable.just(true).doOnComplete(() -> Timber.d("firstPage completed"));
+    return Observable.just(true);
   }
 
   @Override public Observable<Boolean> loadNextPageIntent() {

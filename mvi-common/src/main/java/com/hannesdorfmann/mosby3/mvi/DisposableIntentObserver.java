@@ -18,7 +18,7 @@
 package com.hannesdorfmann.mosby3.mvi;
 
 import io.reactivex.observers.DisposableObserver;
-import io.reactivex.subjects.PublishSubject;
+import io.reactivex.subjects.Subject;
 
 /**
  * Just a simple {@link DisposableObserver} that is used to cancel subscriptions from view's
@@ -29,21 +29,24 @@ import io.reactivex.subjects.PublishSubject;
  */
 class DisposableIntentObserver<I> extends DisposableObserver<I> {
 
-  private final PublishSubject<I> subject;
+    private final Subject<I> subject;
 
-  public DisposableIntentObserver(PublishSubject<I> subject) {
-    this.subject = subject;
-  }
+    public DisposableIntentObserver(Subject<I> subject) {
+        this.subject = subject;
+    }
 
-  @Override public void onNext(I value) {
-    subject.onNext(value);
-  }
+    @Override
+    public void onNext(I value) {
+        subject.onNext(value);
+    }
 
-  @Override public void onError(Throwable e) {
-    throw new IllegalStateException("View intents must not throw errors", e);
-  }
+    @Override
+    public void onError(Throwable e) {
+        throw new IllegalStateException("View intents must not throw errors", e);
+    }
 
-  @Override public void onComplete() {
-    subject.onComplete();
-  }
+    @Override
+    public void onComplete() {
+        subject.onComplete();
+    }
 }

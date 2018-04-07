@@ -7,7 +7,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
 /**
- * A {@link MvpPresenter} implmenetation that implements the <a href="https://en.wikipedia.org/wiki/Null_Object_pattern">null
+ * A {@link MvpPresenter} implementation that implements the <a href="https://en.wikipedia.org/wiki/Null_Object_pattern">null
  * object pattern</a> for the attached mvp view. So whenever the view gets detached from this
  * presenter by calling{@link #detachView(boolean)}, a new "null object" view gets dynamically
  * instantiated by using reflections and set as the current
@@ -62,7 +62,7 @@ public abstract class MvpNullObjectBasePresenter<V extends MvpView> implements M
           }
         }
 
-        // Continue with next class in inheritance hierachy (see genericSuperType assignment at start of while loop)
+        // Continue with next class in inheritance hierarchy (see genericSuperType assignment at start of while loop)
         currentClass = currentClass.getSuperclass();
       }
 
@@ -77,7 +77,7 @@ public abstract class MvpNullObjectBasePresenter<V extends MvpView> implements M
   }
 
   /**
-   * Scans the interface inheritnace hierarchy and checks if on the root is MvpView.class
+   * Scans the interface inheritance hierarchy and checks if on the root is MvpView.class
    *
    * @param klass The leaf interface where to begin to scan
    * @return true if subtype of MvpView, otherwise false

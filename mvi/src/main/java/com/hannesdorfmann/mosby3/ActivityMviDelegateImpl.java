@@ -207,16 +207,17 @@ public class ActivityMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
   }
 
   @Override public void onDestroy() {
-
-    boolean retainPresenterInstance = retainPresenterInstance(keepPresenterInstance, activity);
-    if (!retainPresenterInstance){
-      presenter.destroy();
-      if (mosbyViewId != null) { // mosbyViewId == null if keepPresenterInstance == false
-        PresenterManager.remove(activity, mosbyViewId);
+    if (presenter != null) { // Presenter is only null if Activity.finish() called before Activity.onStart() has been reached
+      boolean retainPresenterInstance = retainPresenterInstance(keepPresenterInstance, activity);
+      if (!retainPresenterInstance) {
+        presenter.destroy();
+        if (mosbyViewId != null) { // mosbyViewId == null if keepPresenterInstance == false
+          PresenterManager.remove(activity, mosbyViewId);
+        }
+        Log.d(DEBUG_TAG, "Destroying Presenter permanently " + presenter);
       }
-      Log.d(DEBUG_TAG, "Destroying Presenter permanently " + presenter);
-    }
 
+    }
     presenter = null;
     activity = null;
     delegateCallback = null;

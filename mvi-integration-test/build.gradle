@@ -49,7 +49,7 @@ android {
 
 dependencies {
     compile project(':mvi')
-    compile "io.reactivex.rxjava2:rxandroid:"+ rootProject.ext.rxAndroid2Version
+    compile "io.reactivex.rxjava2:rxandroid:" + rootProject.ext.rxAndroid2Version
 
 
     androidTestCompile 'com.android.support.test:runner:' + rootProject.ext.androidSupportTestVersion

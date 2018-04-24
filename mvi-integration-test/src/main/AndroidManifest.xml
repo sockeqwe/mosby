@@ -37,8 +37,8 @@
         <activity android:name=".lifecycle.viewgroup.MviViewGroupContainerActivity" />
         <activity android:name=".lifecycle.activity.MviFinishInOnCreateActivity" />
         <activity android:name=".lifecycle.activity.MviFinishInOnStartActivity" />
-        <activity android:name=".lifecycle.fragment.MviFinishOnCreateContainerActivity"/>
-        <activity android:name=".lifecycle.fragment.MviFinishOnStartContainerActivity"/>
+        <activity android:name=".lifecycle.fragment.MviFinishOnCreateContainerActivity" />
+        <activity android:name=".lifecycle.fragment.MviFinishOnStartContainerActivity" />
         <activity
             android:name=".backstack.BackstackActivity"
             android:label="@string/title_activity_backstack"
@@ -52,7 +52,9 @@
         <activity
             android:name=".eager.EagerViewActivity"
             android:label="@string/title_activity_eager_view"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".lifecycle.viewgroup.ViewGroupFinishOnCreateContainerActivity" />
+        <activity android:name=".lifecycle.viewgroup.ViewGroupFinishOnStartContainerActivity" />
     </application>
 
 </manifest>

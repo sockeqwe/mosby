@@ -18,6 +18,7 @@
 package com.hannesdorfmann.mosby3.mvi.integrationtest.lifecycle;
 
 import android.util.Log;
+
 import com.hannesdorfmann.mosby3.mvi.MviBasePresenter;
 
 /**
@@ -26,48 +27,58 @@ import com.hannesdorfmann.mosby3.mvi.MviBasePresenter;
 
 public class LifecycleTestPresenter extends MviBasePresenter<LifecycleTestView, Object> {
 
-  public int attachViewInvokations = 0;
-  public LifecycleTestView attachedView;
-  public int detachViewInvokations = 0;
-  public int bindIntentInvocations = 0;
-  public int unbindIntentInvocations = 0;
-  public int destoryInvoations = 0;
+    public int attachViewInvokations = 0;
+    public LifecycleTestView attachedView;
+    public int detachViewInvokations = 0;
+    public int bindIntentInvocations = 0;
+    public int unbindIntentInvocations = 0;
+    public int destoryInvoations = 0;
 
-  @Override public void attachView(LifecycleTestView view) {
-    super.attachView(view);
-    attachViewInvokations++;
-    attachedView = view;
-    Log.d(getClass().getSimpleName(), "attachView " + attachViewInvokations + " " + attachedView+" in "+toString());
-  }
-
-  @Override public void detachView() {
-    super.detachView();
-    attachedView = null;
-    detachViewInvokations++;
-    Log.d(getClass().getSimpleName(), "detachView " + detachViewInvokations+" in "+toString());
-  }
-
-  @Override public void destroy() {
-    super.destroy();
-    destoryInvoations++;
-    Log.d(getClass().getSimpleName(), "destroy Presenter " + destoryInvoations+" in "+toString());
-  }
-
-  @Override protected void bindIntents() {
-    if (bindIntentInvocations >= 1) {
-      throw new IllegalStateException(
-          "bindIntents() is called more than once. Invokations: " + bindIntentInvocations);
-    }
-    bindIntentInvocations++;
-  }
-
-  @Override protected void unbindIntents() {
-    super.unbindIntents();
-    if (unbindIntentInvocations >= 1) {
-      throw new IllegalStateException(
-          "unbindIntents() is called more than once. Invokations: " + unbindIntentInvocations);
+    public LifecycleTestPresenter() {
+        Log.d(getClass().getSimpleName(), "constructor " + attachViewInvokations + " " + attachedView + " in " + toString());
     }
 
-    unbindIntentInvocations++;
-  }
+
+    @Override
+    public void attachView(LifecycleTestView view) {
+        super.attachView(view);
+        attachViewInvokations++;
+        attachedView = view;
+        Log.d(getClass().getSimpleName(), "attachView " + attachViewInvokations + " " + attachedView + " in " + toString());
+    }
+
+    @Override
+    public void detachView() {
+        super.detachView();
+        attachedView = null;
+        detachViewInvokations++;
+        Log.d(getClass().getSimpleName(), "detachView " + detachViewInvokations + " in " + toString());
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        destoryInvoations++;
+        Log.d(getClass().getSimpleName(), "destroy Presenter " + destoryInvoations + " in " + toString());
+    }
+
+    @Override
+    protected void bindIntents() {
+        if (bindIntentInvocations >= 1) {
+            throw new IllegalStateException(
+                    "bindIntents() is called more than once. Invokations: " + bindIntentInvocations);
+        }
+        bindIntentInvocations++;
+    }
+
+    @Override
+    protected void unbindIntents() {
+        super.unbindIntents();
+        if (unbindIntentInvocations >= 1) {
+            throw new IllegalStateException(
+                    "unbindIntents() is called more than once. Invokations: " + unbindIntentInvocations);
+        }
+
+        unbindIntentInvocations++;
+    }
 }

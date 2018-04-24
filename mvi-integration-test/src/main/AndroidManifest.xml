@@ -37,6 +37,8 @@
         <activity android:name=".lifecycle.viewgroup.MviViewGroupContainerActivity" />
         <activity android:name=".lifecycle.activity.MviFinishInOnCreateActivity" />
         <activity android:name=".lifecycle.activity.MviFinishInOnStartActivity" />
+        <activity android:name=".lifecycle.fragment.MviFinishOnCreateContainerActivity"/>
+        <activity android:name=".lifecycle.fragment.MviFinishOnStartContainerActivity"/>
         <activity
             android:name=".backstack.BackstackActivity"
             android:label="@string/title_activity_backstack"

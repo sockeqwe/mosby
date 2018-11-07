@@ -7,17 +7,9 @@ android:
   - extra-android-m2repository
   - android-27
   - sys-img-armeabi-v7a-android-17
-
 before_install:
-  - yes | sdkmanager "platforms;android-27"
-
-# Emulator Management: Create, Start and Wait
-before_script:
-#  - echo no | android create avd --force -n test -t android-17 --abi armeabi-v7a
-#  - emulator -avd test -no-audio -no-window &
-#  - android-wait-for-emulator
-#  - adb shell input keyevent 82 &
-# - ./.buildscript/swarmer/swarmer_start.sh
+- yes | sdkmanager "platforms;android-27"
+before_script: 
 jdk:
 - oraclejdk8
 licenses:
@@ -28,24 +20,20 @@ env:
   - MALLOC_ARENA_MAX=2
   - secure: gMFLK1oOnrmKo2BQyuc4q5JNbO9yZNzGXujUjMDZqY80PM17u1NHH+FtMtqHltGdHlysQGWOVEgCCaXKSjzUR/5oWX3Rx2o36sxFeFJTnv6Og1IfYaT+30yMNCw9dZwBgL/f9+MUcJGyg17Y4YJKiKP8f+2Zj8Cem8a1tTOv7z0=
   - secure: EtsL8IYW/+QFowKy/pM1pfc6XBz19AEPRv9+3I3vdHbLNzrEgAcQG/sfWwSwG8N9SyQ9HlgFpy+a4rT9y+vcT52izRviZbLKepCiGk2XyCrBasRy0ncbZBk4Mss1JPP2OFatsiEfEOrFo5rt1CnWapMUOwE7X5blCjrLtEjZRSA=
+  - secure: KeqM7y/Tp2VGw5QH3dLT43R1HAzoIRo/px7enJ+zRi1RDRQULOvzeDI+B4vaYmP6SIF8+CwhgT3zlSA2we2RHTAqGO/cPJvkxwho2ucV/dRHKALB+Gv4u/+4xdk7GLLy2tq31l8zApMMWtSJPNjcB+exHlmUyVx+jGDwLMcmI+w=
 branches:
   except:
   - gh-pages
 notifications:
   email: false
 sudo: required
-#script: ./gradlew build cAT
-script: ./gradlew build
+script: "./gradlew build"
 cache:
   directories:
   - "$HOME/.gradle"
-
-
 after_failure:
-  - cat /home/travis/build/sockeqwe/mosby/mvp/build/outputs/lint-results-debug.xml
-  - cat /home/travis/build/sockeqwe/mosby/viewstate/build/outputs/lint-results-debug.xml
-  - cat /home/travis/build/sockeqwe/mosby/mvi/build/outputs/lint-results-debug.xml
-
-
+- cat /home/travis/build/sockeqwe/mosby/mvp/build/outputs/lint-results-debug.xml
+- cat /home/travis/build/sockeqwe/mosby/viewstate/build/outputs/lint-results-debug.xml
+- cat /home/travis/build/sockeqwe/mosby/mvi/build/outputs/lint-results-debug.xml
 after_success:
- - ".buildscript/deploy_snapshot.sh"
+- ".buildscript/deploy_snapshot.sh"

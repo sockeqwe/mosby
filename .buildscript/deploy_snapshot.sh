@@ -14,16 +14,15 @@ elif [ "$TRAVIS_BRANCH" != "$BRANCH" ]; then
   echo "Skipping snapshot deployment: wrong branch. Expected '$BRANCH' but was '$TRAVIS_BRANCH'."
 else
   echo "Deploying..."
-  openssl aes-256-cbc -K $encrypted_8739fbca6d38_key -iv $encrypted_8739fbca6d38_iv -in key.gpg.enc -out key.gpg -d
+  openssl aes-256-cbc -K $encrypted_8739fbca6d38_key -iv $encrypted_8739fbca6d38_iv -in .buildscript/key.gpg.enc -out key.gpg -d
   gpg --import key.gpg
-  cd ..
   echo "signing.keyId=E508C045" >> gradle.properties
   echo "signing.password=$PGP_KEY" >> gradle.properties
   echo "signing.secretKeyRingFile=/home/travis/.gnupg/secring.gpg" >> gradle.properties
   echo "org.gradle.parallel=false" >> gradle.properties
   echo "org.gradle.configureondemand=false" >> gradle.properties
   ./gradlew --no-daemon uploadArchives -Dorg.gradle.parallel=false -Dorg.gradle.configureondemand=false
-  rm .travis/key.gpg
+  rm key.gpg
   git reset --hard
   echo "Deployed!"
 fi

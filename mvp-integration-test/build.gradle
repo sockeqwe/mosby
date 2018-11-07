@@ -1,0 +1,47 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    compileOptions {
+        sourceCompatibility rootProject.ext.javaSourceCompatibility
+        targetCompatibility rootProject.ext.javaTargetCompatibility
+    }
+
+    defaultConfig {
+        applicationId "com.hannesdorfmann.mosby3.mvp.integrationtest"
+        minSdkVersion rootProject.ext.minSdk
+        targetSdkVersion rootProject.ext.targetSdk
+        versionName project.VERSION_NAME
+        versionCode Integer.parseInt(project.VERSION_CODE)
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+}
+
+dependencies {
+    compile project(':mvi')
+    compile "io.reactivex.rxjava2:rxandroid:" + rootProject.ext.rxAndroid2Version
+
+
+    androidTestCompile 'com.android.support.test:runner:' + rootProject.ext.androidSupportTestVersion
+    androidTestCompile 'com.android.support.test:rules:' + rootProject.ext.androidSupportTestVersion
+    androidTestCompile 'junit:junit:' + rootProject.ext.junitVersion
+    compile project(":viewstate")
+}
+
+configurations.all {
+    resolutionStrategy.force 'com.android.support:support-annotations:' + rootProject.ext.supportLibVersion
+}

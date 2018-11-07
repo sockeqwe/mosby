@@ -1,4 +1,4 @@
-include ':mvp-common', ':mvp-queuing-presenter',
+include ':mvp-common', ':mvp-queuing-presenter', ':mvp-integration-test',
     ':mvp',
     ':viewstate',
     ':sample',

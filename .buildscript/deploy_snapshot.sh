@@ -16,6 +16,7 @@ else
   echo "Deploying..."
   ./gradlew --stop
   echo "org.gradle.parallel=false" >> ~/.gradle/gradle.properties
+  echo "org.gradle.configureondemand=false" >> ~/.gradle/gradle.properties
   openssl aes-256-cbc -K $encrypted_8739fbca6d38_key -iv $encrypted_8739fbca6d38_iv -in .buildscript/key.gpg.enc -out key.gpg -d
   gpg --import key.gpg
   echo "signing.keyId=E508C045" >> gradle.properties

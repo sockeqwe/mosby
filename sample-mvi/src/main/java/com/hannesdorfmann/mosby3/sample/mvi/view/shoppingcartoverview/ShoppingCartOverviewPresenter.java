@@ -57,7 +57,9 @@ public class ShoppingCartOverviewPresenter
         intent(ShoppingCartOverviewView::selectItemsIntent)
             .mergeWith(clearSelectionIntent.map(ignore -> Collections.emptyList()))
             .doOnNext(items -> Timber.d("intent: selected items %d", items.size()))
-            .startWith(new ArrayList<Product>(0));
+            .startWith(new ArrayList<Product>(0))
+            .publish()
+            .refCount();
 
     //
     // Delete multiple selected Items

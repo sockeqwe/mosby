@@ -41,14 +41,14 @@ allprojects {
 ext {
   minSdk = 14
   targetSdk = 25
-  buildToolsVersion = '27.0.1'
-  compileSdkVersion = 27
+  buildToolsVersion = '28.0.1'
+  compileSdkVersion = 28
 
   javaSourceCompatibility = JavaVersion.VERSION_1_7
   javaTargetCompatibility = JavaVersion.VERSION_1_7
 
   // Libraries
-  supportLibVersion = '27.0.2'
+  supportLibVersion = '28.0.0'
   rxjava2Version = '2.0.7'
   rxAndroid2Version = '2.0.1'
 

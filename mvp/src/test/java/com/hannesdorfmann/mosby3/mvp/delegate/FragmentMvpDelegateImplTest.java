@@ -18,6 +18,7 @@
 package com.hannesdorfmann.mosby3.mvp.delegate;
 
 import android.app.Application;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -142,7 +143,7 @@ public class FragmentMvpDelegateImplTest {
 
   private void startFragment(FragmentMvpDelegateImpl<MvpView, MvpPresenter<MvpView>> delegate,
       Bundle bundle) {
-    delegate.onAttach(activity);
+    delegate.onAttach((Context) activity);
     delegate.onCreate(bundle);
     delegate.onViewCreated(null, bundle);
     delegate.onActivityCreated(bundle);

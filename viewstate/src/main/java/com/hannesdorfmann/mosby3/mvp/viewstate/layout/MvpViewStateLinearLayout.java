@@ -85,4 +85,9 @@ public abstract class MvpViewStateLinearLayout<V extends MvpView, P extends MvpP
     // can be overridden in subclass
   }
 
+  @Override
+  public boolean isViewOnActivity() {
+    return true;
+  }
+
 }

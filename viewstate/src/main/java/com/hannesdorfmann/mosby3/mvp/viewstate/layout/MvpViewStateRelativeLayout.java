@@ -85,4 +85,9 @@ public abstract class MvpViewStateRelativeLayout<V extends MvpView, P extends Mv
     // can be overridden in subclass
   }
 
+  @Override
+  public boolean isViewOnActivity() {
+    return true;
+  }
+
 }

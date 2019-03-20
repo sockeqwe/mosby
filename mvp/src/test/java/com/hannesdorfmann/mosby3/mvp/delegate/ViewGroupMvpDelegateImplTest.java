@@ -21,10 +21,11 @@ import android.app.Application;
 import android.os.Parcelable;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
+
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
+
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -53,6 +54,7 @@ public class ViewGroupMvpDelegateImplTest {
     Mockito.doCallRealMethod().when(callback).setPresenter(presenter);
     Mockito.doCallRealMethod().when(callback).getPresenter();
     Mockito.doCallRealMethod().when(callback).superOnSaveInstanceState();
+    Mockito.doCallRealMethod().when(callback).isViewOnActivity();
 
     activity = Mockito.mock(FragmentActivity.class);
     application = Mockito.mock(Application.class);
@@ -105,6 +107,7 @@ public class ViewGroupMvpDelegateImplTest {
     PartialViewGroupMvpDelegateCallbackImpl callback1 =
         Mockito.mock(PartialViewGroupMvpDelegateCallbackImpl.class);
     Mockito.doCallRealMethod().when(callback1).setPresenter(presenter1);
+    Mockito.doCallRealMethod().when(callback1).isViewOnActivity();
     Mockito.doCallRealMethod().when(callback1).getPresenter();
     View androidView1 = Mockito.mock(View.class);
 

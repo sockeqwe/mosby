@@ -125,4 +125,9 @@ public abstract class MvpRelativeLayout<V extends MvpView, P extends MvpPresente
   @Override public final void superOnRestoreInstanceState(Parcelable state) {
     super.onRestoreInstanceState(state);
   }
+
+  @Override
+  public boolean isViewOnActivity() {
+    return true;
+  }
 }

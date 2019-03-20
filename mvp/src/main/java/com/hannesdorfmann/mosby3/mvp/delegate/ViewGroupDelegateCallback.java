@@ -50,4 +50,10 @@ public interface ViewGroupDelegateCallback<V extends MvpView, P extends MvpPrese
    * @since 3.0
    */
   Context getContext();
+
+  /**
+   * A android.view.View can added (in)directly to a Activity or a WindowManager,
+   * in which case only destroy Presenter is needed, not release
+   */
+  boolean isViewOnActivity();
 }

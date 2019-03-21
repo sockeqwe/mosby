@@ -107,6 +107,7 @@ public class ViewGroupMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<
       mosbyViewId = UUID.randomUUID().toString();
       PresenterManager.putPresenter(PresenterManager.getActivity(context), mosbyViewId, presenter);
     }
+    presenterDestroyed = false;
     return presenter;
   }
 
@@ -167,6 +168,7 @@ public class ViewGroupMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<
 
     delegateCallback.setPresenter(presenter);
     presenter.attachView(view);
+    presenterDetached = false;
 
     /*
     if (viewStateWillBeRestored) {

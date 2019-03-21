@@ -3,13 +3,13 @@ android:
   components:
   - tools
   - platform-tools
-  - build-tools-27.0.3
+  - build-tools-28.0.1
   - extra-android-m2repository
-  - android-27
+  - android-28
   - sys-img-armeabi-v7a-android-17
 before_install:
 - echo "org.gradle.parallel=false" >> ~/.gradle/gradle.properties
-- yes | sdkmanager "platforms;android-27"
+- yes | sdkmanager "platforms;android-28"
 before_script:
 jdk:
 - oraclejdk8

@@ -17,6 +17,7 @@
 package com.hannesdorfmann.mosby3.mvp.delegate;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -264,6 +265,9 @@ public class FragmentMvpViewStateDelegateImpl<V extends MvpView, P extends MvpPr
   }
 
   @Override public void onAttach(Activity activity) {
+  }
+
+  @Override public void onAttach(Context context) {
   }
 
   @Override public void onDetach() {

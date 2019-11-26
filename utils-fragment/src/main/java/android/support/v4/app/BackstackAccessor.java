@@ -17,8 +17,8 @@
 
 package android.support.v4.app;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 /**
  * With this utility class one can access the fragment backstack
@@ -53,10 +53,38 @@ public class BackstackAccessor {
      * This method is a temporary workaround until the issue is resolved in AndroidX.
      */
     private static boolean isInBackStackAndroidX(final Fragment fragment) {
-        final StringWriter writer = new StringWriter();
-        fragment.dump("", null, new PrintWriter(writer), null);
-        final String dump = writer.toString();
-        return !dump.contains("mBackStackNesting=0");
+        try {
+            Class<?> clazz = getFragmentClass(fragment);
+            if (clazz != null && clazz.getName().startsWith("androidx")) {
+                Method method = clazz.getDeclaredMethod("isInBackStack");
+                method.setAccessible(true);
+                return (boolean) method.invoke(fragment);
+            }
+        } catch (NoSuchMethodException e) {
+            // quietly
+        } catch (IllegalAccessException e) {
+            // quietly
+        } catch (InvocationTargetException e) {
+            // quietly
+        }
+        return false;
+    }
+
+    /**
+     * If fragment is not androidx.fragment.app.Fragment itself,
+     * find androidx.fragment.app.Fragment from its super class for getting isInBackStack method.
+     *
+     * @param fragment The fragment you want to check if its on the back stack
+     * @return androidx.fragment.app.Fragment's {@link java.lang.Class}
+     */
+    private static Class<?> getFragmentClass(final Fragment fragment) {
+        Class<?> clazz = fragment.getClass();
+        do {
+            if (clazz.getName().equals("androidx.fragment.app.Fragment")) {
+                return clazz;
+            }
+        } while ((clazz = clazz.getSuperclass()) != null);
+        return null;
     }
 /*
   public static boolean isFragmentOnBackStack(Fragment fragment) {

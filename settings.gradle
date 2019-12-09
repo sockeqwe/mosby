@@ -12,3 +12,4 @@ include ':mvp-common', ':mvp-queuing-presenter',
     ':presentermanager',
     ':utils-fragment'
     // ':utils-fragment-integration-test'
+    // ':utils-fragment-androidx-integration-test'

@@ -42,7 +42,7 @@ public class ActivityMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
     implements ActivityMviDelegate {
 
 
-  public static boolean DEBUG = false;
+  public static final boolean DEBUG = false;
   private static final String DEBUG_TAG = "ActivityMviDelegateImpl";
   private static final String KEY_MOSBY_VIEW_ID = "com.hannesdorfmann.mosby3.activity.mvi.id";
   private String mosbyViewId = null;

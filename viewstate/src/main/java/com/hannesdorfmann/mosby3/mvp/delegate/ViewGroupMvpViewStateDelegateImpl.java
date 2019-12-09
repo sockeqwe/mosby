@@ -41,7 +41,7 @@ public class ViewGroupMvpViewStateDelegateImpl<V extends MvpView, P extends MvpP
 
   // TODO allow custom save state hook in
 
-  public static boolean DEBUG = false;
+  public static final boolean DEBUG = false;
   private static final String DEBUG_TAG = "ViewGroupMvpViewStateDe";
   private ViewGroupMvpViewStateDelegateCallback<V, P, VS> delegateCallback;
   private String mosbyViewId;

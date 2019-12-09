@@ -35,7 +35,7 @@ import com.hannesdorfmann.mosby3.mvp.viewstate.ViewState;
 public class ActivityMvpViewStateDelegateImpl<V extends MvpView, P extends MvpPresenter<V>, VS extends ViewState<V>>
     extends ActivityMvpDelegateImpl<V, P> {
 
-  public static boolean DEBUG = false;
+  public static final boolean DEBUG = false;
   private static final String DEBUG_TAG = "ActivityMvpViewStateDel";
 
   private MvpViewStateDelegateCallback<V, P, VS> delegateCallback;

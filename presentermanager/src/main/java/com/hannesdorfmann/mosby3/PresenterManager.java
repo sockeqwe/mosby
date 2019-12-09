@@ -33,7 +33,7 @@ import java.util.UUID;
  */
 final public class PresenterManager {
 
-  public static boolean DEBUG = false;
+  public static final boolean DEBUG = false;
   public static final String DEBUG_TAG = "PresenterManager";
   final static String KEY_ACTIVITY_ID = "com.hannesdorfmann.mosby3.MosbyPresenterManagerActivityId";
 

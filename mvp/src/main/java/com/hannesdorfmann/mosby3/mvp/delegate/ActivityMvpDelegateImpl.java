@@ -39,7 +39,7 @@ public class ActivityMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<V
 
   protected static final String KEY_MOSBY_VIEW_ID = "com.hannesdorfmann.mosby3.activity.mvp.id";
 
-  public static boolean DEBUG = false;
+  public static final boolean DEBUG = false;
   private static final String DEBUG_TAG = "ActivityMvpDelegateImpl";
 
   private MvpDelegateCallback<V, P> delegateCallback;

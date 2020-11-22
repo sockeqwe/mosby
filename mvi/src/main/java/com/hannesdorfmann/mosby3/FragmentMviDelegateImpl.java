@@ -72,11 +72,11 @@ public class FragmentMviDelegateImpl<V extends MvpView, P extends MviPresenter<V
       @NonNull Fragment fragment, boolean keepPresenterDuringScreenOrientationChange,
       boolean keepPresenterOnBackstack) {
     if (delegateCallback == null) {
-      throw new NullPointerException("delegateCallback == null");
+      throw new NullPointerException("MviDelegateCallback is null!");
     }
 
     if (fragment == null) {
-      throw new NullPointerException("fragment == null");
+      throw new NullPointerException("Fragment is null!");
     }
 
     if (!keepPresenterDuringScreenOrientationChange && keepPresenterOnBackstack) {

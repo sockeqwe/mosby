@@ -16,11 +16,10 @@
  */
 apply plugin: 'java'
 apply from: '../maven-push-java-lib.gradle'
-apply plugin: 'findbugs'
 
 sourceCompatibility = rootProject.ext.javaSourceCompatibility
 targetCompatibility = rootProject.ext.javaTargetCompatibility
-
+/*
 def logger = new com.android.build.gradle.internal.LoggerWrapper(project.logger)
 def sdkHandler = new com.android.build.gradle.internal.SdkHandler(project, logger)
 for (File file : sdkHandler.sdkLoader.repositories) {
@@ -28,7 +27,7 @@ for (File file : sdkHandler.sdkLoader.repositories) {
     url = file.toURI()
   }
 }
-
+*/
 
 dependencies {
 
@@ -37,16 +36,4 @@ dependencies {
   compile 'com.android.support:support-annotations:' + rootProject.ext.supportLibVersion
 
   testCompile 'junit:junit:' + rootProject.ext.junitVersion
-}
-
-
-findbugs {
-  excludeFilter = file("$project.projectDir/findbugs-filter.xml")
-}
-
-tasks.withType(FindBugs) {
-  reports {
-    xml.enabled = false
-    html.enabled = true
-  }
 }

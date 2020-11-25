@@ -3,6 +3,7 @@
 buildscript {
 
   repositories {
+    google()
     jcenter()
     maven {
       url "https://maven.google.com"
@@ -10,14 +11,13 @@ buildscript {
       google()
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:3.1.0'
-    //  classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.5.2'
-    //classpath 'me.tatarka:gradle-retrolambda:3.5.0'
+    classpath 'com.android.tools.build:gradle:4.1.1'
   }
 }
 
 allprojects {
   repositories {
+    google()
     jcenter()
     maven {
       url 'https://oss.sonatype.org/content/repositories/snapshots/'

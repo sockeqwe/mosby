@@ -1,3 +1,4 @@
+/*
 apply plugin: 'findbugs'
 
 afterEvaluate {
@@ -46,3 +47,5 @@ afterEvaluate {
     tasks.getByName('check').dependsOn(task)
   }
 }
+
+ */

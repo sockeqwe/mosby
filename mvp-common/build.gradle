@@ -1,10 +1,9 @@
 apply plugin: 'java'
 apply from: '../maven-push-java-lib.gradle'
-apply plugin: 'findbugs'
 
 sourceCompatibility = rootProject.ext.javaSourceCompatibility
 targetCompatibility = rootProject.ext.javaTargetCompatibility
-
+/*
 def logger = new com.android.build.gradle.internal.LoggerWrapper(project.logger)
 def sdkHandler = new com.android.build.gradle.internal.SdkHandler(project, logger)
 for (File file : sdkHandler.sdkLoader.repositories) {
@@ -12,7 +11,7 @@ for (File file : sdkHandler.sdkLoader.repositories) {
     url = file.toURI()
   }
 }
-
+*/
 
 dependencies {
 
@@ -22,11 +21,3 @@ dependencies {
   testCompile 'org.mockito:mockito-core:' + rootProject.ext.mockitoVersion
 }
 
-
-
-tasks.withType(FindBugs) {
-  reports {
-    xml.enabled = false
-    html.enabled = true
-  }
-}

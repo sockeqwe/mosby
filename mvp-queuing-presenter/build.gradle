@@ -16,19 +16,18 @@
  */
 apply plugin: 'java'
 apply from: '../maven-push-java-lib.gradle'
-apply plugin: 'findbugs'
 
 sourceCompatibility = rootProject.ext.javaSourceCompatibility
 targetCompatibility = rootProject.ext.javaTargetCompatibility
-
+/*
 def logger = new com.android.build.gradle.internal.LoggerWrapper(project.logger)
-def sdkHandler = new com.android.build.gradle.internal.SdkHandler(project, logger)
+def sdkHandler = new com.android.build.gradle.internal.SdkHandler(project, project.logger)
 for (File file : sdkHandler.sdkLoader.repositories) {
   project.repositories.maven {
     url = file.toURI()
   }
 }
-
+*/
 
 dependencies {
 

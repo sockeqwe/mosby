@@ -25,9 +25,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import com.hannesdorfmann.mosby3.sample.mvi.businesslogic.model.MainMenuItem;
 import com.hannesdorfmann.mosby3.sample.mvi.dependencyinjection.DependencyInjection;
 import com.hannesdorfmann.mosby3.sample.mvi.view.category.CategoryFragment;
@@ -44,10 +41,9 @@ public class MainActivity extends AppCompatActivity {
 
   private static final String KEY_TOOLBAR_TITLE = "toolbarTitle";
 
-  @BindView(R.id.toolbar) Toolbar toolbar;
-  @BindView(R.id.drawerLayout) DrawerLayout drawer;
-  @BindView(R.id.sliding_layout) SlidingUpPanelLayout slidingUpPanel;
-  private Unbinder unbinder;
+  private Toolbar toolbar;
+  private DrawerLayout drawer;
+  private SlidingUpPanelLayout slidingUpPanel;
   private Disposable disposable;
   private String title;
   private PublishSubject<Boolean> clearSelectionRelay;
@@ -56,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     unbinder = ButterKnife.bind(this);
+    toolbar = (Toolbar) findViewById( R.id.toolbar);
     toolbar.setTitle("Mosby MVI");
     toolbar.inflateMenu(R.menu.activity_main_toolbar);
     toolbar.setOnMenuItemClickListener(item -> {
@@ -72,8 +69,10 @@ public class MainActivity extends AppCompatActivity {
     ActionBarDrawerToggle toggle =
         new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open,
             R.string.navigation_drawer_close);
+    drawer = (DrawerLayout) findViewById(R.id.drawerLayout);
     drawer.addDrawerListener(toggle);
     toggle.syncState();
+    slidingUpPanel = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
 
     if (savedInstanceState == null) {
       showCategoryItems(MainMenuItem.HOME);
@@ -95,7 +94,6 @@ public class MainActivity extends AppCompatActivity {
 
   @Override protected void onDestroy() {
     super.onDestroy();
-    unbinder.unbind();
     disposable.dispose();
     Timber.d("------- Destroyed -------");
   }

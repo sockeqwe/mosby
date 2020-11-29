@@ -17,9 +17,11 @@
 
 package com.hannesdorfmann.mosby3;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.util.ArrayMap;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.collection.ArrayMap;
+
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 import java.util.Map;
@@ -68,7 +70,8 @@ class ActivityScopedCache {
    * @param <P> The type tof the {@link MvpPresenter}
    * @return The Presenter for the given view id or <code>null</code>
    */
-  @Nullable public <P> P getPresenter(@NonNull String viewId) {
+  @Nullable
+  public <P> P getPresenter(@NonNull String viewId) {
     PresenterHolder holder = presenterMap.get(viewId);
     return holder == null ? null : (P) holder.presenter;
   }

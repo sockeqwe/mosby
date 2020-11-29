@@ -18,9 +18,10 @@ package com.hannesdorfmann.mosby3;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.v4.os.ParcelableCompat;
-import android.support.v4.os.ParcelableCompatCreatorCallbacks;
-import android.support.v4.view.AbsSavedState;
+
+import androidx.core.os.ParcelableCompat;
+import androidx.core.os.ParcelableCompatCreatorCallbacks;
+import androidx.customview.view.AbsSavedState;
 
 /**
  * The SavedState implementation to store the view's internal id to

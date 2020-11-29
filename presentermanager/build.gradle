@@ -38,25 +38,27 @@ android {
 
 dependencies {
 
-  compile 'com.android.support:appcompat-v7:' + rootProject.ext.supportLibVersion
-  compile 'com.android.support:support-v4:' + rootProject.ext.supportLibVersion
+  implementation rootProject.ext.androidxCollection
+  implementation rootProject.ext.androidxAnnotation
+  implementation rootProject.ext.androidxCore
+  implementation rootProject.ext.androidxAppcompat
 
-  compile project(':mvp-common')
+  implementation project(':mvp-common')
 
-  testCompile 'junit:junit:' + rootProject.ext.junitVersion
-  testCompile 'org.mockito:mockito-core:' + rootProject.ext.mockitoVersion
+  testImplementation 'junit:junit:' + rootProject.ext.junitVersion
+  testImplementation 'org.mockito:mockito-core:' + rootProject.ext.mockitoVersion
   //testCompile 'org.mockito:mockito-android:'+ rootProject.ext.mockitoVersion
 
 
-  testCompile "org.robolectric:robolectric:"+rootProject.ext.robolectricVersion
-  testCompile "org.robolectric:shadows-support-v4:"+rootProject.ext.robolectricVersion
+  testImplementation "org.robolectric:robolectric:"+rootProject.ext.robolectricVersion
+  testImplementation "org.robolectric:shadows-support-v4:"+rootProject.ext.robolectricVersion
 
 
-  testCompile('org.powermock:powermock-api-mockito:' + rootProject.ext.powermockVersion) {
+  testImplementation('org.powermock:powermock-api-mockito:' + rootProject.ext.powermockVersion) {
     exclude module: 'hamcrest-core'
     exclude module: 'objenesis'
   }
-  testCompile('org.powermock:powermock-module-junit4:' + rootProject.ext.powermockVersion) {
+  testImplementation('org.powermock:powermock-module-junit4:' + rootProject.ext.powermockVersion) {
     exclude module: 'hamcrest-core'
     exclude module: 'objenesis'
   }

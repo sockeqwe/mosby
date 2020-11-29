@@ -5,12 +5,14 @@ import android.app.Application;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.os.Bundle;
-import android.support.annotation.MainThread;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.util.ArrayMap;
 import android.util.Log;
 import android.view.View;
+
+import androidx.annotation.MainThread;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.collection.ArrayMap;
+
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 import java.util.Map;
@@ -110,7 +112,9 @@ final public class PresenterManager {
    * @param activity The Activitiy for which you want to get the activity scope for
    * @return The {@link ActivityScopedCache} for the given Activity
    */
-  @NonNull @MainThread static ActivityScopedCache getOrCreateActivityScopedCache(
+  @NonNull
+  @MainThread
+  static ActivityScopedCache getOrCreateActivityScopedCache(
       @NonNull Activity activity) {
     if (activity == null) {
       throw new NullPointerException("Activity is null");
@@ -148,7 +152,8 @@ final public class PresenterManager {
    * @return The {@link ActivityScopedCache} or null
    * @see #getOrCreateActivityScopedCache(Activity)
    */
-  @Nullable @MainThread static ActivityScopedCache getActivityScope(@NonNull Activity activity) {
+  @Nullable
+  @MainThread static ActivityScopedCache getActivityScope(@NonNull Activity activity) {
     if (activity == null) {
       throw new NullPointerException("Activity is null");
     }

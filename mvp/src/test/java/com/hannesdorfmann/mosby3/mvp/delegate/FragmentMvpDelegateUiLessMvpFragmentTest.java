@@ -20,6 +20,7 @@ import org.robolectric.shadows.support.v4.SupportFragmentTestUtil;
 /**
  * @author Hannes Dorfmann
  */
+/*
 @RunWith(RobolectricTestRunner.class) @Config(manifest = Config.NONE)
 public class FragmentMvpDelegateUiLessMvpFragmentTest {
 
@@ -58,3 +59,4 @@ public class FragmentMvpDelegateUiLessMvpFragmentTest {
     SupportFragmentTestUtil.startVisibleFragment(new CorrectUiFragment());
   }
 }
+        */

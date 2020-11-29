@@ -35,7 +35,7 @@ import java.util.UUID;
  * @since 1.1.0
  */
 public class ActivityMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<V>>
-    implements ActivityMvpDelegate {
+    implements ActivityMvpDelegate<V, P> {
 
   protected static final String KEY_MOSBY_VIEW_ID = "com.hannesdorfmann.mosby3.activity.mvp.id";
 

@@ -19,8 +19,10 @@ package com.hannesdorfmann.mosby3.mvp.delegate;
 
 import android.app.Application;
 import android.os.Parcelable;
-import android.support.v4.app.FragmentActivity;
 import android.view.View;
+
+import androidx.fragment.app.FragmentActivity;
+
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 import org.junit.Before;

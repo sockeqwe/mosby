@@ -1,6 +1,6 @@
-include ':presentermanager', ':mvp-common'
+include ':presentermanager', ':mvp-common',
 //        ':mvp-queuing-presenter',
-//    ':mvp',
+    ':mvp',
 //    ':viewstate',
 //    ':sample',
 //    ':mvi',
@@ -11,5 +11,5 @@ include ':presentermanager', ':mvp-common'
 //    ':mvi-integration-test',
 //    ':sample-mvi',
 
-//    ':utils-fragment'
+   ':utils-fragment'
     // ':utils-fragment-integration-test'

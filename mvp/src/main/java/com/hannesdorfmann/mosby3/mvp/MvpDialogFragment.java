@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
+
 import com.hannesdorfmann.mosby3.mvp.delegate.FragmentMvpDelegate;
 import com.hannesdorfmann.mosby3.mvp.delegate.FragmentMvpDelegateImpl;
 import com.hannesdorfmann.mosby3.mvp.delegate.MvpDelegateCallback;
@@ -52,7 +54,8 @@ public abstract class MvpDialogFragment<V extends MvpView, P extends MvpPresente
    *
    * @return {@link FragmentMvpDelegateImpl}
    */
-  @NonNull protected FragmentMvpDelegate<V, P> getMvpDelegate() {
+  @NonNull
+  protected FragmentMvpDelegate<V, P> getMvpDelegate() {
     if (mvpDelegate == null) {
       mvpDelegate = new FragmentMvpDelegateImpl<>(this, this, true, true);
     }

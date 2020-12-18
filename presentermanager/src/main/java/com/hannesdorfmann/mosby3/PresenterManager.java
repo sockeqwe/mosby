@@ -75,7 +75,7 @@ final public class PresenterManager {
         }
 
         @Override public void onActivityDestroyed(Activity activity) {
-          if (!activity.isChangingConfigurations()) {
+          if (activity.isFinishing()) {
             // Activity will be destroyed permanently, so reset the cache
             String activityId = activityIdMap.get(activity);
             if (activityId != null) {

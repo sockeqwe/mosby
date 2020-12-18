@@ -154,7 +154,7 @@ public class PresenterManagerTest {
     Activity activity = Mockito.mock(Activity.class);
     Application application = Mockito.mock(Application.class);
     Mockito.when(activity.getApplication()).thenReturn(application);
-    Mockito.when(activity.isChangingConfigurations()).thenReturn(false);
+    Mockito.when(activity.isFinishing()).thenReturn(true);
 
     // This one also registers for
     ActivityScopedCache scopedCache = PresenterManager.getOrCreateActivityScopedCache(activity);
@@ -177,8 +177,8 @@ public class PresenterManagerTest {
 
     Mockito.when(portraitActivity1.getApplication()).thenReturn(application);
     Mockito.when(landscapeActivity1.getApplication()).thenReturn(application);
-    Mockito.when(portraitActivity1.isChangingConfigurations()).thenReturn(true);
-    Mockito.when(landscapeActivity1.isChangingConfigurations()).thenReturn(false);
+    Mockito.when(portraitActivity1.isFinishing()).thenReturn(false);
+    Mockito.when(landscapeActivity1.isFinishing()).thenReturn(true);
 
     // This one also registers for lifecycle events
     ActivityScopedCache scopedCache1 =
@@ -250,10 +250,10 @@ public class PresenterManagerTest {
     Mockito.when(landscapeActivity1.getApplication()).thenReturn(application);
     Mockito.when(portraitActivity2.getApplication()).thenReturn(application);
     Mockito.when(landscapeActivity2.getApplication()).thenReturn(application);
-    Mockito.when(portraitActivity1.isChangingConfigurations()).thenReturn(true);
-    Mockito.when(landscapeActivity1.isChangingConfigurations()).thenReturn(false);
-    Mockito.when(portraitActivity2.isChangingConfigurations()).thenReturn(true);
-    Mockito.when(landscapeActivity2.isChangingConfigurations()).thenReturn(false);
+    Mockito.when(portraitActivity1.isFinishing()).thenReturn(false);
+    Mockito.when(landscapeActivity1.isFinishing()).thenReturn(true);
+    Mockito.when(portraitActivity2.isFinishing()).thenReturn(false);
+    Mockito.when(landscapeActivity2.isFinishing()).thenReturn(true);
 
     // This one also registers for lifecycle events
     ActivityScopedCache activity1ScopedCache1 =

@@ -81,7 +81,7 @@ public class ViewGroupMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<
 
     isInEditMode = view.isInEditMode();
 
-    if (!isInEditMode) {
+    if (!isInEditMode && delegateCallback.isViewOnActivity()) {
       this.activity = PresenterManager.getActivity(delegateCallback.getContext());
       this.activity.getApplication().registerActivityLifecycleCallbacks(this);
     } else {
@@ -105,7 +105,10 @@ public class ViewGroupMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<
     if (keepPresenterDuringScreenOrientationChange) {
       Context context = delegateCallback.getContext();
       mosbyViewId = UUID.randomUUID().toString();
-      PresenterManager.putPresenter(PresenterManager.getActivity(context), mosbyViewId, presenter);
+
+      if (delegateCallback.isViewOnActivity()) {
+        PresenterManager.putPresenter(PresenterManager.getActivity(context), mosbyViewId, presenter);
+      }
     }
     return presenter;
   }
@@ -225,7 +228,9 @@ public class ViewGroupMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<
 
     detachPresenterIfNotDoneYet();
 
-    if (!checkedActivityFinishing) {
+    if (!delegateCallback.isViewOnActivity()){
+      destroyPresenterIfNotDoneYet();
+    } else if (!checkedActivityFinishing) {
 
       boolean destroyPermanently = !ActivityMvpDelegateImpl.retainPresenterInstance(
           keepPresenterDuringScreenOrientationChange, activity);
@@ -284,12 +289,14 @@ public class ViewGroupMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<
         presenter.destroy();
       }
       presenterDestroyed = true;
-      activity.getApplication().unregisterActivityLifecycleCallbacks(this);
+      if (delegateCallback.isViewOnActivity()) {
+        activity.getApplication().unregisterActivityLifecycleCallbacks(this);
+      }
       if (DEBUG) {
         Log.d(DEBUG_TAG, "Presenter destroyed: " + presenter);
       }
 
-      if (mosbyViewId != null) {
+      if (mosbyViewId != null && delegateCallback.isViewOnActivity()) {
         // mosbyViewId == null if keepPresenterDuringScreenOrientationChange == false
         PresenterManager.remove(activity, mosbyViewId);
       }

@@ -49,4 +49,9 @@ public abstract class PartialViewGroupMvpViewStateDelegateCallbackImpl implement
   @Override public Parcelable superOnSaveInstanceState() {
     return Mockito.mock(AbsSavedState.class);
   }
+
+  @Override
+  public boolean isViewOnActivity() {
+    return true;
+  }
 }

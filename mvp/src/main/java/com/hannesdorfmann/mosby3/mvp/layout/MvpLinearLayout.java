@@ -126,4 +126,9 @@ public abstract class MvpLinearLayout<V extends MvpView, P extends MvpPresenter<
   @Override public final void superOnRestoreInstanceState(Parcelable state) {
     super.onRestoreInstanceState(state);
   }
+
+  @Override
+  public boolean isViewOnActivity() {
+    return true;
+  }
 }

@@ -125,4 +125,9 @@ public abstract class MvpFrameLayout<V extends MvpView, P extends MvpPresenter<V
   @Override public final void superOnRestoreInstanceState(Parcelable state) {
     super.onRestoreInstanceState(state);
   }
+
+  @Override
+  public boolean isViewOnActivity() {
+    return true;
+  }
 }

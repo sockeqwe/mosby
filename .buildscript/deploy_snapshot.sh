@@ -16,15 +16,15 @@ else
   echo "Deploying..."
   ./gradlew --stop
   echo "org.gradle.parallel=false" >> ~/.gradle/gradle.properties
-  echo "org.gradle.configureondemand=false" >> ~/.gradle/gradle.properties
+  echo "org.gradle.configureondemand=true" >> ~/.gradle/gradle.properties
   openssl aes-256-cbc -K $encrypted_8739fbca6d38_key -iv $encrypted_8739fbca6d38_iv -in .buildscript/key.gpg.enc -out key.gpg -d
   gpg --import key.gpg
   echo "signing.keyId=E508C045" >> gradle.properties
   echo "signing.password=$PGP_KEY" >> gradle.properties
   echo "signing.secretKeyRingFile=/home/travis/.gnupg/secring.gpg" >> gradle.properties
   echo "org.gradle.parallel=false" >> gradle.properties
-  echo "org.gradle.configureondemand=false" >> gradle.properties
-  ./gradlew --no-daemon uploadArchives -Dorg.gradle.parallel=false -Dorg.gradle.configureondemand=false
+  echo "org.gradle.configureondemand=true" >> gradle.properties
+  ./gradlew --no-daemon uploadArchives -Dorg.gradle.parallel=true -Dorg.gradle.configureondemand=true
   rm key.gpg
   git reset --hard
   echo "Deployed!"

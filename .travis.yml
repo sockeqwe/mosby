@@ -8,7 +8,7 @@ android:
   - android-28
   - sys-img-armeabi-v7a-android-17
 before_install:
-- echo "org.gradle.parallel=false" >> ~/.gradle/gradle.properties
+- echo "org.gradle.parallel=true" >> ~/.gradle/gradle.properties
 - yes | sdkmanager "platforms;android-28"
 before_script:
 jdk:

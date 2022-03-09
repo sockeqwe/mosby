@@ -24,7 +24,7 @@ else
   echo "signing.secretKeyRingFile=/home/travis/.gnupg/secring.gpg" >> gradle.properties
   echo "org.gradle.parallel=false" >> gradle.properties
   echo "org.gradle.configureondemand=false" >> gradle.properties
-  ./gradlew --no-daemon uploadArchives -Dorg.gradle.parallel=false -Dorg.gradle.configureondemand=false
+  ./gradlew --daemon uploadArchives -Dorg.gradle.parallel=false -Dorg.gradle.configureondemand=false
   rm key.gpg
   git reset --hard
   echo "Deployed!"
